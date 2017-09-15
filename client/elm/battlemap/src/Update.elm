@@ -1,11 +1,31 @@
-module Update exposing (Msg(Increment, Decrement), update)
+module Update exposing (..)
 
 import Model exposing (Model, model)
 
-type Msg = Increment | Decrement
+import Battlemap.Direction exposing (..)
+
+import Battlemap.Navigator as Nr exposing (go)
+
+type Msg = DirectionRequest Direction | None
 
 update : Msg -> Model -> Model
 update msg model =
    case msg of
-      Increment -> (model + 1)
-      Decrement -> (model - 1)
+      (DirectionRequest d) ->
+         (case model.navigator of
+            Nothing -> model
+            (Just nav) ->
+               let
+                  (new_bmap, new_nav) =
+                     (Nr.go
+                        model.battlemap
+                        nav
+                        d
+                     )
+               in
+                  {model |
+                     battlemap = new_bmap,
+                     navigator = (Just new_nav)
+                  }
+         )
+      _ -> model

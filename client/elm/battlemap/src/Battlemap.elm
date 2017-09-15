@@ -1,4 +1,4 @@
-module Battlemap exposing (Battlemap, random, apply_to_tile)
+module Battlemap exposing (Battlemap, random, apply_to_tile, has_location)
 
 import Array exposing (Array, set, get)
 
@@ -24,6 +24,15 @@ random =
 location_to_index : Battlemap -> Location -> Int
 location_to_index bmap loc =
    ((loc.y * bmap.width) + loc.x)
+
+has_location : Battlemap -> Location -> Bool
+has_location bmap loc =
+   (
+      (loc.x >= 0)
+      && (loc.y >= 0)
+      && (loc.x < bmap.width)
+      && (loc.y < bmap.height)
+   )
 
 apply_to_tile : Battlemap -> Location -> (Tile -> Tile) -> (Maybe Battlemap)
 apply_to_tile bmap loc fun =

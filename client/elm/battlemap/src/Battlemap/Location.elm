@@ -8,6 +8,8 @@ type alias Location =
       y : Int
    }
 
+type alias LocationComparable = (Int, Int)
+
 neighbor : Location -> Direction -> Location
 neighbor loc dir =
    case dir of
@@ -16,3 +18,7 @@ neighbor loc dir =
       Up -> {loc | y = (loc.y - 1)}
       Down -> {loc | y = (loc.y + 1)}
       None -> loc
+
+to_comparable : Location -> (Int, Int)
+to_comparable l =
+   (l.x, l.y)

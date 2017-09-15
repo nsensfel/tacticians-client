@@ -13,8 +13,8 @@ type alias Tile =
 --      mod_level : Int
    }
 
-set_direction : Tile -> Direction -> Tile
-set_direction t d =
+set_direction : Direction -> Tile -> Tile
+set_direction d t =
    {t | nav_level = d}
 
 from_int : Int -> Tile

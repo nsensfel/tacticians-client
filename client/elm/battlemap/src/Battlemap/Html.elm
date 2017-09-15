@@ -9,12 +9,23 @@ import Model exposing (Model)
 
 import Battlemap exposing (Battlemap, random)
 import Battlemap.Tile exposing (Tile)
+import Battlemap.Direction exposing (..)
 
 view_battlemap_cell : Tile -> (Html Msg)
 view_battlemap_cell t =
    (td
       []
-      [ (text (toString t.floor_level)) ]
+      [
+         (text
+            (case t.nav_level of
+               Right -> "R"
+               Left -> "L"
+               Up -> "U"
+               Down -> "D"
+               None -> (toString t.floor_level)
+            )
+         )
+      ]
    )
 
 type alias GridBuilder =
@@ -81,4 +92,4 @@ view_battlemap battlemap =
 
 view : Model -> (Html Msg)
 view m =
-   (view_battlemap random)
+   (view_battlemap m.battlemap)
