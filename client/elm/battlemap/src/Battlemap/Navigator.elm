@@ -6,10 +6,11 @@ module Battlemap.Navigator exposing
       go
    )
 
-import Set exposing (Set, member, empty, insert)
+import Set exposing (Set, member, empty, insert, remove)
+import List as Lt exposing (head, tail)
 
 import Battlemap exposing (Battlemap, has_location, apply_to_tile)
-import Battlemap.Direction exposing (Direction(..))
+import Battlemap.Direction exposing (Direction(..), opposite_of)
 import Battlemap.Tile exposing (Tile, set_direction)
 
 import Battlemap.Location exposing
@@ -23,14 +24,16 @@ import Battlemap.Location exposing
 type alias Navigator =
    {
       current_location : Location,
-      visited_locations : (Set LocationRef)
+      visited_locations : (Set LocationRef),
+      previous_directions : (List Direction)
    }
 
 new_navigator : Location -> Navigator
 new_navigator start =
    {
       current_location = start,
-      visited_locations = empty
+      visited_locations = empty,
+      previous_directions = []
    }
 
 
@@ -63,17 +66,48 @@ go battlemap nav dir =
                   Nothing -> battlemap
                   (Just bmap) -> bmap
             ),
-            {
+            {nav |
                current_location = next_location,
                visited_locations =
                   (insert
                      (to_comparable nav.current_location)
                      nav.visited_locations
-                  )
+                  ),
+               previous_directions = (dir :: nav.previous_directions)
             }
          )
       else
-         (
-            battlemap,
-            nav
-         )
+         case
+            (
+               (Lt.head nav.previous_directions),
+               (Lt.tail nav.previous_directions)
+            )
+         of
+            (Nothing, _) -> (battlemap, nav)
+            (_ , Nothing) -> (battlemap, nav)
+            ((Just prev_dir), (Just prev_dir_list)) ->
+               if (dir == (opposite_of prev_dir))
+               then
+                  (
+                     (case
+                        (apply_to_tile
+                           battlemap
+                           next_location
+                           (set_direction None)
+                        )
+                        of
+                           Nothing -> battlemap
+                           (Just bmap) -> bmap
+                     ),
+                     {nav |
+                        current_location = next_location,
+                        visited_locations =
+                           (remove
+                              (to_comparable next_location)
+                              nav.visited_locations
+                           ),
+                        previous_directions = prev_dir_list
+                     }
+                  )
+               else
+                  (battlemap, nav)
