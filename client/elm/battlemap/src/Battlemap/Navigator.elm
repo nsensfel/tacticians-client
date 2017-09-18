@@ -1,16 +1,29 @@
-module Battlemap.Navigator exposing (Navigator, new_navigator, go)
+module Battlemap.Navigator exposing
+   (
+      Navigator,
+      new_navigator,
+      reset_navigation,
+      go
+   )
 
 import Set exposing (Set, member, empty, insert)
 
 import Battlemap exposing (Battlemap, has_location, apply_to_tile)
-import Battlemap.Location exposing (..)
-import Battlemap.Direction exposing (..)
-import Battlemap.Tile exposing (set_direction)
+import Battlemap.Direction exposing (Direction(..))
+import Battlemap.Tile exposing (Tile, set_direction)
+
+import Battlemap.Location exposing
+   (
+      Location,
+      LocationRef,
+      neighbor,
+      to_comparable
+   )
 
 type alias Navigator =
    {
       current_location : Location,
-      visited_locations : (Set LocationComparable)
+      visited_locations : (Set LocationRef)
    }
 
 new_navigator : Location -> Navigator
@@ -18,6 +31,13 @@ new_navigator start =
    {
       current_location = start,
       visited_locations = empty
+   }
+
+
+reset_navigation : Tile -> Tile
+reset_navigation t =
+   {t |
+      nav_level = None
    }
 
 go : Battlemap -> Navigator -> Direction -> (Battlemap, Navigator)

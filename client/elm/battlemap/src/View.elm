@@ -1,13 +1,13 @@
 module View exposing (view)
 
-import Html exposing (Html, button, div, text, table, tr, td)
+import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
 
-import Update exposing (..)
+import Update exposing (Msg(..))
 import Model exposing (Model)
 
 import Battlemap.Html as Batmap exposing (view)
-import Battlemap.Direction exposing (..)
+import Battlemap.Direction exposing (Direction(..))
 
 -- VIEW
 

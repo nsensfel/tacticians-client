@@ -1,6 +1,6 @@
 module Battlemap.Location exposing (..)
 
-import Battlemap.Direction exposing (..)
+import Battlemap.Direction exposing (Direction(..))
 
 type alias Location =
    {
@@ -8,7 +8,7 @@ type alias Location =
       y : Int
    }
 
-type alias LocationComparable = (Int, Int)
+type alias LocationRef = (Int, Int)
 
 neighbor : Location -> Direction -> Location
 neighbor loc dir =

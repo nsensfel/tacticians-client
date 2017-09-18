@@ -1,32 +1,57 @@
 module Battlemap.Html exposing (view)
 
 import Html exposing (Html, text, table, tr, td)
+import Html.Events exposing (onClick)
+
 -- import List as Lt exposing (map)
 import Array as Ay exposing (foldr)
 
-import Update exposing (Msg)
+import Update exposing (Msg(..))
 import Model exposing (Model)
 
 import Battlemap exposing (Battlemap, random)
 import Battlemap.Tile exposing (Tile)
-import Battlemap.Direction exposing (..)
+import Battlemap.Direction exposing (Direction(..))
 
 view_battlemap_cell : Tile -> (Html Msg)
 view_battlemap_cell t =
-   (td
-      []
-      [
-         (text
-            (case t.nav_level of
-               Right -> "R"
-               Left -> "L"
-               Up -> "U"
-               Down -> "D"
-               None -> (toString t.floor_level)
-            )
+   case t.char_level of
+      Nothing ->
+         (td
+            []
+            [
+               (text "[_]"),
+               (text
+                  (
+                     (case t.nav_level of
+                        Right -> "R"
+                        Left -> "L"
+                        Up -> "U"
+                        Down -> "D"
+                        None -> (toString t.floor_level)
+                     )
+                  )
+               )
+            ]
          )
-      ]
-   )
+      (Just char_id) ->
+         (td
+            [ (onClick (SelectCharacter char_id)) ]
+            [
+               (text ("[" ++ char_id ++ "]")),
+               (text
+                  (
+                     (case t.nav_level of
+                        Right -> "R"
+                        Left -> "L"
+                        Up -> "U"
+                        Down -> "D"
+                        None -> (toString t.floor_level)
+                     )
+                  )
+               )
+            ]
+         )
 
 type alias GridBuilder =
    {
@@ -37,21 +62,21 @@ type alias GridBuilder =
    }
 
 foldr_to_html : Tile -> GridBuilder -> GridBuilder
-foldr_to_html t bg =
-   if (bg.row_size == bg.bmap.width)
+foldr_to_html t gb =
+   if (gb.row_size == gb.bmap.width)
    then
-      {bg |
+      {gb |
          row = [(view_battlemap_cell t)],
          row_size = 1,
          columns =
             (
-               (tr [] bg.row) :: bg.columns
+               (tr [] gb.row) :: gb.columns
             )
       }
    else
-      {bg |
-         row = ((view_battlemap_cell t) :: bg.row),
-         row_size = (bg.row_size + 1)
+      {gb |
+         row = ((view_battlemap_cell t) :: gb.row),
+         row_size = (gb.row_size + 1)
       }
 
 grid_builder_to_html : GridBuilder -> (List (Html Msg))

@@ -1,10 +1,17 @@
-module Battlemap exposing (Battlemap, random, apply_to_tile, has_location)
+module Battlemap exposing
+   (
+      Battlemap,
+      random,
+      apply_to_tile,
+      has_location,
+      apply_to_all_tiles
+   )
 
-import Array exposing (Array, set, get)
+import Array exposing (Array, set, get, map)
 
 import Battlemap.Tile exposing (Tile, generate)
-import Battlemap.Direction exposing (..)
-import Battlemap.Location exposing (..)
+import Battlemap.Direction exposing (Direction(..))
+import Battlemap.Location exposing (Location)
 
 type alias Battlemap =
    {
@@ -33,6 +40,12 @@ has_location bmap loc =
       && (loc.x < bmap.width)
       && (loc.y < bmap.height)
    )
+
+apply_to_all_tiles : Battlemap -> (Tile -> Tile) -> Battlemap
+apply_to_all_tiles bmap fun =
+   {bmap |
+      content = (map fun bmap.content)
+   }
 
 apply_to_tile : Battlemap -> Location -> (Tile -> Tile) -> (Maybe Battlemap)
 apply_to_tile bmap loc fun =
