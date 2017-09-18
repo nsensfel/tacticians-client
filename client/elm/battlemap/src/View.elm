@@ -32,6 +32,10 @@ view model =
             [ (onClick (DirectionRequest Right)) ]
             [ (text "Right") ]
          ),
+         (button
+            [ (onClick EndTurn) ]
+            [ (text "Apply") ]
+         ),
          (div
             []
             [(Batmap.view model)]

@@ -3,6 +3,7 @@ module Battlemap exposing
       Battlemap,
       random,
       apply_to_tile,
+      apply_to_tile_unsafe,
       has_location,
       apply_to_all_tiles
    )
@@ -67,3 +68,21 @@ apply_to_tile bmap loc fun =
                      )
                }
             )
+
+apply_to_tile_unsafe : Battlemap -> Location -> (Tile -> Tile) -> Battlemap
+apply_to_tile_unsafe bmap loc fun =
+   let
+      index = (location_to_index bmap loc)
+      at_index = (get index bmap.content)
+   in
+      case at_index of
+         Nothing -> bmap
+         (Just tile) ->
+            {bmap |
+               content =
+                  (set
+                     index
+                     (fun tile)
+                     bmap.content
+                  )
+            }
