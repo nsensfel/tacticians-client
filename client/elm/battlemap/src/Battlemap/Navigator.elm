@@ -64,7 +64,17 @@ go battlemap nav dir =
                )
                of
                   Nothing -> battlemap
-                  (Just bmap) -> bmap
+                  (Just bmap0) ->
+                     (case
+                        (apply_to_tile
+                           bmap0
+                           next_location
+                           (set_direction dir)
+                        )
+                     of
+                        Nothing -> battlemap
+                        (Just bmap1) -> bmap1
+                     )
             ),
             {nav |
                current_location = next_location,
@@ -92,7 +102,7 @@ go battlemap nav dir =
                      (case
                         (apply_to_tile
                            battlemap
-                           next_location
+                           nav.current_location
                            (set_direction None)
                         )
                         of
