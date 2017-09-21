@@ -8,7 +8,8 @@ type alias Character =
       name : String,
       icon : String,
       portrait : String,
-      location : Location
+      location : Location,
+      movement_points : Int
    }
 
 type alias CharacterRef = String

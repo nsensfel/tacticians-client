@@ -30,7 +30,8 @@ model =
                name = "Char2",
                icon = "Icon2",
                portrait = "Portrait2",
-               location = {x = 1, y = 4}
+               location = {x = 1, y = 4},
+               movement_points = 6
             }
             (insert
                "1"
@@ -39,7 +40,8 @@ model =
                   name = "Char1",
                   icon = "Icon1",
                   portrait = "Portrait1",
-                  location = {x = 4, y = 1}
+                  location = {x = 4, y = 1},
+                  movement_points = 10
                }
                (insert
                   "0"
@@ -48,7 +50,8 @@ model =
                      name = "Char0",
                      icon = "Icon0",
                      portrait = "Portrait0",
-                     location = {x = 0, y = 0}
+                     location = {x = 0, y = 0},
+                     movement_points = 16
                   }
                   empty
                )

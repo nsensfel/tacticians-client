@@ -9,6 +9,7 @@ import Model exposing (Model)
 import Battlemap.Html as Batmap exposing (view)
 import Battlemap.Direction exposing (Direction(..))
 
+import Dict as Dt exposing (get)
 -- VIEW
 
 view : Model -> (Html Msg)
@@ -39,6 +40,30 @@ view model =
          (div
             []
             [(Batmap.view model)]
+         ),
+         (div
+            []
+            [
+               (text
+                  (case (model.selection, model.navigator) of
+                     (Nothing, _) -> ""
+                     (_, Nothing) -> ""
+                     ((Just char_id), (Just nav)) ->
+                        case (Dt.get char_id model.characters) of
+                           Nothing -> ""
+                           (Just char) ->
+                              (
+                                 "Controlling "
+                                 ++ char.name
+                                 ++ ": "
+                                 ++ (toString nav.remaining_points)
+                                 ++ "/"
+                                 ++ (toString char.movement_points)
+                                 ++ " movement points remaining."
+                              )
+                  )
+               )
+            ]
          )
       ]
    )

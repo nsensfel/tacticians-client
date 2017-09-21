@@ -12,6 +12,7 @@ import List as Lt exposing (head, tail)
 import Battlemap exposing (Battlemap, has_location, apply_to_tile)
 import Battlemap.Direction exposing (Direction(..), opposite_of)
 import Battlemap.Tile exposing (Tile, set_direction)
+import Character exposing (Character)
 
 import Battlemap.Location exposing
    (
@@ -25,15 +26,17 @@ type alias Navigator =
    {
       current_location : Location,
       visited_locations : (Set LocationRef),
-      previous_directions : (List Direction)
+      previous_directions : (List Direction),
+      remaining_points : Int
    }
 
-new_navigator : Location -> Navigator
-new_navigator start =
+new_navigator : Location -> Int -> Navigator
+new_navigator start points =
    {
       current_location = start,
       visited_locations = empty,
-      previous_directions = []
+      previous_directions = [],
+      remaining_points = points
    }
 
 
@@ -43,14 +46,17 @@ reset_navigation t =
       nav_level = None
    }
 
-go : Battlemap -> Navigator -> Direction -> (Battlemap, Navigator)
-go battlemap nav dir =
+go : Battlemap -> Navigator -> Direction -> (List Character) -> (Battlemap, Navigator)
+go battlemap nav dir char_list =
    let
       next_location = (neighbor nav.current_location dir)
+      is_occupied = (Lt.any (\c -> (c.location == next_location)) char_list)
    in
       if
       (
-         (has_location battlemap next_location)
+         (not is_occupied)
+         && (nav.remaining_points > 0)
+         && (has_location battlemap next_location)
          && (nav.current_location /= next_location)
          && (not (member (to_comparable next_location) nav.visited_locations))
       )
@@ -83,10 +89,12 @@ go battlemap nav dir =
                      (to_comparable nav.current_location)
                      nav.visited_locations
                   ),
-               previous_directions = (dir :: nav.previous_directions)
+               previous_directions = (dir :: nav.previous_directions),
+               remaining_points = (nav.remaining_points - 1)
             }
          )
-      else
+      else if (not is_occupied)
+      then
          case
             (
                (Lt.head nav.previous_directions),
@@ -116,8 +124,11 @@ go battlemap nav dir =
                               (to_comparable next_location)
                               nav.visited_locations
                            ),
-                        previous_directions = prev_dir_list
+                        previous_directions = prev_dir_list,
+                        remaining_points = (nav.remaining_points + 1)
                      }
                   )
                else
                   (battlemap, nav)
+      else
+         (battlemap, nav)

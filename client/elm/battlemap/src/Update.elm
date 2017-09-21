@@ -7,7 +7,7 @@ import Battlemap.Direction exposing (Direction)
 
 import Battlemap.Navigator as Nr exposing (go, reset_navigation)
 
-import Dict as Dt exposing (get, update)
+import Dict as Dt exposing (get, update, values)
 
 import Character exposing (CharacterRef)
 
@@ -29,6 +29,7 @@ handle_direction_request model dir =
                   model.battlemap
                   nav
                   dir
+                  (Dt.values model.characters)
                )
          in
             {model |
@@ -50,7 +51,7 @@ handle_select_character model char_id =
          (case (Dt.get char_id model.characters) of
             Nothing -> Nothing
             (Just char) ->
-               (Just (Nr.new_navigator char.location))
+               (Just (Nr.new_navigator char.location char.movement_points))
          )
    }
 
@@ -65,7 +66,12 @@ handle_end_turn model =
             (Just char) ->
                {model |
                   navigator =
-                     (Just (Nr.new_navigator nav.current_location)),
+                     (Just
+                        (Nr.new_navigator
+                           nav.current_location
+                           char.movement_points
+                        )
+                     ),
                   battlemap =
                      (apply_to_all_tiles
                         (apply_to_tile_unsafe
