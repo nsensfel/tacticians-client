@@ -3,7 +3,7 @@ module Update.DirectionRequest exposing (apply_to)
 import Dict
 
 import Battlemap.Direction
-import Battlemap.Navigator
+import Battlemap.Navigator.Move
 
 import Model
 
@@ -15,7 +15,7 @@ apply_to model dir =
       ((Just char_id), (Just nav)) ->
          let
             (new_bmap, new_nav) =
-               (Battlemap.Navigator.go
+               (Battlemap.Navigator.Move.to
                   model.battlemap
                   nav
                   dir
