@@ -5,7 +5,9 @@ import Dict
 import Character
 
 import Battlemap
+import Battlemap.Direction
 import Battlemap.Navigator
+import Battlemap.Tile
 
 import Model
 
@@ -16,7 +18,7 @@ apply_to model char_id =
       battlemap =
          (Battlemap.apply_to_all_tiles
             model.battlemap
-            (Battlemap.Navigator.reset_navigation)
+            (Battlemap.Tile.set_navigation Battlemap.Direction.None)
          ),
       navigator =
          (case (Dict.get char_id model.characters) of

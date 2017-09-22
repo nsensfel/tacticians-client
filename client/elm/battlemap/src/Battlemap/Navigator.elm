@@ -1,11 +1,10 @@
 module Battlemap.Navigator exposing
    (
       Type,
-      new_navigator,
-      reset_navigation
+      new_navigator
    )
 
-import Set -- exposing (Set, member, empty, insert, remove)
+import Set
 
 import Battlemap
 import Battlemap.Direction
@@ -28,11 +27,4 @@ new_navigator start points =
       visited_locations = Set.empty,
       previous_directions = [],
       remaining_points = points
-   }
-
-
-reset_navigation : Battlemap.Tile.Type -> Battlemap.Tile.Type
-reset_navigation t =
-   {t |
-      nav_level = Battlemap.Direction.None
    }

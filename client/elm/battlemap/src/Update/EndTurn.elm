@@ -3,7 +3,9 @@ module Update.EndTurn exposing (apply_to)
 import Dict
 
 import Battlemap
+import Battlemap.Direction
 import Battlemap.Navigator
+import Battlemap.Tile
 
 import Model
 
@@ -25,7 +27,7 @@ update_model model nav char_id =
                      nav.current_location
                      (\t -> {t | char_level = (Just char_id)})
                   )
-                  (Battlemap.Navigator.reset_navigation)
+                  (Battlemap.Tile.set_navigation Battlemap.Direction.None)
                ),
             characters =
                (Dict.update

@@ -1,4 +1,4 @@
-module Battlemap.Tile exposing (Type, set_direction)
+module Battlemap.Tile exposing (Type, set_direction, set_navigation)
 
 import Battlemap.Direction
 import Character
@@ -15,4 +15,10 @@ set_direction : Battlemap.Direction.Type -> Type -> Type
 set_direction d t =
    {t |
       nav_level = d
+   }
+
+set_navigation : Battlemap.Direction.Type -> Type -> Type
+set_navigation dir t =
+   {t |
+      nav_level = dir
    }
