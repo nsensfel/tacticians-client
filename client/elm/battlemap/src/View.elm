@@ -11,9 +11,6 @@ import Battlemap.Html
 import Update
 import Model
 
-
--- VIEW
-
 view : Model.Type -> (Html.Html Update.Type)
 view model =
    (Html.div
@@ -57,7 +54,7 @@ view model =
          ),
          (Html.div
             []
-            [(Battlemap.Html.view model)]
+            [(Battlemap.Html.view model.battlemap)]
          ),
          (Html.div
             []

@@ -10,7 +10,23 @@ import Battlemap.Tile
 import Battlemap.Direction
 
 import Update
-import Model
+
+type alias GridBuilder =
+   {
+      row : (List (Html.Html Update.Type)),
+      columns : (List (Html.Html Update.Type)),
+      row_size : Int,
+      bmap : Battlemap.Type
+   }
+
+nav_level_to_text : Battlemap.Tile.Type -> String
+nav_level_to_text t =
+   case t.nav_level of
+      Battlemap.Direction.Right -> "R"
+      Battlemap.Direction.Left -> "L"
+      Battlemap.Direction.Up -> "U"
+      Battlemap.Direction.Down -> "D"
+      Battlemap.Direction.None -> (toString t.floor_level)
 
 view_battlemap_cell : Battlemap.Tile.Type -> (Html.Html Update.Type)
 view_battlemap_cell t =
@@ -20,17 +36,7 @@ view_battlemap_cell t =
             []
             [
                (Html.text "[_]"),
-               (Html.text
-                  (
-                     (case t.nav_level of
-                        Battlemap.Direction.Right -> "R"
-                        Battlemap.Direction.Left -> "L"
-                        Battlemap.Direction.Up -> "U"
-                        Battlemap.Direction.Down -> "D"
-                        Battlemap.Direction.None -> (toString t.floor_level)
-                     )
-                  )
-               )
+               (Html.text (nav_level_to_text t))
             ]
          )
       (Just char_id) ->
@@ -38,27 +44,10 @@ view_battlemap_cell t =
             [ (Html.Events.onClick (Update.SelectCharacter char_id)) ]
             [
                (Html.text ("[" ++ char_id ++ "]")),
-               (Html.text
-                  (
-                     (case t.nav_level of
-                        Battlemap.Direction.Right -> "R"
-                        Battlemap.Direction.Left -> "L"
-                        Battlemap.Direction.Up -> "U"
-                        Battlemap.Direction.Down -> "D"
-                        Battlemap.Direction.None -> (toString t.floor_level)
-                     )
-                  )
-               )
+               (Html.text (nav_level_to_text t))
             ]
          )
 
-type alias GridBuilder =
-   {
-      row : (List (Html.Html Update.Type)),
-      columns : (List (Html.Html Update.Type)),
-      row_size : Int,
-      bmap : Battlemap.Type
-   }
 
 foldr_to_html : Battlemap.Tile.Type -> GridBuilder -> GridBuilder
 foldr_to_html t gb =
@@ -95,8 +84,8 @@ grid_builder_to_html gb =
          }
       )
 
-view_battlemap : Battlemap.Type -> (Html.Html Update.Type)
-view_battlemap battlemap =
+view : Battlemap.Type -> (Html.Html Update.Type)
+view battlemap =
    (Html.table
       []
       (grid_builder_to_html
@@ -112,8 +101,3 @@ view_battlemap battlemap =
          )
       )
    )
-
-
-view : Model.Type -> (Html.Html Update.Type)
-view m =
-   (view_battlemap m.battlemap)
