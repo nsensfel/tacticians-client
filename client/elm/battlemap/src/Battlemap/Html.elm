@@ -1,52 +1,51 @@
 module Battlemap.Html exposing (view)
 
-import Html exposing (Html, text, table, tr, td)
-import Html.Events exposing (onClick)
+import Array
 
--- import List as Lt exposing (map)
-import Array as Ay exposing (foldr)
+import Html
+import Html.Events
 
-import Update exposing (Msg(..))
-import Model exposing (Model)
+import Battlemap
+import Battlemap.Tile
+import Battlemap.Direction
 
-import Battlemap exposing (Battlemap, random)
-import Battlemap.Tile exposing (Tile)
-import Battlemap.Direction exposing (Direction(..))
+import Update
+import Model
 
-view_battlemap_cell : Tile -> (Html Msg)
+view_battlemap_cell : Battlemap.Tile.Type -> (Html.Html Update.Type)
 view_battlemap_cell t =
    case t.char_level of
       Nothing ->
-         (td
+         (Html.td
             []
             [
-               (text "[_]"),
-               (text
+               (Html.text "[_]"),
+               (Html.text
                   (
                      (case t.nav_level of
-                        Right -> "R"
-                        Left -> "L"
-                        Up -> "U"
-                        Down -> "D"
-                        None -> (toString t.floor_level)
+                        Battlemap.Direction.Right -> "R"
+                        Battlemap.Direction.Left -> "L"
+                        Battlemap.Direction.Up -> "U"
+                        Battlemap.Direction.Down -> "D"
+                        Battlemap.Direction.None -> (toString t.floor_level)
                      )
                   )
                )
             ]
          )
       (Just char_id) ->
-         (td
-            [ (onClick (SelectCharacter char_id)) ]
+         (Html.td
+            [ (Html.Events.onClick (Update.SelectCharacter char_id)) ]
             [
-               (text ("[" ++ char_id ++ "]")),
-               (text
+               (Html.text ("[" ++ char_id ++ "]")),
+               (Html.text
                   (
                      (case t.nav_level of
-                        Right -> "R"
-                        Left -> "L"
-                        Up -> "U"
-                        Down -> "D"
-                        None -> (toString t.floor_level)
+                        Battlemap.Direction.Right -> "R"
+                        Battlemap.Direction.Left -> "L"
+                        Battlemap.Direction.Up -> "U"
+                        Battlemap.Direction.Down -> "D"
+                        Battlemap.Direction.None -> (toString t.floor_level)
                      )
                   )
                )
@@ -55,13 +54,13 @@ view_battlemap_cell t =
 
 type alias GridBuilder =
    {
-      row : (List (Html Msg)),
-      columns : (List (Html Msg)),
+      row : (List (Html.Html Update.Type)),
+      columns : (List (Html.Html Update.Type)),
       row_size : Int,
-      bmap : Battlemap
+      bmap : Battlemap.Type
    }
 
-foldr_to_html : Tile -> GridBuilder -> GridBuilder
+foldr_to_html : Battlemap.Tile.Type -> GridBuilder -> GridBuilder
 foldr_to_html t gb =
    if (gb.row_size == gb.bmap.width)
    then
@@ -70,7 +69,7 @@ foldr_to_html t gb =
          row_size = 1,
          columns =
             (
-               (tr [] gb.row) :: gb.columns
+               (Html.tr [] gb.row) :: gb.columns
             )
       }
    else
@@ -79,7 +78,7 @@ foldr_to_html t gb =
          row_size = (gb.row_size + 1)
       }
 
-grid_builder_to_html : GridBuilder -> (List (Html Msg))
+grid_builder_to_html : GridBuilder -> (List (Html.Html Update.Type))
 grid_builder_to_html gb =
    if (gb.row_size == 0)
    then
@@ -91,17 +90,17 @@ grid_builder_to_html gb =
             row_size = 0,
             columns =
                (
-                  (tr [] gb.row) :: gb.columns
+                  (Html.tr [] gb.row) :: gb.columns
                )
          }
       )
 
-view_battlemap : Battlemap -> (Html Msg)
+view_battlemap : Battlemap.Type -> (Html.Html Update.Type)
 view_battlemap battlemap =
-   (table
+   (Html.table
       []
       (grid_builder_to_html
-         (Ay.foldr
+         (Array.foldr
             (foldr_to_html)
             {
                row = [],
@@ -115,6 +114,6 @@ view_battlemap battlemap =
    )
 
 
-view : Model -> (Html Msg)
+view : Model.Type -> (Html.Html Update.Type)
 view m =
    (view_battlemap m.battlemap)

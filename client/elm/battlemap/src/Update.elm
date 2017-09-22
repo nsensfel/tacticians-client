@@ -1,23 +1,25 @@
-module Update exposing (update, Msg(..))
+module Update exposing (update, Type(..))
 
-import Model exposing (Model, model)
+import Model
 
-import Battlemap exposing (apply_to_all_tiles, apply_to_tile_unsafe)
-import Battlemap.Direction exposing (Direction)
+import Battlemap
+import Battlemap.Direction
+import Battlemap.Navigator
 
-import Battlemap.Navigator as Nr exposing (go, reset_navigation)
+import Dict
 
-import Dict as Dt exposing (get, update, values)
+import Character
 
-import Character exposing (CharacterRef)
-
-
-type Msg =
-   DirectionRequest Direction
-   | SelectCharacter CharacterRef
+type Type =
+   DirectionRequest Battlemap.Direction.Type
+   | SelectCharacter Character.Ref
    | EndTurn
 
-handle_direction_request : Model -> Direction -> Model
+handle_direction_request : (
+      Model.Type ->
+      Battlemap.Direction.Type ->
+      Model.Type
+   )
 handle_direction_request model dir =
    (case (model.selection, model.navigator) of
       (Nothing, _) -> model
@@ -25,11 +27,11 @@ handle_direction_request model dir =
       ((Just char_id), (Just nav)) ->
          let
             (new_bmap, new_nav) =
-               (Nr.go
+               (Battlemap.Navigator.go
                   model.battlemap
                   nav
                   dir
-                  (Dt.values model.characters)
+                  (Dict.values model.characters)
                )
          in
             {model |
@@ -38,44 +40,49 @@ handle_direction_request model dir =
             }
    )
 
-handle_select_character : Model -> CharacterRef -> Model
+handle_select_character : Model.Type -> Character.Ref -> Model.Type
 handle_select_character model char_id =
    {model |
       selection = (Just char_id),
       battlemap =
-         (apply_to_all_tiles
+         (Battlemap.apply_to_all_tiles
             model.battlemap
-            (reset_navigation)
+            (Battlemap.Navigator.reset_navigation)
          ),
       navigator =
-         (case (Dt.get char_id model.characters) of
+         (case (Dict.get char_id model.characters) of
             Nothing -> Nothing
             (Just char) ->
-               (Just (Nr.new_navigator char.location char.movement_points))
+               (Just
+                  (Battlemap.Navigator.new_navigator
+                     char.location
+                     char.movement_points
+                  )
+               )
          )
    }
 
-handle_end_turn : Model -> Model
+handle_end_turn : Model.Type -> Model.Type
 handle_end_turn model =
    case (model.navigator, model.selection) of
       (_, Nothing) -> model
       (Nothing, _) -> model
       ((Just nav), (Just char_id)) ->
-         (case (Dt.get char_id model.characters) of
+         (case (Dict.get char_id model.characters) of
             Nothing -> model
             (Just char) ->
                {model |
                   navigator =
                      (Just
-                        (Nr.new_navigator
+                        (Battlemap.Navigator.new_navigator
                            nav.current_location
                            char.movement_points
                         )
                      ),
                   battlemap =
-                     (apply_to_all_tiles
-                        (apply_to_tile_unsafe
-                           (apply_to_tile_unsafe
+                     (Battlemap.apply_to_all_tiles
+                        (Battlemap.apply_to_tile_unsafe
+                           (Battlemap.apply_to_tile_unsafe
                               model.battlemap
                               char.location
                               (\t -> {t | char_level = Nothing})
@@ -83,10 +90,10 @@ handle_end_turn model =
                            nav.current_location
                            (\t -> {t | char_level = (Just char_id)})
                         )
-                        (reset_navigation)
+                        (Battlemap.Navigator.reset_navigation)
                      ),
                   characters =
-                     (Dt.update
+                     (Dict.update
                         char_id
                         (\mc ->
                            case mc of
@@ -99,7 +106,7 @@ handle_end_turn model =
                }
          )
 
-update : Msg -> Model -> Model
+update : Type -> Model.Type -> Model.Type
 update msg model =
    case msg of
       (DirectionRequest d) ->

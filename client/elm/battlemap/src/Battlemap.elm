@@ -1,39 +1,30 @@
 module Battlemap exposing
    (
-      Battlemap,
-      random,
+      Type,
       apply_to_tile,
       apply_to_tile_unsafe,
       has_location,
       apply_to_all_tiles
    )
 
-import Array exposing (Array, set, get, map)
+import Array
 
-import Battlemap.Tile exposing (Tile, generate)
-import Battlemap.Direction exposing (Direction(..))
-import Battlemap.Location exposing (Location)
+import Battlemap.Tile
+import Battlemap.Direction
+import Battlemap.Location
 
-type alias Battlemap =
+type alias Type =
    {
       width : Int,
       height : Int,
-      content : (Array Tile)
+      content : (Array.Array Battlemap.Tile.Type)
    }
 
-random : Battlemap
-random =
-   {
-      width = 6,
-      height = 6,
-      content = (generate 6 6)
-   }
-
-location_to_index : Battlemap -> Location -> Int
+location_to_index : Type -> Battlemap.Location.Type -> Int
 location_to_index bmap loc =
    ((loc.y * bmap.width) + loc.x)
 
-has_location : Battlemap -> Location -> Bool
+has_location : Type -> Battlemap.Location.Type -> Bool
 has_location bmap loc =
    (
       (loc.x >= 0)
@@ -42,17 +33,24 @@ has_location bmap loc =
       && (loc.y < bmap.height)
    )
 
-apply_to_all_tiles : Battlemap -> (Tile -> Tile) -> Battlemap
+apply_to_all_tiles : (
+      Type -> (Battlemap.Tile.Type -> Battlemap.Tile.Type) -> Type
+   )
 apply_to_all_tiles bmap fun =
    {bmap |
-      content = (map fun bmap.content)
+      content = (Array.map fun bmap.content)
    }
 
-apply_to_tile : Battlemap -> Location -> (Tile -> Tile) -> (Maybe Battlemap)
+apply_to_tile : (
+      Type ->
+      Battlemap.Location.Type ->
+      (Battlemap.Tile.Type -> Battlemap.Tile.Type) ->
+      (Maybe Type)
+   )
 apply_to_tile bmap loc fun =
    let
       index = (location_to_index bmap loc)
-      at_index = (get index bmap.content)
+      at_index = (Array.get index bmap.content)
    in
       case at_index of
          Nothing ->
@@ -61,7 +59,7 @@ apply_to_tile bmap loc fun =
             (Just
                {bmap |
                   content =
-                     (set
+                     (Array.set
                         index
                         (fun tile)
                         bmap.content
@@ -69,18 +67,23 @@ apply_to_tile bmap loc fun =
                }
             )
 
-apply_to_tile_unsafe : Battlemap -> Location -> (Tile -> Tile) -> Battlemap
+apply_to_tile_unsafe : (
+      Type ->
+      Battlemap.Location.Type ->
+      (Battlemap.Tile.Type -> Battlemap.Tile.Type) ->
+      Type
+   )
 apply_to_tile_unsafe bmap loc fun =
    let
       index = (location_to_index bmap loc)
-      at_index = (get index bmap.content)
+      at_index = (Array.get index bmap.content)
    in
       case at_index of
          Nothing -> bmap
          (Just tile) ->
             {bmap |
                content =
-                  (set
+                  (Array.set
                      index
                      (fun tile)
                      bmap.content

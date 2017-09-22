@@ -1,24 +1,24 @@
 module Battlemap.Location exposing (..)
 
-import Battlemap.Direction exposing (Direction(..))
+import Battlemap.Direction
 
-type alias Location =
+type alias Type =
    {
       x : Int,
       y : Int
    }
 
-type alias LocationRef = (Int, Int)
+type alias Ref = (Int, Int)
 
-neighbor : Location -> Direction -> Location
+neighbor : Type -> Battlemap.Direction.Type -> Type
 neighbor loc dir =
    case dir of
-      Right -> {loc | x = (loc.x + 1)}
-      Left -> {loc | x = (loc.x - 1)}
-      Up -> {loc | y = (loc.y - 1)}
-      Down -> {loc | y = (loc.y + 1)}
-      None -> loc
+      Battlemap.Direction.Right -> {loc | x = (loc.x + 1)}
+      Battlemap.Direction.Left -> {loc | x = (loc.x - 1)}
+      Battlemap.Direction.Up -> {loc | y = (loc.y - 1)}
+      Battlemap.Direction.Down -> {loc | y = (loc.y + 1)}
+      Battlemap.Direction.None -> loc
 
-to_comparable : Location -> (Int, Int)
-to_comparable l =
+get_ref : Type -> Ref
+get_ref l =
    (l.x, l.y)

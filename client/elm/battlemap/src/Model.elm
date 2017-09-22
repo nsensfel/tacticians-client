@@ -1,60 +1,22 @@
-module Model exposing (Model, model)
+module Model exposing (Type)
 
-import Battlemap as Bp exposing (Battlemap, random, apply_to_all_tiles)
-import Battlemap.Navigator as Nr exposing (Navigator, new_navigator)
+import Dict
 
-import Character exposing (Character, CharacterRef)
+import Battlemap
+import Battlemap.Navigator
 
-import Dict exposing (Dict, empty, insert)
+import Character
+
+import Shim.Model
 
 -- MODEL
-type alias Model =
+type alias Type =
    {
-      battlemap: Bp.Battlemap,
-      navigator: (Maybe Nr.Navigator),
+      battlemap: Battlemap.Type,
+      navigator: (Maybe Battlemap.Navigator.Type),
       selection: (Maybe String),
-      characters: (Dict CharacterRef Character)
+      characters: (Dict.Dict Character.Ref Character.Type)
    }
 
-model : Model
-model =
-   {
-      battlemap = (Bp.random),
-      navigator = Nothing,
-      selection = Nothing,
-      characters =
-         (insert
-            "2"
-            {
-               id = "2",
-               name = "Char2",
-               icon = "Icon2",
-               portrait = "Portrait2",
-               location = {x = 1, y = 4},
-               movement_points = 6
-            }
-            (insert
-               "1"
-               {
-                  id = "1",
-                  name = "Char1",
-                  icon = "Icon1",
-                  portrait = "Portrait1",
-                  location = {x = 4, y = 1},
-                  movement_points = 10
-               }
-               (insert
-                  "0"
-                  {
-                     id = "0",
-                     name = "Char0",
-                     icon = "Icon0",
-                     portrait = "Portrait0",
-                     location = {x = 0, y = 0},
-                     movement_points = 16
-                  }
-                  empty
-               )
-            )
-         )
-   }
+model : Type
+model = (Shim.Model.generate)

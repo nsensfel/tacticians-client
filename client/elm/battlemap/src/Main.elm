@@ -1,13 +1,13 @@
-import Html exposing (Html)
-import View exposing (view)
-import Model exposing (model)
-import Update exposing (update)
+import Html
+import View
+import Shim.Model
+import Update
 
 main =
    (Html.beginnerProgram
       {
-         model = model,
-         view = view,
-         update = update
+         model = Shim.Model.generate,
+         view = View.view,
+         update = Update.update
       }
    )

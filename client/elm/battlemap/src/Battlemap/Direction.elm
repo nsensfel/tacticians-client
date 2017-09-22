@@ -1,13 +1,13 @@
-module Battlemap.Direction exposing (Direction(..), opposite_of)
+module Battlemap.Direction exposing (Type(..), opposite_of)
 
-type Direction =
+type Type =
    None
    | Left
    | Right
    | Up
    | Down
 
-opposite_of : Direction -> Direction
+opposite_of : Type -> Type
 opposite_of d =
    case d of
       Left -> Right

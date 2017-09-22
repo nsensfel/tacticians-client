@@ -1,81 +1,87 @@
 module Battlemap.Navigator exposing
    (
-      Navigator,
+      Type,
       new_navigator,
       reset_navigation,
       go
    )
 
-import Set exposing (Set, member, empty, insert, remove)
-import List as Lt exposing (head, tail)
+import Set -- exposing (Set, member, empty, insert, remove)
+import List -- exposing (head, tail)
 
-import Battlemap exposing (Battlemap, has_location, apply_to_tile)
-import Battlemap.Direction exposing (Direction(..), opposite_of)
-import Battlemap.Tile exposing (Tile, set_direction)
-import Character exposing (Character)
+import Battlemap
+import Battlemap.Direction
+import Battlemap.Location
+import Battlemap.Tile
 
-import Battlemap.Location exposing
-   (
-      Location,
-      LocationRef,
-      neighbor,
-      to_comparable
-   )
+import Character
 
-type alias Navigator =
+type alias Type =
    {
-      current_location : Location,
-      visited_locations : (Set LocationRef),
-      previous_directions : (List Direction),
+      current_location : Battlemap.Location.Type,
+      visited_locations : (Set.Set Battlemap.Location.Ref),
+      previous_directions : (List Battlemap.Direction.Type),
       remaining_points : Int
    }
 
-new_navigator : Location -> Int -> Navigator
+new_navigator : Battlemap.Location.Type -> Int -> Type
 new_navigator start points =
    {
       current_location = start,
-      visited_locations = empty,
+      visited_locations = Set.empty,
       previous_directions = [],
       remaining_points = points
    }
 
 
-reset_navigation : Tile -> Tile
+reset_navigation : Battlemap.Tile.Type -> Battlemap.Tile.Type
 reset_navigation t =
    {t |
-      nav_level = None
+      nav_level = Battlemap.Direction.None
    }
 
-go : Battlemap -> Navigator -> Direction -> (List Character) -> (Battlemap, Navigator)
+go : (
+      Battlemap.Type ->
+      Type ->
+      Battlemap.Direction.Type ->
+      (List Character.Type) ->
+      (Battlemap.Type, Type)
+   )
 go battlemap nav dir char_list =
    let
-      next_location = (neighbor nav.current_location dir)
-      is_occupied = (Lt.any (\c -> (c.location == next_location)) char_list)
+      next_location = (Battlemap.Location.neighbor nav.current_location dir)
+      is_occupied = (List.any (\c -> (c.location == next_location)) char_list)
    in
       if
       (
          (not is_occupied)
          && (nav.remaining_points > 0)
-         && (has_location battlemap next_location)
+         && (Battlemap.has_location battlemap next_location)
          && (nav.current_location /= next_location)
-         && (not (member (to_comparable next_location) nav.visited_locations))
+         &&
+         (not
+            (Set.member
+               (Battlemap.Location.get_ref next_location)
+               nav.visited_locations
+            )
+         )
       )
       then
          (
             (case
-               (apply_to_tile
+               (Battlemap.apply_to_tile
                   battlemap
                   nav.current_location
-                  (set_direction dir)
+                  (Battlemap.Tile.set_direction dir)
                )
                of
                   Nothing -> battlemap
                   (Just bmap0) ->
                      (case
-                        (apply_to_tile
+                        (Battlemap.apply_to_tile
                            bmap0
                            next_location
-                           (set_direction dir)
+                           (Battlemap.Tile.set_direction dir)
                         )
                      of
                         Nothing -> battlemap
@@ -85,8 +91,8 @@ go battlemap nav dir char_list =
             {nav |
                current_location = next_location,
                visited_locations =
-                  (insert
-                     (to_comparable nav.current_location)
+                  (Set.insert
+                     (Battlemap.Location.get_ref nav.current_location)
                      nav.visited_locations
                   ),
                previous_directions = (dir :: nav.previous_directions),
@@ -97,21 +103,23 @@ go battlemap nav dir char_list =
       then
          case
             (
-               (Lt.head nav.previous_directions),
-               (Lt.tail nav.previous_directions)
+               (List.head nav.previous_directions),
+               (List.tail nav.previous_directions)
             )
          of
             (Nothing, _) -> (battlemap, nav)
             (_ , Nothing) -> (battlemap, nav)
             ((Just prev_dir), (Just prev_dir_list)) ->
-               if (dir == (opposite_of prev_dir))
+               if (dir == (Battlemap.Direction.opposite_of prev_dir))
                then
                   (
                      (case
-                        (apply_to_tile
+                        (Battlemap.apply_to_tile
                            battlemap
                            nav.current_location
-                           (set_direction None)
+                           (Battlemap.Tile.set_direction
+                              Battlemap.Direction.None
+                           )
                         )
                         of
                            Nothing -> battlemap
@@ -120,8 +128,8 @@ go battlemap nav dir char_list =
                      {nav |
                         current_location = next_location,
                         visited_locations =
-                           (remove
-                              (to_comparable next_location)
+                           (Set.remove
+                              (Battlemap.Location.get_ref next_location)
                               nav.visited_locations
                            ),
                         previous_directions = prev_dir_list,

@@ -1,18 +1,19 @@
-module Character exposing (Character, CharacterRef, to_comparable)
+module Character exposing (Type, Ref, get_ref)
 
-import Battlemap.Location exposing (Location)
+import Battlemap.Location
 
-type alias Character =
+type alias Type =
    {
       id : String,
       name : String,
       icon : String,
       portrait : String,
-      location : Location,
+      location : Battlemap.Location.Type,
       movement_points : Int
    }
 
-type alias CharacterRef = String
-to_comparable : Character -> CharacterRef
-to_comparable c =
+type alias Ref = String
+
+get_ref : Type -> Ref
+get_ref c =
    c.id

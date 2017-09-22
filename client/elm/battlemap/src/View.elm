@@ -1,55 +1,73 @@
 module View exposing (view)
 
-import Html exposing (Html, button, div, text)
-import Html.Events exposing (onClick)
+import Dict
 
-import Update exposing (Msg(..))
-import Model exposing (Model)
+import Html
+import Html.Events
 
-import Battlemap.Html as Batmap exposing (view)
-import Battlemap.Direction exposing (Direction(..))
+import Battlemap.Direction
+import Battlemap.Html
 
-import Dict as Dt exposing (get)
+import Update
+import Model
+
+
 -- VIEW
 
-view : Model -> (Html Msg)
+view : Model.Type -> (Html.Html Update.Type)
 view model =
-   (div
+   (Html.div
       []
       [
-         (button
-            [ (onClick (DirectionRequest Left)) ]
-            [ (text "Left") ]
+         (Html.button
+            [
+               (Html.Events.onClick
+                  (Update.DirectionRequest Battlemap.Direction.Left)
+               )
+            ]
+            [ (Html.text "Left") ]
          ),
-         (button
-            [ (onClick (DirectionRequest Down)) ]
-            [ (text "Down") ]
+         (Html.button
+            [
+               (Html.Events.onClick
+                  (Update.DirectionRequest Battlemap.Direction.Down)
+               )
+            ]
+            [ (Html.text "Down") ]
          ),
-         (button
-            [ (onClick (DirectionRequest Up)) ]
-            [ (text "Up") ]
+         (Html.button
+            [
+               (Html.Events.onClick
+                  (Update.DirectionRequest Battlemap.Direction.Up)
+               )
+            ]
+            [ (Html.text "Up") ]
          ),
-         (button
-            [ (onClick (DirectionRequest Right)) ]
-            [ (text "Right") ]
+         (Html.button
+            [
+               (Html.Events.onClick
+                  (Update.DirectionRequest Battlemap.Direction.Right)
+               )
+            ]
+            [ (Html.text "Right") ]
          ),
-         (button
-            [ (onClick EndTurn) ]
-            [ (text "Apply") ]
+         (Html.button
+            [ (Html.Events.onClick Update.EndTurn) ]
+            [ (Html.text "Apply") ]
          ),
-         (div
+         (Html.div
             []
-            [(Batmap.view model)]
+            [(Battlemap.Html.view model)]
          ),
-         (div
+         (Html.div
             []
             [
-               (text
+               (Html.text
                   (case (model.selection, model.navigator) of
                      (Nothing, _) -> ""
                      (_, Nothing) -> ""
                      ((Just char_id), (Just nav)) ->
-                        case (Dt.get char_id model.characters) of
+                        case (Dict.get char_id model.characters) of
                            Nothing -> ""
                            (Just char) ->
                               (
