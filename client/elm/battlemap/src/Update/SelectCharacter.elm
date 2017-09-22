@@ -8,6 +8,7 @@ import Battlemap
 import Battlemap.Direction
 import Battlemap.Navigator
 import Battlemap.Tile
+import Battlemap.RangeIndicator
 
 import Model
 
@@ -29,6 +30,16 @@ apply_to model char_id =
                      char.location
                      char.movement_points
                   )
+               )
+         ),
+      range_indicator =
+         (case (Dict.get char_id model.characters) of
+            Nothing -> Dict.empty
+            (Just char) ->
+               (Battlemap.RangeIndicator.generate
+                  model.battlemap
+                  char.location
+                  char.movement_points
                )
          )
    }

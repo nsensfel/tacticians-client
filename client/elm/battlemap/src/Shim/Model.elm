@@ -46,5 +46,6 @@ generate =
                   Dict.empty
                )
             )
-         )
+         ),
+      range_indicator = Dict.empty
    }
