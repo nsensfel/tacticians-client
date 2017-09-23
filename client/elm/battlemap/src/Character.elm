@@ -9,7 +9,8 @@ type alias Type =
       icon : String,
       portrait : String,
       location : Battlemap.Location.Type,
-      movement_points : Int
+      movement_points : Int,
+      atk_dist : Int
    }
 
 type alias Ref = String

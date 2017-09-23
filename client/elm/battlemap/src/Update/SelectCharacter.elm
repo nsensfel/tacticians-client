@@ -14,16 +14,28 @@ import Battlemap.RangeIndicator
 import Model
 
 display_range : (
+      Int ->
       Battlemap.Location.Ref ->
       Battlemap.RangeIndicator.Type ->
       Battlemap.Type ->
       Battlemap.Type
    )
-display_range loc_ref indicator bmap =
+display_range dist loc_ref indicator bmap =
    (Battlemap.apply_to_tile_unsafe
       bmap
       (Battlemap.Location.from_ref loc_ref)
-      (\e -> {e | mod_level = (Just Battlemap.Tile.CanBeReached)})
+      (\e ->
+         {e |
+            mod_level =
+               (
+                  if (indicator.distance <= dist)
+                  then
+                     (Just Battlemap.Tile.CanBeReached)
+                  else
+                     (Just Battlemap.Tile.CanBeAttacked)
+               )
+         }
+      )
    )
 
 
@@ -38,6 +50,7 @@ apply_to model char_id =
                   model.battlemap
                   char.location
                   char.movement_points
+                  (char.movement_points + char.atk_dist)
                )
          in
             {model |
@@ -45,7 +58,7 @@ apply_to model char_id =
                battlemap =
                   (
                      (Dict.foldl
-                        (display_range)
+                        (display_range char.movement_points)
                         (Battlemap.apply_to_all_tiles
                            model.battlemap
                            (Battlemap.Tile.reset_tile)

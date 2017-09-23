@@ -84,12 +84,14 @@ get_closest ref indicator (prev_ref, prev_indicator) =
 
 handle_neighbors : (
       Battlemap.Location.Type ->
+      Int ->
+      Int ->
       Type ->
       (Dict.Dict Battlemap.Location.Ref Type) ->
       (List Battlemap.Direction.Type) ->
       (Dict.Dict Battlemap.Location.Ref Type)
    )
-handle_neighbors loc indicator remaining directions =
+handle_neighbors loc dist atk_dist indicator remaining directions =
    case (Util.List.pop directions) of
       Nothing -> remaining
       (Just (head, tail)) ->
@@ -102,16 +104,38 @@ handle_neighbors loc indicator remaining directions =
                )
          in
             case neighbor_indicator of
-               Nothing -> (handle_neighbors loc indicator remaining tail)
+               Nothing ->
+                  (handle_neighbors
+                     loc
+                     dist
+                     atk_dist
+                     indicator
+                     remaining
+                     tail
+                  )
                (Just neighbor) ->
                   let
-                     new_dist = (indicator.distance + neighbor.node_cost)
+                     is_attack_range = (indicator.distance >= dist)
+                     new_dist =
+                        (
+                           if (is_attack_range)
+                           then
+                              (indicator.distance + 1)
+                           else
+                              (indicator.distance + neighbor.node_cost)
+                        )
                   in
                      (handle_neighbors
                         loc
+                        dist
+                        atk_dist
                         indicator
                         (
-                           if (new_dist < neighbor.distance)
+                           if
+                              (
+                                 (new_dist < neighbor.distance)
+                                 && (new_dist <= atk_dist)
+                              )
                            then
                               (Dict.insert
                                  (Battlemap.Location.get_ref neighbor_loc)
@@ -131,10 +155,11 @@ search : (
       (Dict.Dict Battlemap.Location.Ref Type) ->
       (Dict.Dict Battlemap.Location.Ref Type) ->
       Int ->
+      Int ->
       (Dict.Dict Battlemap.Location.Ref Type)
    )
-search result remaining dist =
-   if (Dict.isEmpty (Debug.log "Search call" remaining))
+search result remaining dist atk_dist =
+   if (Dict.isEmpty remaining)
    then
       result
    else
@@ -145,7 +170,7 @@ search result remaining dist =
                (
                   (-1,-1),
                   {
-                     distance = (dist + 1),
+                     distance = (atk_dist + 1),
                      path = [],
                      node_cost = 99
                   }
@@ -157,6 +182,8 @@ search result remaining dist =
             (Dict.insert min_loc_ref min result)
             (handle_neighbors
                (Battlemap.Location.from_ref min_loc_ref)
+               dist
+               atk_dist
                min
                (Dict.remove min_loc_ref remaining)
                [
@@ -167,6 +194,7 @@ search result remaining dist =
                ]
             )
             dist
+            atk_dist
          )
 
 grid_to_range_indicators : (
@@ -214,17 +242,19 @@ generate : (
       Battlemap.Type ->
       Battlemap.Location.Type ->
       Int ->
+      Int ->
       (Dict.Dict Battlemap.Location.Ref Type)
    )
-generate battlemap location dist =
+generate battlemap location dist atk_dist =
    (search
       Dict.empty
       (grid_to_range_indicators
          battlemap
          location
-         dist
-         (generate_grid location dist (-dist) [])
+         atk_dist
+         (generate_grid location atk_dist (-atk_dist) [])
          Dict.empty
       )
       dist
+      atk_dist
    )

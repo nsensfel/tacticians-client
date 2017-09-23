@@ -21,7 +21,8 @@ generate =
                icon = "Icon2",
                portrait = "Portrait2",
                location = {x = 0, y = 1},
-               movement_points = 5
+               movement_points = 5,
+               atk_dist = 1
             }
             (Dict.insert
                "1"
@@ -31,7 +32,8 @@ generate =
                   icon = "Icon1",
                   portrait = "Portrait1",
                   location = {x = 1, y = 0},
-                  movement_points = 4
+                  movement_points = 4,
+                  atk_dist = 2
                }
                (Dict.insert
                   "0"
@@ -41,7 +43,8 @@ generate =
                      icon = "Icon0",
                      portrait = "Portrait0",
                      location = {x = 0, y = 0},
-                     movement_points = 3
+                     movement_points = 3,
+                     atk_dist = 1
                   }
                   Dict.empty
                )
