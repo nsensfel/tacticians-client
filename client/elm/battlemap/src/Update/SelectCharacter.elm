@@ -43,13 +43,15 @@ apply_to model char_id =
             {model |
                selection = (Just char_id),
                battlemap =
-                  (Battlemap.apply_to_all_tiles
+                  (
                      (Dict.foldl
                         (display_range)
-                        model.battlemap
+                        (Battlemap.apply_to_all_tiles
+                           model.battlemap
+                           (Battlemap.Tile.reset_tile)
+                        )
                         new_range_indicator
                      )
-                     (Battlemap.Tile.set_navigation Battlemap.Direction.None)
                   ),
                navigator =
                   (Just
