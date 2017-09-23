@@ -27,7 +27,7 @@ update_model model nav char_id =
                      nav.current_location
                      (\t -> {t | char_level = (Just char_id)})
                   )
-                  (Battlemap.Tile.set_navigation Battlemap.Direction.None)
+                  (Battlemap.Tile.reset_tile)
                ),
             characters =
                (Dict.update

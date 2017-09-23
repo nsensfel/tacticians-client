@@ -2,6 +2,7 @@ module Battlemap.RangeIndicator exposing (Type, generate)
 
 import Dict
 import List
+import Debug
 
 import Battlemap
 import Battlemap.Direction
@@ -16,41 +17,56 @@ type alias Type =
       node_cost: Int
    }
 
-generate_grid : (
+generate_row : (
       Battlemap.Location.Type ->
-      Int ->
       Int ->
       Int ->
       Int ->
       (List Battlemap.Location.Type) ->
       (List Battlemap.Location.Type)
    )
-generate_grid src max_dist curr_dist curr_y_mod curr_x_mod curr_list =
-   if (curr_x_mod > curr_dist)
+generate_row src max_x_mod curr_y curr_x_mod curr_row =
+   if (curr_x_mod > max_x_mod)
    then
-      if (curr_y_mod > max_dist)
-      then
-         curr_list
-      else
-         let
-            new_limit = (max_dist - (abs curr_y_mod))
-         in
-         (generate_grid
-            src
-            max_dist
-            new_limit
-            (curr_y_mod + 1)
-            (-new_limit)
-            curr_list
-         )
+      curr_row
    else
+      (generate_row
+         src
+         max_x_mod
+         curr_y
+         (curr_x_mod + 1)
+         ({x = (src.x + curr_x_mod), y = curr_y} :: curr_row)
+      )
+
+generate_grid : (
+      Battlemap.Location.Type ->
+      Int ->
+      Int ->
+      (List Battlemap.Location.Type) ->
+      (List Battlemap.Location.Type)
+   )
+generate_grid src dist curr_y_mod curr_list =
+   if (curr_y_mod > dist)
+   then
+      curr_list
+   else
+      let
+         new_limit = (dist - (abs curr_y_mod))
+      in
          (generate_grid
             src
-            max_dist
-            curr_dist
-            curr_y_mod
-            (curr_x_mod + 1)
-            ({x = (src.x + curr_x_mod), y = (src.y + curr_y_mod)} :: curr_list)
+            dist
+            (curr_y_mod + 1)
+            (
+               (generate_row
+                  src
+                  new_limit
+                  (src.y + curr_y_mod)
+                  (-new_limit)
+                  []
+               )
+               ++ curr_list
+            )
          )
 
 get_closest : (
@@ -118,7 +134,7 @@ search : (
       (Dict.Dict Battlemap.Location.Ref Type)
    )
 search result remaining dist =
-   if (Dict.isEmpty remaining)
+   if (Dict.isEmpty (Debug.log "Search call" remaining))
    then
       result
    else
@@ -207,7 +223,7 @@ generate battlemap location dist =
          battlemap
          location
          dist
-         (generate_grid location dist 0 (-dist) (-dist) [])
+         (generate_grid location dist (-dist) [])
          Dict.empty
       )
       dist

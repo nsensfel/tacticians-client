@@ -35,7 +35,13 @@ view_battlemap_cell t =
          (Html.td
             []
             [
-               (Html.text "[_]"),
+               (Html.text
+                  (case t.mod_level of
+                     Nothing -> "[_]"
+                     (Just Battlemap.Tile.CanBeReached) -> "[M]"
+                     (Just Battlemap.Tile.CanBeAttacked) -> "[A]"
+                  )
+               ),
                (Html.text (nav_level_to_text t))
             ]
          )
@@ -73,16 +79,7 @@ grid_builder_to_html gb =
    then
       gb.columns
    else
-      (grid_builder_to_html
-         {gb |
-            row = [],
-            row_size = 0,
-            columns =
-               (
-                  (Html.tr [] gb.row) :: gb.columns
-               )
-         }
-      )
+     ((Html.tr [] gb.row) :: gb.columns)
 
 view : Battlemap.Type -> (Html.Html Update.Type)
 view battlemap =
