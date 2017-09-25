@@ -44,7 +44,8 @@ update_model model nav char_id =
 
 apply_to : Model.Type -> Model.Type
 apply_to model =
-   case (model.navigator, model.selection) of
+   case (model.state, model.navigator) of
       (_, Nothing) -> model
-      (Nothing, _) -> model
-      ((Just nav), (Just char_id)) -> (update_model model nav char_id)
+      ((Model.MovingCharacter char_id), (Just nav)) ->
+         (update_model model nav char_id)
+      (_, _) -> model

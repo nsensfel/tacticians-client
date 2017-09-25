@@ -10,10 +10,9 @@ import Model
 view : Model.Type -> (Html.Html Update.Type)
 view model =
    (Html.text
-      (case (model.selection, model.navigator) of
-         (Nothing, _) -> ""
+      (case (model.state, model.navigator) of
          (_, Nothing) -> ""
-         ((Just char_id), (Just nav)) ->
+         ((Model.MovingCharacter char_id), (Just nav)) ->
             case (Dict.get char_id model.characters) of
                Nothing -> ""
                (Just char) ->
@@ -26,5 +25,6 @@ view model =
                      ++ (toString char.movement_points)
                      ++ " movement points remaining."
                   )
+         (_, _) -> ""
       )
    )

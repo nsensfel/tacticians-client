@@ -2,16 +2,16 @@ module Shim.Model exposing (generate)
 
 import Dict
 
---import Model
+import Model
 
 import Shim.Battlemap
 
 --generate : Model.Type
 generate =
    {
+      state = Model.Default,
       battlemap = (Shim.Battlemap.generate),
       navigator = Nothing,
-      selection = Nothing,
       characters =
          (Dict.insert
             "2"

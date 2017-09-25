@@ -54,7 +54,7 @@ apply_to model char_id =
                )
          in
             {model |
-               selection = (Just char_id),
+               state = (Model.MovingCharacter char_id),
                battlemap =
                   (
                      (Dict.foldl

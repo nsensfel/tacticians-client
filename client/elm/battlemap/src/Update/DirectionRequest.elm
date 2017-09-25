@@ -9,10 +9,9 @@ import Model
 
 apply_to : Model.Type -> Battlemap.Direction.Type -> Model.Type
 apply_to model dir =
-   case (model.selection, model.navigator) of
-      (Nothing, _) -> model
+   case (model.state, model.navigator) of
       (_ , Nothing) -> model
-      ((Just char_id), (Just nav)) ->
+      ((Model.MovingCharacter _), (Just nav)) ->
          let
             (new_bmap, new_nav) =
                (Battlemap.Navigator.Move.to
@@ -26,3 +25,4 @@ apply_to model dir =
                battlemap = new_bmap,
                navigator = (Just new_nav)
             }
+      (_, _) -> model

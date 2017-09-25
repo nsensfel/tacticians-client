@@ -1,4 +1,4 @@
-module Model exposing (Type)
+module Model exposing (Type, State(..))
 
 import Dict
 
@@ -9,14 +9,16 @@ import Battlemap.RangeIndicator
 
 import Character
 
-import Shim.Model
+type State =
+   Default
+   | MovingCharacter Character.Ref
 
 -- MODEL
 type alias Type =
    {
+      state: State,
       battlemap: Battlemap.Type,
       navigator: (Maybe Battlemap.Navigator.Type),
-      selection: (Maybe String),
       characters: (Dict.Dict Character.Ref Character.Type),
       range_indicator:
          (Dict.Dict
@@ -24,6 +26,3 @@ type alias Type =
             Battlemap.RangeIndicator.Type
          )
    }
-
-model : Type
-model = (Shim.Model.generate)
