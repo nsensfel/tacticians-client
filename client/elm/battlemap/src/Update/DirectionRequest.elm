@@ -6,23 +6,32 @@ import Battlemap.Direction
 import Battlemap.Navigator.Move
 
 import Model
+import Error
 
-apply_to : Model.Type -> Battlemap.Direction.Type -> Model.Type
-apply_to model dir =
-   case (model.state, model.navigator) of
-      (_ , Nothing) -> model
-      ((Model.MovingCharacter _), (Just nav)) ->
+make_it_so : Model.Type -> Battlemap.Direction.Type -> Model.Type
+make_it_so model dir =
+   case model.selection of
+      Nothing -> {model | state = (Model.Error Error.Programming)}
+      (Just selection) ->
          let
             (new_bmap, new_nav) =
                (Battlemap.Navigator.Move.to
                   model.battlemap
-                  nav
+                  selection.navigator
                   dir
                   (Dict.values model.characters)
                )
          in
             {model |
+               state = Model.MovingCharacterWithButtons,
                battlemap = new_bmap,
-               navigator = (Just new_nav)
+               selection = (Just {selection | navigator = new_nav})
             }
-      (_, _) -> model
+
+
+apply_to : Model.Type -> Battlemap.Direction.Type -> Model.Type
+apply_to model dir =
+   case model.state of
+      Model.MovingCharacterWithButtons -> (make_it_so model dir)
+      Model.MovingCharacterWithClick -> (make_it_so model dir)
+      _ -> {model | state = (Model.Error Error.IllegalAction)}

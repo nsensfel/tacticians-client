@@ -9,43 +9,53 @@ import Battlemap.Tile
 
 import Model
 
-update_model : Model.Type -> Battlemap.Navigator.Type -> String -> Model.Type
-update_model model nav char_id =
-   case (Dict.get char_id model.characters) of
-      Nothing -> model
-      (Just char) ->
-         {model |
-            navigator = Nothing,
-            battlemap =
-               (Battlemap.apply_to_all_tiles
-                  (Battlemap.apply_to_tile_unsafe
-                     (Battlemap.apply_to_tile_unsafe
-                        model.battlemap
-                        char.location
-                        (\t -> {t | char_level = Nothing})
+import Error
+
+make_it_so : Model.Type -> Model.Type
+make_it_so model =
+   case model.selection of
+      Nothing -> {model | state = (Model.Error Error.Programming)}
+      (Just selection) ->
+         case (Dict.get selection.character model.characters) of
+            Nothing -> {model | state = (Model.Error Error.Programming)}
+            (Just char) ->
+               {model |
+                  state = Model.Default,
+                  selection = Nothing,
+                  battlemap =
+                     (Battlemap.apply_to_all_tiles
+                        (Battlemap.apply_to_tile_unsafe
+                           (Battlemap.apply_to_tile_unsafe
+                              model.battlemap
+                              char.location
+                              (\t -> {t | char_level = Nothing})
+                           )
+                           selection.navigator.current_location
+                           (\t -> {t | char_level = (Just selection.character)})
+                        )
+                        (Battlemap.Tile.reset_tile)
+                     ),
+                  characters =
+                     (Dict.update
+                        selection.character
+                        (\mc ->
+                           case mc of
+                              Nothing -> Nothing
+                              (Just c) ->
+                                 (Just
+                                    {c |
+                                       location = selection.navigator.current_location
+                                    }
+                                 )
+                        )
+                        model.characters
                      )
-                     nav.current_location
-                     (\t -> {t | char_level = (Just char_id)})
-                  )
-                  (Battlemap.Tile.reset_tile)
-               ),
-            characters =
-               (Dict.update
-                  char_id
-                  (\mc ->
-                     case mc of
-                        Nothing -> Nothing
-                        (Just c) ->
-                           (Just {c | location = nav.current_location})
-                  )
-                  model.characters
-               )
-         }
+               }
 
 apply_to : Model.Type -> Model.Type
 apply_to model =
-   case (model.state, model.navigator) of
-      (_, Nothing) -> model
-      ((Model.MovingCharacter char_id), (Just nav)) ->
-         (update_model model nav char_id)
-      (_, _) -> model
+   case model.state of
+      Model.MovingCharacterWithButtons -> (make_it_so model)
+      Model.MovingCharacterWithClick -> (make_it_so model)
+      _ -> {model | state = (Model.Error Error.IllegalAction)}
+

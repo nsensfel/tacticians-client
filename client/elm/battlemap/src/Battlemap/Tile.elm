@@ -8,6 +8,8 @@ module Battlemap.Tile exposing
    )
 
 import Battlemap.Direction
+import Battlemap.Location
+
 import Character
 
 type TileModifier =
@@ -16,6 +18,7 @@ type TileModifier =
 
 type alias Type =
    {
+      location : Battlemap.Location.Ref,
       floor_level : Int,
       nav_level : Battlemap.Direction.Type,
       char_level : (Maybe Character.Ref),

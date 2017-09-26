@@ -5,27 +5,27 @@ import Html.Events
 
 import Battlemap.Direction
 
-import Update
+import Event
 
-direction_button : Battlemap.Direction.Type -> String -> (Html.Html Update.Type)
+direction_button : Battlemap.Direction.Type -> String -> (Html.Html Event.Type)
 direction_button dir label =
    (Html.button
       [
          (Html.Events.onClick
-            (Update.DirectionRequest dir)
+            (Event.DirectionRequest dir)
          )
       ]
       [ (Html.text label) ]
    )
 
-end_turn_button : (Html.Html Update.Type)
+end_turn_button : (Html.Html Event.Type)
 end_turn_button =
    (Html.button
-      [ (Html.Events.onClick Update.EndTurn) ]
+      [ (Html.Events.onClick Event.EndTurn) ]
       [ (Html.text "End Turn") ]
    )
 
-view : (List (Html.Html Update.Type))
+view : (List (Html.Html Event.Type))
 view =
    [
       (direction_button Battlemap.Direction.Left "Left"),

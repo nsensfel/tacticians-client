@@ -10,8 +10,8 @@ import Shim.Battlemap
 generate =
    {
       state = Model.Default,
+      selection = Nothing,
       battlemap = (Shim.Battlemap.generate),
-      navigator = Nothing,
       characters =
          (Dict.insert
             "2"
@@ -49,6 +49,5 @@ generate =
                   Dict.empty
                )
             )
-         ),
-      range_indicator = Dict.empty
+         )
    }

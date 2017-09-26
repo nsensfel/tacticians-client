@@ -7,5 +7,5 @@ generate =
    {
       width = 32,
       height = 32,
-      content = (Shim.Battlemap.Tile.generate)
+      content = (Shim.Battlemap.Tile.generate 32)
    }

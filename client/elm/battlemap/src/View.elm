@@ -7,10 +7,11 @@ import Battlemap.Html
 import View.Controls
 import View.Status
 
+import Event
 import Update
 import Model
 
-view : Model.Type -> (Html.Html Update.Type)
+view : Model.Type -> (Html.Html Event.Type)
 view model =
    (Html.div
       []
