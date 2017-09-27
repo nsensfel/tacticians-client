@@ -11,7 +11,14 @@ import Error
 make_it_so : Model.Type -> Battlemap.Direction.Type -> Model.Type
 make_it_so model dir =
    case model.selection of
-      Nothing -> {model | state = (Model.Error Error.Programming)}
+      Nothing ->
+         (Model.invalidate
+            model
+            (Error.new
+               Error.Programming
+               "DirectionRequest: model moving char, no selection."
+            )
+         )
       (Just selection) ->
          let
             (new_bmap, new_nav) =
@@ -31,7 +38,14 @@ make_it_so model dir =
 
 apply_to : Model.Type -> Battlemap.Direction.Type -> Model.Type
 apply_to model dir =
-   case model.state of
+   case (Model.get_state model) of
       Model.MovingCharacterWithButtons -> (make_it_so model dir)
       Model.MovingCharacterWithClick -> (make_it_so model dir)
-      _ -> {model | state = (Model.Error Error.IllegalAction)}
+      _ ->
+         (Model.invalidate
+            model
+            (Error.new
+               Error.IllegalAction
+               "This can only be done while moving a character."
+            )
+         )

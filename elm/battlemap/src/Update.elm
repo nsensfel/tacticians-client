@@ -11,15 +11,18 @@ import Update.EndTurn
 
 update : Event.Type -> Model.Type -> Model.Type
 update event model =
+   let
+      new_model = (Model.clear_error model)
+   in
    case event of
       (Event.DirectionRequest d) ->
-         (Update.DirectionRequest.apply_to model d)
+         (Update.DirectionRequest.apply_to new_model d)
 
       (Event.SelectTile loc) ->
-         (Update.SelectTile.apply_to model loc)
+         (Update.SelectTile.apply_to new_model loc)
 
       (Event.SelectCharacter char_id) ->
-         (Update.SelectCharacter.apply_to model char_id)
+         (Update.SelectCharacter.apply_to new_model char_id)
 
       Event.EndTurn ->
-         (Update.EndTurn.apply_to model)
+         (Update.EndTurn.apply_to new_model)

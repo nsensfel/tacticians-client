@@ -11,6 +11,7 @@ generate =
    {
       state = Model.Default,
       selection = Nothing,
+      error = Nothing,
       battlemap = (Shim.Battlemap.generate),
       characters =
          (Dict.insert

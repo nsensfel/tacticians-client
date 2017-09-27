@@ -24,10 +24,18 @@ autopilot dir model =
 go_to_tile : Model.Type -> Battlemap.Location.Ref -> Model.Type
 go_to_tile model loc_ref =
    case model.selection of
-      Nothing -> {model | state = (Model.Error Error.Programming)}
+      Nothing ->
+         (Model.invalidate
+            model
+            (Error.new
+               Error.Programming
+               "SelectTile: model moving char, no selection."
+            )
+         )
       (Just selection) ->
          case (Dict.get loc_ref selection.range_indicator) of
-            Nothing -> {model | state = Model.Default, selection = Nothing}
+            Nothing -> -- Clicked outside of the range indicator
+               (Model.reset model)
             (Just indicator) ->
                let
                   new_model =
@@ -69,12 +77,19 @@ go_to_tile model loc_ref =
                   then
                      (Update.EndTurn.apply_to new_model)
                   else
-                     {new_model | state = model.state}
+                     {new_model | state = Model.MovingCharacterWithClick}
 
 
 apply_to : Model.Type -> Battlemap.Location.Ref -> Model.Type
 apply_to model loc_ref =
-   case model.state of
+   case (Model.get_state model) of
       Model.MovingCharacterWithButtons -> (go_to_tile model loc_ref)
       Model.MovingCharacterWithClick -> (go_to_tile model loc_ref)
-      _ -> {model | state = (Model.Error Error.IllegalAction)}
+      _ ->
+         (Model.invalidate
+            model
+            (Error.new
+               Error.IllegalAction
+               "This can only be done while moving a character."
+            )
+         )

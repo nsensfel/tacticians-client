@@ -44,7 +44,14 @@ display_range dist loc_ref indicator bmap =
 make_it_so : Model.Type -> Character.Ref -> Model.Type
 make_it_so model char_id =
    case (Dict.get char_id model.characters) of
-      Nothing -> {model | state = (Model.Error Error.Programming)}
+      Nothing ->
+         (Model.invalidate
+            model
+            (Error.new
+               Error.Programming
+               "SelectCharacter: Unknown char selected."
+            )
+         )
       (Just char) ->
          let
             new_range_indicator =
@@ -84,5 +91,5 @@ make_it_so model char_id =
 
 apply_to : Model.Type -> Character.Ref -> Model.Type
 apply_to model char_id =
-   case model.state of
+   case (Model.get_state model) of
       _ -> (make_it_so model char_id)
