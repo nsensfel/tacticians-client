@@ -33,7 +33,7 @@ make_it_so model =
                            selection.navigator.current_location
                            (\t -> {t | char_level = (Just selection.character)})
                         )
-                        (Battlemap.Tile.reset_tile)
+                        (Battlemap.Tile.reset)
                      ),
                   characters =
                      (Dict.update

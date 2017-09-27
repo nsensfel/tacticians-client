@@ -3,8 +3,7 @@ module Battlemap.Tile exposing
       Type,
       TileModifier(..),
       set_direction,
-      set_navigation,
-      reset_tile
+      reset
    )
 
 import Battlemap.Direction
@@ -31,14 +30,8 @@ set_direction d t =
       nav_level = d
    }
 
-set_navigation : Battlemap.Direction.Type -> Type -> Type
-set_navigation dir t =
-   {t |
-      nav_level = dir
-   }
-
-reset_tile : Type -> Type
-reset_tile t =
+reset: Type -> Type
+reset t =
    {t |
       nav_level = Battlemap.Direction.None,
       mod_level = Nothing

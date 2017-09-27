@@ -111,7 +111,11 @@ to : (
 to battlemap nav dir char_list =
    let
       next_location = (Battlemap.Location.neighbor nav.current_location dir)
-      is_occupied = (List.any (\c -> (c.location == next_location)) char_list)
+      is_occupied =
+         (List.any
+            (\c -> ((Character.get_location c) == next_location))
+            char_list
+         )
    in
       if (not is_occupied)
       then

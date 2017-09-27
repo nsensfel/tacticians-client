@@ -63,7 +63,7 @@ make_it_so model char_id =
                         (display_range char.movement_points)
                         (Battlemap.apply_to_all_tiles
                            model.battlemap
-                           (Battlemap.Tile.reset_tile)
+                           (Battlemap.Tile.reset)
                         )
                         new_range_indicator
                      )

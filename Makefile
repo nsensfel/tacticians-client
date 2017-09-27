@@ -3,7 +3,7 @@ PAGES = $(addsuffix .html,$(TARGETS))
 
 all: $(TARGETS) $(PAGES)
 
-upload_demo: $(PAGES)
+upload_demo: $(PAGES) LICENSE
 	scp -r $^ dreamhost:~/tacticians.online/
 
 $(TARGETS):
