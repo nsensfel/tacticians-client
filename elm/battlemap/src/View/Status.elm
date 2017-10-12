@@ -4,6 +4,9 @@ import Dict
 
 import Html
 
+import Battlemap
+import Character
+
 import Error
 import Event
 import Model
@@ -11,20 +14,24 @@ import Model
 moving_character_text : Model.Type -> String
 moving_character_text model =
    case model.selection of
-      Nothing -> "Error: no model.selection."
-      (Just selection) ->
-         case (Dict.get selection.character model.characters) of
+      (Model.SelectedCharacter char_id) ->
+         case (Dict.get char_id model.characters) of
             Nothing -> "Error: Unknown character selected."
             (Just char) ->
                (
                   "Controlling "
                   ++ char.name
                   ++ ": "
-                  ++ (toString selection.navigator.remaining_points)
+                  ++ (toString
+                        (Battlemap.get_navigator_remaining_points
+                           model.battlemap
+                        )
+                     )
                   ++ "/"
-                  ++ (toString char.movement_points)
+                  ++ (toString (Character.get_movement_points char))
                   ++ " movement points remaining."
                )
+      _ -> "Error: model.selection does not match its state."
 
 view : Model.Type -> (Html.Html Event.Type)
 view model =

@@ -1,12 +1,17 @@
-module Battlemap.RangeIndicator exposing (Type, generate)
+module Battlemap.Navigator.RangeIndicator exposing
+   (
+      Type,
+      generate,
+      get_marker
+   )
 
 import Dict
 import List
 import Debug
 
-import Battlemap
 import Battlemap.Direction
 import Battlemap.Location
+import Battlemap.Marker
 
 import Util.List
 
@@ -14,7 +19,8 @@ type alias Type =
    {
       distance: Int,
       path: (List Battlemap.Direction.Type),
-      node_cost: Int
+      node_cost: Int,
+      marker: Battlemap.Marker.Type
    }
 
 generate_row : (
@@ -172,14 +178,28 @@ search result remaining dist atk_dist =
                   {
                      distance = (atk_dist + 1),
                      path = [],
-                     node_cost = 99
+                     node_cost = 99,
+                     marker = Battlemap.Marker.CanAttack
                   }
                )
                remaining
             )
       in
          (search
-            (Dict.insert min_loc_ref min result)
+            (Dict.insert
+               min_loc_ref
+               {min |
+                  marker =
+                     (
+                        if (min.distance > dist)
+                        then
+                           Battlemap.Marker.CanAttack
+                        else
+                           Battlemap.Marker.CanGoTo
+                     )
+               }
+               result
+            )
             (handle_neighbors
                (Battlemap.Location.from_ref min_loc_ref)
                dist
@@ -198,23 +218,23 @@ search result remaining dist atk_dist =
          )
 
 grid_to_range_indicators : (
-      Battlemap.Type ->
+      (Battlemap.Location.Type -> Bool) ->
       Battlemap.Location.Type ->
       Int ->
       (List Battlemap.Location.Type) ->
       (Dict.Dict Battlemap.Location.Ref Type) ->
       (Dict.Dict Battlemap.Location.Ref Type)
    )
-grid_to_range_indicators battlemap location dist grid result =
+grid_to_range_indicators can_cross_fun location dist grid result =
    case (Util.List.pop grid) of
       Nothing -> result
       (Just (head, tail)) ->
-         if (Battlemap.has_location battlemap head)
+         if (can_cross_fun head)
          then
             -- TODO: test if the current char can cross that tile.
             -- TODO: get tile cost.
             (grid_to_range_indicators
-               battlemap
+               (can_cross_fun)
                location
                dist
                tail
@@ -230,26 +250,27 @@ grid_to_range_indicators battlemap location dist grid result =
                               (dist + 1)
                         ),
                      path = [],
-                     node_cost = 1
+                     node_cost = 1,
+                     marker = Battlemap.Marker.CanGoTo
                   }
                   result
                )
             )
          else
-            (grid_to_range_indicators battlemap location dist tail result)
+            (grid_to_range_indicators (can_cross_fun) location dist tail result)
 
 generate : (
-      Battlemap.Type ->
       Battlemap.Location.Type ->
       Int ->
       Int ->
+      (Battlemap.Location.Type -> Bool) ->
       (Dict.Dict Battlemap.Location.Ref Type)
    )
-generate battlemap location dist atk_dist =
+generate location dist atk_dist can_cross_fun =
    (search
       Dict.empty
       (grid_to_range_indicators
-         battlemap
+         (can_cross_fun)
          location
          atk_dist
          (generate_grid location atk_dist (-atk_dist) [])
@@ -258,3 +279,6 @@ generate battlemap location dist atk_dist =
       dist
       atk_dist
    )
+
+get_marker : Type -> Battlemap.Marker.Type
+get_marker indicator = indicator.marker

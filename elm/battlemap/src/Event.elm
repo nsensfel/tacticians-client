@@ -7,7 +7,7 @@ import Battlemap.Location
 import Character
 
 type Type =
-   DirectionRequest Battlemap.Direction.Type
-   | SelectTile Battlemap.Location.Ref
-   | SelectCharacter Character.Ref
-   | EndTurn
+   DirectionRequested Battlemap.Direction.Type
+   | TileSelected Battlemap.Location.Ref
+   | CharacterSelected Character.Ref
+   | TurnEnded

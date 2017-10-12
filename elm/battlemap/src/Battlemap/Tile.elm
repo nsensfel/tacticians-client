@@ -1,38 +1,25 @@
 module Battlemap.Tile exposing
    (
       Type,
-      TileModifier(..),
-      set_direction,
-      reset
+      set_character,
+      get_character
    )
 
 import Battlemap.Direction
+import Battlemap.Marker
 import Battlemap.Location
 
 import Character
-
-type TileModifier =
-   CanBeReached
-   | CanBeAttacked
 
 type alias Type =
    {
       location : Battlemap.Location.Ref,
       floor_level : Int,
-      nav_level : Battlemap.Direction.Type,
       char_level : (Maybe Character.Ref),
-      mod_level : (Maybe TileModifier)
    }
 
-set_direction : Battlemap.Direction.Type -> Type -> Type
-set_direction d t =
-   {t |
-      nav_level = d
-   }
+set_character : (Maybe Character.Ref) -> Type -> Type
+set_character char_ref tile = {tile | char_level = char_ref}
 
-reset: Type -> Type
-reset t =
-   {t |
-      nav_level = Battlemap.Direction.None,
-      mod_level = Nothing
-   }
+get_character : Type -> (Maybe Character.Ref)
+get_character tile = tile.char_level

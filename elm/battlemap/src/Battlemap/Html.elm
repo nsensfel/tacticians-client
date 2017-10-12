@@ -33,7 +33,7 @@ view_battlemap_cell t =
    case t.char_level of
       Nothing ->
          (Html.td
-            [ (Html.Events.onClick (Event.SelectTile t.location)) ]
+            [ (Html.Events.onClick (Event.TileSelected t.location)) ]
             [
                (Html.text
                   (case t.mod_level of
@@ -47,7 +47,7 @@ view_battlemap_cell t =
          )
       (Just char_id) ->
          (Html.td
-            [ (Html.Events.onClick (Event.SelectCharacter char_id)) ]
+            [ (Html.Events.onClick (Event.CharacterSelected char_id)) ]
             [
                (Html.text ("[" ++ char_id ++ "]")),
                (Html.text (nav_level_to_text t))

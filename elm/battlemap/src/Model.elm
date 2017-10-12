@@ -1,7 +1,7 @@
 module Model exposing
    (
       Type,
-      CharacterSelection,
+      Selection(..),
       State(..),
       get_state,
       invalidate,
@@ -12,25 +12,12 @@ module Model exposing
 import Dict
 
 import Battlemap
-import Battlemap.Navigator
 import Battlemap.Location
 import Battlemap.Tile
-import Battlemap.RangeIndicator
 
 import Error
 
 import Character
-
-type alias CharacterSelection =
-   {
-      character: Character.Ref,
-      navigator: Battlemap.Navigator.Type,
-      range_indicator:
-         (Dict.Dict
-            Battlemap.Location.Ref
-            Battlemap.RangeIndicator.Type
-         )
-   }
 
 type State =
    Default
@@ -38,29 +25,31 @@ type State =
    | MovingCharacterWithClick
    | FocusingTile
 
+type Selection =
+   None
+   | SelectedCharacter Character.Ref
+   | SelectedTile Battlemap.Location.Ref
+
 type alias Type =
    {
       state: State,
       battlemap: Battlemap.Type,
       characters: (Dict.Dict Character.Ref Character.Type),
       error: (Maybe Error.Type),
-      selection: (Maybe CharacterSelection)
+      selection: Selection
    }
 
 get_state : Type -> State
 get_state model = model.state
 
-reset : Type -> Type
-reset model =
+reset : Type -> (Dict.Dict Character.Ref Character.Type) -> Type
+reset model characters =
    {model |
       state = Default,
-      selection = Nothing,
+      battlemap = (Battlemap.reset model.battlemap),
+      characters = characters,
       error = Nothing,
-      battlemap =
-         (Battlemap.apply_to_all_tiles
-            model.battlemap
-            (Battlemap.Tile.reset)
-         )
+      selection = None
    }
 
 invalidate : Type -> Error.Type -> Type

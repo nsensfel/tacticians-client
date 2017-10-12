@@ -12,7 +12,7 @@ direction_button dir label =
    (Html.button
       [
          (Html.Events.onClick
-            (Event.DirectionRequest dir)
+            (Event.DirectionRequested dir)
          )
       ]
       [ (Html.text label) ]
@@ -21,7 +21,7 @@ direction_button dir label =
 end_turn_button : (Html.Html Event.Type)
 end_turn_button =
    (Html.button
-      [ (Html.Events.onClick Event.EndTurn) ]
+      [ (Html.Events.onClick Event.TurnEnded) ]
       [ (Html.text "End Turn") ]
    )
 

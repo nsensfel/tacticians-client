@@ -1,4 +1,4 @@
-module Update.SelectTile exposing (apply_to)
+module Model.SelectTile exposing (apply_to)
 
 import Dict
 
@@ -7,12 +7,10 @@ import Character
 import Battlemap
 import Battlemap.Direction
 import Battlemap.Location
-import Battlemap.Navigator
 import Battlemap.Tile
-import Battlemap.RangeIndicator
 
-import Update.DirectionRequest
-import Update.EndTurn
+import Model.RequestDirection
+import Model.EndTurn
 
 import Model
 import Error
@@ -75,7 +73,7 @@ go_to_tile model loc_ref =
                      )
                   )
                   then
-                     (Update.EndTurn.apply_to new_model)
+                     (Model.EndTurn.apply_to new_model)
                   else
                      {new_model | state = Model.MovingCharacterWithClick}
 

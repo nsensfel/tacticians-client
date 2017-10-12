@@ -1,4 +1,4 @@
-ELM_CC = elm-make
+ELM_CC = elm-make --warn
 SRC_DIR = src
 
 MAIN_MODULE = $(SRC_DIR)/Main.elm
