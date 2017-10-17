@@ -7,7 +7,6 @@ module Battlemap.Navigator.RangeIndicator exposing
 
 import Dict
 import List
-import Debug
 
 import Battlemap.Direction
 import Battlemap.Location

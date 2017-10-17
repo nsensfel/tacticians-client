@@ -4,14 +4,15 @@ module Battlemap.Navigator.Path exposing
       new,
       get_current_location,
       get_remaining_points,
-      follow_directions
+      try_following_direction
    )
 
 import Set
 
+import Util.List
+
 import Battlemap.Direction
 import Battlemap.Location
-import Battlemap.Tile
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -21,104 +22,94 @@ type alias Type =
       current_location : Battlemap.Location.Type,
       visited_locations : (Set.Set Battlemap.Location.Ref),
       previous_directions : (List Battlemap.Direction.Type),
+      previous_points : (List Int),
       remaining_points : Int
    }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-has_not_been_to : (
+has_been_to : (
       Type ->
       Battlemap.Location.Type ->
       Bool
    )
-has_not_been_to path location =
+has_been_to path location =
    (
-      (path.current_location /= location)
-      &&
-      (not
-         (Set.member
-            (Battlemap.Location.get_ref location)
-            path.visited_locations
-         )
+      (path.current_location == location)
+      ||
+      (Set.member
+         (Battlemap.Location.get_ref location)
+         path.visited_locations
       )
    )
 
-move_to : (
+try_moving_to : (
       Type ->
       Battlemap.Direction.Type ->
       Battlemap.Location.Type ->
       Int ->
-      Type
+      (Maybe Type)
    )
-move_to path dir next_loc cost =
-   {path |
-      current_location = next_loc,
-      visited_locations =
-         (Set.insert
-            (Battlemap.Location.get_ref path.current_location)
-            path.visited_locations
-         ),
-      previous_directions = (dir :: path.previous_directions),
+try_moving_to path dir next_loc cost =
+   let
       remaining_points = (path.remaining_points - cost)
-   }
+   in
+      if (remaining_points >= 0)
+      then
+         (Just
+            {path |
+               current_location = next_loc,
+               visited_locations =
+                  (Set.insert
+                     (Battlemap.Location.get_ref path.current_location)
+                     path.visited_locations
+                  ),
+               previous_directions = (dir :: path.previous_directions),
+               previous_points =
+                  (path.remaining_points :: path.previous_points),
+               remaining_points = remaining_points
+            }
+         )
+      else
+         Nothing
 
-battlemap_backtrack : (
-      Battlemap.Type ->
-      Battlemap.Location.Type ->
-      Battlemap.Type
-   )
-battlemap_backtrack battlemap current_loc =
-   (Battlemap.apply_to_tile_unsafe
-      battlemap
-      current_loc
-      (Battlemap.Tile.set_direction
-         Battlemap.Direction.None
-      )
-   )
-
-navigator_backtrack : (
-      Battlemap.Navigator.Type ->
-      Battlemap.Location.Type ->
-      (List Battlemap.Direction.Type) ->
-      Battlemap.Navigator.Type
-   )
-try_backtracking_to path location dir =
-               case (Util.List.pop nav.previous_directions) of
-                     (Just (head, tail)) ->
-                        if (head == (Battlemap.Direction.opposite_of dir))
-                        then
-                           (backtrack_to
-                              nav
-                              next_location
-                              tail
-                           )
-                           )
-                        else
-                           (battlemap, nav)
-                     Nothing -> (battlemap, nav)
-               move_to path next_location
-               if (can_move_to_new_tile path next_location)
-               then
-               else
-   {nav |
-      current_location = next_loc,
-      visited_locations =
-         (Set.remove
-            (Battlemap.Location.get_ref next_loc)
-            nav.visited_locations
-         ),
-      previous_directions = prev_dir_tail,
-      remaining_points = (nav.remaining_points + 1)
-   }
-
-
-to : (
+try_backtracking_to : (
       Type ->
       Battlemap.Direction.Type ->
-      (Battlemap.Type, Battlemap.Navigator.Type)
+      Battlemap.Location.Type ->
+      (Maybe Type)
    )
-to battlemap nav dir char_list =
+try_backtracking_to path dir location =
+   case
+      (
+         (Util.List.pop path.previous_directions),
+         (Util.List.pop path.previous_points)
+      )
+   of
+      (
+         (Just (prev_dir_head, prev_dir_tail)),
+         (Just (prev_pts_head, prev_pts_tail))
+      ) ->
+         if (prev_dir_head == (Battlemap.Direction.opposite_of dir))
+         then
+            (Just
+               {path |
+                  current_location = location,
+                  visited_locations =
+                     (Set.remove
+                        (Battlemap.Location.get_ref location)
+                        path.visited_locations
+                     ),
+                  previous_directions = prev_dir_tail,
+                  previous_points = prev_pts_tail,
+                  remaining_points = prev_pts_head
+               }
+            )
+         else
+            Nothing
+      (_, _) ->
+         Nothing
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -130,6 +121,7 @@ new start points =
       current_location = start,
       visited_locations = Set.empty,
       previous_directions = [],
+      previous_points = [],
       remaining_points = points
    }
 
@@ -139,32 +131,35 @@ get_current_location path = path.current_location
 get_remaining_points : Type -> Int
 get_remaining_points path = path.remaining_points
 
-follow_direction : (
+try_following_direction : (
       (Battlemap.Location.Type -> Bool) ->
+      (Battlemap.Location.Type -> Int) ->
       (Maybe Type) ->
       Battlemap.Direction.Type ->
       (Maybe Type)
    )
-follow_direction can_cross cost_fun maybe_path dir =
+try_following_direction can_cross cost_fun maybe_path dir =
    case maybe_path of
       (Just path) ->
          let
             next_location =
                (Battlemap.Location.neighbor
-                  nav.current_location
+                  path.current_location
                   dir
                )
          in
-            if (can_cross path next_location)
+            if (can_cross next_location)
             then
-               if (has_not_been_to path next_location)
+               if (has_been_to path next_location)
                then
-                  (Just (move_to path next_location dir))
+                  (try_backtracking_to path dir next_location)
                else
-                  (try_backtracking_to path next_location dir)
+                  (try_moving_to
+                     path
+                     dir
+                     next_location
+                     (cost_fun next_location)
+                  )
             else
                Nothing
-            else
-               (battlemap, nav)
-
       Nothing -> Nothing

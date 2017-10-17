@@ -11,12 +11,10 @@ module Battlemap exposing
 import Array
 
 import Battlemap.Navigator
-import Battlemap.Navigator.RangeIndicator
 import Battlemap.Tile
 import Battlemap.Direction
 import Battlemap.Location
 
-import Util.Array
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -44,31 +42,12 @@ has_location bmap loc =
       && (loc.y < bmap.height)
    )
 
-add_marker_to_tiles : (
-      Type ->
-      (Battlemap.Location.Ref, Battlemap.Navigator.RangeIndicator.Type) ->
-      (Array.Array Battlemap.Tile.Type) ->
-      (Array.Array Battlemap.Tile.Type)
-   )
-add_marker_to_tiles bmap (location, indicator) tiles =
-   (Util.Array.update_unsafe
-      (location_to_index bmap (Battlemap.Location.from_ref location))
-      (
-         (Battlemap.Tile.set_marker
-            (Just
-               (Battlemap.Navigator.RangeIndicator.get_marker indicator)
-            )
-         )
-      )
-      tiles
-   )
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 reset : Type -> Type
 reset bmap =
    {bmap |
-      content = (Array.map (Battlemap.Tile.reset) bmap.content),
       navigator = Nothing
    }
 
@@ -97,44 +76,45 @@ set_navigator : (
       Type
    )
 set_navigator start_loc movement_points attack_range can_cross bmap =
-   let
-      new_navigator =
-         (Battlemap.Navigator.new
-            start_loc
-            movement_points
-            attack_range
-            (\loc -> ((can_cross loc) && (has_location bmap loc)))
+   {bmap |
+      navigator =
+         (Just
+            (Battlemap.Navigator.new
+               start_loc
+               movement_points
+               attack_range
+               (\loc -> ((can_cross loc) && (has_location bmap loc)))
+            )
          )
-      new_range_markers = (Battlemap.Navigator.get_range_markers new_navigator)
-   in
-      {bmap |
-         content =
-            (List.foldr
-               (add_marker_to_tiles bmap)
-               bmap.content
-               new_range_markers
-            ),
-         navigator = (Just new_navigator)
-      }
+   }
 
 add_step_to_navigator : (
       Type ->
       Battlemap.Direction.Type ->
       (Battlemap.Location.Type -> Bool) ->
+      (Battlemap.Location.Type -> Int) ->
       (Maybe Type)
-add_step_to_navigator bmap dir can_cross =
+   )
+add_step_to_navigator bmap dir can_cross cost_fun =
    case bmap.navigator of
       (Just navigator) ->
          let
             new_navigator =
                (Battlemap.Navigator.add_step
                   navigator
-                  (\loc -> ((can_cross loc) && (has_location bmap loc)))
                   dir
+                  (\loc -> ((can_cross loc) && (has_location bmap loc)))
+                  (\loc ->
+                     case
+                        (Array.get (location_to_index bmap loc) bmap.content)
+                     of
+                        (Just tile) -> (Battlemap.Tile.get_cost tile)
+                        Nothing -> 0
+                  )
                )
          in
           case new_navigator of
-            (Just _) -> {bmap | navigator = new_navigator}
+            (Just _) -> (Just {bmap | navigator = new_navigator})
             Nothing -> Nothing
 
       _ -> Nothing

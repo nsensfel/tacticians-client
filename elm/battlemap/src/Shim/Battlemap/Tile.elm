@@ -23,19 +23,14 @@ from_int map_width index i =
          {
             location = location,
             floor_level = (i - 10),
-            nav_level = Battlemap.Direction.None,
-            char_level = (Just (toString (i - 10))),
-            mod_level = Nothing
+            char_level = (Just (toString (i - 10)))
          }
       else
          {
             location = location,
             floor_level = i,
-            nav_level = Battlemap.Direction.None,
-            char_level = Nothing,
-            mod_level = Nothing
+            char_level = Nothing
          }
-
 
 generate : Int -> (Array.Array Battlemap.Tile.Type)
 generate map_width =

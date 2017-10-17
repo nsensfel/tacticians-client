@@ -11,6 +11,7 @@ module Battlemap.Navigator exposing
 import Dict
 
 import Battlemap.Location
+import Battlemap.Direction
 
 import Battlemap.Navigator.Path
 import Battlemap.Navigator.RangeIndicator
@@ -81,15 +82,17 @@ add_step : (
       Type ->
       Battlemap.Direction.Type ->
       (Battlemap.Location.Type -> Bool) ->
+      (Battlemap.Location.Type -> Int) ->
       (Maybe Type)
    )
-add_step navigator dir can_cross =
+add_step navigator dir can_cross cost_fun =
    case
-      (Battlemap.Navigator.Path.follow_direction
+      (Battlemap.Navigator.Path.try_following_direction
          can_cross
+         cost_fun
          (Just navigator.path)
          dir
       )
    of
-      (Just path) -> (Just {navigator | path = path}
+      (Just path) -> (Just {navigator | path = path})
       Nothing -> Nothing

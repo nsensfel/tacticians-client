@@ -13,7 +13,6 @@ import Dict
 
 import Battlemap
 import Battlemap.Location
-import Battlemap.Tile
 
 import Error
 

@@ -1,6 +1,5 @@
 module Event exposing (Type(..))
 
-import Battlemap
 import Battlemap.Direction
 import Battlemap.Location
 
