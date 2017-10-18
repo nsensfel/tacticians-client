@@ -4,6 +4,7 @@ module Battlemap.Navigator.Path exposing
       new,
       get_current_location,
       get_remaining_points,
+      get_summary,
       try_following_direction
    )
 
@@ -131,6 +132,8 @@ get_current_location path = path.current_location
 get_remaining_points : Type -> Int
 get_remaining_points path = path.remaining_points
 
+get_summary : Type -> (List Battlemap.Direction.Type)
+get_summary path = path.previous_directions
 try_following_direction : (
       (Battlemap.Location.Type -> Bool) ->
       (Battlemap.Location.Type -> Int) ->

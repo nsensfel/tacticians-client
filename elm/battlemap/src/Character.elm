@@ -3,6 +3,7 @@ module Character exposing
       Type,
       Ref,
       get_ref,
+      get_icon_id,
       get_location,
       set_location,
       get_movement_points,
@@ -25,8 +26,10 @@ type alias Type =
 type alias Ref = String
 
 get_ref : Type -> Ref
-get_ref c =
-   c.id
+get_ref c = c.id
+
+get_icon_id : Type -> String
+get_icon_id c = c.icon
 
 get_location : Type -> Battlemap.Location.Type
 get_location t = t.location

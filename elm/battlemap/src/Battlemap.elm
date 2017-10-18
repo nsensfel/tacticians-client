@@ -3,9 +3,11 @@ module Battlemap exposing
       Type,
       reset,
       get_navigator_remaining_points,
+      get_tiles,
       set_navigator,
       try_getting_navigator_location,
       try_getting_navigator_path_to,
+      try_getting_navigator_summary,
       try_adding_step_to_navigator
    )
 
@@ -46,6 +48,9 @@ has_location bmap loc =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+get_tiles : Type -> (Array.Array Battlemap.Tile.Type)
+get_tiles bmap = bmap.content
+
 reset : Type -> Type
 reset bmap =
    {bmap |
@@ -117,6 +122,12 @@ try_adding_step_to_navigator bmap can_cross dir =
 
       _ -> Nothing
 
+try_getting_navigator_summary : Type -> (Maybe Battlemap.Navigator.Summary)
+try_getting_navigator_summary bmap =
+   case bmap.navigator of
+      (Just navigator) -> (Just (Battlemap.Navigator.get_summary navigator))
+      Nothing -> Nothing
+
 try_getting_navigator_path_to : (
       Type ->
       Battlemap.Location.Ref ->
@@ -128,3 +139,4 @@ try_getting_navigator_path_to bmap loc_ref =
          (Battlemap.Navigator.try_getting_path_to navigator loc_ref)
 
       Nothing -> Nothing
+

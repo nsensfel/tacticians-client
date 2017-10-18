@@ -1,14 +1,14 @@
 module View exposing (view)
 
+import Dict
 import Html
 
-import Battlemap.Html
+import View.Battlemap
 
 import View.Controls
 import View.Status
 
 import Event
-import Update
 import Model
 
 view : Model.Type -> (Html.Html Event.Type)
@@ -20,9 +20,10 @@ view model =
             []
             (View.Controls.view)
          ),
-         (Html.div
-            []
-            [ (Battlemap.Html.view model.battlemap) ]
+         (View.Battlemap.get_html
+            model.battlemap
+            32
+            (Dict.values model.characters)
          ),
          (Html.div
             []

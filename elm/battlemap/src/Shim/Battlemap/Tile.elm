@@ -3,20 +3,17 @@ module Shim.Battlemap.Tile exposing (generate)
 import Array
 import List
 
-import Battlemap.Location
 import Battlemap.Tile
 
 from_int : Int -> Int -> (Int, Int) -> Battlemap.Tile.Type
-from_int map_width index (class, cost) =
+from_int map_width index (icon_id, cost) =
    {
       location =
-         (Battlemap.Location.get_ref
-            {
-               x = (index % map_width),
-               y = (index // map_width)
-            }
-         ),
-      class = class,
+         {
+            x = (index % map_width),
+            y = (index // map_width)
+         },
+      icon_id = (toString icon_id),
       crossing_cost = cost
    }
 

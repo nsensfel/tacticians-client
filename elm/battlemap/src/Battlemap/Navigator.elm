@@ -1,10 +1,12 @@
 module Battlemap.Navigator exposing
    (
       Type,
+      Summary,
       new,
       get_current_location,
       get_remaining_points,
       get_range_markers,
+      get_summary,
       try_adding_step,
       try_getting_path_to
    )
@@ -13,6 +15,7 @@ import Dict
 
 import Battlemap.Location
 import Battlemap.Direction
+import Battlemap.Marker
 
 import Battlemap.Navigator.Path
 import Battlemap.Navigator.RangeIndicator
@@ -33,6 +36,12 @@ type alias Type =
          )
    }
 
+type alias Summary =
+   {
+      starting_location: Battlemap.Location.Type,
+      path: (List Battlemap.Direction.Type),
+      markers: (List (Battlemap.Location.Ref, Battlemap.Marker.Type))
+   }
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -79,6 +88,27 @@ get_range_markers : (
    )
 get_range_markers navigator = (Dict.toList navigator.range_indicators)
 
+get_summary : Type -> Summary
+get_summary navigator =
+   {
+      starting_location = navigator.starting_location,
+      path = (Battlemap.Navigator.Path.get_summary navigator.path),
+      markers =
+         (List.map
+            (\(loc, range_indicator) ->
+               (
+                  loc,
+                  (Battlemap.Navigator.RangeIndicator.get_marker
+                     range_indicator
+                  )
+               )
+            )
+            (Dict.toList
+               navigator.range_indicators
+            )
+         )
+   }
+
 try_adding_step : (
       Type ->
       Battlemap.Direction.Type ->
@@ -108,3 +138,4 @@ try_getting_path_to navigator loc_ref =
       (Just target) ->
          (Just (Battlemap.Navigator.RangeIndicator.get_path target))
       Nothing -> Nothing
+
