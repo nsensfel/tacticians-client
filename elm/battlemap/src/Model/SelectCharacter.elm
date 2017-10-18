@@ -7,7 +7,6 @@ import Character
 import Battlemap
 
 import Model
-import Event
 import Error
 
 make_it_so : Model.Type -> Character.Ref -> Model.Type

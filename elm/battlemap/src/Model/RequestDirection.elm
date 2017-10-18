@@ -4,6 +4,10 @@ import Dict
 
 import Battlemap
 import Battlemap.Direction
+import Battlemap.Location
+
+
+import Character
 
 import Model
 import Error
@@ -14,17 +18,34 @@ make_it_so model dir =
       (Model.SelectedCharacter char_id) ->
          let
             new_bmap =
-               (Battlemap.add_step_to_navigator
+               (Battlemap.try_adding_step_to_navigator
                   model.battlemap
+                  (\loc ->
+                     (List.all
+                        (\char ->
+                           (
+                              ((Character.get_ref char) == char_id)
+                              ||
+                              (
+                                 (Battlemap.Location.get_ref
+                                    (Character.get_location char)
+                                 )
+                                 /=
+                                 (Battlemap.Location.get_ref loc)
+                              )
+                           )
+                        )
+                        (Dict.values model.characters)
+                     )
+                  )
                   dir
-                  (Dict.values model.characters)
                )
          in
             case new_bmap of
                (Just bmap) ->
                   {model |
                      state = Model.MovingCharacterWithButtons,
-                     battlemap = new_bmap
+                     battlemap = bmap
                   }
 
                Nothing ->

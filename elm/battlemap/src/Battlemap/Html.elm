@@ -19,40 +19,25 @@ type alias GridBuilder =
       bmap : Battlemap.Type
    }
 
-nav_level_to_text : Battlemap.Tile.Type -> String
-nav_level_to_text t =
-   case t.nav_level of
-      Battlemap.Direction.Right -> "R"
-      Battlemap.Direction.Left -> "L"
-      Battlemap.Direction.Up -> "U"
-      Battlemap.Direction.Down -> "D"
-      Battlemap.Direction.None -> (toString t.floor_level)
-
 view_battlemap_cell : Battlemap.Tile.Type -> (Html.Html Event.Type)
 view_battlemap_cell t =
-   case t.char_level of
-      Nothing ->
-         (Html.td
-            [ (Html.Events.onClick (Event.TileSelected t.location)) ]
-            [
-               (Html.text
-                  (case t.mod_level of
-                     Nothing -> "[_]"
-                     (Just Battlemap.Tile.CanBeReached) -> "[M]"
-                     (Just Battlemap.Tile.CanBeAttacked) -> "[A]"
-                  )
-               ),
-               (Html.text (nav_level_to_text t))
-            ]
-         )
-      (Just char_id) ->
-         (Html.td
-            [ (Html.Events.onClick (Event.CharacterSelected char_id)) ]
-            [
-               (Html.text ("[" ++ char_id ++ "]")),
-               (Html.text (nav_level_to_text t))
-            ]
-         )
+   (Html.td
+      [
+         (Html.Events.onClick
+            (Battlemap.Tile.get_location t)
+         ),
+         (Html.Attribute.class (Battlemap.Tile.get_css_class t))
+      ]
+      [
+         case (Battlemap.Tile.get_character t) of
+            (Just char_id) ->
+               (Character.Html.get_icon
+                  (Character.get model char_id)
+               )
+
+            Nothing -> (Html.text "") -- Meaning no element.
+      ]
+   )
 
 
 foldr_to_html : Battlemap.Tile.Type -> GridBuilder -> GridBuilder
@@ -81,10 +66,11 @@ grid_builder_to_html gb =
    else
      ((Html.tr [] gb.row) :: gb.columns)
 
-view : Battlemap.Type -> (Html.Html Event.Type)
-view battlemap =
+tiles_grid battlemap =
    (Html.table
-      []
+      [
+         (Html.Attribute.class "battlemap-tiles-grid")
+      ]
       (grid_builder_to_html
          (Array.foldr
             (foldr_to_html)
@@ -97,4 +83,30 @@ view battlemap =
             battlemap.content
          )
       )
+   )
+
+view : Battlemap.Type -> (Html.Html Event.Type)
+view battlemap =
+   (Html.div
+      [
+         (Html.Attribute.class "battlemap-container")
+      ]
+      [
+         (Html.div
+            [
+               (Html.Attribute.class "battlemap-tiles-container")
+            ]
+            [ (tiles_grid battlemap) ]
+         ),
+         case battlemap.navigator of
+            (Just navigator) ->
+               (Html.div
+                  [
+                     (Html.Attribute.class "battlemap-navigator-container")
+                  ]
+                  [ (Battlemap.Navigator.Html.view battlemap.navigator) ]
+               )
+
+            Nothing -> (Html.text "") -- Meaning no element.
+      ]
    )

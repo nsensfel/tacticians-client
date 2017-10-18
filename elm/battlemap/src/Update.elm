@@ -15,7 +15,7 @@ update event model =
    in
    case event of
       (Event.DirectionRequested d) ->
-         (Model.DirectionRequest.apply_to new_model d)
+         (Model.RequestDirection.apply_to new_model d)
 
       (Event.TileSelected loc) ->
          (Model.SelectTile.apply_to new_model loc)

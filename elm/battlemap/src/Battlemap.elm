@@ -2,10 +2,11 @@ module Battlemap exposing
    (
       Type,
       reset,
-      get_navigator_location,
       get_navigator_remaining_points,
       set_navigator,
-      add_step_to_navigator
+      try_getting_navigator_location,
+      try_getting_navigator_path_to,
+      try_adding_step_to_navigator
    )
 
 import Array
@@ -51,13 +52,11 @@ reset bmap =
       navigator = Nothing
    }
 
-get_navigator_location : Type -> (Maybe Battlemap.Location.Type)
-get_navigator_location bmap =
+try_getting_navigator_location : Type -> (Maybe Battlemap.Location.Type)
+try_getting_navigator_location bmap =
    case bmap.navigator of
       (Just navigator) ->
-         (Just
-            (Battlemap.Navigator.get_current_location navigator)
-         )
+         (Just (Battlemap.Navigator.get_current_location navigator))
 
       Nothing -> Nothing
 
@@ -88,19 +87,18 @@ set_navigator start_loc movement_points attack_range can_cross bmap =
          )
    }
 
-add_step_to_navigator : (
+try_adding_step_to_navigator : (
       Type ->
-      Battlemap.Direction.Type ->
       (Battlemap.Location.Type -> Bool) ->
-      (Battlemap.Location.Type -> Int) ->
+      Battlemap.Direction.Type ->
       (Maybe Type)
    )
-add_step_to_navigator bmap dir can_cross cost_fun =
+try_adding_step_to_navigator bmap can_cross dir =
    case bmap.navigator of
       (Just navigator) ->
          let
             new_navigator =
-               (Battlemap.Navigator.add_step
+               (Battlemap.Navigator.try_adding_step
                   navigator
                   dir
                   (\loc -> ((can_cross loc) && (has_location bmap loc)))
@@ -118,61 +116,15 @@ add_step_to_navigator bmap dir can_cross cost_fun =
             Nothing -> Nothing
 
       _ -> Nothing
---------------------------------------------------------------------------------
 
-apply_to_all_tiles : (
-      Type -> (Battlemap.Tile.Type -> Battlemap.Tile.Type) -> Type
-   )
-apply_to_all_tiles bmap fun =
-   {bmap |
-      content = (Array.map fun bmap.content)
-   }
-
-apply_to_tile : (
+try_getting_navigator_path_to : (
       Type ->
-      Battlemap.Location.Type ->
-      (Battlemap.Tile.Type -> Battlemap.Tile.Type) ->
-      (Maybe Type)
+      Battlemap.Location.Ref ->
+      (Maybe (List Battlemap.Direction.Type))
    )
-apply_to_tile bmap loc fun =
-   let
-      index = (location_to_index bmap loc)
-      at_index = (Array.get index bmap.content)
-   in
-      case at_index of
-         Nothing ->
-            Nothing
-         (Just tile) ->
-            (Just
-               {bmap |
-                  content =
-                     (Array.set
-                        index
-                        (fun tile)
-                        bmap.content
-                     )
-               }
-            )
+try_getting_navigator_path_to bmap loc_ref =
+   case bmap.navigator of
+      (Just navigator) ->
+         (Battlemap.Navigator.try_getting_path_to navigator loc_ref)
 
-apply_to_tile_unsafe : (
-      Type ->
-      Battlemap.Location.Type ->
-      (Battlemap.Tile.Type -> Battlemap.Tile.Type) ->
-      Type
-   )
-apply_to_tile_unsafe bmap loc fun =
-   let
-      index = (location_to_index bmap loc)
-      at_index = (Array.get index bmap.content)
-   in
-      case at_index of
-         Nothing -> bmap
-         (Just tile) ->
-            {bmap |
-               content =
-                  (Array.set
-                     index
-                     (fun tile)
-                     bmap.content
-                  )
-            }
+      Nothing -> Nothing

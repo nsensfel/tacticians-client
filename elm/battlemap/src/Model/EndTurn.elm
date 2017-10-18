@@ -14,7 +14,7 @@ make_it_so : Model.Type -> Model.Type
 make_it_so model =
    case model.selection of
       (Model.SelectedCharacter char_id) ->
-         case (Battlemap.get_navigator_location model.battlemap) of
+         case (Battlemap.try_getting_navigator_location model.battlemap) of
             (Just location) ->
                (Model.reset
                   model

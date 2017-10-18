@@ -2,7 +2,8 @@ module Battlemap.Navigator.RangeIndicator exposing
    (
       Type,
       generate,
-      get_marker
+      get_marker,
+      get_path
    )
 
 import Dict
@@ -281,3 +282,6 @@ generate location dist atk_dist can_cross_fun =
 
 get_marker : Type -> Battlemap.Marker.Type
 get_marker indicator = indicator.marker
+
+get_path : Type -> (List Battlemap.Direction.Type)
+get_path indicator = indicator.path

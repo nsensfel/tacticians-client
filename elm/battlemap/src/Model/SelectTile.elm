@@ -1,13 +1,8 @@
 module Model.SelectTile exposing (apply_to)
 
-import Dict
-
-import Character
-
 import Battlemap
 import Battlemap.Direction
 import Battlemap.Location
-import Battlemap.Tile
 
 import Model.RequestDirection
 import Model.EndTurn
@@ -17,66 +12,40 @@ import Error
 
 autopilot : Battlemap.Direction.Type -> Model.Type -> Model.Type
 autopilot dir model =
-   (Update.DirectionRequest.apply_to model dir)
+   (Model.RequestDirection.apply_to model dir)
 
 go_to_tile : Model.Type -> Battlemap.Location.Ref -> Model.Type
 go_to_tile model loc_ref =
-   case model.selection of
-      Nothing ->
-         (Model.invalidate
-            model
-            (Error.new
-               Error.Programming
-               "SelectTile: model moving char, no selection."
-            )
-         )
-      (Just selection) ->
-         case (Dict.get loc_ref selection.range_indicator) of
-            Nothing -> -- Clicked outside of the range indicator
-               (Model.reset model)
-            (Just indicator) ->
-               let
-                  new_model =
-                     (List.foldr
-                        (autopilot)
-                        {model |
-                           battlemap =
-                              (Battlemap.apply_to_all_tiles
-                                 model.battlemap
-                                 (Battlemap.Tile.set_direction
-                                    Battlemap.Direction.None
-                                 )
-                              ),
-                           selection =
-                              (Just
-                                 {
-                                    selection |
-                                    navigator =
-                                       (Battlemap.Navigator.reset
-                                          selection.navigator
-                                       )
-                                 }
-                              )
-                        }
-                        indicator.path
-                     )
-               in
-                  if
-                  (
-                     (model.state == Model.MovingCharacterWithClick)
-                     &&
-                     (
-                        (Battlemap.Location.get_ref
-                           selection.navigator.current_location
-                        )
-                        == loc_ref
-                     )
-                  )
-                  then
-                     (Model.EndTurn.apply_to new_model)
-                  else
+   case (Battlemap.try_getting_navigator_location model.battlemap) of
+      (Just nav_loc) ->
+         if (loc_ref == (Battlemap.Location.get_ref nav_loc))
+         then
+            -- We are already there.
+            if (model.state == Model.MovingCharacterWithClick)
+            then
+               -- And we just clicked on that tile.
+               (Model.EndTurn.apply_to model)
+            else
+               -- And we didn't just click on that tile.
+               {model | state = Model.MovingCharacterWithClick}
+         else
+            -- We have to try getting there.
+            case
+               (Battlemap.try_getting_navigator_path_to
+                  model.battlemap
+                  loc_ref
+               )
+            of
+               (Just path) ->
+                  let
+                     new_model = (List.foldr (autopilot) model path)
+                  in
                      {new_model | state = Model.MovingCharacterWithClick}
 
+               Nothing -> -- Clicked outside of the range indicator
+                  (Model.reset model model.characters)
+      Nothing -> -- Clicked outside of the range indicator
+         (Model.reset model model.characters)
 
 apply_to : Model.Type -> Battlemap.Location.Ref -> Model.Type
 apply_to model loc_ref =

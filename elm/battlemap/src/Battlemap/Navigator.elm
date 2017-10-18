@@ -5,7 +5,8 @@ module Battlemap.Navigator exposing
       get_current_location,
       get_remaining_points,
       get_range_markers,
-      add_step
+      try_adding_step,
+      try_getting_path_to
    )
 
 import Dict
@@ -78,14 +79,14 @@ get_range_markers : (
    )
 get_range_markers navigator = (Dict.toList navigator.range_indicators)
 
-add_step : (
+try_adding_step : (
       Type ->
       Battlemap.Direction.Type ->
       (Battlemap.Location.Type -> Bool) ->
       (Battlemap.Location.Type -> Int) ->
       (Maybe Type)
    )
-add_step navigator dir can_cross cost_fun =
+try_adding_step navigator dir can_cross cost_fun =
    case
       (Battlemap.Navigator.Path.try_following_direction
          can_cross
@@ -95,4 +96,15 @@ add_step navigator dir can_cross cost_fun =
       )
    of
       (Just path) -> (Just {navigator | path = path})
+      Nothing -> Nothing
+
+try_getting_path_to : (
+      Type ->
+      Battlemap.Location.Ref ->
+      (Maybe (List Battlemap.Direction.Type))
+   )
+try_getting_path_to navigator loc_ref =
+   case (Dict.get loc_ref navigator.range_indicators) of
+      (Just target) ->
+         (Just (Battlemap.Navigator.RangeIndicator.get_path target))
       Nothing -> Nothing
