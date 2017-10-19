@@ -7,6 +7,7 @@ module Battlemap.Navigator exposing
       get_remaining_points,
       get_range_markers,
       get_summary,
+      clear_path,
       try_adding_step,
       try_getting_path_to
    )
@@ -109,6 +110,16 @@ get_summary navigator =
             (Dict.toList
                navigator.range_indicators
             )
+         )
+   }
+
+clear_path : Type -> Type
+clear_path navigator =
+   {navigator |
+      path =
+         (Battlemap.Navigator.Path.new
+            navigator.starting_location
+            navigator.movement_dist
          )
    }
 

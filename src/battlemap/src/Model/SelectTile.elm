@@ -38,7 +38,17 @@ go_to_tile model loc_ref =
             of
                (Just path) ->
                   let
-                     new_model = (List.foldr (autopilot) model path)
+                     new_model =
+                        (List.foldr
+                           (autopilot)
+                           {model |
+                              battlemap =
+                                 (Battlemap.clear_navigator_path
+                                    model.battlemap
+                                 )
+                           }
+                           path
+                        )
                   in
                      {new_model | state = Model.MovingCharacterWithClick}
 

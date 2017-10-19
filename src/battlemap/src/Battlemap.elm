@@ -5,6 +5,7 @@ module Battlemap exposing
       get_navigator_remaining_points,
       get_tiles,
       set_navigator,
+      clear_navigator_path,
       try_getting_navigator_location,
       try_getting_navigator_path_to,
       try_getting_navigator_summary,
@@ -56,6 +57,14 @@ reset bmap =
    {bmap |
       navigator = Nothing
    }
+
+clear_navigator_path : Type -> Type
+clear_navigator_path bmap =
+   case bmap.navigator of
+      (Just navigator) ->
+         {bmap | navigator = (Just (Battlemap.Navigator.clear_path navigator))}
+
+      Nothing -> bmap
 
 try_getting_navigator_location : Type -> (Maybe Battlemap.Location.Type)
 try_getting_navigator_location bmap =
