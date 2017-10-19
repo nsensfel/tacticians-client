@@ -1,13 +1,24 @@
-TARGETS = battlemap
-PAGES = $(addsuffix .html,$(TARGETS))
+MODULES = battlemap
+SRC_DIR = ${CURDIR}/src
+WWW_DIR = ${CURDIR}/www
 
-all: $(TARGETS) $(PAGES)
+MODULES_SRC = $(addprefix $(SRC_DIR)/,$(MODULES))
+MODULES_WWW = $(addprefix $(WWW_DIR)/,$(MODULES))
 
-upload_demo: $(PAGES) LICENSE
-	scp -r $^ dreamhost:~/tacticians.online/
+all: build $(MODULES_WWW)
 
-$(TARGETS):
-	$(MAKE) -C elm/$@ index.html
+build:
+	for module in $(MODULES_SRC) ; do \
+		$(MAKE) -C $$module build ; \
+	done
 
-%.html: elm/%/index.html
-	cp $< $@
+clean:
+	for module in $(MODULES_SRC) ; do \
+		$(MAKE) -C $$module clean ; \
+	done
+
+$(MODULES_WWW): %: $(WWW_DIR)
+	ln -s $(SRC_DIR)/$(notdir $<)/www $@
+
+$(WWW_DIR):
+	mkdir -p $@
