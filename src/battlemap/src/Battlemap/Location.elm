@@ -19,6 +19,7 @@ neighbor loc dir =
       Battlemap.Direction.Down -> {loc | y = (loc.y + 1)}
       Battlemap.Direction.None -> loc
 
+
 get_ref : Type -> Ref
 get_ref l =
    (l.x, l.y)

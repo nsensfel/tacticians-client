@@ -15,6 +15,9 @@ import Battlemap.Marker
 
 import Util.List
 
+--------------------------------------------------------------------------------
+-- TYPES -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
 type alias Type =
    {
       distance: Int,
@@ -23,6 +26,9 @@ type alias Type =
       marker: Battlemap.Marker.Type
    }
 
+--------------------------------------------------------------------------------
+-- LOCAL -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
 generate_row : (
       Battlemap.Location.Type ->
       Int ->
@@ -121,15 +127,7 @@ handle_neighbors loc dist atk_dist indicator remaining directions =
                   )
                (Just neighbor) ->
                   let
-                     is_attack_range = (indicator.distance >= dist)
-                     new_dist =
-                        (
-                           if (is_attack_range)
-                           then
-                              (indicator.distance + 1)
-                           else
-                              (indicator.distance + neighbor.node_cost)
-                        )
+                     new_dist = (indicator.distance + neighbor.node_cost)
                   in
                      (handle_neighbors
                         loc
@@ -137,11 +135,7 @@ handle_neighbors loc dist atk_dist indicator remaining directions =
                         atk_dist
                         indicator
                         (
-                           if
-                              (
-                                 (new_dist < neighbor.distance)
-                                 && (new_dist <= atk_dist)
-                              )
+                           if (new_dist < neighbor.distance)
                            then
                               (Dict.insert
                                  (Battlemap.Location.get_ref neighbor_loc)
@@ -267,6 +261,9 @@ grid_to_range_indicators can_cross_fun cost_fun location grid result =
                result
             )
 
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
 generate : (
       Battlemap.Location.Type ->
       Int ->
