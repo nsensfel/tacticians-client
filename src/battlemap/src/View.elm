@@ -20,14 +20,11 @@ view model =
             []
             (View.Controls.view)
          ),
+         (View.Status.view model),
          (View.Battlemap.get_html
             model.battlemap
             32
             (Dict.values model.characters)
-         ),
-         (Html.div
-            []
-            [ (View.Status.view model) ]
          )
       ]
    )

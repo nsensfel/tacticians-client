@@ -55,9 +55,11 @@ new : (
       Battlemap.Location.Type ->
       Int ->
       Int ->
-      (Battlemap.Location.Type -> Bool) -> Type
+      (Battlemap.Location.Type -> Bool) ->
+      (Battlemap.Location.Type -> Int) ->
+      Type
    )
-new start_loc mov_dist atk_dist can_cross_fun =
+new start_loc mov_dist atk_dist can_cross_fun cost_fun =
    {
       starting_location = start_loc,
       movement_dist = mov_dist,
@@ -67,8 +69,9 @@ new start_loc mov_dist atk_dist can_cross_fun =
          (Battlemap.Navigator.RangeIndicator.generate
             start_loc
             mov_dist
-            atk_dist
+            (mov_dist + atk_dist)
             (can_cross_fun)
+            (cost_fun)
          )
    }
 

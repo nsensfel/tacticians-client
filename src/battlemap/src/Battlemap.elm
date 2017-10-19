@@ -88,6 +88,13 @@ set_navigator start_loc movement_points attack_range can_cross bmap =
                movement_points
                attack_range
                (\loc -> ((can_cross loc) && (has_location bmap loc)))
+               (\loc ->
+                  case
+                     (Array.get (location_to_index bmap loc) bmap.content)
+                  of
+                     (Just tile) -> (Battlemap.Tile.get_cost tile)
+                     Nothing -> 99
+               )
             )
          )
    }
@@ -112,7 +119,7 @@ try_adding_step_to_navigator bmap can_cross dir =
                         (Array.get (location_to_index bmap loc) bmap.content)
                      of
                         (Just tile) -> (Battlemap.Tile.get_cost tile)
-                        Nothing -> 0
+                        Nothing -> 99
                   )
                )
          in

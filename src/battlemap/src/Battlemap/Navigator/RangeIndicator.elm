@@ -176,9 +176,9 @@ search result remaining dist atk_dist =
                (
                   (-1,-1),
                   {
-                     distance = (atk_dist + 1),
+                     distance = 999999,
                      path = [],
-                     node_cost = 99,
+                     node_cost = 999999,
                      marker = Battlemap.Marker.CanAttack
                   }
                )
@@ -219,65 +219,79 @@ search result remaining dist atk_dist =
 
 grid_to_range_indicators : (
       (Battlemap.Location.Type -> Bool) ->
+      (Battlemap.Location.Type -> Int) ->
       Battlemap.Location.Type ->
-      Int ->
       (List Battlemap.Location.Type) ->
       (Dict.Dict Battlemap.Location.Ref Type) ->
       (Dict.Dict Battlemap.Location.Ref Type)
    )
-grid_to_range_indicators can_cross_fun location dist grid result =
+grid_to_range_indicators can_cross_fun cost_fun location grid result =
    case (Util.List.pop grid) of
       Nothing -> result
       (Just (head, tail)) ->
          if (can_cross_fun head)
          then
-            -- TODO: test if the current char can cross that tile.
-            -- TODO: get tile cost.
             (grid_to_range_indicators
                (can_cross_fun)
+               (cost_fun)
                location
-               dist
                tail
                (Dict.insert
                   (Battlemap.Location.get_ref head)
                   {
                      distance =
                         (
-                           if ((location.x == head.x) && (location.y == head.y))
+                           if
+                              (
+                                 (location.x == head.x)
+                                 && (location.y == head.y)
+                              )
                            then
                               0
                            else
-                              (dist + 1)
+                              9999
                         ),
                      path = [],
-                     node_cost = 1,
+                     node_cost = (cost_fun head),
                      marker = Battlemap.Marker.CanGoTo
                   }
                   result
                )
             )
          else
-            (grid_to_range_indicators (can_cross_fun) location dist tail result)
+            (grid_to_range_indicators
+               (can_cross_fun)
+               (cost_fun)
+               location
+               tail
+               result
+            )
 
 generate : (
       Battlemap.Location.Type ->
       Int ->
       Int ->
       (Battlemap.Location.Type -> Bool) ->
+      (Battlemap.Location.Type -> Int) ->
       (Dict.Dict Battlemap.Location.Ref Type)
    )
-generate location dist atk_dist can_cross_fun =
-   (search
-      Dict.empty
-      (grid_to_range_indicators
-         (can_cross_fun)
-         location
-         atk_dist
-         (generate_grid location atk_dist (-atk_dist) [])
-         Dict.empty
+generate location dist atk_dist can_cross_fun cost_fun =
+   (Dict.filter
+      (\loc_ref range_indicator ->
+         (range_indicator.distance <= atk_dist)
       )
-      dist
-      atk_dist
+      (search
+         Dict.empty
+         (grid_to_range_indicators
+            (can_cross_fun)
+            (cost_fun)
+            location
+            (generate_grid location atk_dist (-atk_dist) [])
+            Dict.empty
+         )
+         dist
+         atk_dist
+      )
    )
 
 get_marker : Type -> Battlemap.Marker.Type
