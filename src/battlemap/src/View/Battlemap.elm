@@ -27,6 +27,7 @@ char_on_map tile_size char =
       (Html.div
          [
             (Html.Attributes.class "battlemap-character-icon"),
+            (Html.Attributes.class "battlemap-tiled"),
             (Html.Attributes.class
                ("asset-character-icon-" ++ (Character.get_icon_id char))
             ),

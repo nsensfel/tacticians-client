@@ -17,8 +17,8 @@ clean:
 		$(MAKE) -C $$module clean ; \
 	done
 
-$(MODULES_WWW): %: $(WWW_DIR)
-	ln -s $(SRC_DIR)/$(notdir $<)/www $@
+$(MODULES_WWW): %:
+	ln -s $(SRC_DIR)/$(patsubst $(WWW_DIR)/%,%,$@)/www $@
 
 $(WWW_DIR):
 	mkdir -p $@

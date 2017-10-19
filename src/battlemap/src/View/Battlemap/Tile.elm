@@ -21,6 +21,7 @@ get_html tile_size tile =
       (Html.div
          [
             (Html.Attributes.class "battlemap-tile-icon"),
+            (Html.Attributes.class "battlemap-tiled"),
             (Html.Attributes.class
                ("asset-tile-" ++ (toString (Battlemap.Tile.get_icon_id tile)))
             ),

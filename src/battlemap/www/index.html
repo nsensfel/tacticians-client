@@ -1,6 +1,73 @@
 <!DOCTYPE html>
 <html>
    <head>
+   <style>
+      .battlemap-container
+      {
+         position: relative;
+      }
+
+      .battlemap-tiled
+      {
+         position: absolute;
+         height: 32px;
+         width: 32px;
+      }
+
+      .battlemap-tile-icon
+      {
+         z-index: 0;
+      }
+
+      .asset-tile-\"0\"
+      {
+         background-color: green;
+      }
+
+      .asset-tile-\"1\"
+      {
+         background-color: yellow;
+      }
+
+      .asset-tile-\"2\"
+      {
+         background-color: red;
+      }
+
+      .battlemap-character-icon
+      {
+         z-index: 2;
+      }
+
+      .asset-character-icon-Icon0
+      {
+         background-color: cyan;
+      }
+
+      .asset-character-icon-Icon1
+      {
+         background-color: blue;
+      }
+
+      .asset-character-icon-Icon2
+      {
+         background-color: darkblue;
+      }
+
+      .battlemap-marker-icon
+      {
+         z-index: 1;
+      }
+      .asset-marker-icon-can-go-to
+      {
+         background-color:rgba(0,0,0,0.5);
+      }
+
+      .asset-marker-icon-can-attack
+      {
+         background-color:rgba(0,0,0,0.7);
+      }
+   </style>
    </head>
    <body>
       <script src="script/main.js"></script>
