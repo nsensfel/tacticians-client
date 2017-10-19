@@ -1,13 +1,20 @@
 import Html
+
+import Model
+import Event
+
+import Init
+import Subscriptions
 import View
-import Shim.Model
 import Update
 
+main : (Program Never Model.Type Event.Type)
 main =
-   (Html.beginnerProgram
+   (Html.program
       {
-         model = Shim.Model.generate,
+         init = Init.init,
          view = View.view,
-         update = Update.update
+         update = Update.update,
+         subscriptions = Subscriptions.subscriptions
       }
    )
