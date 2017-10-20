@@ -161,19 +161,21 @@ handle_neighbors loc dist atk_dist indicator remaining directions =
                            then
                               (Dict.insert
                                  (Battlemap.Location.get_ref neighbor_loc)
-                                 if (new_dist > dist)
-                                 then
-                                    {neighbor |
-                                       distance = dist,
-                                       range = new_range,
-                                       path = (head :: indicator.path)
-                                    }
-                                 else
-                                    {neighbor |
-                                       distance = new_dist,
-                                       range = 0,
-                                       path = (head :: indicator.path)
-                                    }
+                                 (
+                                    if (new_dist > dist)
+                                    then
+                                       {neighbor |
+                                          distance = (dist + 1),
+                                          range = new_range,
+                                          path = (head :: indicator.path)
+                                       }
+                                    else
+                                       {neighbor |
+                                          distance = new_dist,
+                                          range = 0,
+                                          path = (head :: indicator.path)
+                                       }
+                                 )
                                  remaining
                               )
                            else
