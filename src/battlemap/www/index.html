@@ -2,9 +2,26 @@
 <html>
    <head>
    <style>
+      html
+      {
+         height: 100%;
+      }
+
+      html, body, .battlemap
+      {
+         position: absolute;
+         top: 0;
+         bottom: 0;
+         right: 0;
+         left: 0;
+      }
+
       .battlemap-container
       {
-         position: relative;
+         overflow: auto;
+         resize: vertical;
+         width: inherit;
+         height: 70%;
       }
 
       .battlemap-tiled

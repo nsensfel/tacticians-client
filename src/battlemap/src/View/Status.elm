@@ -3,6 +3,7 @@ module View.Status exposing (view)
 import Dict
 
 import Html
+import Html.Attributes
 
 import Battlemap
 import Character
@@ -37,6 +38,7 @@ view : Model.Type -> (Html.Html Event.Type)
 view model =
    (Html.div
       [
+         (Html.Attributes.class "battlemap-status")
       ]
       [
          (Html.text

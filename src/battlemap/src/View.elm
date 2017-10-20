@@ -2,6 +2,7 @@ module View exposing (view)
 
 import Dict
 import Html
+import Html.Attributes
 
 import View.Battlemap
 
@@ -14,17 +15,28 @@ import Model
 view : Model.Type -> (Html.Html Event.Type)
 view model =
    (Html.div
-      []
+      [
+         (Html.Attributes.class "battlemap")
+      ]
       [
          (Html.div
-            []
+            [
+               (Html.Attributes.class "battlemap-controls")
+            ]
             (View.Controls.view)
          ),
-         (View.Status.view model),
-         (View.Battlemap.get_html
-            model.battlemap
-            32
-            (Dict.values model.characters)
-         )
+         (Html.div
+            [
+               (Html.Attributes.class "battlemap-container")
+            ]
+            [
+               (View.Battlemap.get_html
+                  model.battlemap
+                  1
+                  (Dict.values model.characters)
+               )
+            ]
+         ),
+         (View.Status.view model)
       ]
    )

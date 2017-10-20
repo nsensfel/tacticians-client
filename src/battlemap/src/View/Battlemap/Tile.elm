@@ -7,14 +7,15 @@ import Html.Events
 import Battlemap.Tile
 import Battlemap.Location
 
+import Constants.UI
+
 import Event
 
 get_html : (
-      Int ->
       Battlemap.Tile.Type ->
       (Html.Html Event.Type)
    )
-get_html tile_size tile =
+get_html tile =
    let
       tile_loc = (Battlemap.Tile.get_location tile)
    in
@@ -30,8 +31,14 @@ get_html tile_size tile =
             ),
             (Html.Attributes.style
                [
-                  ("top", ((toString (tile_loc.y * tile_size)) ++ "px")),
-                  ("left", ((toString (tile_loc.x * tile_size)) ++ "px"))
+                  (
+                     "top",
+                     ((toString (tile_loc.y * Constants.UI.tile_size)) ++ "px")
+                  ),
+                  (
+                     "left",
+                     ((toString (tile_loc.x * Constants.UI.tile_size)) ++ "px")
+                  )
                ]
             )
          ]

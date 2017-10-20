@@ -12,6 +12,8 @@ import Battlemap
 
 import Character
 
+import Constants.UI
+
 import View.Battlemap.Tile
 import View.Battlemap.Navigator
 
@@ -19,8 +21,8 @@ import Event
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-char_on_map : Int -> Character.Type -> (Html.Html Event.Type)
-char_on_map tile_size char =
+char_on_map : Character.Type -> (Html.Html Event.Type)
+char_on_map char =
    let
       char_loc = (Character.get_location char)
    in
@@ -36,8 +38,14 @@ char_on_map tile_size char =
             ),
             (Html.Attributes.style
                [
-                  ("top", ((toString (char_loc.y * tile_size)) ++ "px")),
-                  ("left", ((toString (char_loc.x * tile_size)) ++ "px"))
+                  (
+                     "top",
+                     ((toString (char_loc.y * Constants.UI.tile_size)) ++ "px")
+                  ),
+                  (
+                     "left",
+                     ((toString (char_loc.x * Constants.UI.tile_size)) ++ "px")
+                  )
                ]
             )
          ]
@@ -50,29 +58,37 @@ char_on_map tile_size char =
 --------------------------------------------------------------------------------
 get_html : (
       Battlemap.Type ->
-      Int ->
+      Float ->
       (List Character.Type) ->
       (Html.Html Event.Type)
    )
-get_html battlemap tile_size characters =
+get_html battlemap scale characters =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-container")
+         (Html.Attributes.class "battlemap-actual"),
+         (Html.Attributes.style
+            [
+               (
+                  "transform",
+                  ("scale(" ++ (toString scale) ++ ")")
+               )
+            ]
+         )
       ]
       (
          (List.map
-            (View.Battlemap.Tile.get_html tile_size)
+            (View.Battlemap.Tile.get_html)
             (Array.toList (Battlemap.get_tiles battlemap))
          )
          ++
          (List.map
-            (char_on_map tile_size)
+            (char_on_map)
             characters
          )
          ++
          case (Battlemap.try_getting_navigator_summary battlemap) of
             (Just nav_summary) ->
-               (View.Battlemap.Navigator.get_html tile_size nav_summary)
+               (View.Battlemap.Navigator.get_html nav_summary)
 
             Nothing -> [(Html.text "")]
       )
