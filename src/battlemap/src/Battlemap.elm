@@ -67,20 +67,26 @@ tile_cost_function bmap start_loc char_list loc =
    then
       0
    else
-      case
-         (Array.get (location_to_index bmap loc) bmap.content)
-      of
-         (Just tile) ->
-            if
-               (List.any
-                  (\c -> ((Character.get_location c) == loc))
-                  char_list
-               )
-            then
-               Constants.Movement.cost_when_occupied_tile
-            else
-               (Battlemap.Tile.get_cost tile)
-         Nothing -> Constants.Movement.cost_when_out_of_bounds
+      if (has_location bmap loc)
+      then
+         case
+            (Array.get (location_to_index bmap loc) bmap.content)
+         of
+            (Just tile) ->
+               if
+                  (List.any
+                     (\c -> ((Character.get_location c) == loc))
+                     char_list
+                  )
+               then
+                  Constants.Movement.cost_when_occupied_tile
+               else
+                  (Battlemap.Tile.get_cost tile)
+
+            Nothing -> Constants.Movement.cost_when_out_of_bounds
+      else
+         Constants.Movement.cost_when_out_of_bounds
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
