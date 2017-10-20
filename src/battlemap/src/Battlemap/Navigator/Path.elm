@@ -15,6 +15,8 @@ import Util.List
 import Battlemap.Direction
 import Battlemap.Location
 
+import Constants.Movement
+
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -134,14 +136,14 @@ get_remaining_points path = path.remaining_points
 
 get_summary : Type -> (List Battlemap.Direction.Type)
 get_summary path = path.previous_directions
+
 try_following_direction : (
-      (Battlemap.Location.Type -> Bool) ->
       (Battlemap.Location.Type -> Int) ->
       (Maybe Type) ->
       Battlemap.Direction.Type ->
       (Maybe Type)
    )
-try_following_direction can_cross cost_fun maybe_path dir =
+try_following_direction cost_fun maybe_path dir =
    case maybe_path of
       (Just path) ->
          let
@@ -150,8 +152,9 @@ try_following_direction can_cross cost_fun maybe_path dir =
                   path.current_location
                   dir
                )
+            next_location_cost = (cost_fun next_location)
          in
-            if (can_cross next_location)
+            if (next_location_cost <= Constants.Movement.max_points)
             then
                if (has_been_to path next_location)
                then
@@ -161,7 +164,7 @@ try_following_direction can_cross cost_fun maybe_path dir =
                      path
                      dir
                      next_location
-                     (cost_fun next_location)
+                     next_location_cost
                   )
             else
                Nothing

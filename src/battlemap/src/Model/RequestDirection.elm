@@ -20,24 +20,7 @@ make_it_so model dir =
             new_bmap =
                (Battlemap.try_adding_step_to_navigator
                   model.battlemap
-                  (\loc ->
-                     (List.all
-                        (\char ->
-                           (
-                              ((Character.get_ref char) == char_id)
-                              ||
-                              (
-                                 (Battlemap.Location.get_ref
-                                    (Character.get_location char)
-                                 )
-                                 /=
-                                 (Battlemap.Location.get_ref loc)
-                              )
-                           )
-                        )
-                        (Dict.values model.characters)
-                     )
-                  )
+                  (Dict.values model.characters)
                   dir
                )
          in

@@ -21,14 +21,7 @@ make_it_so model char_id =
                      (Character.get_location char)
                      (Character.get_movement_points char)
                      (Character.get_attack_range char)
-                     (\loc ->
-                        (loc == (Character.get_location char))
-                        ||
-                        (List.all
-                           (\c -> ((Character.get_location c) /= loc))
-                           (Dict.values model.characters)
-                        )
-                     )
+                     (Dict.values model.characters)
                      model.battlemap
                   )
             }

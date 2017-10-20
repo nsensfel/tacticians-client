@@ -19,6 +19,10 @@ import Battlemap.Tile
 import Battlemap.Direction
 import Battlemap.Location
 
+import Character
+
+import Constants.Movement
+
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -46,6 +50,37 @@ has_location bmap loc =
       && (loc.y < bmap.height)
    )
 
+tile_cost_function : (
+      Type ->
+      Battlemap.Location.Type ->
+      (List Character.Type) ->
+      Battlemap.Location.Type ->
+      Int
+   )
+tile_cost_function bmap start_loc char_list loc =
+   if
+      (
+         (Battlemap.Location.get_ref start_loc)
+         ==
+         (Battlemap.Location.get_ref loc)
+      )
+   then
+      0
+   else
+      case
+         (Array.get (location_to_index bmap loc) bmap.content)
+      of
+         (Just tile) ->
+            if
+               (List.any
+                  (\c -> ((Character.get_location c) == loc))
+                  char_list
+               )
+            then
+               Constants.Movement.cost_when_occupied_tile
+            else
+               (Battlemap.Tile.get_cost tile)
+         Nothing -> Constants.Movement.cost_when_out_of_bounds
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -84,11 +119,11 @@ set_navigator : (
       Battlemap.Location.Type ->
       Int ->
       Int ->
-      (Battlemap.Location.Type -> Bool) ->
+      (List Character.Type) ->
       Type ->
       Type
    )
-set_navigator start_loc movement_points attack_range can_cross bmap =
+set_navigator start_loc movement_points attack_range character_list bmap =
    {bmap |
       navigator =
          (Just
@@ -96,13 +131,10 @@ set_navigator start_loc movement_points attack_range can_cross bmap =
                start_loc
                movement_points
                attack_range
-               (\loc -> ((can_cross loc) && (has_location bmap loc)))
-               (\loc ->
-                  case
-                     (Array.get (location_to_index bmap loc) bmap.content)
-                  of
-                     (Just tile) -> (Battlemap.Tile.get_cost tile)
-                     Nothing -> 99
+               (tile_cost_function
+                  bmap
+                  start_loc
+                  character_list
                )
             )
          )
@@ -110,11 +142,11 @@ set_navigator start_loc movement_points attack_range can_cross bmap =
 
 try_adding_step_to_navigator : (
       Type ->
-      (Battlemap.Location.Type -> Bool) ->
+      (List Character.Type) ->
       Battlemap.Direction.Type ->
       (Maybe Type)
    )
-try_adding_step_to_navigator bmap can_cross dir =
+try_adding_step_to_navigator bmap character_list dir =
    case bmap.navigator of
       (Just navigator) ->
          let
@@ -122,13 +154,10 @@ try_adding_step_to_navigator bmap can_cross dir =
                (Battlemap.Navigator.try_adding_step
                   navigator
                   dir
-                  (\loc -> ((can_cross loc) && (has_location bmap loc)))
-                  (\loc ->
-                     case
-                        (Array.get (location_to_index bmap loc) bmap.content)
-                     of
-                        (Just tile) -> (Battlemap.Tile.get_cost tile)
-                        Nothing -> 99
+                  (tile_cost_function
+                     bmap
+                     (Battlemap.Navigator.get_starting_location navigator)
+                     character_list
                   )
                )
          in

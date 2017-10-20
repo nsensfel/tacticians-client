@@ -4,6 +4,7 @@ module Battlemap.Navigator exposing
       Summary,
       new,
       get_current_location,
+      get_starting_location,
       get_remaining_points,
       get_range_markers,
       get_summary,
@@ -56,11 +57,10 @@ new : (
       Battlemap.Location.Type ->
       Int ->
       Int ->
-      (Battlemap.Location.Type -> Bool) ->
       (Battlemap.Location.Type -> Int) ->
       Type
    )
-new start_loc mov_dist atk_dist can_cross_fun cost_fun =
+new start_loc mov_dist atk_dist cost_fun =
    {
       starting_location = start_loc,
       movement_dist = mov_dist,
@@ -71,7 +71,6 @@ new start_loc mov_dist atk_dist can_cross_fun cost_fun =
             start_loc
             mov_dist
             (mov_dist + atk_dist)
-            (can_cross_fun)
             (cost_fun)
          )
    }
@@ -80,9 +79,12 @@ get_current_location : Type -> Battlemap.Location.Type
 get_current_location navigator =
    (Battlemap.Navigator.Path.get_current_location navigator.path)
 
+get_starting_location : Type -> Battlemap.Location.Type
+get_starting_location navigator = navigator.starting_location
+
 get_remaining_points : Type -> Int
 get_remaining_points navigator =
-   (Battlemap.Navigator.Path.get_remaining_points navigator.path)
+    (Battlemap.Navigator.Path.get_remaining_points navigator.path)
 
 get_range_markers : (
       Type ->
@@ -126,14 +128,12 @@ clear_path navigator =
 try_adding_step : (
       Type ->
       Battlemap.Direction.Type ->
-      (Battlemap.Location.Type -> Bool) ->
       (Battlemap.Location.Type -> Int) ->
       (Maybe Type)
    )
-try_adding_step navigator dir can_cross cost_fun =
+try_adding_step navigator dir cost_fun =
    case
       (Battlemap.Navigator.Path.try_following_direction
-         can_cross
          cost_fun
          (Just navigator.path)
          dir
