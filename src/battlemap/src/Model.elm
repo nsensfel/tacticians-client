@@ -35,7 +35,8 @@ type alias Type =
       battlemap: Battlemap.Type,
       characters: (Dict.Dict Character.Ref Character.Type),
       error: (Maybe Error.Type),
-      selection: Selection
+      selection: Selection,
+      ui_scale: Float
    }
 
 get_state : Type -> State
@@ -48,7 +49,8 @@ reset model characters =
       battlemap = (Battlemap.reset model.battlemap),
       characters = characters,
       error = Nothing,
-      selection = None
+      selection = None,
+      ui_scale = model.ui_scale -- TODO: move this into its own module.
    }
 
 invalidate : Type -> Error.Type -> Type

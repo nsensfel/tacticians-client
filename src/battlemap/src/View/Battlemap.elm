@@ -7,8 +7,10 @@ import List
 import Html
 import Html.Attributes
 import Html.Events
+import Html.Lazy
 
 import Battlemap
+import Battlemap.Tile
 
 import Character
 
@@ -53,6 +55,20 @@ char_on_map char =
          ]
       )
 
+get_tiles_html : (
+      (Array.Array Battlemap.Tile.Type) ->
+      (Html.Html Event.Type)
+   )
+get_tiles_html tiles_array =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-tiles-layer")
+      ]
+      (List.map
+         (View.Battlemap.Tile.get_html)
+         (Array.toList tiles_array)
+      )
+   )
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -76,11 +92,11 @@ get_html battlemap scale characters =
          )
       ]
       (
-         (List.map
-            (View.Battlemap.Tile.get_html)
-            (Array.toList (Battlemap.get_tiles battlemap))
+         (Html.Lazy.lazy
+            (get_tiles_html)
+            (Battlemap.get_tiles battlemap)
          )
-         ++
+         ::
          (List.map
             (char_on_map)
             characters

@@ -50,5 +50,6 @@ generate =
                   Dict.empty
                )
             )
-         )
+         ),
+      ui_scale = 1.0
    }

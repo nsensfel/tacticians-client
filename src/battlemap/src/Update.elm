@@ -25,3 +25,10 @@ update event model =
 
       Event.TurnEnded ->
          ((Model.EndTurn.apply_to new_model), Cmd.none)
+
+      (Event.ScaleChangeRequested mod) ->
+         if (mod == 0.0)
+         then
+            ({model | ui_scale = 1.0}, Cmd.none)
+         else
+            ({model | ui_scale = (mod * model.ui_scale)}, Cmd.none)

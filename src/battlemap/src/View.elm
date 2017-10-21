@@ -32,7 +32,7 @@ view model =
             [
                (View.Battlemap.get_html
                   model.battlemap
-                  1
+                  model.ui_scale
                   (Dict.values model.characters)
                )
             ]

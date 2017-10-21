@@ -5,8 +5,8 @@ import Shim.Battlemap.Tile
 --generate : Battlemap.Type
 generate =
    {
-      width = 16,
-      height = 16,
-      content = (Shim.Battlemap.Tile.generate 16),
+      width = 64,
+      height = 64,
+      content = (Shim.Battlemap.Tile.generate 64),
       navigator = Nothing
    }

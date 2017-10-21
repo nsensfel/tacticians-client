@@ -10,3 +10,4 @@ type Type =
    | TileSelected Battlemap.Location.Ref
    | CharacterSelected Character.Ref
    | TurnEnded
+   | ScaleChangeRequested Float
