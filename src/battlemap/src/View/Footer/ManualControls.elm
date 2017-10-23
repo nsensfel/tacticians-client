@@ -1,8 +1,11 @@
-module View.Controls exposing (view)
+module View.Footer.ManualControls exposing (get_html)
 
+-- Elm -------------------------------------------------------------------------
 import Html
+import Html.Attributes
 import Html.Events
 
+-- Battlemap -------------------------------------------------------------------
 import Battlemap.Direction
 
 import Event
@@ -28,29 +31,20 @@ end_turn_button =
       [ (Html.text "End Turn") ]
    )
 
-scale_button : Float -> String -> (Html.Html Event.Type)
-scale_button mod label =
-   (Html.button
-      [
-         (Html.Events.onClick
-            (Event.ScaleChangeRequested mod)
-         )
-      ]
-      [ (Html.text label) ]
-   )
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-view : (List (Html.Html Event.Type))
-view =
-   [
-      (direction_button Battlemap.Direction.Left "Left"),
-      (direction_button Battlemap.Direction.Down "Down"),
-      (direction_button Battlemap.Direction.Up "Up"),
-      (direction_button Battlemap.Direction.Right "Right"),
-      (end_turn_button),
-      (scale_button (0.75) "Zoom -"),
-      (scale_button 0 "Zoom Reset"),
-      (scale_button (1.15) "Zoom +")
-   ]
+get_html : (Html.Html Event.Type)
+get_html =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-footer-manualcontrols")
+      ]
+      [
+         (direction_button Battlemap.Direction.Left "Left"),
+         (direction_button Battlemap.Direction.Down "Down"),
+         (direction_button Battlemap.Direction.Up "Up"),
+         (direction_button Battlemap.Direction.Right "Right"),
+         (end_turn_button)
+      ]
+   )

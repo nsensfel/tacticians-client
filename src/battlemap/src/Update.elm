@@ -34,3 +34,6 @@ update event model =
             ({model | ui = (UI.reset_zoom_level model.ui)}, Cmd.none)
          else
             ({model | ui = (UI.mod_zoom_level model.ui mod)}, Cmd.none)
+
+      (Event.TabSelected tab) ->
+            ({model | ui = (UI.set_displayed_tab model.ui tab)}, Cmd.none)

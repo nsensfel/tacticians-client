@@ -1,5 +1,6 @@
 module View.Battlemap exposing (get_html)
 
+-- Elm -------------------------------------------------------------------------
 import Array
 
 import List
@@ -9,12 +10,15 @@ import Html.Attributes
 import Html.Events
 import Html.Lazy
 
+-- Battlemap  ------------------------------------------------------------------
 import Battlemap
 import Battlemap.Tile
 
 import Character
 
 import Constants.UI
+
+import Util.Html
 
 import View.Battlemap.Tile
 import View.Battlemap.Navigator
@@ -106,6 +110,6 @@ get_html battlemap scale characters =
             (Just nav_summary) ->
                (View.Battlemap.Navigator.get_html nav_summary)
 
-            Nothing -> [(Html.text "")]
+            Nothing -> [(Util.Html.nothing)]
       )
    )

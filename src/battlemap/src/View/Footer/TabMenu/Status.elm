@@ -1,10 +1,12 @@
-module View.Status exposing (view)
+module View.Footer.TabMenu.Status exposing (get_html)
 
+-- Elm -------------------------------------------------------------------------
 import Dict
 
 import Html
 import Html.Attributes
 
+-- Battlemap -------------------------------------------------------------------
 import Battlemap
 import Character
 
@@ -12,6 +14,9 @@ import Error
 import Event
 import Model
 
+--------------------------------------------------------------------------------
+-- LOCAL -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
 moving_character_text : Model.Type -> String
 moving_character_text model =
    case model.selection of
@@ -32,24 +37,33 @@ moving_character_text model =
                   ++ (toString (Character.get_movement_points char))
                   ++ " movement points remaining."
                )
+
       _ -> "Error: model.selection does not match its state."
 
-view : Model.Type -> (Html.Html Event.Type)
-view model =
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
+get_html : Model.Type -> (Html.Html Event.Type)
+get_html model =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-status")
+         (Html.Attributes.class "battlemap-footer-tabmenu-content"),
+         (Html.Attributes.class "battlemap-footer-tabmenu-content-status")
       ]
       [
          (Html.text
             (
                (case model.state of
                   Model.Default -> "Click on a character to control it."
-                  Model.MovingCharacterWithButtons -> (moving_character_text model)
-                  Model.MovingCharacterWithClick -> (moving_character_text model)
                   Model.FocusingTile -> "Error: Unimplemented."
+                  Model.MovingCharacterWithButtons ->
+                     (moving_character_text model)
+
+                  Model.MovingCharacterWithClick ->
+                     (moving_character_text model)
                )
-               ++ " " ++
+               ++ " "
+               ++
                (case model.error of
                   Nothing -> ""
                   (Just error) -> (Error.to_string error)

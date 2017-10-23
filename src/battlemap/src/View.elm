@@ -1,19 +1,24 @@
 module View exposing (view)
 
+-- Elm -------------------------------------------------------------------------
 import Dict
 
 import Html
 import Html.Attributes
 
+-- Battlemap -------------------------------------------------------------------
 import UI
 
 import View.Battlemap
-import View.Controls
-import View.Status
+import View.Header
+import View.Footer
 
 import Event
 import Model
 
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
 view : Model.Type -> (Html.Html Event.Type)
 view model =
    (Html.div
@@ -21,12 +26,7 @@ view model =
          (Html.Attributes.class "battlemap")
       ]
       [
-         (Html.div
-            [
-               (Html.Attributes.class "battlemap-controls")
-            ]
-            (View.Controls.view)
-         ),
+         (View.Header.get_html model),
          (Html.div
             [
                (Html.Attributes.class "battlemap-container")
@@ -39,6 +39,6 @@ view model =
                )
             ]
          ),
-         (View.Status.view model)
+         (View.Footer.get_html model)
       ]
    )
