@@ -44,7 +44,7 @@ default =
    {
       zoom_level = 1.0,
       show_manual_controls = True,
-      displayed_tab = Nothing
+      displayed_tab = (Just StatusTab)
    }
 
 -- Zoom ------------------------------------------------------------------------
@@ -75,7 +75,8 @@ to_string tab =
       SettingsTab -> "Settings"
 
 get_all_tabs : (List Tab)
-get_all_tabs = [StatusTab, CharactersTab, SettingsTab]
+get_all_tabs =
+   [StatusTab, CharactersTab, SettingsTab]
 -- ManualControls --------------------------------------------------------------
 has_manual_controls_enabled : Type -> Bool
 has_manual_controls_enabled ui = ui.show_manual_controls

@@ -10,6 +10,8 @@ import Html.Attributes
 import Battlemap
 import Character
 
+import Util.Html
+
 import Error
 import Event
 import Model
@@ -40,6 +42,17 @@ moving_character_text model =
 
       _ -> "Error: model.selection does not match its state."
 
+get_error_html : Error.Type -> (Html.Html Event.Type)
+get_error_html err =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-footer-tabmenu-status-error-msg")
+      ]
+      [
+         (Html.text (Error.to_string err))
+      ]
+   )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -51,23 +64,19 @@ get_html model =
          (Html.Attributes.class "battlemap-footer-tabmenu-content-status")
       ]
       [
+         (case model.error of
+            (Just error) -> (get_error_html error)
+            Nothing -> Util.Html.nothing
+         ),
          (Html.text
-            (
-               (case model.state of
-                  Model.Default -> "Click on a character to control it."
-                  Model.FocusingTile -> "Error: Unimplemented."
-                  Model.MovingCharacterWithButtons ->
-                     (moving_character_text model)
+            (case model.state of
+               Model.Default -> "Click on a character to control it."
+               Model.FocusingTile -> "Error: Unimplemented."
+               Model.MovingCharacterWithButtons ->
+                  (moving_character_text model)
 
-                  Model.MovingCharacterWithClick ->
-                     (moving_character_text model)
-               )
-               ++ " "
-               ++
-               (case model.error of
-                  Nothing -> ""
-                  (Just error) -> (Error.to_string error)
-               )
+               Model.MovingCharacterWithClick ->
+                  (moving_character_text model)
             )
          )
       ]

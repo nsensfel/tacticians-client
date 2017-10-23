@@ -56,7 +56,11 @@ reset model characters =
    }
 
 invalidate : Type -> Error.Type -> Type
-invalidate model err = {model | error = (Just err)}
+invalidate model err =
+   {model |
+      error = (Just err),
+      ui = (UI.set_displayed_tab model.ui UI.StatusTab)
+   }
 
 clear_error : Type -> Type
 clear_error model = {model | error = Nothing}
