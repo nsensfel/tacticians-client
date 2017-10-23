@@ -1,11 +1,13 @@
 module View exposing (view)
 
 import Dict
+
 import Html
 import Html.Attributes
 
-import View.Battlemap
+import UI
 
+import View.Battlemap
 import View.Controls
 import View.Status
 
@@ -32,7 +34,7 @@ view model =
             [
                (View.Battlemap.get_html
                   model.battlemap
-                  model.ui_scale
+                  (UI.get_zoom_level model.ui)
                   (Dict.values model.characters)
                )
             ]

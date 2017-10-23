@@ -2,6 +2,8 @@ module Shim.Model exposing (generate)
 
 import Dict
 
+import UI
+
 import Model
 
 import Shim.Battlemap
@@ -51,5 +53,5 @@ generate =
                )
             )
          ),
-      ui_scale = 1.0
+      ui = (UI.default)
    }

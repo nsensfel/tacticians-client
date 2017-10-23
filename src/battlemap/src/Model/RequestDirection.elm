@@ -4,10 +4,6 @@ import Dict
 
 import Battlemap
 import Battlemap.Direction
-import Battlemap.Location
-
-
-import Character
 
 import Model
 import Error

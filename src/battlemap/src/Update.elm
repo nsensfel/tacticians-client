@@ -2,6 +2,8 @@ module Update exposing (update)
 
 import Event
 
+import UI
+
 import Model
 import Model.RequestDirection
 import Model.SelectTile
@@ -29,6 +31,6 @@ update event model =
       (Event.ScaleChangeRequested mod) ->
          if (mod == 0.0)
          then
-            ({model | ui_scale = 1.0}, Cmd.none)
+            ({model | ui = (UI.reset_zoom_level model.ui)}, Cmd.none)
          else
-            ({model | ui_scale = (mod * model.ui_scale)}, Cmd.none)
+            ({model | ui = (UI.mod_zoom_level model.ui mod)}, Cmd.none)

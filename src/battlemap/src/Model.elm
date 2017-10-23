@@ -14,6 +14,8 @@ import Dict
 import Battlemap
 import Battlemap.Location
 
+import UI
+
 import Error
 
 import Character
@@ -36,7 +38,7 @@ type alias Type =
       characters: (Dict.Dict Character.Ref Character.Type),
       error: (Maybe Error.Type),
       selection: Selection,
-      ui_scale: Float
+      ui: UI.Type
    }
 
 get_state : Type -> State
@@ -50,7 +52,7 @@ reset model characters =
       characters = characters,
       error = Nothing,
       selection = None,
-      ui_scale = model.ui_scale -- TODO: move this into its own module.
+      ui = model.ui
    }
 
 invalidate : Type -> Error.Type -> Type
