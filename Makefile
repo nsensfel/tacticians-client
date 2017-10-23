@@ -7,6 +7,9 @@ MODULES_WWW = $(addprefix $(WWW_DIR)/,$(MODULES))
 
 all: build $(WWW_DIR) $(MODULES_WWW)
 
+upload_demo:
+	scp -r $(WWW_DIR)/* dreamhost:~/tacticians.online/
+
 build:
 	for module in $(MODULES_SRC) ; do \
 		$(MAKE) -C $$module build ; \
