@@ -31,6 +31,7 @@ type alias Type =
       battlemap: Battlemap.Type,
       characters: (Dict.Dict Character.Ref Character.Type),
       error: (Maybe Error.Type),
+      controlled_team: Int,
       ui: UI.Type
    }
 

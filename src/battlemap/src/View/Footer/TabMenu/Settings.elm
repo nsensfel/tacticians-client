@@ -37,6 +37,12 @@ get_html model =
       [
          (scale_button (0.75) "Zoom -"),
          (scale_button 0 "Zoom Reset"),
-         (scale_button (1.15) "Zoom +")
+         (scale_button (1.15) "Zoom +"),
+         (Html.button
+            [
+               (Html.Events.onClick Event.DebugTeamSwitchRequest)
+            ]
+            [ (Html.text "[DEBUG] Switch team") ]
+         )
       ]
    )

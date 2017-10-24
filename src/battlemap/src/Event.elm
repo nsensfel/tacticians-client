@@ -14,3 +14,4 @@ type Type =
    | TurnEnded
    | ScaleChangeRequested Float
    | TabSelected UI.Tab
+   | DebugTeamSwitchRequest

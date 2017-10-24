@@ -13,6 +13,8 @@ make_it_so : Model.Type -> Character.Ref -> Model.Type
 make_it_so model char_id =
    case (Dict.get char_id model.characters) of
       (Just char) ->
+         if ((Character.get_team char) == model.controlled_team)
+         then
             {model |
                state = (Model.MovingCharacterWithClick char_id),
                battlemap =
@@ -24,6 +26,14 @@ make_it_so model char_id =
                      model.battlemap
                   )
             }
+         else
+            (Model.invalidate
+               model
+               (Error.new
+                  Error.IllegalAction
+                  "SelectCharacter: Wrong team. Attack is not implemented."
+               )
+            )
 
       Nothing ->
          (Model.invalidate

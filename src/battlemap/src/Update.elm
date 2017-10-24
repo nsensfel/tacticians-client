@@ -37,3 +37,16 @@ update event model =
 
       (Event.TabSelected tab) ->
             ({model | ui = (UI.set_displayed_tab model.ui tab)}, Cmd.none)
+
+      (Event.DebugTeamSwitchRequest) ->
+         if (model.controlled_team == 0)
+         then
+            (
+               (Model.reset {model | controlled_team = 1} model.characters),
+               Cmd.none
+            )
+         else
+            (
+               (Model.reset {model | controlled_team = 0} model.characters),
+               Cmd.none
+            )

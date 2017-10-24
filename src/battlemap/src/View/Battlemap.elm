@@ -39,6 +39,12 @@ char_on_map char =
             (Html.Attributes.class
                ("asset-character-icon-" ++ (Character.get_icon_id char))
             ),
+            (Html.Attributes.class
+               (
+                  "battlemap-character-team-"
+                  ++ (toString (Character.get_team char))
+               )
+            ),
             (Html.Events.onClick
                (Event.CharacterSelected (Character.get_ref char))
             ),
