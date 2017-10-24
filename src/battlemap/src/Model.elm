@@ -1,7 +1,6 @@
 module Model exposing
    (
       Type,
-      Selection(..),
       State(..),
       get_state,
       invalidate,
@@ -22,14 +21,9 @@ import Character
 
 type State =
    Default
-   | MovingCharacterWithButtons
-   | MovingCharacterWithClick
-   | FocusingTile
-
-type Selection =
-   None
-   | SelectedCharacter Character.Ref
-   | SelectedTile Battlemap.Location.Ref
+   | MovingCharacterWithButtons Character.Ref
+   | MovingCharacterWithClick Character.Ref
+   | FocusingTile Battlemap.Location.Ref
 
 type alias Type =
    {
@@ -37,7 +31,6 @@ type alias Type =
       battlemap: Battlemap.Type,
       characters: (Dict.Dict Character.Ref Character.Type),
       error: (Maybe Error.Type),
-      selection: Selection,
       ui: UI.Type
    }
 
@@ -51,7 +44,6 @@ reset model characters =
       battlemap = (Battlemap.reset model.battlemap),
       characters = characters,
       error = Nothing,
-      selection = None,
       ui = model.ui
    }
 

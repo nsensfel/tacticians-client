@@ -12,7 +12,6 @@ import Shim.Battlemap
 generate =
    {
       state = Model.Default,
-      selection = Model.None,
       error = Nothing,
       battlemap = (Shim.Battlemap.generate),
       characters =

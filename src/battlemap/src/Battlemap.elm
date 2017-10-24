@@ -6,6 +6,7 @@ module Battlemap exposing
       get_tiles,
       set_navigator,
       clear_navigator_path,
+      try_getting_tile_at,
       try_getting_navigator_location,
       try_getting_navigator_path_to,
       try_getting_navigator_summary,
@@ -145,6 +146,14 @@ set_navigator start_loc movement_points attack_range character_list bmap =
             )
          )
    }
+
+try_getting_tile_at : (
+      Type ->
+      Battlemap.Location.Type ->
+      (Maybe Battlemap.Tile.Type)
+   )
+try_getting_tile_at bmap loc =
+   (Array.get (location_to_index bmap loc) bmap.content)
 
 try_adding_step_to_navigator : (
       Type ->

@@ -8,6 +8,9 @@ import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
 import Battlemap
+import Battlemap.Location
+import Battlemap.Tile
+
 import Character
 
 import Util.Html
@@ -19,28 +22,26 @@ import Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-moving_character_text : Model.Type -> String
-moving_character_text model =
-   case model.selection of
-      (Model.SelectedCharacter char_id) ->
-         case (Dict.get char_id model.characters) of
-            Nothing -> "Error: Unknown character selected."
-            (Just char) ->
-               (
-                  "Controlling "
-                  ++ char.name
-                  ++ ": "
-                  ++ (toString
-                        (Battlemap.get_navigator_remaining_points
-                           model.battlemap
-                        )
+get_char_info_html : Model.Type -> Character.Ref -> (Html.Html Event.Type)
+get_char_info_html model char_ref =
+   case (Dict.get char_ref model.characters) of
+      Nothing -> (Html.text "Error: Unknown character selected.")
+      (Just char) ->
+         (Html.text
+            (
+               "Controlling "
+               ++ char.name
+               ++ ": "
+               ++ (toString
+                     (Battlemap.get_navigator_remaining_points
+                        model.battlemap
                      )
-                  ++ "/"
-                  ++ (toString (Character.get_movement_points char))
-                  ++ " movement points remaining."
-               )
-
-      _ -> "Error: model.selection does not match its state."
+                  )
+               ++ "/"
+               ++ (toString (Character.get_movement_points char))
+               ++ " movement points remaining."
+            )
+         )
 
 get_error_html : Error.Type -> (Html.Html Event.Type)
 get_error_html err =
@@ -53,6 +54,54 @@ get_error_html err =
       ]
    )
 
+get_tile_info_html : (
+      Model.Type ->
+      Battlemap.Location.Type ->
+      (Html.Html Event.Type)
+   )
+get_tile_info_html model loc =
+   case (Battlemap.try_getting_tile_at model.battlemap loc) of
+      (Just tile) ->
+         (Html.div
+            [
+               (Html.Attributes.class
+                  "battlemap-footer-tabmenu-content-status-tile-info"
+               )
+            ]
+            [
+               (Html.div
+                  [
+                     (Html.Attributes.class "battlemap-tile-icon"),
+                     (Html.Attributes.class "battlemap-tiled"),
+                     (Html.Attributes.class
+                        (
+                           "asset-tile-"
+                           ++ (toString (Battlemap.Tile.get_icon_id tile))
+                        )
+                     )
+                  ]
+                  [
+                  ]
+               ),
+               (Html.div
+                  [
+                  ]
+                  [
+                     (Html.text
+                        (
+                           "Focusing tile ("
+                           ++ (toString loc.x)
+                           ++ ", "
+                           ++ (toString loc.y)
+                           ++ ")."
+                        )
+                     )
+                  ]
+               )
+            ]
+         )
+
+      Nothing -> (Html.text "Error: Unknown tile location selected.")
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -68,16 +117,16 @@ get_html model =
             (Just error) -> (get_error_html error)
             Nothing -> Util.Html.nothing
          ),
-         (Html.text
-            (case model.state of
-               Model.Default -> "Click on a character to control it."
-               Model.FocusingTile -> "Error: Unimplemented."
-               Model.MovingCharacterWithButtons ->
-                  (moving_character_text model)
+         (case model.state of
+            Model.Default -> (Html.text "Click on a character to control it.")
+            (Model.FocusingTile tile_loc) ->
+               (get_tile_info_html model (Battlemap.Location.from_ref tile_loc))
 
-               Model.MovingCharacterWithClick ->
-                  (moving_character_text model)
-            )
+            (Model.MovingCharacterWithButtons char_ref) ->
+               (get_char_info_html model char_ref)
+
+            (Model.MovingCharacterWithClick char_ref) ->
+               (get_char_info_html model char_ref)
          )
       ]
    )

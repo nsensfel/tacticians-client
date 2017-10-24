@@ -4,6 +4,8 @@ import Battlemap
 import Battlemap.Direction
 import Battlemap.Location
 
+import Character
+
 import Model.RequestDirection
 import Model.EndTurn
 
@@ -14,20 +16,20 @@ autopilot : Battlemap.Direction.Type -> Model.Type -> Model.Type
 autopilot dir model =
    (Model.RequestDirection.apply_to model dir)
 
-go_to_tile : Model.Type -> Battlemap.Location.Ref -> Model.Type
-go_to_tile model loc_ref =
+go_to_tile : Model.Type -> Character.Ref -> Battlemap.Location.Ref -> Model.Type
+go_to_tile model char_ref loc_ref =
    case (Battlemap.try_getting_navigator_location model.battlemap) of
       (Just nav_loc) ->
          if (loc_ref == (Battlemap.Location.get_ref nav_loc))
          then
             -- We are already there.
-            if (model.state == Model.MovingCharacterWithClick)
+            if (model.state == (Model.MovingCharacterWithClick char_ref))
             then
                -- And we just clicked on that tile.
                (Model.EndTurn.apply_to model)
             else
                -- And we didn't just click on that tile.
-               {model | state = Model.MovingCharacterWithClick}
+               {model | state = (Model.MovingCharacterWithClick char_ref)}
          else
             -- We have to try getting there.
             case
@@ -50,7 +52,9 @@ go_to_tile model loc_ref =
                            path
                         )
                   in
-                     {new_model | state = Model.MovingCharacterWithClick}
+                     {new_model |
+                        state = (Model.MovingCharacterWithClick char_ref)
+                     }
 
                Nothing -> -- Clicked outside of the range indicator
                   (Model.reset model model.characters)
@@ -60,13 +64,10 @@ go_to_tile model loc_ref =
 apply_to : Model.Type -> Battlemap.Location.Ref -> Model.Type
 apply_to model loc_ref =
    case (Model.get_state model) of
-      Model.MovingCharacterWithButtons -> (go_to_tile model loc_ref)
-      Model.MovingCharacterWithClick -> (go_to_tile model loc_ref)
-      _ ->
-         (Model.invalidate
-            model
-            (Error.new
-               Error.IllegalAction
-               "This can only be done while moving a character."
-            )
-         )
+      (Model.MovingCharacterWithButtons char_ref) ->
+         (go_to_tile model char_ref loc_ref)
+
+      (Model.MovingCharacterWithClick char_ref) ->
+         (go_to_tile model char_ref loc_ref)
+
+      _ -> {model | state = (Model.FocusingTile loc_ref)}

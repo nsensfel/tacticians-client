@@ -14,8 +14,7 @@ make_it_so model char_id =
    case (Dict.get char_id model.characters) of
       (Just char) ->
             {model |
-               state = Model.MovingCharacterWithClick,
-               selection = (Model.SelectedCharacter char_id),
+               state = (Model.MovingCharacterWithClick char_id),
                battlemap =
                   (Battlemap.set_navigator
                      (Character.get_location char)
