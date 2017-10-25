@@ -13,8 +13,6 @@ import Battlemap.Tile
 
 import Character
 
-import Util.Html
-
 import Error
 import Event
 import Model
@@ -47,7 +45,7 @@ get_error_html : Error.Type -> (Html.Html Event.Type)
 get_error_html err =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-footer-tabmenu-status-error-msg")
+         (Html.Attributes.class "battlemap-tabmenu-error-message")
       ]
       [
          (Html.text (Error.to_string err))
@@ -65,7 +63,7 @@ get_tile_info_html model loc =
          (Html.div
             [
                (Html.Attributes.class
-                  "battlemap-footer-tabmenu-content-status-tile-info"
+                  "battlemap-tabmenu-tile-info-tab"
                )
             ]
             [
@@ -113,10 +111,6 @@ get_html model =
          (Html.Attributes.class "battlemap-footer-tabmenu-content-status")
       ]
       [
-         (case model.error of
-            (Just error) -> (get_error_html error)
-            Nothing -> Util.Html.nothing
-         ),
          (case model.state of
             Model.Default -> (Html.text "Click on a character to control it.")
             (Model.FocusingTile tile_loc) ->

@@ -23,7 +23,7 @@ view : Model.Type -> (Html.Html Event.Type)
 view model =
    (Html.div
       [
-         (Html.Attributes.class "battlemap")
+         (Html.Attributes.class "fullscreen-module")
       ]
       [
          (View.Header.get_html model),

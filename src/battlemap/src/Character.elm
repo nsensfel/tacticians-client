@@ -5,6 +5,7 @@ module Character exposing
       get_ref,
       get_team,
       get_icon_id,
+      get_portrait_id,
       get_location,
       set_location,
       get_movement_points,
@@ -35,6 +36,9 @@ get_team c = c.team
 
 get_icon_id : Type -> String
 get_icon_id c = c.icon
+
+get_portrait_id : Type -> String
+get_portrait_id c = c.portrait
 
 get_location : Type -> Battlemap.Location.Type
 get_location t = t.location

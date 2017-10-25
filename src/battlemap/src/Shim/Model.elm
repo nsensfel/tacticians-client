@@ -21,9 +21,9 @@ generate =
             {
                id = "3",
                name = "Char3",
-               icon = "Icon3",
+               icon = "3",
                team = 1,
-               portrait = "Portrait3",
+               portrait = "3",
                location = {x = 3, y = 2},
                movement_points = 2,
                atk_dist = 4
@@ -33,9 +33,9 @@ generate =
                {
                   id = "2",
                   name = "Char2",
-                  icon = "Icon2",
+                  icon = "2",
                   team = 1,
-                  portrait = "Portrait2",
+                  portrait = "2",
                   location = {x = 2, y = 2},
                   movement_points = 3,
                   atk_dist = 3
@@ -45,9 +45,9 @@ generate =
                   {
                      id = "1",
                      name = "Char1",
-                     icon = "Icon1",
+                     icon = "1",
                      team = 0,
-                     portrait = "Portrait1",
+                     portrait = "1",
                      location = {x = 1, y = 0},
                      movement_points = 4,
                      atk_dist = 2
@@ -57,9 +57,9 @@ generate =
                      {
                         id = "0",
                         name = "Char0",
-                        icon = "Icon0",
+                        icon = "0",
                         team = 0,
-                        portrait = "Portrait0",
+                        portrait = "0",
                         location = {x = 0, y = 0},
                         movement_points = 5,
                         atk_dist = 1

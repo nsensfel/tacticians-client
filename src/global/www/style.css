@@ -1,0 +1,27 @@
+html
+{
+   height: 100%;
+}
+
+html, body, .fullscreen-module
+{
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   right: 0;
+   left: 0;
+}
+
+.fullscreen-module
+{
+   display: flex;
+   flex-flow: column;
+   align-content: stretch;
+   justify-content: stretch;
+}
+
+.global-ingame-header
+{
+   text-align: center;
+   flex: 0;
+}

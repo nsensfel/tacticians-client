@@ -16,7 +16,7 @@ get_html : Model.Type -> (Html.Html Event.Type)
 get_html model =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-header")
+         (Html.Attributes.class "global-ingame-header")
       ]
       [
          (Html.text "Tacticians Online - Development Branch")

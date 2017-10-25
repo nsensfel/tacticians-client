@@ -24,7 +24,7 @@ get_html tile =
             (Html.Attributes.class "battlemap-tile-icon"),
             (Html.Attributes.class "battlemap-tiled"),
             (Html.Attributes.class
-               ("asset-tile-" ++ (toString (Battlemap.Tile.get_icon_id tile)))
+               ("asset-tile-" ++ (Battlemap.Tile.get_icon_id tile))
             ),
             (Html.Events.onClick
                (Event.TileSelected (Battlemap.Location.get_ref tile_loc))

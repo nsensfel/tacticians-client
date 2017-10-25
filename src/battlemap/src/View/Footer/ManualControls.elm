@@ -38,7 +38,7 @@ get_html : (Html.Html Event.Type)
 get_html =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-footer-manualcontrols")
+         (Html.Attributes.class "battlemap-manual-controls")
       ]
       [
          (direction_button Battlemap.Direction.Left "Left"),

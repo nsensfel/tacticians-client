@@ -1,0 +1,111 @@
+.battlemap-container
+{
+   overflow: auto;
+   width: inherit;
+   flex: 1;
+}
+
+.battlemap-footer
+{
+   display: flex;
+   flex: 0;
+   max-height: 30%;
+}
+
+.battlemap-actual
+{
+   display: inline-block;
+}
+
+/** Inside the container ******************************************************/
+.battlemap-tiled
+{
+   position: absolute;
+   height: 32px;
+   width: 32px;
+}
+
+.battlemap-tile-icon       {z-index: 0;}
+.battlemap-marker-icon     {z-index: 1;}
+.battlemap-character-icon  {z-index: 2;}
+.battlemap-path-icon       {z-index: 3; color: white;}
+
+.battlemap-can-go-to-marker   {background-color:rgba(0,0,0,0.5);}
+.battlemap-can-attack-marker  {background-color:rgba(0,0,0,0.7);}
+
+/**** Path Icons **************************************************************/
+.battlemap-path-icon-NR:before,
+.battlemap-path-icon-LR:before,
+.battlemap-path-icon-RR:before,
+.battlemap-path-icon-UR:before,
+.battlemap-path-icon-DR:before
+{
+   content: "}";
+}
+
+.battlemap-path-icon-NL:before,
+.battlemap-path-icon-LL:before,
+.battlemap-path-icon-RL:before,
+.battlemap-path-icon-UL:before,
+.battlemap-path-icon-DL:before
+{
+   content: "{";
+}
+
+.battlemap-path-icon-NU:before,
+.battlemap-path-icon-LU:before,
+.battlemap-path-icon-RU:before,
+.battlemap-path-icon-UU:before,
+.battlemap-path-icon-DU:before
+{
+   content: "^";
+}
+
+.battlemap-path-icon-ND:before,
+.battlemap-path-icon-LD:before,
+.battlemap-path-icon-RD:before,
+.battlemap-path-icon-UD:before,
+.battlemap-path-icon-DD:before
+{
+   content: "v";
+}
+
+.battlemap-path-icon-markN:before,
+.battlemap-path-icon-markL:before,
+.battlemap-path-icon-markU:before,
+.battlemap-path-icon-markD:before,
+.battlemap-path-icon-markR:before
+{
+   content: "x";
+}
+
+/** Footer ********************************************************************/
+.battlemap-tabmenu
+{
+   flex: 1;
+}
+
+.battlemap-manual-controls
+{
+   flex: initial;
+
+   display: flex;
+   flex-direction: column;
+}
+/**** Tabmenu *****************************************************************/
+.battlemap-tabmenu-selector
+{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+
+.battlemap-tabmenu-selector button
+{
+   flex: 1;
+}
+
+.battlemap-tabmenu-content
+{
+   flex: initial;
+}

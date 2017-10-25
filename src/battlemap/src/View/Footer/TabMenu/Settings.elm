@@ -31,8 +31,8 @@ get_html : Model.Type -> (Html.Html Event.Type)
 get_html model =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-footer-tabmenu-content"),
-         (Html.Attributes.class "battlemap-footer-tabmenu-content-settings")
+         (Html.Attributes.class "battlemap-tabmenu-content"),
+         (Html.Attributes.class "battlemap-tabmenu-settings-tab")
       ]
       [
          (scale_button (0.75) "Zoom -"),

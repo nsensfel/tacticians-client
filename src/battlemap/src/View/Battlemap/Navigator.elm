@@ -28,13 +28,17 @@ marker_get_html (loc_ref, marker) =
          (Html.Attributes.class "battlemap-tiled"),
          (Html.Attributes.class
             (
-               "asset-marker-icon-"
+               "battlemap-"
                ++
-               if (marker == Battlemap.Marker.CanGoTo)
-               then
-                  "can-go-to"
-               else
-                  "can-attack"
+               (
+                  if (marker == Battlemap.Marker.CanGoTo)
+                  then
+                     "can-go-to"
+                  else
+                     "can-attack"
+               )
+               ++
+               "-marker"
             )
          ),
          (Html.Events.onClick
@@ -89,7 +93,7 @@ path_node_get_html new_dir (curr_loc, prev_dir, curr_nodes) =
                   (Html.Attributes.class "battlemap-tiled"),
                   (Html.Attributes.class
                      (
-                        "asset-path-icon-"
+                        "battlemap-path-icon-"
                         ++
                         (Battlemap.Direction.to_string prev_dir)
                         ++
@@ -140,7 +144,7 @@ mark_the_spot loc origin_dir =
          (Html.Attributes.class "battlemap-tiled"),
          (Html.Attributes.class
             (
-               "asset-path-icon-mark"
+               "battlemap-path-icon-mark"
                ++
                (Battlemap.Direction.to_string origin_dir)
             )

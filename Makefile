@@ -1,4 +1,4 @@
-MODULES = battlemap
+MODULES = battlemap global asset
 SRC_DIR = ${CURDIR}/src
 WWW_DIR = ${CURDIR}/www
 
