@@ -1,7 +1,9 @@
 module Model.SelectCharacter exposing (apply_to)
 
+-- Elm -------------------------------------------------------------------------
 import Dict
 
+-- Battlemap -------------------------------------------------------------------
 import Character
 
 import Battlemap
@@ -9,6 +11,9 @@ import Battlemap
 import Model
 import Error
 
+--------------------------------------------------------------------------------
+-- LOCAL -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
 make_it_so : Model.Type -> Character.Ref -> Model.Type
 make_it_so model char_id =
    case (Dict.get char_id model.characters) of
@@ -16,7 +21,7 @@ make_it_so model char_id =
          if ((Character.get_team char) == model.controlled_team)
          then
             {model |
-               state = (Model.MovingCharacterWithClick char_id),
+               state = (Model.ControllingCharacter char_id),
                battlemap =
                   (Battlemap.set_navigator
                      (Character.get_location char)
@@ -44,6 +49,9 @@ make_it_so model char_id =
             )
          )
 
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
 apply_to : Model.Type -> Character.Ref -> Model.Type
 apply_to model char_id =
    case (Model.get_state model) of

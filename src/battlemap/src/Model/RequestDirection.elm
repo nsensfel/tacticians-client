@@ -1,15 +1,22 @@
 module Model.RequestDirection exposing (apply_to)
 
+-- Elm -------------------------------------------------------------------------
 import Dict
 
+-- Battlemap -------------------------------------------------------------------
 import Battlemap
 import Battlemap.Direction
 
 import Character
 
+import UI
+
 import Model
 import Error
 
+--------------------------------------------------------------------------------
+-- LOCAL -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
 make_it_so : (
       Model.Type ->
       Character.Ref ->
@@ -28,7 +35,7 @@ make_it_so model char_ref dir =
       case new_bmap of
          (Just bmap) ->
             {model |
-               state = (Model.MovingCharacterWithButtons char_ref),
+               ui = (UI.set_has_just_used_manual_controls model.ui True),
                battlemap = bmap
             }
 
@@ -41,13 +48,13 @@ make_it_so model char_ref dir =
                )
             )
 
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
 apply_to : Model.Type -> Battlemap.Direction.Type -> Model.Type
 apply_to model dir =
    case (Model.get_state model) of
-      (Model.MovingCharacterWithButtons char_ref) ->
-         (make_it_so model char_ref dir)
-
-      (Model.MovingCharacterWithClick char_ref) ->
+      (Model.ControllingCharacter char_ref) ->
          (make_it_so model char_ref dir)
 
       _ ->

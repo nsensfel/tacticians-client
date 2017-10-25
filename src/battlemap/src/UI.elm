@@ -14,7 +14,9 @@ module UI exposing
       to_string,
       get_all_tabs,
       -- Manual Controls
-      has_manual_controls_enabled
+      has_manual_controls_enabled,
+      has_just_used_manual_controls,
+      set_has_just_used_manual_controls
    )
 
 --------------------------------------------------------------------------------
@@ -29,6 +31,7 @@ type alias Type =
    {
       zoom_level : Float,
       show_manual_controls : Bool,
+      just_used_manual_controls : Bool,
       displayed_tab : (Maybe Tab)
    }
 
@@ -44,6 +47,7 @@ default =
    {
       zoom_level = 1.0,
       show_manual_controls = True,
+      just_used_manual_controls = False,
       displayed_tab = (Just StatusTab)
    }
 
@@ -80,6 +84,13 @@ get_all_tabs =
 -- ManualControls --------------------------------------------------------------
 has_manual_controls_enabled : Type -> Bool
 has_manual_controls_enabled ui = ui.show_manual_controls
+
+has_just_used_manual_controls : Type -> Bool
+has_just_used_manual_controls ui = ui.just_used_manual_controls
+
+set_has_just_used_manual_controls : Type -> Bool -> Type
+set_has_just_used_manual_controls ui val =
+   {ui | just_used_manual_controls = val}
 
 toggle_manual_controls : Type -> Type
 toggle_manual_controls ui =

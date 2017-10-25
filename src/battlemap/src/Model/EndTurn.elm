@@ -1,6 +1,9 @@
 module Model.EndTurn exposing (apply_to)
 
+-- Elm -------------------------------------------------------------------------
 import Dict
+
+-- Battlemap -------------------------------------------------------------------
 
 import Battlemap
 
@@ -10,6 +13,9 @@ import Error
 
 import Model
 
+--------------------------------------------------------------------------------
+-- LOCAL -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
 make_it_so : Model.Type -> Character.Ref -> Model.Type
 make_it_so model char_ref =
    case (Battlemap.try_getting_navigator_location model.battlemap) of
@@ -39,11 +45,13 @@ make_it_so model char_ref =
             )
          )
 
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
 apply_to : Model.Type -> Model.Type
 apply_to model =
    case (Model.get_state model) of
-      (Model.MovingCharacterWithButtons char_ref) -> (make_it_so model char_ref)
-      (Model.MovingCharacterWithClick char_ref) -> (make_it_so model char_ref)
+      (Model.ControllingCharacter char_ref) -> (make_it_so model char_ref)
       _ ->
          (Model.invalidate
             model

@@ -1,5 +1,6 @@
 module Model.SelectTile exposing (apply_to)
 
+-- Battlemap -------------------------------------------------------------------
 import Battlemap
 import Battlemap.Direction
 import Battlemap.Location
@@ -9,9 +10,12 @@ import Character
 import Model.RequestDirection
 import Model.EndTurn
 
+import UI
 import Model
-import Error
 
+--------------------------------------------------------------------------------
+-- LOCAL -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
 autopilot : Battlemap.Direction.Type -> Model.Type -> Model.Type
 autopilot dir model =
    (Model.RequestDirection.apply_to model dir)
@@ -23,13 +27,15 @@ go_to_tile model char_ref loc_ref =
          if (loc_ref == (Battlemap.Location.get_ref nav_loc))
          then
             -- We are already there.
-            if (model.state == (Model.MovingCharacterWithClick char_ref))
+            if (UI.has_just_used_manual_controls model.ui)
             then
+               -- And we didn't just click on that tile.
+               {model |
+                  ui = (UI.set_has_just_used_manual_controls model.ui False)
+               }
+            else
                -- And we just clicked on that tile.
                (Model.EndTurn.apply_to model)
-            else
-               -- And we didn't just click on that tile.
-               {model | state = (Model.MovingCharacterWithClick char_ref)}
          else
             -- We have to try getting there.
             case
@@ -53,7 +59,11 @@ go_to_tile model char_ref loc_ref =
                         )
                   in
                      {new_model |
-                        state = (Model.MovingCharacterWithClick char_ref)
+                        ui =
+                           (UI.set_has_just_used_manual_controls
+                              new_model.ui
+                              False
+                           )
                      }
 
                Nothing -> -- Clicked outside of the range indicator
@@ -61,13 +71,13 @@ go_to_tile model char_ref loc_ref =
       Nothing -> -- Clicked outside of the range indicator
          (Model.reset model model.characters)
 
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
 apply_to : Model.Type -> Battlemap.Location.Ref -> Model.Type
 apply_to model loc_ref =
    case (Model.get_state model) of
-      (Model.MovingCharacterWithButtons char_ref) ->
+      (Model.ControllingCharacter char_ref) ->
          (go_to_tile model char_ref loc_ref)
 
-      (Model.MovingCharacterWithClick char_ref) ->
-         (go_to_tile model char_ref loc_ref)
-
-      _ -> {model | state = (Model.FocusingTile loc_ref)}
+      _ -> {model | state = (Model.InspectingTile loc_ref)}

@@ -21,9 +21,9 @@ import Character
 
 type State =
    Default
-   | MovingCharacterWithButtons Character.Ref
-   | MovingCharacterWithClick Character.Ref
-   | FocusingTile Battlemap.Location.Ref
+   | ControllingCharacter Character.Ref
+   | InspectingTile Battlemap.Location.Ref
+   | InspectingCharacter Character.Ref
 
 type alias Type =
    {

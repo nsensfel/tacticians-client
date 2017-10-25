@@ -113,13 +113,11 @@ get_html model =
       [
          (case model.state of
             Model.Default -> (Html.text "Click on a character to control it.")
-            (Model.FocusingTile tile_loc) ->
+            (Model.InspectingTile tile_loc) ->
                (get_tile_info_html model (Battlemap.Location.from_ref tile_loc))
-
-            (Model.MovingCharacterWithButtons char_ref) ->
+            (Model.InspectingCharacter char_ref) ->
                (get_char_info_html model char_ref)
-
-            (Model.MovingCharacterWithClick char_ref) ->
+            (Model.ControllingCharacter char_ref) ->
                (get_char_info_html model char_ref)
          )
       ]
