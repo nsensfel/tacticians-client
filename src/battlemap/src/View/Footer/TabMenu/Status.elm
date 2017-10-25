@@ -74,7 +74,8 @@ get_tile_info_html model loc =
                      (Html.Attributes.class
                         (
                            "asset-tile-"
-                           ++ (toString (Battlemap.Tile.get_icon_id tile))
+                           ++
+                           (Battlemap.Tile.get_icon_id tile)
                         )
                      )
                   ]
