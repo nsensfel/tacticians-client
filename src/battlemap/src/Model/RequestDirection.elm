@@ -35,8 +35,12 @@ make_it_so model char_ref dir =
       case new_bmap of
          (Just bmap) ->
             {model |
-               ui = (UI.set_has_just_used_manual_controls model.ui True),
-               battlemap = bmap
+               battlemap = bmap,
+               ui =
+                  (UI.set_previous_action
+                     model.ui
+                     (Just UI.UsedManualControls)
+                  )
             }
 
          Nothing ->

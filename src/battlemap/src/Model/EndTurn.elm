@@ -4,7 +4,6 @@ module Model.EndTurn exposing (apply_to)
 import Dict
 
 -- Battlemap -------------------------------------------------------------------
-
 import Battlemap
 
 import Character

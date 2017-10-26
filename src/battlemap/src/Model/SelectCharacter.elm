@@ -4,55 +4,108 @@ module Model.SelectCharacter exposing (apply_to)
 import Dict
 
 -- Battlemap -------------------------------------------------------------------
+import Battlemap
+import Battlemap.Direction
+
 import Character
 
-import Battlemap
+import UI
 
 import Model
+import Model.RequestDirection
+
 import Error
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-make_it_so : Model.Type -> Character.Ref -> Model.Type
-make_it_so model char_id =
-   case (Dict.get char_id model.characters) of
-      (Just char) ->
-         if ((Character.get_team char) == model.controlled_team)
-         then
-            {model |
-               state = (Model.ControllingCharacter char_id),
-               battlemap =
-                  (Battlemap.set_navigator
-                     (Character.get_location char)
-                     (Character.get_movement_points char)
-                     (Character.get_attack_range char)
-                     (Dict.values model.characters)
-                     model.battlemap
-                  )
-            }
-         else
-            (Model.invalidate
-               model
-               (Error.new
-                  Error.IllegalAction
-                  "SelectCharacter: Wrong team. Attack is not implemented."
-               )
-            )
+autopilot : Battlemap.Direction.Type -> Model.Type -> Model.Type
+autopilot dir model =
+   (Model.RequestDirection.apply_to model dir)
 
-      Nothing ->
-         (Model.invalidate
-            model
-            (Error.new
-               Error.Programming
-               "SelectCharacter: Unknown char selected."
+attack_character : (
+      Model.Type ->
+      Character.Ref ->
+      Character.Ref ->
+      Character.Type ->
+      Model.Type
+   )
+attack_character model main_char_id target_char_id target_char =
+   (Model.invalidate
+      model
+      (Error.new
+         Error.IllegalAction
+         "Attacking another character is not yet possible."
+      )
+   )
+
+select_character : (
+      Model.Type ->
+      Character.Ref ->
+      Character.Type ->
+      Model.Type
+   )
+select_character model target_char_id target_char =
+   if ((Character.get_team target_char) == model.controlled_team)
+   then
+      {model |
+         state = (Model.ControllingCharacter target_char_id),
+         ui = (UI.set_previous_action model.ui Nothing),
+         battlemap =
+            (Battlemap.set_navigator
+               (Character.get_location target_char)
+               (Character.get_movement_points target_char)
+               (Character.get_attack_range target_char)
+               (Dict.values model.characters)
+               model.battlemap
             )
+      }
+   else
+      (Model.invalidate
+         model
+         (Error.new
+            Error.IllegalAction
+            "SelectCharacter: Wrong team. Attack is not implemented."
          )
-
+      )
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to : Model.Type -> Character.Ref -> Model.Type
-apply_to model char_id =
-   case (Model.get_state model) of
-      _ -> (make_it_so model char_id)
+apply_to model target_char_id =
+   if
+   (
+      (UI.get_previous_action model.ui)
+      ==
+      (Just (UI.SelectedCharacter target_char_id))
+   )
+   then
+      case (Dict.get target_char_id model.characters) of
+         (Just target_char) ->
+            case (Model.get_state model) of
+               (Model.ControllingCharacter main_char_id) ->
+                  (attack_character
+                     model
+                     main_char_id
+                     target_char_id
+                     target_char
+                  )
+
+               _ -> (select_character model target_char_id target_char)
+
+         Nothing ->
+            (Model.invalidate
+               model
+               (Error.new
+                  Error.Programming
+                  "SelectCharacter: Unknown char selected."
+               )
+            )
+   else
+      {model |
+         ui =
+            (UI.set_previous_action
+               model.ui
+               (Just (UI.SelectedCharacter target_char_id))
+            )
+      }

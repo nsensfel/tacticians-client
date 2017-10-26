@@ -2,6 +2,7 @@ module UI exposing
    (
       Type,
       Tab(..),
+      Action(..),
       default,
       -- Zoom
       get_zoom_level,
@@ -15,9 +16,16 @@ module UI exposing
       get_all_tabs,
       -- Manual Controls
       has_manual_controls_enabled,
-      has_just_used_manual_controls,
-      set_has_just_used_manual_controls
+      -- Previous Action
+      get_previous_action,
+      set_previous_action
    )
+
+-- Battlemap -------------------------------------------------------------------
+import Battlemap.Location
+
+import Character
+
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -27,12 +35,17 @@ type Tab =
    | CharactersTab
    | SettingsTab
 
+type Action =
+   UsedManualControls
+   | SelectedLocation Battlemap.Location.Ref
+   | SelectedCharacter Character.Ref
+
 type alias Type =
    {
       zoom_level : Float,
       show_manual_controls : Bool,
-      just_used_manual_controls : Bool,
-      displayed_tab : (Maybe Tab)
+      displayed_tab : (Maybe Tab),
+      previous_action : (Maybe Action)
    }
 
 --------------------------------------------------------------------------------
@@ -47,8 +60,8 @@ default =
    {
       zoom_level = 1.0,
       show_manual_controls = True,
-      just_used_manual_controls = False,
-      displayed_tab = (Just StatusTab)
+      displayed_tab = (Just StatusTab),
+      previous_action = Nothing
    }
 
 -- Zoom ------------------------------------------------------------------------
@@ -85,13 +98,6 @@ get_all_tabs =
 has_manual_controls_enabled : Type -> Bool
 has_manual_controls_enabled ui = ui.show_manual_controls
 
-has_just_used_manual_controls : Type -> Bool
-has_just_used_manual_controls ui = ui.just_used_manual_controls
-
-set_has_just_used_manual_controls : Type -> Bool -> Type
-set_has_just_used_manual_controls ui val =
-   {ui | just_used_manual_controls = val}
-
 toggle_manual_controls : Type -> Type
 toggle_manual_controls ui =
    if (ui.show_manual_controls)
@@ -100,5 +106,12 @@ toggle_manual_controls ui =
    else
       {ui | show_manual_controls = True}
 
-set_enable_toggle_manual_controls : Type -> Bool -> Type
-set_enable_toggle_manual_controls ui val = {ui | show_manual_controls = val}
+set_enable_manual_controls : Type -> Bool -> Type
+set_enable_manual_controls ui val = {ui | show_manual_controls = val}
+
+-- Previous Action -------------------------------------------------------------
+set_previous_action : Type -> (Maybe Action) -> Type
+set_previous_action ui act = {ui | previous_action = act}
+
+get_previous_action : Type -> (Maybe Action)
+get_previous_action ui = ui.previous_action

@@ -45,7 +45,7 @@ reset model characters =
       battlemap = (Battlemap.reset model.battlemap),
       characters = characters,
       error = Nothing,
-      ui = model.ui
+      ui = (UI.set_previous_action model.ui Nothing)
    }
 
 invalidate : Type -> Error.Type -> Type

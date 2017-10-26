@@ -27,15 +27,24 @@ go_to_tile model char_ref loc_ref =
          if (loc_ref == (Battlemap.Location.get_ref nav_loc))
          then
             -- We are already there.
-            if (UI.has_just_used_manual_controls model.ui)
+            if
+            (
+               (UI.get_previous_action model.ui)
+               ==
+               (Just (UI.SelectedLocation loc_ref))
+            )
             then
-               -- And we didn't just click on that tile.
-               {model |
-                  ui = (UI.set_has_just_used_manual_controls model.ui False)
-               }
-            else
                -- And we just clicked on that tile.
                (Model.EndTurn.apply_to model)
+            else
+               -- And we didn't just click on that tile.
+               {model |
+                  ui =
+                     (UI.set_previous_action
+                        model.ui
+                        (Just (UI.SelectedLocation loc_ref))
+                     )
+               }
          else
             -- We have to try getting there.
             case
@@ -60,9 +69,9 @@ go_to_tile model char_ref loc_ref =
                   in
                      {new_model |
                         ui =
-                           (UI.set_has_just_used_manual_controls
+                           (UI.set_previous_action
                               new_model.ui
-                              False
+                              Nothing
                            )
                      }
 
