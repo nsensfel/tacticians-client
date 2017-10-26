@@ -71,7 +71,7 @@ go_to_tile model char_ref loc_ref =
                         ui =
                            (UI.set_previous_action
                               new_model.ui
-                              Nothing
+                              (Just (UI.SelectedLocation loc_ref))
                            )
                      }
 

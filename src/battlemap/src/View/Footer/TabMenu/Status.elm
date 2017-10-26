@@ -13,6 +13,10 @@ import Battlemap.Tile
 
 import Character
 
+import UI
+
+import Util.Html
+
 import Error
 import Event
 import Model
@@ -20,8 +24,8 @@ import Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_char_info_html : Model.Type -> Character.Ref -> (Html.Html Event.Type)
-get_char_info_html model char_ref =
+get_navigator_info_html : Model.Type -> Character.Ref -> (Html.Html Event.Type)
+get_navigator_info_html model char_ref =
    case (Dict.get char_ref model.characters) of
       Nothing -> (Html.text "Error: Unknown character selected.")
       (Just char) ->
@@ -38,6 +42,25 @@ get_char_info_html model char_ref =
                ++ "/"
                ++ (toString (Character.get_movement_points char))
                ++ " movement points remaining."
+            )
+         )
+
+get_char_info_html : Model.Type -> Character.Ref -> (Html.Html Event.Type)
+get_char_info_html model char_ref =
+   case (Dict.get char_ref model.characters) of
+      Nothing -> (Html.text "Error: Unknown character selected.")
+      (Just char) ->
+         (Html.text
+            (
+               "Focusing "
+               ++ char.name
+               ++ " (Team "
+               ++ (toString (Character.get_team char))
+               ++ "): "
+               ++ (toString (Character.get_movement_points char))
+               ++ " movement points; "
+               ++ (toString (Character.get_attack_range char))
+               ++ " attack range."
             )
          )
 
@@ -101,6 +124,7 @@ get_tile_info_html model loc =
          )
 
       Nothing -> (Html.text "Error: Unknown tile location selected.")
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -111,15 +135,45 @@ get_html model =
          (Html.Attributes.class "battlemap-footer-tabmenu-content"),
          (Html.Attributes.class "battlemap-footer-tabmenu-content-status")
       ]
-      [
-         (case model.state of
-            Model.Default -> (Html.text "Click on a character to control it.")
-            (Model.InspectingTile tile_loc) ->
-               (get_tile_info_html model (Battlemap.Location.from_ref tile_loc))
-            (Model.InspectingCharacter char_ref) ->
-               (get_char_info_html model char_ref)
-            (Model.ControllingCharacter char_ref) ->
-               (get_char_info_html model char_ref)
-         )
-      ]
+      (case model.state of
+         Model.Default ->
+            [
+               (case (UI.get_previous_action model.ui) of
+                  (Just (UI.SelectedLocation loc)) ->
+                     (get_tile_info_html
+                        model
+                        (Battlemap.Location.from_ref loc)
+                     )
+
+                  (Just (UI.SelectedCharacter target_char)) ->
+                     (get_char_info_html model target_char)
+
+                  _ ->
+                     (Html.text "Double-click on a character to control it.")
+               )
+            ]
+
+         (Model.InspectingTile tile_loc) ->
+            [(get_tile_info_html model (Battlemap.Location.from_ref tile_loc))]
+
+         (Model.InspectingCharacter char_ref) ->
+            [(get_char_info_html model char_ref)]
+
+         (Model.ControllingCharacter char_ref) ->
+            [
+               (get_navigator_info_html model char_ref),
+               (case (UI.get_previous_action model.ui) of
+                  (Just (UI.SelectedLocation loc)) ->
+                     (get_tile_info_html
+                        model
+                        (Battlemap.Location.from_ref loc)
+                     )
+
+                  (Just (UI.SelectedCharacter target_char)) ->
+                     (get_char_info_html model target_char)
+
+                  _ -> (Util.Html.nothing)
+               )
+            ]
+      )
    )
