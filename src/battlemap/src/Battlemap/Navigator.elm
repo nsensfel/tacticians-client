@@ -94,6 +94,9 @@ get_range_markers : (
    )
 get_range_markers navigator = (Dict.toList navigator.range_indicators)
 
+get_path : Type -> (List Battlemap.Direction.Type)
+get_path navigator = (Battlemap.Navigator.Path.get_summary navigator.path)
+
 get_summary : Type -> Summary
 get_summary navigator =
    {

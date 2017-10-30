@@ -6,6 +6,7 @@ module Battlemap exposing
       get_tiles,
       set_navigator,
       clear_navigator_path,
+      get_navigator_path,
       try_getting_tile_at,
       try_getting_navigator_location,
       try_getting_navigator_path_to,
@@ -107,6 +108,12 @@ clear_navigator_path bmap =
          {bmap | navigator = (Just (Battlemap.Navigator.clear_path navigator))}
 
       Nothing -> bmap
+
+get_navigator_path : Type -> (List Battlemap.Direction.Type)
+get_navigator_path bmap =
+   case bmap.navigator of
+      (Just navigator) -> (Battlemap.Navigator.get_path navigator)
+      Nothing -> []
 
 try_getting_navigator_location : Type -> (Maybe Battlemap.Location.Type)
 try_getting_navigator_location bmap =

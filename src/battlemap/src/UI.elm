@@ -26,7 +26,6 @@ import Battlemap.Location
 
 import Character
 
-
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -39,6 +38,7 @@ type Action =
    UsedManualControls
    | SelectedLocation Battlemap.Location.Ref
    | SelectedCharacter Character.Ref
+   | AttackedCharacter Character.Ref
 
 type alias Type =
    {
