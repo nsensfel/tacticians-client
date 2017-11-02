@@ -4,6 +4,7 @@ type Mode =
    IllegalAction
    | Programming
    | Unimplemented
+   | Networking
 
 type alias Type =
    {
@@ -25,6 +26,7 @@ to_string e =
          IllegalAction -> "Request discarded: "
          Programming -> "Error in the program (please report): "
          Unimplemented -> "Update discarded due to unimplemented feature: "
+         Networking -> "Error while conversing with the server: "
       )
       ++ e.message
    )

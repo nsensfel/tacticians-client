@@ -11,6 +11,7 @@ import Model.RequestDirection
 import Model.SelectTile
 import Model.SelectCharacter
 import Model.EndTurn
+import Model.HandleServerReply
 
 import Send.CharacterTurn
 
@@ -62,11 +63,14 @@ update event model =
                Cmd.none
             )
 
-      (Event.ServerReplied _) ->
+      (Event.ServerReplied (Result.Err error)) ->
          (
             (Model.invalidate
                model
-               (Error.new Error.Unimplemented "Handle server reply.")
+               (Error.new Error.Networking (toString error))
             ),
             Cmd.none
          )
+
+      (Event.ServerReplied (Result.Ok commands)) ->
+         (Model.HandleServerReply.apply_to model commands)
