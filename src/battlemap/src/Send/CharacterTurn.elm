@@ -1,4 +1,4 @@
-module IO.CharacterTurn exposing (send)
+module Send.CharacterTurn exposing (try_sending)
 
 -- Elm -------------------------------------------------------------------------
 import Http
@@ -9,26 +9,35 @@ import Json.Decode
 -- Battlemap -------------------------------------------------------------------
 import Constants.IO
 
+import Battlemap
+import Battlemap.Direction
+
+import UI
+
+import Model
+
+import Send
+
 import Event
 
 --------------------------------------------------------------------------------
 -- TYPES ------------------------------------------------------------------------
 --------------------------------------------------------------------------------
-type alias Reply =
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try_encoding : Model -> (Maybe String)
+try_encoding : Model.Type -> (Maybe Json.Encode.Value)
 try_encoding model =
    case (Model.get_state model) of
       (Model.ControllingCharacter char_ref) ->
          (Just
-            (Json.Encode.encode
-               0
+--            (Json.Encode.encode
+--               0
                (Json.Encode.object
                   [
-                     ("user_token", Json.Encode.string model.user_token),
+                 --  ("user_token", Json.Encode.string model.user_token),
+                     ("user_token", Json.Encode.string "user0"),
                      ("char_id", Json.Encode.string char_ref),
                      (
                         "path",
@@ -54,14 +63,19 @@ try_encoding model =
                      )
                   ]
                )
-            )
+--            )
          )
 
       _ ->
          Nothing
 
-decode : (Json.Decode.Decoder a)
+decode : (Json.Decode.Decoder String) --Send.Reply)
 decode =
+   (Json.Decode.string ---Send.Reply
+--      |> Json.Decode.required "types" (Json.Decode.list (Json.Decode.string))
+--      |> Json.Decode.required "data" (Json.Decode.list (Json.Decode.string))
+   )
+
 -- Reply:
 -- {
 --    TYPES: (list Instr-Type),
@@ -71,19 +85,16 @@ decode =
 -- Instr-Type : display-message, move-char, etc...
 -- Instr-Data : {category: int, content: string}, {char_id: string, x: int, y: int}
 
-receive : (Http.Result (Http.Error a)) -> Event
-receive reply =
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try_sending : Model -> (Maybe (Http.Request String))
+try_sending : Model.Type -> (Maybe (Cmd Event.Type))
 try_sending model =
    case (try_encoding model) of
       (Just serial) ->
          (Just
             (Http.send
-               (receive)
+               Event.ServerReplied
                (Http.post
                   Constants.IO.battlemap_handler_url
                   (Http.jsonBody serial)

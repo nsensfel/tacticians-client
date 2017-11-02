@@ -7,6 +7,7 @@ module Battlemap.Navigator exposing
       get_starting_location,
       get_remaining_points,
       get_range_markers,
+      get_path,
       get_summary,
       clear_path,
       try_adding_step,

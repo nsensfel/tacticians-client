@@ -1,5 +1,7 @@
 module Event exposing (Type(..))
 
+import Http
+
 import Battlemap.Direction
 import Battlemap.Location
 
@@ -14,4 +16,5 @@ type Type =
    | TurnEnded
    | ScaleChangeRequested Float
    | TabSelected UI.Tab
+   | ServerReplied (Result Http.Error String)
    | DebugTeamSwitchRequest
