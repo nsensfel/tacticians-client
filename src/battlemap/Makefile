@@ -14,3 +14,6 @@ build: $(WWW_SCRIPT_DIR)/main.js
 
 clean:
 	rm -f $(WWW_SCRIPT_DIR)/main.js
+
+reset:
+	rm -rf elm-stuff
