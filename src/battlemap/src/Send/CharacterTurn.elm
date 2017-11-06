@@ -3,6 +3,8 @@ module Send.CharacterTurn exposing (try_sending)
 -- Elm -------------------------------------------------------------------------
 import Http
 
+import Dict
+
 import Json.Encode
 import Json.Decode
 
@@ -69,11 +71,10 @@ try_encoding model =
       _ ->
          Nothing
 
-decode : (Json.Decode.Decoder String) --Send.Reply)
+decode : (Json.Decode.Decoder (Dict.Dict String (List String))) --Send.Reply)
 decode =
-   (Json.Decode.string ---Send.Reply
---      |> Json.Decode.required "types" (Json.Decode.list (Json.Decode.string))
---      |> Json.Decode.required "data" (Json.Decode.list (Json.Decode.string))
+   (Json.Decode.dict
+      (Json.Decode.list Json.Decode.string)
    )
 
 -- Reply:

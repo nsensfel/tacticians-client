@@ -1,5 +1,7 @@
 module Event exposing (Type(..))
 
+import Dict
+
 import Http
 
 import Battlemap.Direction
@@ -16,5 +18,5 @@ type Type =
    | TurnEnded
    | ScaleChangeRequested Float
    | TabSelected UI.Tab
-   | ServerReplied (Result Http.Error String)
+   | ServerReplied (Result Http.Error (Dict.Dict String (List String)))
    | DebugTeamSwitchRequest
