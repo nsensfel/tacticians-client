@@ -96,7 +96,7 @@ try_sending model =
             (Http.send
                Event.ServerReplied
                (Http.post
-                  Constants.IO.battlemap_handler_url
+                  Constants.IO.character_turn_handler
                   (Http.jsonBody serial)
                   (decode)
                )
