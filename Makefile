@@ -20,6 +20,12 @@ clean:
 		$(MAKE) -C $$module clean ; \
 	done
 
+reset:
+	for module in $(MODULES_SRC) ; do \
+		$(MAKE) -C $$module clean; \
+		$(MAKE) -C $$module reset; \
+	done
+
 $(MODULES_WWW): %:
 	ln -s $(SRC_DIR)/$(patsubst $(WWW_DIR)/%,%,$@)/www/ $@
 
