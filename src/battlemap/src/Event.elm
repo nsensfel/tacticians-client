@@ -20,3 +20,4 @@ type Type =
    | TabSelected UI.Tab
    | ServerReplied (Result Http.Error (Dict.Dict String (List String)))
    | DebugTeamSwitchRequest
+   | DebugLoadBattlemapRequest

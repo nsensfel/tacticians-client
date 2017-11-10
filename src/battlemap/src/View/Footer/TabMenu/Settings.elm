@@ -43,6 +43,12 @@ get_html model =
                (Html.Events.onClick Event.DebugTeamSwitchRequest)
             ]
             [ (Html.text "[DEBUG] Switch team") ]
+         ),
+         (Html.button
+            [
+               (Html.Events.onClick Event.DebugLoadBattlemapRequest)
+            ]
+            [ (Html.text "[DEBUG] Load battlemap") ]
          )
       ]
    )

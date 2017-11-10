@@ -14,6 +14,7 @@ import Model.EndTurn
 import Model.HandleServerReply
 
 import Send.CharacterTurn
+import Send.LoadBattlemap
 
 update : Event.Type -> Model.Type -> (Model.Type, (Cmd Event.Type))
 update event model =
@@ -62,6 +63,15 @@ update event model =
                (Model.reset {model | controlled_team = 0} model.characters),
                Cmd.none
             )
+
+      (Event.DebugLoadBattlemapRequest) ->
+         (
+            model,
+            (case (Send.LoadBattlemap.try_sending model) of
+               (Just cmd) -> cmd
+               Nothing -> Cmd.none
+            )
+         )
 
       (Event.ServerReplied (Result.Err error)) ->
          (
