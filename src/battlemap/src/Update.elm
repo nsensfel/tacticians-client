@@ -35,7 +35,7 @@ update event model =
          (
             (Model.EndTurn.apply_to new_model),
 --            Cmd.none
-            (case (Send.CharacterTurn.try_sending model) of
+            (case (Send.CharacterTurn.try model) of
                (Just cmd) -> cmd
                Nothing -> Cmd.none
             )
@@ -67,7 +67,7 @@ update event model =
       (Event.DebugLoadBattlemapRequest) ->
          (
             model,
-            (case (Send.LoadBattlemap.try_sending model) of
+            (case (Send.LoadBattlemap.try model) of
                (Just cmd) -> cmd
                Nothing -> Cmd.none
             )

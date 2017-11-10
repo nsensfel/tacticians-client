@@ -1,27 +1,22 @@
-module Send.CharacterTurn exposing (try_sending)
+module Send.CharacterTurn exposing (try)
 
 -- Elm -------------------------------------------------------------------------
-import Http
-
 import Dict
 
 import Json.Encode
-import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
-import Constants.IO
-
 import Battlemap
 import Battlemap.Direction
 
 import UI
 
+import Constants.IO
+import Event
+
 import Model
 
 import Send
-
-import Event
-
 --------------------------------------------------------------------------------
 -- TYPES ------------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -71,37 +66,9 @@ try_encoding model =
       _ ->
          Nothing
 
-decode : (Json.Decode.Decoder (Dict.Dict String (List String))) --Send.Reply)
-decode =
-   (Json.Decode.dict
-      (Json.Decode.list Json.Decode.string)
-   )
-
--- Reply:
--- {
---    TYPES: (list Instr-Type),
---    DATA: (list Instr-Data)
--- }
---
--- Instr-Type : display-message, move-char, etc...
--- Instr-Data : {category: int, content: string}, {char_id: string, x: int, y: int}
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try_sending : Model.Type -> (Maybe (Cmd Event.Type))
-try_sending model =
-   case (try_encoding model) of
-      (Just serial) ->
-         (Just
-            (Http.send
-               Event.ServerReplied
-               (Http.post
-                  Constants.IO.character_turn_handler
-                  (Http.jsonBody serial)
-                  (decode)
-               )
-            )
-         )
-
-      Nothing -> Nothing
+try : Model.Type -> (Maybe (Cmd Event.Type))
+try model =
+   (Send.try_sending model Constants.IO.character_turn_handler try_encoding)

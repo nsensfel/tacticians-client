@@ -18,6 +18,6 @@ type Type =
    | TurnEnded
    | ScaleChangeRequested Float
    | TabSelected UI.Tab
-   | ServerReplied (Result Http.Error (Dict.Dict String (List String)))
+   | ServerReplied (Result Http.Error (List (List String)))
    | DebugTeamSwitchRequest
    | DebugLoadBattlemapRequest
