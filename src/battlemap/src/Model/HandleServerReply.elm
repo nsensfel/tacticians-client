@@ -8,7 +8,7 @@ import Model
 import Error
 import Event
 
-import Model.SetMap
+import Model.HandleServerReply.SetMap
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -19,7 +19,7 @@ apply_command cmd model =
       cmd
    of
       ["set_map", data] ->
-         (Model.SetMap.apply_to model data)
+         (Model.HandleServerReply.SetMap.apply_to model data)
 
       ["add_char", data] -> model
 

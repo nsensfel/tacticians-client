@@ -1,6 +1,7 @@
 module Battlemap exposing
    (
       Type,
+      new,
       reset,
       get_navigator_remaining_points,
       get_tiles,
@@ -94,6 +95,15 @@ tile_cost_function bmap start_loc char_list loc =
 --------------------------------------------------------------------------------
 get_tiles : Type -> (Array.Array Battlemap.Tile.Type)
 get_tiles bmap = bmap.content
+
+new : Int -> Int -> (List Battlemap.Tile.Type) -> Type
+new width height tiles =
+   {
+      width = width,
+      height = height,
+      content = (Array.fromList tiles),
+      navigator = Nothing
+   }
 
 reset : Type -> Type
 reset bmap =

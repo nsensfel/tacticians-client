@@ -94,6 +94,7 @@ to_string tab =
 get_all_tabs : (List Tab)
 get_all_tabs =
    [StatusTab, CharactersTab, SettingsTab]
+
 -- ManualControls --------------------------------------------------------------
 has_manual_controls_enabled : Type -> Bool
 has_manual_controls_enabled ui = ui.show_manual_controls
