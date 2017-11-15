@@ -30,6 +30,19 @@
 .battlemap-character-icon  {z-index: 2;}
 .battlemap-path-icon       {z-index: 3; color: white;}
 
+.battlemap-character-icon
+{
+   box-sizing: border-box;
+   border: 2px solid rgba(0,0,0,0.5);
+   border-radius: 25px;
+}
+
+.battlemap-marker-icon
+{
+   box-sizing: border-box;
+   border: 2px groove rgba(0,0,0,0.5);
+}
+
 .battlemap-can-go-to-marker   {background-color:rgba(0,0,0,0.5);}
 .battlemap-can-attack-marker  {background-color:rgba(0,0,0,0.7);}
 
