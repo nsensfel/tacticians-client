@@ -2,6 +2,7 @@ module Model exposing
    (
       Type,
       State(..),
+      add_character,
       get_state,
       invalidate,
       reset,
@@ -47,6 +48,17 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+add_character : Type -> Character.Type -> Type
+add_character model char =
+   {model |
+      characters =
+         (Dict.insert
+            (Character.get_ref char)
+            char
+            model.characters
+         )
+   }
+
 get_state : Type -> State
 get_state model = model.state
 

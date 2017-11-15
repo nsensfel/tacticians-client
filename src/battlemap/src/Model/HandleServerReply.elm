@@ -9,6 +9,7 @@ import Error
 import Event
 
 import Model.HandleServerReply.SetMap
+import Model.HandleServerReply.AddChar
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -21,7 +22,8 @@ apply_command cmd model =
       ["set_map", data] ->
          (Model.HandleServerReply.SetMap.apply_to model data)
 
-      ["add_char", data] -> model
+      ["add_char", data] ->
+         (Model.HandleServerReply.AddChar.apply_to model data)
 
       _ ->
          (Model.invalidate
@@ -44,4 +46,4 @@ apply_to : (
       (Model.Type, (Cmd Event.Type))
    )
 apply_to model serialized_commands =
-   ((List.foldr (apply_command) model serialized_commands), Cmd.none)
+   ((List.foldl (apply_command) model serialized_commands), Cmd.none)

@@ -2,6 +2,7 @@ module Character exposing
    (
       Type,
       Ref,
+      new,
       get_ref,
       get_team,
       get_icon_id,
@@ -12,8 +13,12 @@ module Character exposing
       get_attack_range
    )
 
+-- Battlemap -------------------------------------------------------------------
 import Battlemap.Location
 
+--------------------------------------------------------------------------------
+-- TYPES -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
 type alias Type =
    {
       id : String,
@@ -27,6 +32,36 @@ type alias Type =
    }
 
 type alias Ref = String
+
+--------------------------------------------------------------------------------
+-- LOCAL -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
+new : (
+      String -> -- id
+      String -> -- name
+      String -> -- icon
+      String -> -- portrait
+      Battlemap.Location.Type -> -- location
+      Int -> -- team
+      Int -> -- movement_points
+      Int -> -- atk_dist
+      Type
+   )
+new id name icon portrait location team movement_points atk_dist =
+   {
+      id = id,
+      name = name,
+      icon = icon,
+      portrait = portrait,
+      location = location,
+      team = team,
+      movement_points = movement_points,
+      atk_dist = atk_dist
+   }
 
 get_ref : Type -> Ref
 get_ref c = c.id

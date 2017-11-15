@@ -2,6 +2,7 @@ module Model.HandleServerReply.SetMap exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
 import Array
+import Dict
 import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
@@ -73,7 +74,7 @@ apply_to model serialized_map =
                      )
                   )
             }
-            model.characters
+            (Dict.empty)
          )
 
       _ -> model
