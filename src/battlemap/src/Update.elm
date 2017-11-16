@@ -26,20 +26,13 @@ update event model =
          ((Model.RequestDirection.apply_to new_model d), Cmd.none)
 
       (Event.TileSelected loc) ->
-         ((Model.SelectTile.apply_to new_model loc), Cmd.none)
+         (Model.SelectTile.apply_to new_model loc)
 
       (Event.CharacterSelected char_id) ->
          ((Model.SelectCharacter.apply_to new_model char_id), Cmd.none)
 
       Event.TurnEnded ->
-         (
-            (Model.EndTurn.apply_to new_model),
---            Cmd.none
-            (case (Send.CharacterTurn.try model) of
-               (Just cmd) -> cmd
-               Nothing -> Cmd.none
-            )
-         )
+         (Model.EndTurn.apply_to new_model)
 
       (Event.ScaleChangeRequested mod) ->
          if (mod == 0.0)

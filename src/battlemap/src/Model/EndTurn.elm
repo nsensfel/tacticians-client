@@ -9,53 +9,71 @@ import Battlemap
 import Character
 
 import Error
+import Event
 
 import Model
 
+import Send.CharacterTurn
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-make_it_so : Model.Type -> Character.Ref -> Model.Type
+make_it_so : Model.Type -> Character.Ref -> (Model.Type, (Cmd Event.Type))
 make_it_so model char_ref =
    case (Battlemap.try_getting_navigator_location model.battlemap) of
       (Just location) ->
-         (Model.reset
-            model
-            (Dict.update
-               char_ref
-               (\maybe_char ->
-                  case maybe_char of
-                     (Just char) ->
-                        (Just
-                           (Character.set_location location char)
+         case (Send.CharacterTurn.try model) of
+            (Just cmd) ->
+               (
+                  (Model.reset
+                     model
+                     (Dict.update
+                        char_ref
+                        (\maybe_char ->
+                           case maybe_char of
+                              (Just char) ->
+                                 (Just
+                                    (Character.set_location location char)
+                                 )
+                              Nothing -> Nothing
                         )
-                     Nothing -> Nothing
+                        model.characters
+                     )
+                  ),
+                  cmd
                )
-               model.characters
-            )
-         )
+
+            Nothing ->
+               (model, Cmd.none)
 
       Nothing ->
-         (Model.invalidate
-            model
-            (Error.new
-               Error.Programming
-               "EndTurn: model moving char, no navigator location."
-            )
+         (
+            (Model.invalidate
+               model
+               (Error.new
+                  Error.Programming
+                  "EndTurn: model moving char, no navigator location."
+               )
+            ),
+            Cmd.none
          )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : Model.Type -> Model.Type
+apply_to : Model.Type -> (Model.Type, (Cmd Event.Type))
 apply_to model =
    case (Model.get_state model) of
-      (Model.ControllingCharacter char_ref) -> (make_it_so model char_ref)
+      (Model.ControllingCharacter char_ref) ->
+         (make_it_so model char_ref)
+
       _ ->
-         (Model.invalidate
-            model
-            (Error.new
-               Error.IllegalAction
-               "This can only be done while moving a character."
-            )
+         (
+            (Model.invalidate
+               model
+               (Error.new
+                  Error.IllegalAction
+                  "This can only be done while moving a character."
+               )
+            ),
+            Cmd.none
          )
