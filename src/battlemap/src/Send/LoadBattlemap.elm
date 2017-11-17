@@ -35,7 +35,9 @@ try_encoding model =
 --               0
                (Json.Encode.object
                   [
-                     ("battlemap_id", Json.Encode.string char_ref)
+                     ("player_id", (Json.Encode.string "0")),
+                     ("battlemap_id", (Json.Encode.string "0")),
+                     ("instance_id", (Json.Encode.string "0"))
                   ]
                )
 --            )
