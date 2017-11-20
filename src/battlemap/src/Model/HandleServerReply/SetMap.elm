@@ -9,6 +9,8 @@ import Json.Decode
 import Battlemap
 import Battlemap.Tile
 
+import Data.Tile
+
 import Model
 
 --------------------------------------------------------------------------------
@@ -18,28 +20,20 @@ type alias MapData =
    {
       width : Int,
       height : Int,
-      content : (List (List Int))
+      content : (List Int)
    }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-deserialize_tile : Int -> Int -> (List Int) -> Battlemap.Tile.Type
-deserialize_tile map_width index data =
-   case data of
-      [icon_id, cost] ->
-         (Battlemap.Tile.new
-            (index % map_width)
-            (index // map_width)
-            (toString icon_id)
-            cost
-         )
-
-      _ ->
-         (Battlemap.Tile.error_tile
-            (index % map_width)
-            (index // map_width)
-         )
+deserialize_tile : Int -> Int -> Int -> Battlemap.Tile.Type
+deserialize_tile map_width index id =
+   (Battlemap.Tile.new
+      (index % map_width)
+      (index // map_width)
+      (Data.Tile.get_icon id)
+      (Data.Tile.get_cost id)
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -53,9 +47,7 @@ apply_to model serialized_map =
             (Json.Decode.field "height" Json.Decode.int)
             (Json.Decode.field
                "content"
-               (Json.Decode.list
-                  (Json.Decode.list Json.Decode.int)
-               )
+               (Json.Decode.list Json.Decode.int)
             )
          )
          serialized_map
