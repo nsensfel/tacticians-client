@@ -28,23 +28,16 @@ import Event
 --------------------------------------------------------------------------------
 try_encoding : Model.Type -> (Maybe Json.Encode.Value)
 try_encoding model =
-   case (Model.get_state model) of
-      (Model.ControllingCharacter char_ref) ->
-         (Just
---            (Json.Encode.encode
---               0
-               (Json.Encode.object
-                  [
-                     ("player_id", (Json.Encode.string "0")),
-                     ("battlemap_id", (Json.Encode.string "0")),
-                     ("instance_id", (Json.Encode.string "0"))
-                  ]
-               )
---            )
-         )
-
-      _ ->
-         Nothing
+   (Just
+      (Json.Encode.object
+         [
+            ("session_token", (Json.Encode.string "0")),
+            ("player_id", (Json.Encode.string "0")),
+            ("battlemap_id", (Json.Encode.string "0")),
+            ("instance_id", (Json.Encode.string "0"))
+         ]
+      )
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
