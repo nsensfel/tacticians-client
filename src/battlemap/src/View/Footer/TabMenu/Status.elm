@@ -115,7 +115,11 @@ get_tile_info_html model loc =
                            ++ (toString loc.x)
                            ++ ", "
                            ++ (toString loc.y)
-                           ++ ")."
+                           ++ "). {ID = "
+                           ++ (Battlemap.Tile.get_icon_id tile)
+                           ++ ", cost = "
+                           ++ (toString (Battlemap.Tile.get_cost tile))
+                           ++ "}."
                         )
                      )
                   ]
