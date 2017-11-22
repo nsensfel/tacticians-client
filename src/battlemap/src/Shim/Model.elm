@@ -44,6 +44,7 @@ generate =
       error = Nothing,
       battlemap = (Shim.Battlemap.generate),
       controlled_team = 0,
+      player_id = "0",
       characters =
          (new_char "0"  0 0 0 7 0
          (new_char "1"  0 1 0 6 1

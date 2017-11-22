@@ -48,12 +48,24 @@ update event model =
          if (model.controlled_team == 0)
          then
             (
-               (Model.reset {model | controlled_team = 1} model.characters),
+               (Model.reset
+                  {model |
+                     controlled_team = 1,
+                     player_id = "1"
+                  }
+                  model.characters
+               ),
                Cmd.none
             )
          else
             (
-               (Model.reset {model | controlled_team = 0} model.characters),
+               (Model.reset
+                  {model |
+                     controlled_team = 0,
+                     player_id = "0"
+                  }
+                  model.characters
+               ),
                Cmd.none
             )
 
