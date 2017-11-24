@@ -32,7 +32,10 @@ make_it_so model char_ref =
                            case maybe_char of
                               (Just char) ->
                                  (Just
-                                    (Character.set_location location char)
+                                    (Character.set_enabled
+                                       (Character.set_location location char)
+                                       False
+                                    )
                                  )
                               Nothing -> Nothing
                         )

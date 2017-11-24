@@ -46,7 +46,7 @@ select_character : (
       Model.Type
    )
 select_character model target_char_id target_char =
-   if ((Character.get_team target_char) == model.controlled_team)
+   if ((Character.is_enabled target_char))
    then
       {model |
          state = (Model.ControllingCharacter target_char_id),
@@ -65,7 +65,10 @@ select_character model target_char_id target_char =
          model
          (Error.new
             Error.IllegalAction
-            "SelectCharacter: Wrong team. Attack is not implemented."
+            (
+               "SelectCharacter: Wrong team or already moved this turn"
+               ++ ". Attack is not implemented."
+            )
          )
       )
 --------------------------------------------------------------------------------
