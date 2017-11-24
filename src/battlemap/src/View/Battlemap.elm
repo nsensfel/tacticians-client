@@ -35,6 +35,15 @@ char_on_map char =
       (Html.div
          [
             (Html.Attributes.class "battlemap-character-icon"),
+            (Html.Attributes.class
+               (
+                  if (Character.is_enabled char)
+                  then
+                     "battlemap-character-icon-enabled"
+                  else
+                     "battlemap-character-icon-disabled"
+               )
+            ),
             (Html.Attributes.class "battlemap-tiled"),
             (Html.Attributes.class
                ("asset-character-icon-" ++ (Character.get_icon_id char))

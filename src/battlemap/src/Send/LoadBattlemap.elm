@@ -32,7 +32,7 @@ try_encoding model =
       (Json.Encode.object
          [
             ("session_token", (Json.Encode.string "0")),
-            ("player_id", (Json.Encode.string "0")),
+            ("player_id", (Json.Encode.string model.player_id)),
             ("battlemap_id", (Json.Encode.string "0")),
             ("instance_id", (Json.Encode.string "0"))
          ]

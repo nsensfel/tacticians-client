@@ -10,7 +10,9 @@ module Character exposing
       get_location,
       set_location,
       get_movement_points,
-      get_attack_range
+      get_attack_range,
+      is_enabled,
+      set_enabled
    )
 
 -- Battlemap -------------------------------------------------------------------
@@ -28,7 +30,8 @@ type alias Type =
       location : Battlemap.Location.Type,
       team : Int,
       movement_points : Int,
-      atk_dist : Int
+      atk_dist : Int,
+      enabled : Bool
    }
 
 type alias Ref = String
@@ -49,9 +52,10 @@ new : (
       Int -> -- team
       Int -> -- movement_points
       Int -> -- atk_dist
+      Bool -> -- enabled
       Type
    )
-new id name icon portrait location team movement_points atk_dist =
+new id name icon portrait location team movement_points atk_dist enabled =
    {
       id = id,
       name = name,
@@ -60,7 +64,8 @@ new id name icon portrait location team movement_points atk_dist =
       location = location,
       team = team,
       movement_points = movement_points,
-      atk_dist = atk_dist
+      atk_dist = atk_dist,
+      enabled = enabled
    }
 
 get_ref : Type -> Ref
@@ -86,3 +91,9 @@ get_movement_points char = char.movement_points
 
 get_attack_range : Type -> Int
 get_attack_range char = char.atk_dist
+
+is_enabled : Type -> Bool
+is_enabled char = char.enabled
+
+set_enabled : Type -> Bool -> Type
+set_enabled char enabled = {char | enabled = enabled}

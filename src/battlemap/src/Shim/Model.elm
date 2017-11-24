@@ -32,7 +32,8 @@ new_char id team x y mp ad storage =
          portrait = id,
          location = {x = x, y = y},
          movement_points = mp,
-         atk_dist = ad
+         atk_dist = ad,
+         enabled = (team == 0)
       }
       storage
    )

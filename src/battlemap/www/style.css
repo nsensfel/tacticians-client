@@ -46,6 +46,12 @@
 .battlemap-can-go-to-marker   {background-color:rgba(0,0,0,0.5);}
 .battlemap-can-attack-marker  {background-color:rgba(0,0,0,0.7);}
 
+.battlemap-character-icon-disabled
+{
+   opacity: 0.5;
+   filter: grayscale(50%);
+   border: 2px dotted rgba(0,0,0,0.7);
+}
 /**** Path Icons **************************************************************/
 .battlemap-path-icon-NR:before,
 .battlemap-path-icon-LR:before,

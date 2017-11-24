@@ -29,7 +29,8 @@ type alias CharData =
       loc_y : Int,
       team : Int,
       mov_pts : Int,
-      atk_rg : Int
+      atk_rg : Int,
+      enabled : Bool
    }
 
 --------------------------------------------------------------------------------
@@ -48,6 +49,7 @@ char_decoder =
       |> (Json.Decode.Pipeline.required "team" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "mov_pts" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "atk_rg" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "enabled" Json.Decode.bool)
    )
 
 --------------------------------------------------------------------------------
@@ -73,6 +75,7 @@ apply_to model serialized_char =
                char_data.team
                char_data.mov_pts
                char_data.atk_rg
+               char_data.enabled
             )
          )
 
