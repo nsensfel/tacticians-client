@@ -45,7 +45,9 @@ try_encoding model =
                               <<
                               (Battlemap.Direction.to_string)
                            )
-                           (Battlemap.get_navigator_path model.battlemap)
+                           (List.reverse
+                              (Battlemap.get_navigator_path model.battlemap)
+                           )
                         )
                      )
                   ),
