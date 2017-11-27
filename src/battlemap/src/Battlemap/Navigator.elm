@@ -71,7 +71,7 @@ new start_loc mov_dist atk_dist cost_fun =
          (Battlemap.Navigator.RangeIndicator.generate
             start_loc
             mov_dist
-            (mov_dist + atk_dist)
+            atk_dist
             (cost_fun)
          )
    }

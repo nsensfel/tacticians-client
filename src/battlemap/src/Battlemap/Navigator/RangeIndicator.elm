@@ -15,8 +15,6 @@ import Battlemap.Marker
 
 import Constants.Movement
 
-import Util.List
-
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -25,65 +23,12 @@ type alias Type =
       distance: Int,
       range: Int,
       path: (List Battlemap.Direction.Type),
-      node_cost: Int,
       marker: Battlemap.Marker.Type
    }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-generate_row : (
-      Battlemap.Location.Type ->
-      Int ->
-      Int ->
-      Int ->
-      (List Battlemap.Location.Type) ->
-      (List Battlemap.Location.Type)
-   )
-generate_row src max_x_mod curr_y curr_x_mod curr_row =
-   if (curr_x_mod > max_x_mod)
-   then
-      curr_row
-   else
-      (generate_row
-         src
-         max_x_mod
-         curr_y
-         (curr_x_mod + 1)
-         ({x = (src.x + curr_x_mod), y = curr_y} :: curr_row)
-      )
-
-generate_grid : (
-      Battlemap.Location.Type ->
-      Int ->
-      Int ->
-      (List Battlemap.Location.Type) ->
-      (List Battlemap.Location.Type)
-   )
-generate_grid src dist curr_y_mod curr_list =
-   if (curr_y_mod > dist)
-   then
-      curr_list
-   else
-      let
-         new_limit = (dist - (abs curr_y_mod))
-      in
-         (generate_grid
-            src
-            dist
-            (curr_y_mod + 1)
-            (
-               (generate_row
-                  src
-                  new_limit
-                  (src.y + curr_y_mod)
-                  (-new_limit)
-                  []
-               )
-               ++ curr_list
-            )
-         )
-
 get_closest : (
       Int ->
       Battlemap.Location.Ref ->
@@ -107,91 +52,98 @@ get_closest dist ref indicator (prev_ref, prev_indicator) =
    else
       (prev_ref, prev_indicator)
 
+is_closer : Int -> Int -> Type -> Bool
+is_closer new_dist new_range neighbor =
+   (
+      (new_dist < neighbor.distance)
+      ||
+      (
+         (neighbor.distance > new_dist)
+         && (new_range < neighbor.range)
+      )
+   )
+
+
 handle_neighbors : (
+      Type ->
       Battlemap.Location.Type ->
       Int ->
       Int ->
-      Type ->
       (Dict.Dict Battlemap.Location.Ref Type) ->
-      (List Battlemap.Direction.Type) ->
+      (Battlemap.Location.Type -> Int) ->
+      Battlemap.Direction.Type ->
+      (Dict.Dict Battlemap.Location.Ref Type) ->
       (Dict.Dict Battlemap.Location.Ref Type)
    )
-handle_neighbors loc dist atk_dist indicator remaining directions =
-   case (Util.List.pop directions) of
-      Nothing -> remaining
-      (Just (head, tail)) ->
-         let
-            neighbor_loc = (Battlemap.Location.neighbor loc head)
-            neighbor_indicator =
-               (Dict.get
-                  (Battlemap.Location.get_ref neighbor_loc)
-                  remaining
-               )
-         in
-            case neighbor_indicator of
-               Nothing ->
-                  (handle_neighbors
-                     loc
-                     dist
-                     atk_dist
-                     indicator
-                     remaining
-                     tail
-                  )
-               (Just neighbor) ->
-                  let
-                     new_dist = (indicator.distance + neighbor.node_cost)
-                     new_range = (indicator.range + 1)
-                  in
-                     (handle_neighbors
-                        loc
-                        dist
-                        atk_dist
-                        indicator
-                        (
-                           if
-                              (
-                                 (new_dist < neighbor.distance)
-                                 ||
-                                 (
-                                    (neighbor.distance > dist)
-                                    && (new_range < neighbor.range)
-                                 )
-                              )
-                           then
-                              (Dict.insert
-                                 (Battlemap.Location.get_ref neighbor_loc)
-                                 (
-                                    if (new_dist > dist)
-                                    then
-                                       {neighbor |
-                                          distance = (dist + 1),
-                                          range = new_range,
-                                          path = (head :: indicator.path)
-                                       }
-                                    else
-                                       {neighbor |
-                                          distance = new_dist,
-                                          range = 0,
-                                          path = (head :: indicator.path)
-                                       }
-                                 )
-                                 remaining
-                              )
-                           else
-                              remaining
-                        )
-                        tail
+handle_neighbors src_indicator src_loc dist range results cost_fun dir rem =
+   let
+      neighbor_loc = (Battlemap.Location.neighbor src_loc dir)
+   in
+      case (Dict.get (Battlemap.Location.get_ref neighbor_loc) results) of
+         (Just _) -> rem
+
+         Nothing ->
+            let
+               node_cost = (cost_fun neighbor_loc)
+               new_dist = (src_indicator.distance + node_cost)
+               new_range = (src_indicator.range + 1)
+            in
+               if
+                  (
+                     (
+                        case
+                           (Dict.get
+                              (Battlemap.Location.get_ref neighbor_loc)
+                              rem
+                           )
+                        of
+                           (Just neighbor) ->
+                              (is_closer new_dist new_range neighbor)
+
+                           Nothing ->
+                              True
                      )
+                     &&
+                     (
+                        (new_dist <= dist)
+                        ||
+                        (new_range <= range)
+                     )
+                  )
+               then
+                  (Dict.insert
+                     (Battlemap.Location.get_ref neighbor_loc)
+                     (
+                        if (new_dist > dist)
+                        then
+                           {
+                              distance = (dist + 1),
+                              range = new_range,
+                              path = (dir :: src_indicator.path),
+                              marker = Battlemap.Marker.CanAttack
+                           }
+                        else
+                           {
+                              distance = new_dist,
+                              range = 0,
+                              path = (dir :: src_indicator.path),
+                              marker = Battlemap.Marker.CanGoTo
+                           }
+                     )
+                     rem
+                  )
+               else
+                  rem
 
 search : (
       (Dict.Dict Battlemap.Location.Ref Type) ->
       (Dict.Dict Battlemap.Location.Ref Type) ->
       Int ->
       Int ->
+      (Battlemap.Location.Type -> Int) ->
       (Dict.Dict Battlemap.Location.Ref Type)
    )
-search result remaining dist atk_dist =
+search result remaining dist range cost_fun =
    if (Dict.isEmpty remaining)
    then
       result
@@ -205,7 +157,6 @@ search result remaining dist atk_dist =
                   {
                      distance = Constants.Movement.cost_when_out_of_bounds,
                      path = [],
-                     node_cost = Constants.Movement.cost_when_out_of_bounds,
                      range = Constants.Movement.cost_when_out_of_bounds,
                      marker = Battlemap.Marker.CanAttack
                   }
@@ -228,11 +179,15 @@ search result remaining dist atk_dist =
                }
                result
             )
-            (handle_neighbors
-               (Battlemap.Location.from_ref min_loc_ref)
-               dist
-               atk_dist
-               min
+            (List.foldl
+               (handle_neighbors
+                  min
+                  (Battlemap.Location.from_ref min_loc_ref)
+                  dist
+                  range
+                  result
+                  (cost_fun)
+               )
                (Dict.remove min_loc_ref remaining)
                [
                   Battlemap.Direction.Left,
@@ -242,60 +197,9 @@ search result remaining dist atk_dist =
                ]
             )
             dist
-            atk_dist
+            range
+            (cost_fun)
          )
-
-grid_to_range_indicators : (
-      (Battlemap.Location.Type -> Int) ->
-      Battlemap.Location.Type ->
-      (List Battlemap.Location.Type) ->
-      (Dict.Dict Battlemap.Location.Ref Type) ->
-      (Dict.Dict Battlemap.Location.Ref Type)
-   )
-grid_to_range_indicators cost_fun location grid result =
-   case (Util.List.pop grid) of
-      Nothing -> result
-      (Just (head, tail)) ->
-         let
-            head_cost = (cost_fun head)
-         in
-            if (head_cost /= Constants.Movement.cost_when_out_of_bounds)
-            then
-               (grid_to_range_indicators
-                  (cost_fun)
-                  location
-                  tail
-                  (Dict.insert
-                     (Battlemap.Location.get_ref head)
-                     (
-                        if ((location.x == head.x) && (location.y == head.y))
-                        then
-                           {
-                              distance = 0,
-                              path = [],
-                              node_cost = head_cost,
-                              range = 0,
-                              marker = Battlemap.Marker.CanGoTo
-                           }
-                        else
-                           {
-                              distance = Constants.Movement.max_points,
-                              path = [],
-                              node_cost = head_cost,
-                              range = Constants.Movement.max_points,
-                              marker = Battlemap.Marker.CanGoTo
-                           }
-                     )
-                     result
-                  )
-               )
-            else
-               (grid_to_range_indicators
-                  (cost_fun)
-                  location
-                  tail
-                  result
-               )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -307,20 +211,22 @@ generate : (
       (Battlemap.Location.Type -> Int) ->
       (Dict.Dict Battlemap.Location.Ref Type)
    )
-generate location dist atk_dist cost_fun =
-   (Dict.filter
-      (\loc_ref range_indicator -> (range_indicator.range <= (atk_dist - dist)))
-      (search
+generate location dist range cost_fun =
+   (search
+      Dict.empty
+      (Dict.insert
+         (Battlemap.Location.get_ref location)
+         {
+            distance = 0,
+            path = [],
+            range = 0,
+            marker = Battlemap.Marker.CanGoTo
+         }
          Dict.empty
-         (grid_to_range_indicators
-            (cost_fun)
-            location
-            (generate_grid location atk_dist (-atk_dist) [])
-            Dict.empty
-         )
-         dist
-         atk_dist
       )
+      dist
+      range
+      (cost_fun)
    )
 
 get_marker : Type -> Battlemap.Marker.Type
