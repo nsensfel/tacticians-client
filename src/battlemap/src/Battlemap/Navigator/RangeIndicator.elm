@@ -104,6 +104,8 @@ handle_neighbors src_indicator src_loc dist range results cost_fun dir rem =
                               True
                      )
                      &&
+                     (node_cost /= Constants.Movement.cost_when_out_of_bounds)
+                     &&
                      (
                         (new_dist <= dist)
                         ||
