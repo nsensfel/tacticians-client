@@ -1,17 +1,10 @@
 module Send.LoadBattlemap exposing (try)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
-
 import Json.Encode
 
 -- Battlemap -------------------------------------------------------------------
 import Constants.IO
-
-import Battlemap
-import Battlemap.Direction
-
-import UI
 
 import Model
 

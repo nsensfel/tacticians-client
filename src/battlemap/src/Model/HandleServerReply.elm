@@ -1,8 +1,5 @@
 module Model.HandleServerReply exposing (apply_to)
 
--- Elm -------------------------------------------------------------------------
-import Json.Decode
-
 -- Battlemap -------------------------------------------------------------------
 import Model
 import Error

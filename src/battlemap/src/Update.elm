@@ -13,7 +13,6 @@ import Model.SelectCharacter
 import Model.EndTurn
 import Model.HandleServerReply
 
-import Send.CharacterTurn
 import Send.LoadBattlemap
 
 update : Event.Type -> Model.Type -> (Model.Type, (Cmd Event.Type))

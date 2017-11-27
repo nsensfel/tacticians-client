@@ -1,7 +1,6 @@
 module Model.HandleServerReply.SetMap exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
-import Array
 import Dict
 import Json.Decode
 

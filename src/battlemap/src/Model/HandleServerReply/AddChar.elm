@@ -1,15 +1,10 @@
 module Model.HandleServerReply.AddChar exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
-import Array
-
 import Json.Decode
 import Json.Decode.Pipeline
 
 -- Battlemap -------------------------------------------------------------------
-import Battlemap
-import Battlemap.Location
-
 import Character
 
 import Error

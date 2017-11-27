@@ -1,8 +1,6 @@
 module Send.CharacterTurn exposing (try)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
-
 import Json.Encode
 
 -- Battlemap -------------------------------------------------------------------
