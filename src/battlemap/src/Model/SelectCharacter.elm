@@ -31,13 +31,13 @@ attack_character : (
       Model.Type
    )
 attack_character model main_char_id target_char_id target_char =
-   (Model.invalidate
-      model
-      (Error.new
-         Error.IllegalAction
-         "Attacking another character is not yet possible."
-      )
-   )
+   {model |
+      ui =
+         (UI.set_previous_action
+            model.ui
+            (Just (UI.AttackedCharacter target_char_id))
+         )
+   }
 
 select_character : (
       Model.Type ->

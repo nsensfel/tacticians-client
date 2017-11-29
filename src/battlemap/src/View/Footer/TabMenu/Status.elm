@@ -67,6 +67,28 @@ get_char_info_html model char_ref =
             )
          )
 
+get_char_attack_info_html : Model.Type -> Character.Ref -> (Html.Html Event.Type)
+get_char_attack_info_html model char_ref =
+   case (Dict.get char_ref model.characters) of
+      Nothing -> (Html.text "Error: Unknown character selected.")
+      (Just char) ->
+         (Html.text
+            (
+               "Attacking "
+               ++ char.name
+               ++ " (Team "
+               ++ (toString (Character.get_team char))
+               ++ "): "
+               ++ (toString (Character.get_movement_points char))
+               ++ " movement points; "
+               ++ (toString (Character.get_attack_range char))
+               ++ " attack range. Health: "
+               ++ (toString (Character.get_current_health char))
+               ++ "/"
+               ++ (toString (Character.get_max_health char))
+            )
+         )
+
 get_error_html : Error.Type -> (Html.Html Event.Type)
 get_error_html err =
    (Html.div
@@ -178,6 +200,9 @@ get_html model =
 
                   (Just (UI.SelectedCharacter target_char)) ->
                      (get_char_info_html model target_char)
+
+                  (Just (UI.AttackedCharacter target_char)) ->
+                     (get_char_attack_info_html model target_char)
 
                   _ -> (Util.Html.nothing)
                )
