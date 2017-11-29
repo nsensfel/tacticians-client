@@ -61,16 +61,14 @@ select_character model target_char_id target_char =
             )
       }
    else
-      (Model.invalidate
-         model
-         (Error.new
-            Error.IllegalAction
-            (
-               "SelectCharacter: Wrong team or already moved this turn"
-               ++ ". Attack is not implemented."
+      {model |
+         ui =
+            (UI.set_previous_action
+               model.ui
+               (Just (UI.SelectedCharacter target_char_id))
             )
-         )
-      )
+      }
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
