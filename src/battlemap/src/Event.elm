@@ -1,7 +1,5 @@
 module Event exposing (Type(..))
 
-import Dict
-
 import Http
 
 import Battlemap.Direction

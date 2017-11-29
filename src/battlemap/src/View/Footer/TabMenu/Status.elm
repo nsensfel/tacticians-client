@@ -60,7 +60,10 @@ get_char_info_html model char_ref =
                ++ (toString (Character.get_movement_points char))
                ++ " movement points; "
                ++ (toString (Character.get_attack_range char))
-               ++ " attack range."
+               ++ " attack range. Health: "
+               ++ (toString (Character.get_current_health char))
+               ++ "/"
+               ++ (toString (Character.get_max_health char))
             )
          )
 

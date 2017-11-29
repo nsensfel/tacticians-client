@@ -20,6 +20,8 @@ type alias CharData =
       name : String,
       icon : String,
       portrait : String,
+      health : Int,
+      max_health : Int,
       loc_x : Int,
       loc_y : Int,
       team : Int,
@@ -39,6 +41,8 @@ char_decoder =
       |> (Json.Decode.Pipeline.required "name" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "icon" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "portrait" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "health" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "max_health" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "loc_x" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "loc_y" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "team" Json.Decode.int)
@@ -66,6 +70,8 @@ apply_to model serialized_char =
                char_data.name
                char_data.icon
                char_data.portrait
+               char_data.health
+               char_data.max_health
                {x = char_data.loc_x, y = char_data.loc_y}
                char_data.team
                char_data.mov_pts
