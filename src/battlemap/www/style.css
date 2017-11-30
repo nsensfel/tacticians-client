@@ -20,15 +20,33 @@
 /** Inside the container ******************************************************/
 .battlemap-tiled
 {
-   position: absolute;
    height: 32px;
    width: 32px;
+   /** Fixes odd behavior of table cell being resized. **/
+   min-width: 32px;
+   max-width: 32px;
 }
 
-.battlemap-tile-icon       {z-index: 0;}
+.battlemap-tile-icon       {z-index: 0; display: table-cell;}
 .battlemap-marker-icon     {z-index: 1;}
 .battlemap-character-icon  {z-index: 2;}
 .battlemap-path-icon       {z-index: 3; color: white;}
+
+.battlemap-marker-icon,
+.battlemap-character-icon,
+.battlemap-path-icon
+{
+   position: absolute;
+}
+.battlemap-tiles-layer
+{
+   display: table;
+}
+
+.battlemap-tiles-layer-row
+{
+   display: table-row;
+}
 
 .battlemap-character-icon
 {
@@ -52,6 +70,7 @@
    filter: grayscale(50%);
    border: 2px dotted rgba(0,0,0,0.7);
 }
+
 /**** Path Icons **************************************************************/
 .battlemap-path-icon-NR:before,
 .battlemap-path-icon-LR:before,

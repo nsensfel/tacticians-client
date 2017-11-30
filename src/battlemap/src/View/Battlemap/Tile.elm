@@ -28,19 +28,20 @@ get_html tile =
             ),
             (Html.Events.onClick
                (Event.TileSelected (Battlemap.Location.get_ref tile_loc))
-            ),
-            (Html.Attributes.style
-               [
-                  (
-                     "top",
-                     ((toString (tile_loc.y * Constants.UI.tile_size)) ++ "px")
-                  ),
-                  (
-                     "left",
-                     ((toString (tile_loc.x * Constants.UI.tile_size)) ++ "px")
-                  )
-               ]
             )
+--            ),
+--            (Html.Attributes.style
+--               [
+--                  (
+--                     "top",
+--                     ((toString (tile_loc.y * Constants.UI.tile_size)) ++ "px")
+--                  ),
+--                  (
+--                     "left",
+--                     ((toString (tile_loc.x * Constants.UI.tile_size)) ++ "px")
+--                  )
+--               ]
+--            )
          ]
          [
          ]

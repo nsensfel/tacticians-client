@@ -4,6 +4,8 @@ module Battlemap exposing
       empty,
       new,
       reset,
+      get_width,
+      get_height,
       get_navigator_remaining_points,
       get_tiles,
       set_navigator,
@@ -94,6 +96,12 @@ tile_cost_function bmap start_loc char_list loc =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+get_width : Type -> Int
+get_width bmap = bmap.width
+
+get_height : Type -> Int
+get_height bmap = bmap.height
+
 get_tiles : Type -> (Array.Array Battlemap.Tile.Type)
 get_tiles bmap = bmap.content
 

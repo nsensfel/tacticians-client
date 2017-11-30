@@ -74,20 +74,71 @@ char_on_map char =
          ]
       )
 
+get_tiles_line_html : (List (Html.Html Event.Type)) -> (Html.Html Event.Type)
+get_tiles_line_html tiles_list =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-tiles-layer-row")
+      ]
+      tiles_list
+   )
+
+get_tiles_lines_html : (
+      Int ->
+      Battlemap.Tile.Type ->
+      (
+         Int,
+         (List (Html.Html Event.Type)),
+         (List (Html.Html Event.Type))
+      ) ->
+      (
+         Int,
+         (List (Html.Html Event.Type)),
+         (List (Html.Html Event.Type))
+      )
+   )
+get_tiles_lines_html max_index tile (curr_index, curr_line, result) =
+   if (curr_index == 0)
+   then
+      (
+         max_index,
+         [],
+         (
+            (get_tiles_line_html
+               ((View.Battlemap.Tile.get_html tile) :: curr_line)
+            )
+            ::
+            result
+         )
+      )
+   else
+      (
+         (curr_index - 1),
+         ((View.Battlemap.Tile.get_html tile) :: curr_line),
+         result
+      )
+
 get_tiles_html : (
+      Int ->
       (Array.Array Battlemap.Tile.Type) ->
       (Html.Html Event.Type)
    )
-get_tiles_html tiles_array =
-   (Html.div
-      [
-         (Html.Attributes.class "battlemap-tiles-layer")
-      ]
-      (List.map
-         (View.Battlemap.Tile.get_html)
-         (Array.toList tiles_array)
+get_tiles_html bmap_width tiles_array =
+   let
+      max_index = (bmap_width - 1)
+      (_, last_line, other_lines) =
+         (Array.foldr
+            (get_tiles_lines_html max_index)
+            (max_index, [], [])
+            tiles_array
+         )
+   in
+      (Html.div
+         [
+            (Html.Attributes.class "battlemap-tiles-layer")
+         ]
+         ((get_tiles_line_html last_line) :: other_lines)
       )
-   )
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -112,7 +163,7 @@ get_html battlemap scale characters =
       ]
       (
          (Html.Lazy.lazy
-            (get_tiles_html)
+            (get_tiles_html (Battlemap.get_width battlemap))
             (Battlemap.get_tiles battlemap)
          )
          ::
