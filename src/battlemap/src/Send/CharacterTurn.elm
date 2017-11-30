@@ -24,8 +24,8 @@ import Send
 --------------------------------------------------------------------------------
 try_encoding : Model.Type -> (Maybe Json.Encode.Value)
 try_encoding model =
-   case (Model.get_state model) of
-      (Model.ControllingCharacter char_ref) ->
+   case model.controlled_character of
+      (Just char_ref) ->
          (Just
             (Json.Encode.object
                [

@@ -1,4 +1,4 @@
-module View.Footer.TabMenu exposing (get_html)
+module View.SideBar.TabMenu exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html
@@ -15,9 +15,9 @@ import Model
 import UI
 import Util.Html
 
-import View.Footer.TabMenu.Characters
-import View.Footer.TabMenu.Status
-import View.Footer.TabMenu.Settings
+import View.SideBar.TabMenu.Characters
+import View.SideBar.TabMenu.Status
+import View.SideBar.TabMenu.Settings
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -94,19 +94,19 @@ get_html model =
                   (Just UI.StatusTab) ->
                      [
                         (get_active_tab_selector_html UI.StatusTab),
-                        (View.Footer.TabMenu.Status.get_html model)
+                        (View.SideBar.TabMenu.Status.get_html model)
                      ]
 
                   (Just UI.CharactersTab) ->
                      [
                         (get_active_tab_selector_html UI.CharactersTab),
-                        (View.Footer.TabMenu.Characters.get_html model)
+                        (View.SideBar.TabMenu.Characters.get_html model)
                      ]
 
                   (Just UI.SettingsTab) ->
                      [
                         (get_active_tab_selector_html UI.SettingsTab),
-                        (View.Footer.TabMenu.Settings.get_html model)
+                        (View.SideBar.TabMenu.Settings.get_html model)
                      ]
 
                   Nothing -> [(get_inactive_tab_selector_html)]

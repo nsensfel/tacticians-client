@@ -57,8 +57,8 @@ make_it_so model char_ref dir =
 --------------------------------------------------------------------------------
 apply_to : Model.Type -> Battlemap.Direction.Type -> Model.Type
 apply_to model dir =
-   case (Model.get_state model) of
-      (Model.ControllingCharacter char_ref) ->
+   case model.controlled_character of
+      (Just char_ref) ->
          (make_it_so model char_ref dir)
 
       _ ->

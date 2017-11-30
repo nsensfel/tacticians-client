@@ -1,4 +1,4 @@
-module View.Footer.TabMenu.Settings exposing (get_html)
+module View.SideBar.TabMenu.Settings exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html

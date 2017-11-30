@@ -24,6 +24,7 @@ generate =
       error = Nothing,
       battlemap = (Battlemap.empty),
       controlled_team = 0,
+      controlled_character = Nothing,
       player_id = "0",
       characters = (Dict.empty),
       ui = (UI.default)

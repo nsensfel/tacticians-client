@@ -65,8 +65,8 @@ make_it_so model char_ref =
 --------------------------------------------------------------------------------
 apply_to : Model.Type -> (Model.Type, (Cmd Event.Type))
 apply_to model =
-   case (Model.get_state model) of
-      (Model.ControllingCharacter char_ref) ->
+   case model.controlled_character of
+      (Just char_ref) ->
          (make_it_so model char_ref)
 
       _ ->

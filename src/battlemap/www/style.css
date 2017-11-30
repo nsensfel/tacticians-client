@@ -1,15 +1,45 @@
+.battlemap-left-panel
+{
+   flex-grow: 1;
+   min-width: 70%;
+   display: flex;
+   flex-direction: column;
+}
+
+.battlemap-right-panel
+{
+   height: inherit;
+   max-width: 30%;
+
+   display: flex;
+}
+
 .battlemap-container
 {
+   flex-grow: 1;
+   min-height: 70%;
+
    overflow: auto;
    width: inherit;
-   flex: 1;
+}
+
+.battlemap-side-bar
+{
+   flex-grow: 1;
+   overflow-y: auto;
+   width: inherit;
+   height: inherit;
+   word-wrap: break-word;
 }
 
 .battlemap-footer
 {
-   display: flex;
-   flex: 0;
    max-height: 30%;
+
+   overflow-y: auto;
+   width: inherit;
+   word-wrap: break-word;
+   padding-bottom: 1em;
 }
 
 .battlemap-actual
@@ -121,6 +151,7 @@
 .battlemap-tabmenu
 {
    flex: 1;
+   height: inherit;
 }
 
 .battlemap-manual-controls

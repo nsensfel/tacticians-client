@@ -10,7 +10,7 @@ import Html.Attributes
 import UI
 
 import View.Battlemap
-import View.Header
+import View.SideBar
 import View.Footer
 
 import Event
@@ -26,19 +26,33 @@ view model =
          (Html.Attributes.class "fullscreen-module")
       ]
       [
-         (View.Header.get_html model),
          (Html.div
             [
-               (Html.Attributes.class "battlemap-container")
+               (Html.Attributes.class "battlemap-left-panel")
             ]
             [
-               (View.Battlemap.get_html
-                  model.battlemap
-                  (UI.get_zoom_level model.ui)
-                  (Dict.values model.characters)
-               )
+               (Html.div
+                  [
+                     (Html.Attributes.class "battlemap-container")
+                  ]
+                  [
+                     (View.Battlemap.get_html
+                        model.battlemap
+                        (UI.get_zoom_level model.ui)
+                        (Dict.values model.characters)
+                     )
+                  ]
+               ),
+               (View.Footer.get_html model)
             ]
          ),
-         (View.Footer.get_html model)
+         (Html.div
+            [
+               (Html.Attributes.class "battlemap-right-panel")
+            ]
+            [
+               (View.SideBar.get_html model)
+            ]
+         )
       ]
    )

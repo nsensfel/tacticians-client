@@ -17,6 +17,7 @@ module UI exposing
       -- Manual Controls
       has_manual_controls_enabled,
       -- Previous Action
+      has_focus,
       get_previous_action,
       set_previous_action
    )
@@ -111,6 +112,9 @@ set_enable_manual_controls : Type -> Bool -> Type
 set_enable_manual_controls ui val = {ui | show_manual_controls = val}
 
 -- Previous Action -------------------------------------------------------------
+has_focus : Type -> Bool
+has_focus ui = True
+
 set_previous_action : Type -> (Maybe Action) -> Type
 set_previous_action ui act = {ui | previous_action = act}
 

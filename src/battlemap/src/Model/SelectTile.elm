@@ -103,8 +103,8 @@ apply_to : (
       (Model.Type, (Cmd Event.Type))
    )
 apply_to model loc_ref =
-   case (Model.get_state model) of
-      (Model.ControllingCharacter char_ref) ->
+   case model.controlled_character of
+      (Just char_ref) ->
          (go_to_tile model char_ref loc_ref)
 
       _ -> ({model | state = (Model.InspectingTile loc_ref)}, Cmd.none)

@@ -49,7 +49,8 @@ select_character model target_char_id target_char =
    if ((Character.is_enabled target_char))
    then
       {model |
-         state = (Model.ControllingCharacter target_char_id),
+         state = Model.Default,
+         controlled_character = (Just target_char_id),
          ui = (UI.set_previous_action model.ui Nothing),
          battlemap =
             (Battlemap.set_navigator
@@ -83,8 +84,8 @@ apply_to model target_char_id =
    then
       case (Dict.get target_char_id model.characters) of
          (Just target_char) ->
-            case (Model.get_state model) of
-               (Model.ControllingCharacter main_char_id) ->
+            case model.controlled_character of
+               (Just main_char_id) ->
                   (attack_character
                      model
                      main_char_id

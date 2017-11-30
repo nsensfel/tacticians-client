@@ -1,4 +1,4 @@
-module View.Footer.TabMenu.Status exposing (get_html)
+module View.SideBar.TabMenu.Status exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Dict
@@ -24,26 +24,6 @@ import Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_navigator_info_html : Model.Type -> Character.Ref -> (Html.Html Event.Type)
-get_navigator_info_html model char_ref =
-   case (Dict.get char_ref model.characters) of
-      Nothing -> (Html.text "Error: Unknown character selected.")
-      (Just char) ->
-         (Html.text
-            (
-               "Controlling "
-               ++ char.name
-               ++ ": "
-               ++ (toString
-                     (Battlemap.get_navigator_remaining_points
-                        model.battlemap
-                     )
-                  )
-               ++ "/"
-               ++ (toString (Character.get_movement_points char))
-               ++ " movement points remaining."
-            )
-         )
 
 get_char_info_html : Model.Type -> Character.Ref -> (Html.Html Event.Type)
 get_char_info_html model char_ref =
@@ -165,7 +145,13 @@ get_html model =
          (Html.Attributes.class "battlemap-footer-tabmenu-content-status")
       ]
       (case model.state of
-         Model.Default ->
+         (Model.InspectingTile tile_loc) ->
+            [(get_tile_info_html model (Battlemap.Location.from_ref tile_loc))]
+
+         (Model.InspectingCharacter char_ref) ->
+            [(get_char_info_html model char_ref)]
+
+         _ ->
             [
                (case (UI.get_previous_action model.ui) of
                   (Just (UI.SelectedLocation loc)) ->
@@ -179,32 +165,6 @@ get_html model =
 
                   _ ->
                      (Html.text "Double-click on a character to control it.")
-               )
-            ]
-
-         (Model.InspectingTile tile_loc) ->
-            [(get_tile_info_html model (Battlemap.Location.from_ref tile_loc))]
-
-         (Model.InspectingCharacter char_ref) ->
-            [(get_char_info_html model char_ref)]
-
-         (Model.ControllingCharacter char_ref) ->
-            [
-               (get_navigator_info_html model char_ref),
-               (case (UI.get_previous_action model.ui) of
-                  (Just (UI.SelectedLocation loc)) ->
-                     (get_tile_info_html
-                        model
-                        (Battlemap.Location.from_ref loc)
-                     )
-
-                  (Just (UI.SelectedCharacter target_char)) ->
-                     (get_char_info_html model target_char)
-
-                  (Just (UI.AttackedCharacter target_char)) ->
-                     (get_char_attack_info_html model target_char)
-
-                  _ -> (Util.Html.nothing)
                )
             ]
       )

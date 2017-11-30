@@ -27,7 +27,6 @@ import Character
 --------------------------------------------------------------------------------
 type State =
    Default
-   | ControllingCharacter Character.Ref
    | InspectingTile Battlemap.Location.Ref
    | InspectingCharacter Character.Ref
 
@@ -38,6 +37,7 @@ type alias Type =
       characters: (Dict.Dict Character.Ref Character.Type),
       error: (Maybe Error.Type),
       controlled_team: Int,
+      controlled_character: (Maybe Character.Ref),
       player_id: String,
       ui: UI.Type
    }
@@ -70,6 +70,7 @@ reset model characters =
       battlemap = (Battlemap.reset model.battlemap),
       characters = characters,
       error = Nothing,
+      controlled_character = Nothing,
       ui = (UI.set_previous_action model.ui Nothing)
    }
 
