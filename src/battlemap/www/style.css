@@ -30,6 +30,8 @@
    width: inherit;
    height: inherit;
    word-wrap: break-word;
+   display: flex;
+   flex-direction: column;
 }
 
 .battlemap-footer
@@ -150,22 +152,30 @@
 /** Footer ********************************************************************/
 .battlemap-tabmenu
 {
-   flex: 1;
+   flex-grow: 1;
    height: inherit;
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+   width: inherit;
 }
 
 .battlemap-manual-controls
 {
+   max-height: 30%;
+   width: inherit;
    flex: initial;
 
    display: flex;
-   flex-direction: column;
+   flex-direction: row;
+   flex-wrap: wrap;
 }
 /**** Tabmenu *****************************************************************/
 .battlemap-tabmenu-selector
 {
    display: flex;
    flex-direction: row;
+   flex-wrap: wrap;
    justify-content: space-between;
 }
 
