@@ -38,6 +38,7 @@ type alias Type =
       error: (Maybe Error.Type),
       controlled_team: Int,
       controlled_character: (Maybe Character.Ref),
+      targets: (List Character.Ref),
       player_id: String,
       ui: UI.Type
    }
@@ -71,6 +72,7 @@ reset model characters =
       characters = characters,
       error = Nothing,
       controlled_character = Nothing,
+      targets = [],
       ui = (UI.set_previous_action model.ui Nothing)
    }
 

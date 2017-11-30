@@ -32,11 +32,8 @@ attack_character : (
    )
 attack_character model main_char_id target_char_id target_char =
    {model |
-      ui =
-         (UI.set_previous_action
-            model.ui
-            (Just (UI.AttackedCharacter target_char_id))
-         )
+      targets = [target_char_id],
+      ui = (UI.set_previous_action model.ui Nothing)
    }
 
 select_character : (

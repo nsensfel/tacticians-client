@@ -29,11 +29,11 @@ try_encoding model =
          (Just
             (Json.Encode.object
                [
-                  ("session_token", Json.Encode.string "0"),
-                  ("player_id", Json.Encode.string model.player_id),
-                  ("battlemap_id", Json.Encode.string "0"),
-                  ("instance_id", Json.Encode.string "0"),
-                  ("char_id", Json.Encode.string char_ref),
+                  ("session_token", (Json.Encode.string "0")),
+                  ("player_id", (Json.Encode.string model.player_id)),
+                  ("battlemap_id", (Json.Encode.string "0")),
+                  ("instance_id", (Json.Encode.string "0")),
+                  ("char_id", (Json.Encode.string char_ref)),
                   (
                      "path",
                      (Json.Encode.list
@@ -50,12 +50,9 @@ try_encoding model =
                      )
                   ),
                   (
-                     "target_id",
-                     (Json.Encode.string
-                        (case (UI.get_previous_action model.ui) of
-                           (Just (UI.AttackedCharacter id)) -> id
-                           _ -> ""
-                        )
+                     "targets_id",
+                     (Json.Encode.list
+                        (List.map (Json.Encode.string) model.targets)
                      )
                   )
                ]
