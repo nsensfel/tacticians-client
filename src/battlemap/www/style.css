@@ -153,7 +153,15 @@
 .battlemap-tabmenu
 {
    flex-grow: 1;
-   height: inherit;
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+   width: inherit;
+}
+
+.battlemap-side-bar-targets
+{
+   flex-grow: 1;
    display: flex;
    flex-direction: column;
    flex-wrap: wrap;

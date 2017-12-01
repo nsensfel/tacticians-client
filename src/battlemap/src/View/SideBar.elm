@@ -14,6 +14,7 @@ import Util.Html
 import UI
 
 import View.SideBar.TabMenu
+import View.SideBar.Targets
 import View.SideBar.ManualControls
 
 --------------------------------------------------------------------------------
@@ -27,6 +28,13 @@ get_html model =
       ]
       [
          (View.SideBar.TabMenu.get_html model),
+         (
+            if (model.targets == [])
+            then
+               (Util.Html.nothing)
+            else
+               (View.SideBar.Targets.get_html model)
+         ),
          (
             if (UI.has_manual_controls_enabled model.ui)
             then
