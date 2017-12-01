@@ -17,8 +17,8 @@ import Send.CharacterTurn
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-make_it_so : Model.Type -> Character.Ref -> (Model.Type, (Cmd Event.Type))
-make_it_so model char_ref =
+make_it_so : Model.Type -> (Model.Type, (Cmd Event.Type))
+make_it_so model =
    case (Battlemap.try_getting_navigator_location model.battlemap) of
       (Just location) ->
          case (Send.CharacterTurn.try model) of
@@ -65,9 +65,9 @@ make_it_so model char_ref =
 --------------------------------------------------------------------------------
 apply_to : Model.Type -> (Model.Type, (Cmd Event.Type))
 apply_to model =
-   case model.controlled_character of
-      (Just char_ref) ->
-         (make_it_so model char_ref)
+   case (Query.CharacterTurn.get_state model.char_turn) of
+      Query.CharacterTurn.MovedCharacter -> (make_it_so model)
+      Query.CharacterTurn.ChoseTarget -> (make_it_so model)
 
       _ ->
          (

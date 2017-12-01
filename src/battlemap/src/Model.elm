@@ -22,6 +22,7 @@ import Error
 
 import Character
 
+import Query.CharacterTurn
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -37,10 +38,9 @@ type alias Type =
       characters: (Dict.Dict Character.Ref Character.Type),
       error: (Maybe Error.Type),
       controlled_team: Int,
-      controlled_character: (Maybe Character.Ref),
-      targets: (List Character.Ref),
       player_id: String,
-      ui: UI.Type
+      ui: UI.Type,
+      char_turn: Query.CharacterTurn
    }
 
 --------------------------------------------------------------------------------
@@ -71,9 +71,8 @@ reset model characters =
       battlemap = (Battlemap.reset model.battlemap),
       characters = characters,
       error = Nothing,
-      controlled_character = Nothing,
-      targets = [],
-      ui = (UI.set_previous_action model.ui Nothing)
+      ui = (UI.set_previous_action model.ui Nothing),
+      char_turn = (Query.CharacterTurn.new)
    }
 
 invalidate : Type -> Error.Type -> Type
