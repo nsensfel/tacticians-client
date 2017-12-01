@@ -47,6 +47,7 @@
 .battlemap-actual
 {
    display: inline-block;
+   transform-origin: top left;
 }
 
 /** Inside the container ******************************************************/
