@@ -1,4 +1,4 @@
-module Battlemap.Navigator.Path exposing
+module Struct.Path exposing
    (
       Type,
       new,
@@ -8,12 +8,14 @@ module Battlemap.Navigator.Path exposing
       try_following_direction
    )
 
+-- Elm -------------------------------------------------------------------------
 import Set
 
-import Util.List
+-- Battlemap -------------------------------------------------------------------
+import Struct.Direction
+import Struct.Location
 
-import Battlemap.Direction
-import Battlemap.Location
+import Util.List
 
 import Constants.Movement
 
@@ -22,9 +24,9 @@ import Constants.Movement
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      current_location : Battlemap.Location.Type,
-      visited_locations : (Set.Set Battlemap.Location.Ref),
-      previous_directions : (List Battlemap.Direction.Type),
+      current_location : Struct.Location.Type,
+      visited_locations : (Set.Set Struct.Location.Ref),
+      previous_directions : (List Struct.Direction.Type),
       previous_points : (List Int),
       remaining_points : Int
    }
@@ -34,7 +36,7 @@ type alias Type =
 --------------------------------------------------------------------------------
 has_been_to : (
       Type ->
-      Battlemap.Location.Type ->
+      Struct.Location.Type ->
       Bool
    )
 has_been_to path location =
@@ -42,15 +44,15 @@ has_been_to path location =
       (path.current_location == location)
       ||
       (Set.member
-         (Battlemap.Location.get_ref location)
+         (Struct.Location.get_ref location)
          path.visited_locations
       )
    )
 
 try_moving_to : (
       Type ->
-      Battlemap.Direction.Type ->
-      Battlemap.Location.Type ->
+      Struct.Direction.Type ->
+      Struct.Location.Type ->
       Int ->
       (Maybe Type)
    )
@@ -65,7 +67,7 @@ try_moving_to path dir next_loc cost =
                current_location = next_loc,
                visited_locations =
                   (Set.insert
-                     (Battlemap.Location.get_ref path.current_location)
+                     (Struct.Location.get_ref path.current_location)
                      path.visited_locations
                   ),
                previous_directions = (dir :: path.previous_directions),
@@ -79,8 +81,8 @@ try_moving_to path dir next_loc cost =
 
 try_backtracking_to : (
       Type ->
-      Battlemap.Direction.Type ->
-      Battlemap.Location.Type ->
+      Struct.Direction.Type ->
+      Struct.Location.Type ->
       (Maybe Type)
    )
 try_backtracking_to path dir location =
@@ -94,14 +96,14 @@ try_backtracking_to path dir location =
          (Just (prev_dir_head, prev_dir_tail)),
          (Just (prev_pts_head, prev_pts_tail))
       ) ->
-         if (prev_dir_head == (Battlemap.Direction.opposite_of dir))
+         if (prev_dir_head == (Struct.Direction.opposite_of dir))
          then
             (Just
                {path |
                   current_location = location,
                   visited_locations =
                      (Set.remove
-                        (Battlemap.Location.get_ref location)
+                        (Struct.Location.get_ref location)
                         path.visited_locations
                      ),
                   previous_directions = prev_dir_tail,
@@ -118,7 +120,7 @@ try_backtracking_to path dir location =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-new : Battlemap.Location.Type -> Int -> Type
+new : Struct.Location.Type -> Int -> Type
 new start points =
    {
       current_location = start,
@@ -128,19 +130,19 @@ new start points =
       remaining_points = points
    }
 
-get_current_location : Type -> Battlemap.Location.Type
+get_current_location : Type -> Struct.Location.Type
 get_current_location path = path.current_location
 
 get_remaining_points : Type -> Int
 get_remaining_points path = path.remaining_points
 
-get_summary : Type -> (List Battlemap.Direction.Type)
+get_summary : Type -> (List Struct.Direction.Type)
 get_summary path = path.previous_directions
 
 try_following_direction : (
-      (Battlemap.Location.Type -> Int) ->
+      (Struct.Location.Type -> Int) ->
       (Maybe Type) ->
-      Battlemap.Direction.Type ->
+      Struct.Direction.Type ->
       (Maybe Type)
    )
 try_following_direction cost_fun maybe_path dir =
@@ -148,7 +150,7 @@ try_following_direction cost_fun maybe_path dir =
       (Just path) ->
          let
             next_location =
-               (Battlemap.Location.neighbor
+               (Struct.Location.neighbor
                   path.current_location
                   dir
                )

@@ -39,8 +39,19 @@ apply_command cmd model =
 --------------------------------------------------------------------------------
 apply_to : (
       Model.Type ->
-      (List (List String)) ->
+      (Result Http.Error (List (List String)) ->
       (Model.Type, (Cmd Event.Type))
    )
-apply_to model serialized_commands =
-   ((List.foldl (apply_command) model serialized_commands), Cmd.none)
+apply_to model query_result =
+   case query_result of
+      (Result.Err error) ->
+         (
+            (Model.invalidate
+               model
+               (Error.new Error.Networking (toString error))
+            ),
+            Cmd.none
+         )
+
+      (Result.Ok commands) ->
+         ((List.foldl (apply_command) model serialized_commands), Cmd.none)

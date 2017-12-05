@@ -1,4 +1,4 @@
-module Battlemap.Navigator.RangeIndicator exposing
+module Struct.RangeIndicator exposing
    (
       Type,
       generate,
@@ -6,12 +6,14 @@ module Battlemap.Navigator.RangeIndicator exposing
       get_path
    )
 
+-- Elm -------------------------------------------------------------------------
 import Dict
 import List
 
-import Battlemap.Direction
-import Battlemap.Location
-import Battlemap.Marker
+-- Battlemap -------------------------------------------------------------------
+import Struct.Direction
+import Struct.Location
+import Struct.Marker
 
 import Constants.Movement
 
@@ -22,8 +24,8 @@ type alias Type =
    {
       distance: Int,
       range: Int,
-      path: (List Battlemap.Direction.Type),
-      marker: Battlemap.Marker.Type
+      path: (List Struct.Direction.Type),
+      marker: Struct.Marker.Type
    }
 
 --------------------------------------------------------------------------------
@@ -31,10 +33,10 @@ type alias Type =
 --------------------------------------------------------------------------------
 get_closest : (
       Int ->
-      Battlemap.Location.Ref ->
+      Struct.Location.Ref ->
       Type ->
-      (Battlemap.Location.Ref, Type) ->
-      (Battlemap.Location.Ref, Type)
+      (Struct.Location.Ref, Type) ->
+      (Struct.Location.Ref, Type)
    )
 get_closest dist ref indicator (prev_ref, prev_indicator) =
    if
@@ -66,20 +68,20 @@ is_closer new_dist new_range neighbor =
 
 handle_neighbors : (
       Type ->
-      Battlemap.Location.Type ->
+      Struct.Location.Type ->
       Int ->
       Int ->
-      (Dict.Dict Battlemap.Location.Ref Type) ->
-      (Battlemap.Location.Type -> Int) ->
-      Battlemap.Direction.Type ->
-      (Dict.Dict Battlemap.Location.Ref Type) ->
-      (Dict.Dict Battlemap.Location.Ref Type)
+      (Dict.Dict Struct.Location.Ref Type) ->
+      (Struct.Location.Type -> Int) ->
+      Struct.Direction.Type ->
+      (Dict.Dict Struct.Location.Ref Type) ->
+      (Dict.Dict Struct.Location.Ref Type)
    )
 handle_neighbors src_indicator src_loc dist range results cost_fun dir rem =
    let
-      neighbor_loc = (Battlemap.Location.neighbor src_loc dir)
+      neighbor_loc = (Struct.Location.neighbor src_loc dir)
    in
-      case (Dict.get (Battlemap.Location.get_ref neighbor_loc) results) of
+      case (Dict.get (Struct.Location.get_ref neighbor_loc) results) of
          (Just _) -> rem
 
          Nothing ->
@@ -93,7 +95,7 @@ handle_neighbors src_indicator src_loc dist range results cost_fun dir rem =
                      (
                         case
                            (Dict.get
-                              (Battlemap.Location.get_ref neighbor_loc)
+                              (Struct.Location.get_ref neighbor_loc)
                               rem
                            )
                         of
@@ -114,7 +116,7 @@ handle_neighbors src_indicator src_loc dist range results cost_fun dir rem =
                   )
                then
                   (Dict.insert
-                     (Battlemap.Location.get_ref neighbor_loc)
+                     (Struct.Location.get_ref neighbor_loc)
                      (
                         if (new_dist > dist)
                         then
@@ -122,14 +124,14 @@ handle_neighbors src_indicator src_loc dist range results cost_fun dir rem =
                               distance = (dist + 1),
                               range = new_range,
                               path = (dir :: src_indicator.path),
-                              marker = Battlemap.Marker.CanAttack
+                              marker = Struct.Marker.CanAttack
                            }
                         else
                            {
                               distance = new_dist,
                               range = 0,
                               path = (dir :: src_indicator.path),
-                              marker = Battlemap.Marker.CanGoTo
+                              marker = Struct.Marker.CanGoTo
                            }
                      )
                      rem
@@ -138,12 +140,12 @@ handle_neighbors src_indicator src_loc dist range results cost_fun dir rem =
                   rem
 
 search : (
-      (Dict.Dict Battlemap.Location.Ref Type) ->
-      (Dict.Dict Battlemap.Location.Ref Type) ->
+      (Dict.Dict Struct.Location.Ref Type) ->
+      (Dict.Dict Struct.Location.Ref Type) ->
       Int ->
       Int ->
-      (Battlemap.Location.Type -> Int) ->
-      (Dict.Dict Battlemap.Location.Ref Type)
+      (Struct.Location.Type -> Int) ->
+      (Dict.Dict Struct.Location.Ref Type)
    )
 search result remaining dist range cost_fun =
    if (Dict.isEmpty remaining)
@@ -160,7 +162,7 @@ search result remaining dist range cost_fun =
                      distance = Constants.Movement.cost_when_out_of_bounds,
                      path = [],
                      range = Constants.Movement.cost_when_out_of_bounds,
-                     marker = Battlemap.Marker.CanAttack
+                     marker = Struct.Marker.CanAttack
                   }
                )
                remaining
@@ -174,9 +176,9 @@ search result remaining dist range cost_fun =
                      (
                         if (min.range > 0)
                         then
-                           Battlemap.Marker.CanAttack
+                           Struct.Marker.CanAttack
                         else
-                           Battlemap.Marker.CanGoTo
+                           Struct.Marker.CanGoTo
                      )
                }
                result
@@ -184,7 +186,7 @@ search result remaining dist range cost_fun =
             (List.foldl
                (handle_neighbors
                   min
-                  (Battlemap.Location.from_ref min_loc_ref)
+                  (Struct.Location.from_ref min_loc_ref)
                   dist
                   range
                   result
@@ -192,10 +194,10 @@ search result remaining dist range cost_fun =
                )
                (Dict.remove min_loc_ref remaining)
                [
-                  Battlemap.Direction.Left,
-                  Battlemap.Direction.Right,
-                  Battlemap.Direction.Up,
-                  Battlemap.Direction.Down
+                  Struct.Direction.Left,
+                  Struct.Direction.Right,
+                  Struct.Direction.Up,
+                  Struct.Direction.Down
                ]
             )
             dist
@@ -207,22 +209,22 @@ search result remaining dist range cost_fun =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 generate : (
-      Battlemap.Location.Type ->
+      Struct.Location.Type ->
       Int ->
       Int ->
-      (Battlemap.Location.Type -> Int) ->
-      (Dict.Dict Battlemap.Location.Ref Type)
+      (Struct.Location.Type -> Int) ->
+      (Dict.Dict Struct.Location.Ref Type)
    )
 generate location dist range cost_fun =
    (search
       Dict.empty
       (Dict.insert
-         (Battlemap.Location.get_ref location)
+         (Struct.Location.get_ref location)
          {
             distance = 0,
             path = [],
             range = 0,
-            marker = Battlemap.Marker.CanGoTo
+            marker = Struct.Marker.CanGoTo
          }
          Dict.empty
       )
@@ -231,8 +233,8 @@ generate location dist range cost_fun =
       (cost_fun)
    )
 
-get_marker : Type -> Battlemap.Marker.Type
+get_marker : Type -> Struct.Marker.Type
 get_marker indicator = indicator.marker
 
-get_path : Type -> (List Battlemap.Direction.Type)
+get_path : Type -> (List Struct.Direction.Type)
 get_path indicator = indicator.path

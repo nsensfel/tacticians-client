@@ -1,4 +1,4 @@
-module Battlemap.Navigator exposing
+module Struct.Navigator exposing
    (
       Type,
       Summary,
@@ -13,52 +13,51 @@ module Battlemap.Navigator exposing
       try_adding_step,
       try_getting_path_to
    )
-
+-- Elm -------------------------------------------------------------------------
 import Dict
 
-import Battlemap.Location
-import Battlemap.Direction
-import Battlemap.Marker
-
-import Battlemap.Navigator.Path
-import Battlemap.Navigator.RangeIndicator
+-- Battlemap -------------------------------------------------------------------
+import Struct.Location
+import Struct.Direction
+import Struct.Marker
+import Struct.Path
+import Struct.RangeIndicator
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      starting_location: Battlemap.Location.Type,
+      starting_location: Struct.Location.Type,
       movement_dist: Int,
       attack_dist: Int,
-      path: Battlemap.Navigator.Path.Type,
+      path: Struct.Path.Type,
       range_indicators:
          (Dict.Dict
-            Battlemap.Location.Ref
-            Battlemap.Navigator.RangeIndicator.Type
+            Struct.Location.Ref
+            Struct.RangeIndicator.Type
          )
    }
 
 type alias Summary =
    {
-      starting_location: Battlemap.Location.Type,
-      path: (List Battlemap.Direction.Type),
-      markers: (List (Battlemap.Location.Ref, Battlemap.Marker.Type))
+      starting_location: Struct.Location.Type,
+      path: (List Struct.Direction.Type),
+      markers: (List (Struct.Location.Ref, Struct.Marker.Type))
    }
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
 new : (
-      Battlemap.Location.Type ->
+      Struct.Location.Type ->
       Int ->
       Int ->
-      (Battlemap.Location.Type -> Int) ->
+      (Struct.Location.Type -> Int) ->
       Type
    )
 new start_loc mov_dist atk_dist cost_fun =
@@ -66,9 +65,9 @@ new start_loc mov_dist atk_dist cost_fun =
       starting_location = start_loc,
       movement_dist = mov_dist,
       attack_dist = atk_dist,
-      path = (Battlemap.Navigator.Path.new start_loc mov_dist),
+      path = (Struct.Path.new start_loc mov_dist),
       range_indicators =
-         (Battlemap.Navigator.RangeIndicator.generate
+         (Struct.RangeIndicator.generate
             start_loc
             mov_dist
             atk_dist
@@ -76,39 +75,39 @@ new start_loc mov_dist atk_dist cost_fun =
          )
    }
 
-get_current_location : Type -> Battlemap.Location.Type
+get_current_location : Type -> Struct.Location.Type
 get_current_location navigator =
-   (Battlemap.Navigator.Path.get_current_location navigator.path)
+   (Struct.Path.get_current_location navigator.path)
 
-get_starting_location : Type -> Battlemap.Location.Type
+get_starting_location : Type -> Struct.Location.Type
 get_starting_location navigator = navigator.starting_location
 
 get_remaining_points : Type -> Int
 get_remaining_points navigator =
-    (Battlemap.Navigator.Path.get_remaining_points navigator.path)
+    (Struct.Path.get_remaining_points navigator.path)
 
 get_range_markers : (
       Type ->
       (List
-         (Battlemap.Location.Ref, Battlemap.Navigator.RangeIndicator.Type)
+         (Struct.Location.Ref, Struct.RangeIndicator.Type)
       )
    )
 get_range_markers navigator = (Dict.toList navigator.range_indicators)
 
-get_path : Type -> (List Battlemap.Direction.Type)
-get_path navigator = (Battlemap.Navigator.Path.get_summary navigator.path)
+get_path : Type -> (List Struct.Direction.Type)
+get_path navigator = (Struct.Path.get_summary navigator.path)
 
 get_summary : Type -> Summary
 get_summary navigator =
    {
       starting_location = navigator.starting_location,
-      path = (Battlemap.Navigator.Path.get_summary navigator.path),
+      path = (Struct.Path.get_summary navigator.path),
       markers =
          (List.map
             (\(loc, range_indicator) ->
                (
                   loc,
-                  (Battlemap.Navigator.RangeIndicator.get_marker
+                  (Struct.RangeIndicator.get_marker
                      range_indicator
                   )
                )
@@ -123,7 +122,7 @@ clear_path : Type -> Type
 clear_path navigator =
    {navigator |
       path =
-         (Battlemap.Navigator.Path.new
+         (Struct.Path.new
             navigator.starting_location
             navigator.movement_dist
          )
@@ -131,13 +130,13 @@ clear_path navigator =
 
 try_adding_step : (
       Type ->
-      Battlemap.Direction.Type ->
-      (Battlemap.Location.Type -> Int) ->
+      Struct.Direction.Type ->
+      (Struct.Location.Type -> Int) ->
       (Maybe Type)
    )
 try_adding_step navigator dir cost_fun =
    case
-      (Battlemap.Navigator.Path.try_following_direction
+      (Struct.Path.try_following_direction
          cost_fun
          (Just navigator.path)
          dir
@@ -148,12 +147,13 @@ try_adding_step navigator dir cost_fun =
 
 try_getting_path_to : (
       Type ->
-      Battlemap.Location.Ref ->
-      (Maybe (List Battlemap.Direction.Type))
+      Struct.Location.Ref ->
+      (Maybe (List Struct.Direction.Type))
    )
 try_getting_path_to navigator loc_ref =
    case (Dict.get loc_ref navigator.range_indicators) of
       (Just target) ->
-         (Just (Battlemap.Navigator.RangeIndicator.get_path target))
+         (Just (Struct.RangeIndicator.get_path target))
+
       Nothing -> Nothing
 

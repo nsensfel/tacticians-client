@@ -1,25 +1,20 @@
-module Battlemap.Tile exposing
-   (
-      Type,
-      new,
-      error_tile,
-      get_location,
-      get_icon_id,
-      get_cost
-   )
+module Struct.Location exposing (..)
+
+-- Elm -------------------------------------------------------------------------
 
 -- Battlemap -------------------------------------------------------------------
-import Battlemap.Location
+import Struct.Direction
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      location : Battlemap.Location.Type,
-      icon_id : String,
-      crossing_cost : Int
+      x : Int,
+      y : Int
    }
+
+type alias Ref = (Int, Int)
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -28,27 +23,27 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Int -> Int -> String -> Int -> Type
-new x y icon_id crossing_cost =
-   {
-      location = {x = x, y = y},
-      icon_id = icon_id,
-      crossing_cost = crossing_cost
-   }
+neighbor : Type -> Struct.Direction.Type -> Type
+neighbor loc dir =
+   case dir of
+      Struct.Direction.Right -> {loc | x = (loc.x + 1)}
+      Struct.Direction.Left -> {loc | x = (loc.x - 1)}
+      Struct.Direction.Up -> {loc | y = (loc.y - 1)}
+      Struct.Direction.Down -> {loc | y = (loc.y + 1)}
+      Struct.Direction.None -> loc
 
-error_tile : Int -> Int -> Type
-error_tile x y =
-   {
-      location = {x = x, y = y},
-      icon_id = "error",
-      crossing_cost = 1
-   }
+get_ref : Type -> Ref
+get_ref l =
+   (l.x, l.y)
 
-get_location : Type -> Battlemap.Location.Type
-get_location tile = tile.location
+from_ref : Ref -> Type
+from_ref (x, y) =
+   {x = x, y = y}
 
-get_icon_id : Type -> String
-get_icon_id tile = tile.icon_id
-
-get_cost : Type -> Int
-get_cost tile = tile.crossing_cost
+dist : Type -> Type -> Int
+dist loc_a loc_b =
+   (
+      (abs (loc_a.x - loc_b.x))
+      +
+      (abs (loc_a.y - loc_b.y))
+   )

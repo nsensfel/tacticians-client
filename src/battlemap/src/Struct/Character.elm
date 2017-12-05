@@ -1,4 +1,4 @@
-module Character exposing
+module Struct.Character exposing
    (
       Type,
       Ref,
@@ -18,7 +18,7 @@ module Character exposing
    )
 
 -- Battlemap -------------------------------------------------------------------
-import Battlemap.Location
+import Struct.Location
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -29,7 +29,7 @@ type alias Type =
       name : String,
       icon : String,
       portrait : String,
-      location : Battlemap.Location.Type,
+      location : Struct.Location.Type,
       health : Int,
       max_health : Int,
       team : Int,
@@ -54,7 +54,7 @@ new : (
       String -> -- portrait
       Int -> -- health
       Int -> -- max_health
-      Battlemap.Location.Type -> -- location
+      Struct.Location.Type -> -- location
       Int -> -- team
       Int -> -- movement_points
       Int -> -- atk_dist
@@ -99,10 +99,10 @@ get_current_health c = c.health
 get_max_health : Type -> Int
 get_max_health c = c.max_health
 
-get_location : Type -> Battlemap.Location.Type
+get_location : Type -> Struct.Location.Type
 get_location t = t.location
 
-set_location : Battlemap.Location.Type -> Type -> Type
+set_location : Struct.Location.Type -> Type -> Type
 set_location location char = {char | location = location}
 
 get_movement_points : Type -> Int

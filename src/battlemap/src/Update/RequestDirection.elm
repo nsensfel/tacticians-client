@@ -1,32 +1,29 @@
-module Model.RequestDirection exposing (apply_to)
+module Update.RequestDirection exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
 import Dict
 
 -- Battlemap -------------------------------------------------------------------
-import Battlemap
-import Battlemap.Direction
-
-import Character
-
-import UI
-
-import Model
-import Error
+import Struct.Battlemap
+import Struct.Direction
+import Struct.Character
+import Struct.UI
+import Struct.Model
+import Struct.Error
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 make_it_so : (
-      Model.Type ->
-      Character.Ref ->
-      Battlemap.Direction.Type ->
-      Model.Type
+      Struct.Model.Type ->
+      Struct.Character.Ref ->
+      Struct.Direction.Type ->
+      Struct.Model.Type
    )
 make_it_so model char_ref dir =
    let
       new_bmap =
-         (Battlemap.try_adding_step_to_navigator
+         (Struct.Battlemap.try_adding_step_to_navigator
             model.battlemap
             (Dict.values model.characters)
             dir
@@ -37,17 +34,17 @@ make_it_so model char_ref dir =
             {model |
                battlemap = bmap,
                ui =
-                  (UI.set_previous_action
+                  (Struct.UI.set_previous_action
                      model.ui
-                     (Just UI.UsedManualControls)
+                     (Just Struct.UI.UsedManualControls)
                   )
             }
 
          Nothing ->
-            (Model.invalidate
+            (Struct.Model.invalidate
                model
-               (Error.new
-                  Error.IllegalAction
+               (Struct.Error.new
+                  Struct.Error.IllegalAction
                   "Unreachable/occupied tile."
                )
             )
@@ -55,17 +52,27 @@ make_it_so model char_ref dir =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : Model.Type -> Battlemap.Direction.Type -> Model.Type
+apply_to : (
+      Struct.Model.Type ->
+      Struct.Direction.Type ->
+      Struct.Model.Type
+   )
 apply_to model dir =
    case model.controlled_character of
       (Just char_ref) ->
-         (make_it_so model char_ref dir)
+         (
+            (make_it_so model char_ref dir),
+            Cmd.none
+         )
 
       _ ->
-         (Model.invalidate
-            model
-            (Error.new
-               Error.IllegalAction
-               "This can only be done while moving a character."
-            )
+         (
+            (Struct.Model.invalidate
+               model
+               (Struct.Error.new
+                  Struct.Error.IllegalAction
+                  "This can only be done while moving a character."
+               )
+            ),
+            Cmd.none
          )

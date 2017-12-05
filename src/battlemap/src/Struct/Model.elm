@@ -1,4 +1,4 @@
-module Model exposing
+module Struct.Model exposing
    (
       Type,
       State(..),
@@ -13,14 +13,14 @@ module Model exposing
 import Dict
 
 -- Battlemap -------------------------------------------------------------------
-import Battlemap
-import Battlemap.Location
+import Struct.Battlemap
+import Struct.Location
 
-import UI
+import Struct.UI
 
-import Error
+import Struct.Error
 
-import Character
+import Struct.Character
 
 import Query.CharacterTurn
 --------------------------------------------------------------------------------
@@ -28,18 +28,18 @@ import Query.CharacterTurn
 --------------------------------------------------------------------------------
 type State =
    Default
-   | InspectingTile Battlemap.Location.Ref
-   | InspectingCharacter Character.Ref
+   | InspectingTile Struct.Location.Ref
+   | InspectingCharacter Struct.Character.Ref
 
 type alias Type =
    {
       state: State,
-      battlemap: Battlemap.Type,
-      characters: (Dict.Dict Character.Ref Character.Type),
-      error: (Maybe Error.Type),
+      battlemap: Struct.Battlemap.Type,
+      characters: (Dict.Dict Struct.Character.Ref Struct.Character.Type),
+      error: (Maybe Struct.Error.Type),
       controlled_team: Int,
       player_id: String,
-      ui: UI.Type,
+      ui: Struct.UI.Type,
       char_turn: Query.CharacterTurn
    }
 
@@ -50,12 +50,12 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-add_character : Type -> Character.Type -> Type
+add_character : Type -> Struct.Character.Type -> Type
 add_character model char =
    {model |
       characters =
          (Dict.insert
-            (Character.get_ref char)
+            (Struct.Character.get_ref char)
             char
             model.characters
          )
@@ -64,22 +64,21 @@ add_character model char =
 get_state : Type -> State
 get_state model = model.state
 
-reset : Type -> (Dict.Dict Character.Ref Character.Type) -> Type
+reset : Type -> (Dict.Dict Struct.Character.Ref Struct.Character.Type) -> Type
 reset model characters =
    {model |
       state = Default,
-      battlemap = (Battlemap.reset model.battlemap),
       characters = characters,
       error = Nothing,
-      ui = (UI.set_previous_action model.ui Nothing),
+      ui = (Struct.UI.set_previous_action model.ui Nothing),
       char_turn = (Query.CharacterTurn.new)
    }
 
-invalidate : Type -> Error.Type -> Type
+invalidate : Type -> Struct.Error.Type -> Type
 invalidate model err =
    {model |
       error = (Just err),
-      ui = (UI.set_displayed_tab model.ui UI.StatusTab)
+      ui = (Struct.UI.set_displayed_tab model.ui Struct.UI.StatusTab)
    }
 
 clear_error : Type -> Type

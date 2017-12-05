@@ -1,4 +1,4 @@
-module UI exposing
+module Struct.UI exposing
    (
       Type,
       Tab(..),
@@ -23,23 +23,23 @@ module UI exposing
    )
 
 -- Battlemap -------------------------------------------------------------------
-import Battlemap.Location
+import Struct.Location
 
-import Character
+import Struct.Character
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type Tab =
    StatusTab
-   | CharactersTab
+   | Struct.CharactersTab
    | SettingsTab
 
 type Action =
    UsedManualControls
-   | SelectedLocation Battlemap.Location.Ref
-   | SelectedCharacter Character.Ref
-   | AttackedCharacter Character.Ref
+   | SelectedLocation Struct.Location.Ref
+   | SelectedCharacter Struct.Character.Ref
+   | AttackedCharacter Struct.Character.Ref
 
 type alias Type =
    {
@@ -89,12 +89,12 @@ to_string : Tab -> String
 to_string tab =
    case tab of
       StatusTab -> "Status"
-      CharactersTab -> "Characters"
+      Struct.CharactersTab -> "Characters"
       SettingsTab -> "Settings"
 
 get_all_tabs : (List Tab)
 get_all_tabs =
-   [StatusTab, CharactersTab, SettingsTab]
+   [StatusTab, Struct.CharactersTab, SettingsTab]
 
 -- ManualControls --------------------------------------------------------------
 has_manual_controls_enabled : Type -> Bool

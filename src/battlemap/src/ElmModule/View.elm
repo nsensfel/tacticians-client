@@ -1,4 +1,4 @@
-module View exposing (view)
+module ElmModule.View exposing (view)
 
 -- Elm -------------------------------------------------------------------------
 import Dict
@@ -7,19 +7,22 @@ import Html
 import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
-import UI
+import Struct.UI
+import Struct.Event
+import Struct.Model
 
 import View.Battlemap
 import View.SideBar
 import View.Footer
 
-import Event
-import Model
+--------------------------------------------------------------------------------
+-- LOCAL -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-view : Model.Type -> (Html.Html Event.Type)
+view : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 view model =
    (Html.div
       [
@@ -38,7 +41,7 @@ view model =
                   [
                      (View.Battlemap.get_html
                         model.battlemap
-                        (UI.get_zoom_level model.ui)
+                        (Struct.UI.get_zoom_level model.ui)
                         (Dict.values model.characters)
                      )
                   ]

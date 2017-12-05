@@ -1,8 +1,8 @@
-module Init exposing (init)
+module ElmModule.Init exposing (init)
 -- Battlemap -------------------------------------------------------------------
 
-import Model
-import Event
+import Struct.Model
+import Struct.Event
 
 import Shim.Model
 
@@ -15,7 +15,7 @@ import Send.LoadBattlemap
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-init : (Model.Type, (Cmd Event.Type))
+init : (Struct.Model.Type, (Cmd Event.Type))
 init =
    let
       model = (Shim.Model.generate)
