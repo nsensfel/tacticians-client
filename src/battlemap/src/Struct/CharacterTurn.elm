@@ -1,4 +1,4 @@
-module Query.CharacterTurn exposing
+module Struct.CharacterTurn exposing
    (
       Type,
       State(..),
@@ -17,14 +17,10 @@ module Query.CharacterTurn exposing
 import List
 
 -- Battlemap -------------------------------------------------------------------
-import Battlemap
-import Battlemap.Direction
-
-import UI
-
-import Error
-
-import Character
+import Struct.Battlemap
+import Struct.Character
+import Struct.Direction
+import Struct.Error
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -38,9 +34,9 @@ type State =
 type alias Type =
    {
       state : State,
-      controlled_character : (Maybe Character.Ref),
-      path : (List Battlemap.Direction.Type),
-      targets : (List Character.Ref)
+      controlled_character : (Maybe Struct.Character.Ref),
+      path : (List Struct.Direction.Type),
+      targets : (List Struct.Character.Ref)
    }
 
 --------------------------------------------------------------------------------
@@ -59,10 +55,10 @@ new =
       targets = []
    }
 
-try_getting_controlled_character : Type -> (Maybe Character.Ref)
+try_getting_controlled_character : Type -> (Maybe Struct.Character.Ref)
 try_getting_controlled_character ct = ct.controlled_character
 
-set_controlled_character : Type -> Character.Ref -> Type
+set_controlled_character : Type -> Struct.Character.Ref -> Type
 set_controlled_character ct char_ref =
    {
       state = SelectedCharacter,
@@ -74,10 +70,10 @@ set_controlled_character ct char_ref =
 get_state : Type -> State
 get_state ct = ct.state
 
-get_path : Type -> (List Battlemap.Direction.Type)
+get_path : Type -> (List Struct.Direction.Type)
 get_path ct = ct.path
 
-set_path : Type -> (List Battlemap.Direction.Type) -> Type
+set_path : Type -> (List Struct.Direction.Type) -> Type
 set_path ct path =
    {ct |
       state = MovedCharacter,
@@ -85,7 +81,7 @@ set_path ct path =
       targets = []
    }
 
-add_target : Type -> Character.Ref -> Type
+add_target : Type -> Struct.Character.Ref -> Type
 add_target ct target_ref =
    {ct |
       state = ChoseTarget,
@@ -111,5 +107,5 @@ remove_target ct i =
                targets = new_targets
             }
 
-get_targets : Type -> (List Character.Ref)
+get_targets : Type -> (List Struct.Character.Ref)
 get_targets ct = ct.targets

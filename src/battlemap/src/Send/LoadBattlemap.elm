@@ -4,13 +4,12 @@ module Send.LoadBattlemap exposing (try)
 import Json.Encode
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Model
+import Struct.Event
+
 import Constants.IO
 
-import Model
-
 import Send
-
-import Event
 
 --------------------------------------------------------------------------------
 -- TYPES ------------------------------------------------------------------------
@@ -19,7 +18,7 @@ import Event
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try_encoding : Model.Type -> (Maybe Json.Encode.Value)
+try_encoding : Struct.Model.Type -> (Maybe Json.Encode.Value)
 try_encoding model =
    (Just
       (Json.Encode.object

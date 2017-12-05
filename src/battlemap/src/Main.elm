@@ -1,20 +1,22 @@
+-- Elm ------------------------------------------------------------------------
 import Html
 
-import Model
-import Event
+-- Battlemap -------------------------------------------------------------------
+import Struct.Model
+import Struct.Event
 
-import Init
-import Subscriptions
-import View
-import Update
+import ElmModule.Init
+import ElmModule.Subscriptions
+import ElmModule.View
+import ElmModule.Update
 
-main : (Program Never Model.Type Event.Type)
+main : (Program Never Struct.Model.Type Struct.Event.Type)
 main =
    (Html.program
       {
-         init = Init.init,
-         view = View.view,
-         update = Update.update,
-         subscriptions = Subscriptions.subscriptions
+         init = ElmModule.Init.init,
+         view = ElmModule.View.view,
+         update = ElmModule.Update.update,
+         subscriptions = ElmModule.Subscriptions.subscriptions
       }
    )

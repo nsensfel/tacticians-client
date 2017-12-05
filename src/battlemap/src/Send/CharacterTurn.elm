@@ -4,17 +4,16 @@ module Send.CharacterTurn exposing (try)
 import Json.Encode
 
 -- Battlemap -------------------------------------------------------------------
-import Battlemap
-import Battlemap.Direction
-
-import UI
+import Struct.Battlemap
+import Struct.Direction
+import Struct.UI
+import Struct.Event
+import Struct.Model
 
 import Constants.IO
-import Event
-
-import Model
 
 import Send
+
 --------------------------------------------------------------------------------
 -- TYPES ------------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -22,7 +21,7 @@ import Send
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try_encoding : Model.Type -> (Maybe Json.Encode.Value)
+try_encoding : Struct.Model.Type -> (Maybe Json.Encode.Value)
 try_encoding model =
    case model.controlled_character of
       (Just char_ref) ->
@@ -41,10 +40,10 @@ try_encoding model =
                            (
                               (Json.Encode.string)
                               <<
-                              (Battlemap.Direction.to_string)
+                              (Struct.Direction.to_string)
                            )
                            (List.reverse
-                              (Battlemap.get_navigator_path model.battlemap)
+                              (Struct.Battlemap.get_navigator_path model.battlemap)
                            )
                         )
                      )
@@ -65,6 +64,6 @@ try_encoding model =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try : Model.Type -> (Maybe (Cmd Event.Type))
+try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
 try model =
    (Send.try_sending model Constants.IO.character_turn_handler try_encoding)

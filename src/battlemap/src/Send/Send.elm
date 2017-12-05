@@ -7,9 +7,8 @@ import Json.Encode
 import Http
 
 -- Battlemap -------------------------------------------------------------------
-import Model
-
-import Event
+import Struct.Model
+import Struct.Event
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -26,19 +25,18 @@ decoder =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
 try_sending : (
-      Model.Type ->
+      Struct.Model.Type ->
       String ->
-      (Model.Type -> (Maybe Json.Encode.Value)) ->
-      (Maybe (Cmd Event.Type))
+      (Struct.Model.Type -> (Maybe Json.Encode.Value)) ->
+      (Maybe (Cmd Struct.Event.Type))
    )
 try_sending model recipient try_encoding_fun =
    case (try_encoding_fun model) of
       (Just serial) ->
          (Just
             (Http.send
-               Event.ServerReplied
+               Struct.Event.ServerReplied
                (Http.post
                   recipient
                   (Http.jsonBody serial)
