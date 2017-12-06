@@ -4,15 +4,15 @@ module Send.CharacterTurn exposing (try)
 import Json.Encode
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Battlemap
-import Struct.Direction
-import Struct.UI
-import Struct.Event
-import Struct.Model
-
 import Constants.IO
 
-import Send
+import Send.Send
+
+import Struct.Battlemap
+import Struct.Direction
+import Struct.Event
+import Struct.Model
+import Struct.UI
 
 --------------------------------------------------------------------------------
 -- TYPES ------------------------------------------------------------------------

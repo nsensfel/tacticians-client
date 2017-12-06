@@ -1,16 +1,15 @@
-module Model.HandleServerReply.SetMap exposing (apply_to)
+module Update.HandleServerReply.SetMap exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
 import Dict
 import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
-import Battlemap
-import Battlemap.Tile
-
 import Data.Tile
 
-import Model
+import Struct.Battlemap
+import Struct.Model
+import Struct.Tile
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -25,9 +24,9 @@ type alias MapData =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-deserialize_tile : Int -> Int -> Int -> Battlemap.Tile.Type
+deserialize_tile : Int -> Int -> Int -> Struct.Tile.Type
 deserialize_tile map_width index id =
-   (Battlemap.Tile.new
+   (Struct.Tile.new
       (index % map_width)
       (index // map_width)
       (Data.Tile.get_icon id)
@@ -37,7 +36,7 @@ deserialize_tile map_width index id =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : Model.Type -> String -> Model.Type
+apply_to : Struct.Model.Type -> String -> Struct.Model.Type
 apply_to model serialized_map =
    case
       (Json.Decode.decodeString
@@ -53,10 +52,10 @@ apply_to model serialized_map =
       )
    of
       (Result.Ok map_data) ->
-         (Model.reset
+         (Struct.Model.reset
             {model |
                battlemap =
-                  (Battlemap.new
+                  (Struct.Battlemap.new
                      map_data.width
                      map_data.height
                      (List.indexedMap

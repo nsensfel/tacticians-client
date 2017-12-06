@@ -5,25 +5,25 @@ import Dict
 
 import Html
 import Html.Attributes
---import Html.Events
 
 -- Battlemap -------------------------------------------------------------------
-import Character
-
-import Event
-
-import Model
+import Struct.Character
+import Struct.Event
+import Struct.Model
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_character_portrait_html : Character.Type -> (Html.Html Event.Type)
+get_character_portrait_html : (
+      Struct.Character.Type ->
+      (Html.Html Struct.Event.Type)
+   )
 get_character_portrait_html char =
    (Html.div
       [
          (Html.Attributes.class "battlemap-character-portrait"),
          (Html.Attributes.class
-            ("asset-char-portrait-" ++ (Character.get_portrait_id char))
+            ("asset-char-portrait-" ++ (Struct.Character.get_portrait_id char))
          )
       ]
       [
@@ -32,7 +32,7 @@ get_character_portrait_html char =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : Model.Type -> (Html.Html Event.Type)
+get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    (Html.div
       [

@@ -4,12 +4,12 @@ module Send.LoadBattlemap exposing (try)
 import Json.Encode
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Model
-import Struct.Event
-
 import Constants.IO
 
-import Send
+import Send.Send
+
+import Struct.Event
+import Struct.Model
 
 --------------------------------------------------------------------------------
 -- TYPES ------------------------------------------------------------------------

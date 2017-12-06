@@ -3,78 +3,35 @@ module View.Battlemap exposing (get_html)
 -- Elm -------------------------------------------------------------------------
 import Array
 
-import List
-
 import Html
 import Html.Attributes
 import Html.Events
 import Html.Lazy
 
--- Battlemap  ------------------------------------------------------------------
-import Battlemap
-import Battlemap.Tile
+import List
 
-import Character
-
+-- Battlemap -------------------------------------------------------------------
 import Constants.UI
+
+import Struct.Battlemap
+import Struct.Character
+import Struct.Event
+import Struct.Model
+import Struct.Tile
 
 import Util.Html
 
-import View.Battlemap.Tile
+import View.Battlemap.Character
 import View.Battlemap.Navigator
+import View.Battlemap.Tile
 
-import Event
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-char_on_map : Character.Type -> (Html.Html Event.Type)
-char_on_map char =
-   let
-      char_loc = (Character.get_location char)
-   in
-      (Html.div
-         [
-            (Html.Attributes.class "battlemap-character-icon"),
-            (Html.Attributes.class
-               (
-                  if (Character.is_enabled char)
-                  then
-                     "battlemap-character-icon-enabled"
-                  else
-                     "battlemap-character-icon-disabled"
-               )
-            ),
-            (Html.Attributes.class "battlemap-tiled"),
-            (Html.Attributes.class
-               ("asset-character-icon-" ++ (Character.get_icon_id char))
-            ),
-            (Html.Attributes.class
-               (
-                  "battlemap-character-team-"
-                  ++ (toString (Character.get_team char))
-               )
-            ),
-            (Html.Events.onClick
-               (Event.CharacterSelected (Character.get_ref char))
-            ),
-            (Html.Attributes.style
-               [
-                  (
-                     "top",
-                     ((toString (char_loc.y * Constants.UI.tile_size)) ++ "px")
-                  ),
-                  (
-                     "left",
-                     ((toString (char_loc.x * Constants.UI.tile_size)) ++ "px")
-                  )
-               ]
-            )
-         ]
-         [
-         ]
-      )
-
-get_tiles_line_html : (List (Html.Html Event.Type)) -> (Html.Html Event.Type)
+get_tiles_line_html : (
+      (List (Html.Html Struct.Event.Type)) ->
+      (Html.Html Struct.Event.Type)
+   )
 get_tiles_line_html tiles_list =
    (Html.div
       [
@@ -85,16 +42,16 @@ get_tiles_line_html tiles_list =
 
 get_tiles_lines_html : (
       Int ->
-      Battlemap.Tile.Type ->
+      Struct.Tile.Type ->
       (
          Int,
-         (List (Html.Html Event.Type)),
-         (List (Html.Html Event.Type))
+         (List (Html.Html Struct.Event.Type)),
+         (List (Html.Html Struct.Event.Type))
       ) ->
       (
          Int,
-         (List (Html.Html Event.Type)),
-         (List (Html.Html Event.Type))
+         (List (Html.Html Struct.Event.Type)),
+         (List (Html.Html Struct.Event.Type))
       )
    )
 get_tiles_lines_html max_index tile (curr_index, curr_line, result) =
@@ -105,7 +62,7 @@ get_tiles_lines_html max_index tile (curr_index, curr_line, result) =
          [],
          (
             (get_tiles_line_html
-               ((View.Battlemap.Tile.get_html tile) :: curr_line)
+               ((View.Tile.get_html tile) :: curr_line)
             )
             ::
             result
@@ -114,23 +71,20 @@ get_tiles_lines_html max_index tile (curr_index, curr_line, result) =
    else
       (
          (curr_index - 1),
-         ((View.Battlemap.Tile.get_html tile) :: curr_line),
+         ((View.Tile.get_html tile) :: curr_line),
          result
       )
 
-get_tiles_html : (
-      Int ->
-      (Array.Array Battlemap.Tile.Type) ->
-      (Html.Html Event.Type)
-   )
-get_tiles_html bmap_width tiles_array =
+get_tiles_html : Struct.Battlemap.Type -> (Html.Html Struct.Event.Type)
+get_tiles_html battlemap =
    let
+      bmap_width (Struct.Battlemap.get_width battlemap)
       max_index = (bmap_width - 1)
       (_, last_line, other_lines) =
          (Array.foldr
             (get_tiles_lines_html max_index)
             (max_index, [], [])
-            tiles_array
+            (Struct.Battlemap.get_tiles battlemap)
          )
    in
       (Html.div
@@ -139,16 +93,15 @@ get_tiles_html bmap_width tiles_array =
          ]
          ((get_tiles_line_html last_line) :: other_lines)
       )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
-      Battlemap.Type ->
-      Float ->
-      (List Character.Type) ->
-      (Html.Html Event.Type)
+      Struct.Model.Type ->
+      (Html.Html Struct.Event.Type)
    )
-get_html battlemap scale characters =
+get_html model =
    (Html.div
       [
          (Html.Attributes.class "battlemap-actual"),
@@ -156,26 +109,25 @@ get_html battlemap scale characters =
             [
                (
                   "transform",
-                  ("scale(" ++ (toString scale) ++ ")")
+                  (
+                     "scale("
+                     ++
+                     (toString (Struct.UI.get_scale model))
+                     ++ ")"
+                  )
                )
             ]
          )
       ]
       (
          (Html.Lazy.lazy
-            (get_tiles_html (Battlemap.get_width battlemap))
-            (Battlemap.get_tiles battlemap)
+            (get_tiles_html (Battlemap.get_width model.battlemap))
+            model.battlemap
          )
          ::
          (List.map
-            (char_on_map)
-            characters
+            (View.Battlemap.Character.get_html)
+            model.characters
          )
-         ++
-         case (Battlemap.try_getting_navigator_summary battlemap) of
-            (Just nav_summary) ->
-               (View.Battlemap.Navigator.get_html nav_summary)
-
-            Nothing -> [(Util.Html.nothing)]
       )
    )

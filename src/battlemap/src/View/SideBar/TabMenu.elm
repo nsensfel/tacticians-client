@@ -6,30 +6,32 @@ import Html.Attributes
 import Html.Events
 
 -- Battlemap -------------------------------------------------------------------
-import Event
+import Struct.Error
+import Struct.Event
+import Struct.Model
+import Struct.UI
 
-import Error
-
-import Model
-
-import UI
 import Util.Html
 
 import View.SideBar.TabMenu.Characters
-import View.SideBar.TabMenu.Status
 import View.SideBar.TabMenu.Settings
+import View.SideBar.TabMenu.Status
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_basic_button_html : UI.Tab -> (Html.Html Event.Type)
+get_basic_button_html : Struct.UI.Tab -> (Html.Html Struct.Event.Type)
 get_basic_button_html tab =
    (Html.button
-      [ (Html.Events.onClick (Event.TabSelected tab)) ]
-      [ (Html.text (UI.to_string tab)) ]
+      [ (Html.Events.onClick (Struct.Event.TabSelected tab)) ]
+      [ (Html.text (Struct.UI.to_string tab)) ]
    )
 
-get_menu_button_html : UI.Tab -> UI.Tab -> (Html.Html Event.Type)
+get_menu_button_html : (
+      Struct.UI.Tab ->
+      Struct.UI.Tab ->
+      (Html.Html Struct.Event.Type)
+   )
 get_menu_button_html selected_tab tab =
    (Html.button
       (
@@ -37,30 +39,30 @@ get_menu_button_html selected_tab tab =
          then
             [ (Html.Attributes.disabled True) ]
          else
-            [ (Html.Events.onClick (Event.TabSelected tab)) ]
+            [ (Html.Events.onClick (Struct.Event.TabSelected tab)) ]
       )
-      [ (Html.text (UI.to_string tab)) ]
+      [ (Html.text (Struct.UI.to_string tab)) ]
    )
 
-get_active_tab_selector_html : UI.Tab -> (Html.Html Event.Type)
+get_active_tab_selector_html : Struct.UI.Tab -> (Html.Html Struct.Event.Type)
 get_active_tab_selector_html selected_tab =
    (Html.div
       [
          (Html.Attributes.class "battlemap-tabmenu-selector")
       ]
-      (List.map (get_menu_button_html selected_tab) (UI.get_all_tabs))
+      (List.map (get_menu_button_html selected_tab) (Struct.UI.get_all_tabs))
    )
 
-get_inactive_tab_selector_html : (Html.Html Event.Type)
+get_inactive_tab_selector_html : (Html.Html Struct.Event.Type)
 get_inactive_tab_selector_html =
    (Html.div
       [
          (Html.Attributes.class "battlemap-tabmenu-selector")
       ]
-      (List.map (get_basic_button_html) (UI.get_all_tabs))
+      (List.map (get_basic_button_html) (Struct.UI.get_all_tabs))
    )
 
-get_error_message_html : Model.Type -> (Html.Html Event.Type)
+get_error_message_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_error_message_html model =
    case model.error of
       (Just error) ->
@@ -69,7 +71,7 @@ get_error_message_html model =
                (Html.Attributes.class "battlemap-tabmenu-error-message")
             ]
             [
-               (Html.text (Error.to_string error))
+               (Html.text (Struct.Error.to_string error))
             ]
          )
 
@@ -77,7 +79,7 @@ get_error_message_html model =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : Model.Type -> (Html.Html Event.Type)
+get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    (Html.div
       [
@@ -88,24 +90,24 @@ get_html model =
          ::
          (
             let
-               displayed_tab = (UI.try_getting_displayed_tab model.ui)
+               displayed_tab = (Struct.UI.try_getting_displayed_tab model.ui)
             in
                case displayed_tab of
-                  (Just UI.StatusTab) ->
+                  (Just Struct.UI.StatusTab) ->
                      [
-                        (get_active_tab_selector_html UI.StatusTab),
+                        (get_active_tab_selector_html Struct.UI.StatusTab),
                         (View.SideBar.TabMenu.Status.get_html model)
                      ]
 
-                  (Just UI.CharactersTab) ->
+                  (Just Struct.UI.CharactersTab) ->
                      [
-                        (get_active_tab_selector_html UI.CharactersTab),
+                        (get_active_tab_selector_html Struct.UI.CharactersTab),
                         (View.SideBar.TabMenu.Characters.get_html model)
                      ]
 
-                  (Just UI.SettingsTab) ->
+                  (Just Struct.UI.SettingsTab) ->
                      [
-                        (get_active_tab_selector_html UI.SettingsTab),
+                        (get_active_tab_selector_html Struct.UI.SettingsTab),
                         (View.SideBar.TabMenu.Settings.get_html model)
                      ]
 

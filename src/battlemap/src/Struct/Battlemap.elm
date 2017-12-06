@@ -101,8 +101,7 @@ empty =
    {
       width = 0,
       height = 0,
-      content = (Array.empty),
-      navigator = Nothing
+      content = (Array.empty)
    }
 
 new : Int -> Int -> (List Struct.Tile.Type) -> Type

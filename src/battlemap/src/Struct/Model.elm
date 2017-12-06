@@ -14,15 +14,12 @@ import Dict
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Battlemap
+import Struct.Character
+import Struct.CharacterTurn
+import Struct.Error
 import Struct.Location
-
 import Struct.UI
 
-import Struct.Error
-
-import Struct.Character
-
-import Query.CharacterTurn
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -40,7 +37,7 @@ type alias Type =
       controlled_team: Int,
       player_id: String,
       ui: Struct.UI.Type,
-      char_turn: Query.CharacterTurn
+      char_turn: Struct.CharacterTurn.Type
    }
 
 --------------------------------------------------------------------------------
@@ -71,7 +68,7 @@ reset model characters =
       characters = characters,
       error = Nothing,
       ui = (Struct.UI.set_previous_action model.ui Nothing),
-      char_turn = (Query.CharacterTurn.new)
+      char_turn = (Struct.CharacterTurn.new)
    }
 
 invalidate : Type -> Struct.Error.Type -> Type

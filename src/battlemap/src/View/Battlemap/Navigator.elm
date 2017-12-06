@@ -1,25 +1,27 @@
 module View.Battlemap.Navigator exposing (get_html)
 
-import List
+-- Elm -------------------------------------------------------------------------
 import Html
 import Html.Attributes
 import Html.Events
 
-import Battlemap.Location
-import Battlemap.Direction
-import Battlemap.Marker
-import Battlemap.Navigator
+import List
 
+-- Battlemap -------------------------------------------------------------------
 import Constants.UI
 
-import Event
+import Struct.Direction
+import Struct.Event
+import Struct.Location
+import Struct.Marker
+import Struct.Navigator
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 marker_get_html : (
-      (Battlemap.Location.Ref, Battlemap.Marker.Type) ->
-      (Html.Html Event.Type)
+      (Struct.Location.Ref, Struct.Marker.Type) ->
+      (Html.Html Struct.Event.Type)
    )
 marker_get_html (loc_ref, marker) =
    (Html.div
@@ -31,7 +33,7 @@ marker_get_html (loc_ref, marker) =
                "battlemap-"
                ++
                (
-                  if (marker == Battlemap.Marker.CanGoTo)
+                  if (marker == Struct.Marker.CanGoTo)
                   then
                      "can-go-to"
                   else
@@ -42,12 +44,12 @@ marker_get_html (loc_ref, marker) =
             )
          ),
          (Html.Events.onClick
-            (Event.TileSelected loc_ref)
+            (Struct.Event.TileSelected loc_ref)
          ),
          (Html.Attributes.style
             (
                let
-                  loc = (Battlemap.Location.from_ref loc_ref)
+                  loc = (Struct.Location.from_ref loc_ref)
                in
                   [
                      (
@@ -67,21 +69,21 @@ marker_get_html (loc_ref, marker) =
    )
 
 path_node_get_html : (
-      Battlemap.Direction.Type ->
+      Struct.Direction.Type ->
       (
-         Battlemap.Location.Type,
-         Battlemap.Direction.Type,
-         (List (Html.Html Event.Type))
+         Struct.Location.Type,
+         Struct.Direction.Type,
+         (List (Html.Html Struct.Event.Type))
       ) ->
       (
-         Battlemap.Location.Type,
-         Battlemap.Direction.Type,
-         (List (Html.Html Event.Type))
+         Struct.Location.Type,
+         Struct.Direction.Type,
+         (List (Html.Html Struct.Event.Type))
       )
    )
 path_node_get_html new_dir (curr_loc, prev_dir, curr_nodes) =
    let
-      new_loc = (Battlemap.Location.neighbor curr_loc new_dir)
+      new_loc = (Struct.Location.neighbor curr_loc new_dir)
    in
       (
          new_loc,
@@ -95,13 +97,15 @@ path_node_get_html new_dir (curr_loc, prev_dir, curr_nodes) =
                      (
                         "battlemap-path-icon-"
                         ++
-                        (Battlemap.Direction.to_string prev_dir)
+                        (Struct.Direction.to_string prev_dir)
                         ++
-                        (Battlemap.Direction.to_string new_dir)
+                        (Struct.Direction.to_string new_dir)
                      )
                   ),
                   (Html.Events.onClick
-                     (Event.TileSelected (Battlemap.Location.get_ref new_loc))
+                     (Struct.Event.TileSelected
+                        (Struct.Location.get_ref new_loc)
+                     )
                   ),
                   (Html.Attributes.style
                      [
@@ -133,9 +137,9 @@ path_node_get_html new_dir (curr_loc, prev_dir, curr_nodes) =
       )
 
 mark_the_spot : (
-      Battlemap.Location.Type ->
-      Battlemap.Direction.Type ->
-      (Html.Html Event.Type)
+      Struct.Location.Type ->
+      Struct.Direction.Type ->
+      (Html.Html Struct.Event.Type)
    )
 mark_the_spot loc origin_dir =
    (Html.div
@@ -146,11 +150,11 @@ mark_the_spot loc origin_dir =
             (
                "battlemap-path-icon-mark"
                ++
-               (Battlemap.Direction.to_string origin_dir)
+               (Struct.Direction.to_string origin_dir)
             )
          ),
          (Html.Events.onClick
-            (Event.TileSelected (Battlemap.Location.get_ref loc))
+            (Struct.Event.TileSelected (Struct.Location.get_ref loc))
          ),
          (Html.Attributes.style
             [
@@ -168,12 +172,13 @@ mark_the_spot loc origin_dir =
       [
       ]
    )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
-      Battlemap.Navigator.Summary ->
-      (List (Html.Html Event.Type))
+      Struct.Navigator.Summary ->
+      (List (Html.Html Struct.Event.Type))
    )
 get_html nav_summary =
    (
@@ -184,7 +189,7 @@ get_html nav_summary =
             (final_loc, final_dir, path_node_htmls) =
                (List.foldr
                   (path_node_get_html)
-                  (nav_summary.starting_location, Battlemap.Direction.None, [])
+                  (nav_summary.starting_location, Struct.Direction.None, [])
                   nav_summary.path
                )
          in

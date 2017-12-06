@@ -6,45 +6,48 @@ import Html.Attributes
 import Html.Events
 
 -- Battlemap -------------------------------------------------------------------
-import Battlemap.Direction
-
-import Event
+import Struct.Direction
+import Struct.Event
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-direction_button : Battlemap.Direction.Type -> String -> (Html.Html Event.Type)
+direction_button : (
+      Struct.Direction.Type ->
+      String ->
+      (Html.Html Struct.Event.Type)
+   )
 direction_button dir label =
    (Html.button
       [
          (Html.Events.onClick
-            (Event.DirectionRequested dir)
+            (Struct.Event.DirectionRequested dir)
          )
       ]
       [ (Html.text label) ]
    )
 
-end_turn_button : (Html.Html Event.Type)
+end_turn_button : (Html.Html Struct.Event.Type)
 end_turn_button =
    (Html.button
-      [ (Html.Events.onClick Event.TurnEnded) ]
+      [ (Html.Events.onClick Struct.Event.TurnEnded) ]
       [ (Html.text "End Turn") ]
    )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : (Html.Html Event.Type)
+get_html : (Html.Html Struct.Event.Type)
 get_html =
    (Html.div
       [
          (Html.Attributes.class "battlemap-manual-controls")
       ]
       [
-         (direction_button Battlemap.Direction.Left "Left"),
-         (direction_button Battlemap.Direction.Down "Down"),
-         (direction_button Battlemap.Direction.Up "Up"),
-         (direction_button Battlemap.Direction.Right "Right"),
+         (direction_button Struct.Direction.Left "Left"),
+         (direction_button Struct.Direction.Down "Down"),
+         (direction_button Struct.Direction.Up "Up"),
+         (direction_button Struct.Direction.Right "Right"),
          (end_turn_button)
       ]
    )

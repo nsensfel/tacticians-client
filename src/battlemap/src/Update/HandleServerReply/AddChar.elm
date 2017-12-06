@@ -1,15 +1,13 @@
-module Model.HandleServerReply.AddChar exposing (apply_to)
+module Update.HandleServerReply.AddChar exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 import Json.Decode.Pipeline
 
 -- Battlemap -------------------------------------------------------------------
-import Character
-
-import Error
-
-import Model
+import Struct.Character
+import Struct.Error
+import Struct.Model
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -54,7 +52,7 @@ char_decoder =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : Model.Type -> String -> Model.Type
+apply_to : Struct.Model.Type -> String -> Struct.Model.Type
 apply_to model serialized_char =
    case
       (Json.Decode.decodeString
@@ -63,9 +61,9 @@ apply_to model serialized_char =
       )
    of
       (Result.Ok char_data) ->
-         (Model.add_character
+         (Struct.Model.add_character
             model
-            (Character.new
+            (Struct.Character.new
                char_data.id
                char_data.name
                char_data.icon
@@ -81,10 +79,10 @@ apply_to model serialized_char =
          )
 
       (Result.Err msg) ->
-         (Model.invalidate
+         (Struct.Model.invalidate
             model
-            (Error.new
-               Error.Programming
+            (Struct.Error.new
+               Struct.Error.Programming
                ("Could not deserialize character: " ++ msg)
             )
          )

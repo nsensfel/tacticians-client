@@ -3,12 +3,10 @@ module Shim.Model exposing (generate)
 -- Elm -------------------------------------------------------------------------
 import Dict
 
--- Battlemap -------------------------------------------------------------------
-import Battlemap
-
-import UI
-
-import Model
+-- Struct.Battlemap -------------------------------------------------------------------
+import Struct.Battlemap
+import Struct.Model
+import Struct.UI
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -17,16 +15,16 @@ import Model
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
---generate : Model.Type
+--generate : Struct.Model.Type
 generate =
    {
-      state = Model.Default,
+      state = Struct.Model.Default,
       error = Nothing,
-      battlemap = (Battlemap.empty),
+      battlemap = (Struct.Battlemap.empty),
       controlled_team = 0,
       controlled_character = Nothing,
       player_id = "0",
       targets = [],
       characters = (Dict.empty),
-      ui = (UI.default)
+      ui = (Struct.UI.default)
    }

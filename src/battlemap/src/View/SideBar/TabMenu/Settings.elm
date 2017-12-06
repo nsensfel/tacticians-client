@@ -6,19 +6,18 @@ import Html.Attributes
 import Html.Events
 
 -- Battlemap -------------------------------------------------------------------
-import Event
-
-import Model
+import Struct.Event
+import Struct.Model
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-scale_button : Float -> String -> (Html.Html Event.Type)
+scale_button : Float -> String -> (Html.Html Struct.Event.Type)
 scale_button mod label =
    (Html.button
       [
          (Html.Events.onClick
-            (Event.ScaleChangeRequested mod)
+            (Struct.Event.ScaleChangeRequested mod)
          )
       ]
       [ (Html.text label) ]
@@ -27,7 +26,7 @@ scale_button mod label =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : Model.Type -> (Html.Html Event.Type)
+get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    (Html.div
       [
@@ -40,13 +39,13 @@ get_html model =
          (scale_button (1.15) "Zoom +"),
          (Html.button
             [
-               (Html.Events.onClick Event.DebugTeamSwitchRequest)
+               (Html.Events.onClick Struct.Event.DebugTeamSwitchRequest)
             ]
             [ (Html.text "[DEBUG] Switch team") ]
          ),
          (Html.button
             [
-               (Html.Events.onClick Event.DebugLoadBattlemapRequest)
+               (Html.Events.onClick Struct.Event.DebugLoadBattlemapRequest)
             ]
             [ (Html.text "[DEBUG] Load battlemap") ]
          )

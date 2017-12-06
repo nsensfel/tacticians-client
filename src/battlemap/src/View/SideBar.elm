@@ -5,13 +5,12 @@ import Html
 import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
-import Event
-
-import Model
+import Struct.Event
+import Struct.Model
+import Struct.UI
 
 import Util.Html
 
-import UI
 
 import View.SideBar.TabMenu
 import View.SideBar.Targets
@@ -20,7 +19,7 @@ import View.SideBar.ManualControls
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : Model.Type -> (Html.Html Event.Type)
+get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    (Html.div
       [
@@ -36,7 +35,7 @@ get_html model =
                (View.SideBar.Targets.get_html model)
          ),
          (
-            if (UI.has_manual_controls_enabled model.ui)
+            if (Struct.UI.has_manual_controls_enabled model.ui)
             then
                (View.SideBar.ManualControls.get_html)
             else

@@ -1,56 +1,55 @@
-module Model.SelectTile exposing (apply_to)
+module Update.SelectTile exposing (apply_to)
+
+-- Elrm ------------------------------------------------------------------------
 
 -- Battlemap -------------------------------------------------------------------
-import Battlemap
-import Battlemap.Direction
-import Battlemap.Location
+import Struct.Battlemap
+import Struct.Character
+import Struct.Direction
+import Struct.Event
+import Struct.Location
+import Struct.Model
+import Struct.UI
 
-import Character
-
-import Event
-
-import Model.RequestDirection
-import Model.EndTurn
-
-import UI
-import Model
+import Update.EndTurn
+import Update.RequestDirection
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-autopilot : Battlemap.Direction.Type -> Model.Type -> Model.Type
+autopilot : Struct.Direction.Type -> Struct.Model.Type -> Struct.Model.Type
 autopilot dir model =
-   (Model.RequestDirection.apply_to model dir)
+   (Update.RequestDirection.apply_to model dir)
 
 go_to_tile : (
-      Model.Type ->
-      Character.Ref ->
-      Battlemap.Location.Ref ->
-      (Model.Type, (Cmd Event.Type))
+      Struct.Model.Type ->
+      Struct.Character.Ref ->
+      Struct.Location.Ref ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 go_to_tile model char_ref loc_ref =
-   case (Battlemap.try_getting_navigator_location model.battlemap) of
+   case (Struct.Battlemap.try_getting_navigator_location model.battlemap) of
       (Just nav_loc) ->
-         if (loc_ref == (Battlemap.Location.get_ref nav_loc))
+         if (loc_ref == (Struct.Location.get_ref nav_loc))
          then
             -- We are already there.
             if
             (
-               (UI.get_previous_action model.ui)
+               (Struct.UI.get_previous_action model.ui)
                ==
-               (Just (UI.SelectedLocation loc_ref))
+               (Just (Struct.UI.SelectedLocation loc_ref))
             )
             then
                -- And we just clicked on that tile.
-               (Model.EndTurn.apply_to model)
+               (Update.EndTurn.apply_to model)
             else
                -- And we didn't just click on that tile.
                (
                   {model |
                      ui =
-                        (UI.set_previous_action
+                        (Struct.UI.set_previous_action
                            model.ui
-                           (Just (UI.SelectedLocation loc_ref))
+                           (Just (Struct.UI.SelectedLocation loc_ref))
                         )
                   },
                   Cmd.none
@@ -58,7 +57,7 @@ go_to_tile model char_ref loc_ref =
          else
             -- We have to try getting there.
             case
-               (Battlemap.try_getting_navigator_path_to
+               (Struct.Battlemap.try_getting_navigator_path_to
                   model.battlemap
                   loc_ref
                )
@@ -70,7 +69,7 @@ go_to_tile model char_ref loc_ref =
                            (autopilot)
                            {model |
                               battlemap =
-                                 (Battlemap.clear_navigator_path
+                                 (Struct.Battlemap.clear_navigator_path
                                     model.battlemap
                                  )
                            }
@@ -80,31 +79,31 @@ go_to_tile model char_ref loc_ref =
                      (
                         {new_model |
                            ui =
-                              (UI.set_previous_action
+                              (Struct.UI.set_previous_action
                                  new_model.ui
-                                 (Just (UI.SelectedLocation loc_ref))
+                                 (Just (Struct.UI.SelectedLocation loc_ref))
                               )
                         },
                         Cmd.none
                      )
 
                Nothing -> -- Clicked outside of the range indicator
-                  ((Model.reset model model.characters), Cmd.none)
+                  ((Struct.Model.reset model model.characters), Cmd.none)
 
       Nothing -> -- Clicked outside of the range indicator
-         ((Model.reset model model.characters), Cmd.none)
+         ((Struct.Model.reset model model.characters), Cmd.none)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to : (
-      Model.Type ->
-      Battlemap.Location.Ref ->
-      (Model.Type, (Cmd Event.Type))
+      Struct.Model.Type ->
+      Struct.Location.Ref ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model loc_ref =
    case model.controlled_character of
       (Just char_ref) ->
          (go_to_tile model char_ref loc_ref)
 
-      _ -> ({model | state = (Model.InspectingTile loc_ref)}, Cmd.none)
+      _ -> ({model | state = (Struct.Model.InspectingTile loc_ref)}, Cmd.none)

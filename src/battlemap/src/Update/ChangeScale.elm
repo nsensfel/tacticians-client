@@ -2,8 +2,8 @@ module Update.ChangeScale exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Model
 import Struct.Event
+import Struct.Model
 import Struct.UI
 
 --------------------------------------------------------------------------------

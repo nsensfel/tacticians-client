@@ -39,11 +39,7 @@ view model =
                      (Html.Attributes.class "battlemap-container")
                   ]
                   [
-                     (View.Battlemap.get_html
-                        model.battlemap
-                        (Struct.UI.get_zoom_level model.ui)
-                        (Dict.values model.characters)
-                     )
+                     (View.Battlemap.get_html model)
                   ]
                ),
                (View.Footer.get_html model)

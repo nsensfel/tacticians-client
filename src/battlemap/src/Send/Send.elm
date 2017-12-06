@@ -1,14 +1,14 @@
-module Send exposing (Reply, try_sending)
+module Send.Send exposing (Reply, try_sending)
 
 -- Elm -------------------------------------------------------------------------
+import Http
+
 import Json.Decode
 import Json.Encode
 
-import Http
-
 -- Battlemap -------------------------------------------------------------------
-import Struct.Model
 import Struct.Event
+import Struct.Model
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------

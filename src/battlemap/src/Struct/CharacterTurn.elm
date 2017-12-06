@@ -91,13 +91,12 @@ add_target ct target_ref =
 remove_target : Type -> Int -> Type
 remove_target ct i =
    let
-      new_targets = (List.drop i ct.list)
+      new_targets = (List.drop i ct.targets)
    in
       case new_targets of
          [] ->
             {ct |
                state = MovedCharacter,
-               path = path,
                targets = []
             }
 

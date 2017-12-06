@@ -1,33 +1,41 @@
 module View.Battlemap.Tile exposing (get_html)
 
+-- Elm -------------------------------------------------------------------------
 import Html
 import Html.Attributes
 import Html.Events
 
-import Battlemap.Tile
-import Battlemap.Location
-
+-- Battlemap -------------------------------------------------------------------
 import Constants.UI
 
-import Event
+import Struct.Event
+import Struct.Location
+import Struct.Tile
 
+--------------------------------------------------------------------------------
+-- LOCAL -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
 get_html : (
-      Battlemap.Tile.Type ->
-      (Html.Html Event.Type)
+      Struct.Tile.Type ->
+      (Html.Html Struct.Event.Type)
    )
 get_html tile =
    let
-      tile_loc = (Battlemap.Tile.get_location tile)
+      tile_loc = (Struct.Tile.get_location tile)
    in
       (Html.div
          [
             (Html.Attributes.class "battlemap-tile-icon"),
             (Html.Attributes.class "battlemap-tiled"),
             (Html.Attributes.class
-               ("asset-tile-" ++ (Battlemap.Tile.get_icon_id tile))
+               ("asset-tile-" ++ (Struct.Tile.get_icon_id tile))
             ),
             (Html.Events.onClick
-               (Event.TileSelected (Battlemap.Location.get_ref tile_loc))
+               (Struct.Event.TileSelected (Struct.Location.get_ref tile_loc))
             )
 --            ),
 --            (Html.Attributes.style
