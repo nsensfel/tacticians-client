@@ -9,6 +9,7 @@ import Constants.IO
 import Send.Send
 
 import Struct.Battlemap
+import Struct.CharacterTurn
 import Struct.Direction
 import Struct.Event
 import Struct.Model
@@ -23,7 +24,9 @@ import Struct.UI
 --------------------------------------------------------------------------------
 try_encoding : Struct.Model.Type -> (Maybe Json.Encode.Value)
 try_encoding model =
-   case model.controlled_character of
+   case
+      (Struct.CharacterTurn.try_getting_controlled_character model.char_turn)
+   of
       (Just char_ref) ->
          (Just
             (Json.Encode.object
@@ -43,7 +46,7 @@ try_encoding model =
                               (Struct.Direction.to_string)
                            )
                            (List.reverse
-                              (Struct.Battlemap.get_navigator_path model.battlemap)
+                              (Struct.CharacterTurn.get_path model.char_turn)
                            )
                         )
                      )
@@ -51,7 +54,10 @@ try_encoding model =
                   (
                      "targets_id",
                      (Json.Encode.list
-                        (List.map (Json.Encode.string) model.targets)
+                        (List.map
+                           (Json.Encode.string)
+                           (Struct.CharacterTurn.get_targets model.char_turn)
+                        )
                      )
                   )
                ]
@@ -66,4 +72,8 @@ try_encoding model =
 --------------------------------------------------------------------------------
 try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
 try model =
-   (Send.try_sending model Constants.IO.character_turn_handler try_encoding)
+   (Send.Send.try_sending
+      model
+      Constants.IO.character_turn_handler
+      try_encoding
+   )

@@ -1,6 +1,7 @@
 module Update.HandleServerReply exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
+import Http
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Error
@@ -19,10 +20,10 @@ apply_command cmd model =
       cmd
    of
       ["set_map", data] ->
-         (Struct.Model.HandleServerReply.SetMap.apply_to model data)
+         (Update.HandleServerReply.SetMap.apply_to model data)
 
       ["add_char", data] ->
-         (Struct.Model.HandleServerReply.AddChar.apply_to model data)
+         (Update.HandleServerReply.AddChar.apply_to model data)
 
       _ ->
          (Struct.Model.invalidate
@@ -41,7 +42,7 @@ apply_command cmd model =
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      (Result Http.Error (List (List String)) ->
+      (Result Http.Error (List (List String))) ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model query_result =
@@ -56,4 +57,4 @@ apply_to model query_result =
          )
 
       (Result.Ok commands) ->
-         ((List.foldl (apply_command) model serialized_commands), Cmd.none)
+         ((List.foldl (apply_command) model commands), Cmd.none)

@@ -17,7 +17,9 @@ import Struct.Model
 --------------------------------------------------------------------------------
 make_it_so : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 make_it_so model =
-   case (Struct.Battlemap.try_getting_navigator_location model.battlemap) of
+   case -- (Struct.Battlemap.try_getting_navigator_location model.battlemap) of
+      (Just {x = 0, y = 0})
+   of
       (Just location) ->
          case (Send.CharacterTurn.try model) of
             (Just cmd) ->

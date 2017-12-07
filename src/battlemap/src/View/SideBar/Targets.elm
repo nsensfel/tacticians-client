@@ -9,6 +9,7 @@ import Html.Attributes
 -- Battlemap -------------------------------------------------------------------
 import Struct.Battlemap
 import Struct.Character
+import Struct.CharacterTurn
 import Struct.Error
 import Struct.Event
 import Struct.Location
@@ -59,6 +60,6 @@ get_html model =
       ]
       (List.map
          (get_target_info_html model)
-         model.targets
+         (Struct.CharacterTurn.get_targets model.char_turn)
       )
    )

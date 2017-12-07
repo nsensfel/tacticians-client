@@ -32,7 +32,7 @@ import Struct.Character
 --------------------------------------------------------------------------------
 type Tab =
    StatusTab
-   | Struct.CharactersTab
+   | CharactersTab
    | SettingsTab
 
 type Action =
@@ -89,12 +89,12 @@ to_string : Tab -> String
 to_string tab =
    case tab of
       StatusTab -> "Status"
-      Struct.CharactersTab -> "Characters"
+      CharactersTab -> "Characters"
       SettingsTab -> "Settings"
 
 get_all_tabs : (List Tab)
 get_all_tabs =
-   [StatusTab, Struct.CharactersTab, SettingsTab]
+   [StatusTab, CharactersTab, SettingsTab]
 
 -- ManualControls --------------------------------------------------------------
 has_manual_controls_enabled : Type -> Bool

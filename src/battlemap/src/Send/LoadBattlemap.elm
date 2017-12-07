@@ -34,6 +34,10 @@ try_encoding model =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try : Model.Type -> (Maybe (Cmd Event.Type))
+try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
 try model =
-   (Send.try_sending model Constants.IO.battlemap_loading_handler try_encoding)
+   (Send.Send.try_sending
+      model
+      Constants.IO.battlemap_loading_handler
+      try_encoding
+   )

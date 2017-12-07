@@ -5,6 +5,7 @@ import Dict
 
 -- Struct.Battlemap -------------------------------------------------------------------
 import Struct.Battlemap
+import Struct.CharacterTurn
 import Struct.Model
 import Struct.UI
 
@@ -19,12 +20,11 @@ import Struct.UI
 generate =
    {
       state = Struct.Model.Default,
-      error = Nothing,
       battlemap = (Struct.Battlemap.empty),
-      controlled_team = 0,
-      controlled_character = Nothing,
-      player_id = "0",
-      targets = [],
       characters = (Dict.empty),
-      ui = (Struct.UI.default)
+      error = Nothing,
+      controlled_team = 0,
+      player_id = "0",
+      ui = (Struct.UI.default),
+      char_turn = (Struct.CharacterTurn.new)
    }

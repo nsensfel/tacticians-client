@@ -8,6 +8,7 @@ import Struct.Battlemap
 import Struct.Character
 import Struct.Direction
 import Struct.Error
+import Struct.Event
 import Struct.UI
 import Struct.Model
 
@@ -18,7 +19,7 @@ import Update.RequestDirection
 --------------------------------------------------------------------------------
 autopilot : Struct.Direction.Type -> Struct.Model.Type -> Struct.Model.Type
 autopilot dir model =
-   (Model.RequestDirection.apply_to model dir)
+   (Update.RequestDirection.apply_to model dir)
 
 attack_character : (
       Struct.Model.Type ->
@@ -47,13 +48,13 @@ select_character model target_char_id target_char =
          controlled_character = (Just target_char_id),
          ui = (Struct.UI.set_previous_action model.ui Nothing),
          battlemap =
-            (Struct.Battlemap.set_navigator
-               (Struct.Character.get_location target_char)
-               (Struct.Character.get_movement_points target_char)
-               (Struct.Character.get_attack_range target_char)
-               (Dict.values model.characters)
-               model.battlemap
-            )
+--            (Struct.Battlemap.set_navigator
+--               (Struct.Character.get_location target_char)
+--               (Struct.Character.get_movement_points target_char)
+--               (Struct.Character.get_attack_range target_char)
+--               (Dict.values model.characters)
+                 model.battlemap
+--            )
       }
    else
       {model |

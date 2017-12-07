@@ -28,7 +28,7 @@ get_html model =
       [
          (View.SideBar.TabMenu.get_html model),
          (
-            if (model.targets == [])
+            if ((Struct.CharacterTurn.get_targets model.char_turn) == [])
             then
                (Util.Html.nothing)
             else

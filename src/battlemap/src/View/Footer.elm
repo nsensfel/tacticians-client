@@ -9,6 +9,7 @@ import Html.Attributes
 -- Struct.Battlemap -------------------------------------------------------------------
 import Struct.Battlemap
 import Struct.Character
+import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.UI
@@ -33,9 +34,10 @@ get_curr_char_info_htmls model char_ref =
                   ++ char.name
                   ++ ": "
                   ++ (toString
-                        (Struct.Battlemap.get_navigator_remaining_points
-                           model.battlemap
-                        )
+--                        (Struct.Battlemap.get_navigator_remaining_points
+--                           model.battlemap
+--                        )
+                        0
                      )
                   ++ "/"
                   ++ (toString (Struct.Character.get_movement_points char))
@@ -52,7 +54,9 @@ get_curr_char_info_htmls model char_ref =
 --------------------------------------------------------------------------------
 get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
-   case model.controlled_character of
+   case
+      (Struct.CharacterTurn.try_getting_controlled_character model.char_turn)
+   of
       (Just char_id) ->
          (Html.div
             [(Html.Attributes.class "battlemap-footer")]

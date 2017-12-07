@@ -5,11 +5,13 @@ import Dict
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Battlemap
-import Struct.Direction
 import Struct.Character
-import Struct.UI
-import Struct.Model
+import Struct.CharacterTurn
+import Struct.Direction
 import Struct.Error
+import Struct.Event
+import Struct.Model
+import Struct.UI
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -23,11 +25,11 @@ make_it_so : (
 make_it_so model char_ref dir =
    let
       new_bmap =
-         (Struct.Battlemap.try_adding_step_to_navigator
-            model.battlemap
-            (Dict.values model.characters)
-            dir
-         )
+--         (Struct.Battlemap.try_adding_step_to_navigator
+           (Just model.battlemap)
+--            (Dict.values model.characters)
+--            dir
+--         )
    in
       case new_bmap of
          (Just bmap) ->
@@ -55,10 +57,12 @@ make_it_so model char_ref dir =
 apply_to : (
       Struct.Model.Type ->
       Struct.Direction.Type ->
-      Struct.Model.Type
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model dir =
-   case model.controlled_character of
+   case
+      (Struct.CharacterTurn.try_getting_controlled_character model.char_turn)
+   of
       (Just char_ref) ->
          (
             (make_it_so model char_ref dir),

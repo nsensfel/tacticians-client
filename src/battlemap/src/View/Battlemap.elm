@@ -5,21 +5,16 @@ import Array
 
 import Html
 import Html.Attributes
-import Html.Events
 import Html.Lazy
 
 import List
 
 -- Battlemap -------------------------------------------------------------------
-import Constants.UI
-
 import Struct.Battlemap
-import Struct.Character
 import Struct.Event
 import Struct.Model
 import Struct.Tile
-
-import Util.Html
+import Struct.UI
 
 import View.Battlemap.Character
 import View.Battlemap.Navigator
@@ -62,7 +57,7 @@ get_tiles_lines_html max_index tile (curr_index, curr_line, result) =
          [],
          (
             (get_tiles_line_html
-               ((View.Tile.get_html tile) :: curr_line)
+               ((View.Battlemap.Tile.get_html tile) :: curr_line)
             )
             ::
             result
@@ -71,14 +66,14 @@ get_tiles_lines_html max_index tile (curr_index, curr_line, result) =
    else
       (
          (curr_index - 1),
-         ((View.Tile.get_html tile) :: curr_line),
+         ((View.Battlemap.Tile.get_html tile) :: curr_line),
          result
       )
 
 get_tiles_html : Struct.Battlemap.Type -> (Html.Html Struct.Event.Type)
 get_tiles_html battlemap =
    let
-      bmap_width (Struct.Battlemap.get_width battlemap)
+      bmap_width = (Struct.Battlemap.get_width battlemap)
       max_index = (bmap_width - 1)
       (_, last_line, other_lines) =
          (Array.foldr
@@ -112,7 +107,7 @@ get_html model =
                   (
                      "scale("
                      ++
-                     (toString (Struct.UI.get_scale model))
+                     (toString (Struct.UI.get_zoom_level model))
                      ++ ")"
                   )
                )
@@ -120,10 +115,7 @@ get_html model =
          )
       ]
       (
-         (Html.Lazy.lazy
-            (get_tiles_html (Battlemap.get_width model.battlemap))
-            model.battlemap
-         )
+         (Html.Lazy.lazy (get_tiles_html) model.battlemap)
          ::
          (List.map
             (View.Battlemap.Character.get_html)
