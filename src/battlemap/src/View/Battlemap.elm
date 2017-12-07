@@ -3,6 +3,8 @@ module View.Battlemap exposing (get_html)
 -- Elm -------------------------------------------------------------------------
 import Array
 
+import Dict
+
 import Html
 import Html.Attributes
 import Html.Lazy
@@ -107,7 +109,7 @@ get_html model =
                   (
                      "scale("
                      ++
-                     (toString (Struct.UI.get_zoom_level model))
+                     (toString (Struct.UI.get_zoom_level model.ui))
                      ++ ")"
                   )
                )
@@ -119,7 +121,7 @@ get_html model =
          ::
          (List.map
             (View.Battlemap.Character.get_html)
-            model.characters
+            (Dict.values model.characters)
          )
       )
    )

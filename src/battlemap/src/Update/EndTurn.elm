@@ -8,6 +8,7 @@ import Send.CharacterTurn
 
 import Struct.Battlemap
 import Struct.Character
+import Struct.CharacterTurn
 import Struct.Error
 import Struct.Event
 import Struct.Model
@@ -27,7 +28,7 @@ make_it_so model =
                   (Struct.Model.reset
                      model
                      (Dict.update
-                        char_ref
+                        "0" --char_ref
                         (\maybe_char ->
                            case maybe_char of
                               (Just char) ->
@@ -68,9 +69,9 @@ make_it_so model =
 --------------------------------------------------------------------------------
 apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 apply_to model =
-   case (Query.CharacterTurn.get_state model.char_turn) of
-      Query.CharacterTurn.MovedCharacter -> (make_it_so model)
-      Query.CharacterTurn.ChoseTarget -> (make_it_so model)
+   case (Struct.CharacterTurn.get_state model.char_turn) of
+      Struct.CharacterTurn.MovedCharacter -> (make_it_so model)
+      Struct.CharacterTurn.ChoseTarget -> (make_it_so model)
 
       _ ->
          (

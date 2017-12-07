@@ -28,7 +28,9 @@ go_to_tile : (
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 go_to_tile model char_ref loc_ref =
-   case (Struct.Battlemap.try_getting_navigator_location model.battlemap) of
+   case -- (Struct.Battlemap.try_getting_navigator_location model.battlemap)
+      (Just {x = 0, y = 0})
+   of
       (Just nav_loc) ->
          if (loc_ref == (Struct.Location.get_ref nav_loc))
          then
@@ -102,7 +104,9 @@ apply_to : (
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model loc_ref =
-   case model.controlled_character of
+   case
+      (Struct.CharacterTurn model.char_turn)
+   of
       (Just char_ref) ->
          (go_to_tile model char_ref loc_ref)
 

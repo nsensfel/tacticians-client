@@ -5,6 +5,7 @@ import Html
 import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.UI

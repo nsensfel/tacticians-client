@@ -6,6 +6,7 @@ import Dict
 -- Battlemap -------------------------------------------------------------------
 import Struct.Battlemap
 import Struct.Character
+import Struct.CharacterTurn
 import Struct.Direction
 import Struct.Error
 import Struct.Event
@@ -17,7 +18,11 @@ import Update.RequestDirection
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-autopilot : Struct.Direction.Type -> Struct.Model.Type -> Struct.Model.Type
+autopilot : (
+      Struct.Direction.Type ->
+      Struct.Model.Type ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
 autopilot dir model =
    (Update.RequestDirection.apply_to model dir)
 
@@ -45,7 +50,11 @@ select_character model target_char_id target_char =
    then
       {model |
          state = Struct.Model.Default,
-         controlled_character = (Just target_char_id),
+         char_turn =
+            (Struct.CharacterTurn.set_controlled_character
+               model.char_turn
+               target_char_id
+            ),
          ui = (Struct.UI.set_previous_action model.ui Nothing),
          battlemap =
 --            (Struct.Battlemap.set_navigator
@@ -83,7 +92,11 @@ apply_to model target_char_id =
    then
       case (Dict.get target_char_id model.characters) of
          (Just target_char) ->
-            case model.controlled_character of
+            case
+               (Struct.CharacterTurn.try_getting_controlled_character
+                  model.char_turn
+               )
+            of
                (Just main_char_id) ->
                   (
                      (attack_character
