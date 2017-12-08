@@ -2,8 +2,10 @@ module Update.SendLoadBattlemapRequest exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Model
+import Send.LoadBattlemap
+
 import Struct.Event
+import Struct.Model
 import Struct.UI
 
 --------------------------------------------------------------------------------

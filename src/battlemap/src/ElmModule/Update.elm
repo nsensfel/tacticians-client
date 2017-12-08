@@ -8,11 +8,15 @@ import Struct.Error
 import Struct.UI
 import Struct.Model
 
-import Update.RequestDirection
-import Update.SelectTile
-import Update.SelectCharacter
+import Update.ChangeScale
 import Update.EndTurn
 import Update.HandleServerReply
+import Update.RequestDirection
+import Update.SelectCharacter
+import Update.SelectTab
+import Update.SelectTile
+import Update.SendLoadBattlemapRequest
+import Update.SwitchTeam
 
 import Send.LoadBattlemap
 
@@ -42,14 +46,14 @@ update event model =
          (Update.ChangeScale.apply_to new_model mod)
 
       (Struct.Event.TabSelected tab) ->
-         (Update.SelectTab.apply_to new_model mod)
+         (Update.SelectTab.apply_to new_model tab)
 
       Struct.Event.DebugTeamSwitchRequest ->
          (Update.SwitchTeam.apply_to new_model)
 
-      (Event.DebugLoadBattlemapRequest) ->
+      (Struct.Event.DebugLoadBattlemapRequest) ->
          (Update.SendLoadBattlemapRequest.apply_to new_model)
 
-      (Event.ServerReplied result) ->
-         (Model.HandleServerReply.apply_to model result)
+      (Struct.Event.ServerReplied result) ->
+         (Update.HandleServerReply.apply_to model result)
 

@@ -20,7 +20,7 @@ apply_to model =
    if (model.controlled_team == 0)
    then
       (
-         (Model.reset
+         (Struct.Model.reset
             {model |
                controlled_team = 1,
                player_id = "1"
@@ -31,7 +31,7 @@ apply_to model =
       )
    else
       (
-         (Model.reset
+         (Struct.Model.reset
             {model |
                controlled_team = 0,
                player_id = "0"

@@ -6,6 +6,7 @@ module Struct.Battlemap exposing
       get_width,
       get_height,
       get_tiles,
+      get_movement_cost_function,
       try_getting_tile_at
    )
 
@@ -47,42 +48,6 @@ has_location bmap loc =
       && (loc.y < bmap.height)
    )
 
-tile_cost_function : (
-      Type ->
-      Struct.Location.Type ->
-      (List Struct.Character.Type) ->
-      Struct.Location.Type ->
-      Int
-   )
-tile_cost_function bmap start_loc char_list loc =
-   if
-      (
-         (Struct.Location.get_ref start_loc)
-         ==
-         (Struct.Location.get_ref loc)
-      )
-   then
-      0
-   else
-      if (has_location bmap loc)
-      then
-         case
-            (Array.get (location_to_index bmap loc) bmap.content)
-         of
-            (Just tile) ->
-               if
-                  (List.any
-                     (\c -> ((Struct.Character.get_location c) == loc))
-                     char_list
-                  )
-               then
-                  Constants.Movement.cost_when_occupied_tile
-               else
-                  (Struct.Tile.get_cost tile)
-
-            Nothing -> Constants.Movement.cost_when_out_of_bounds
-      else
-         Constants.Movement.cost_when_out_of_bounds
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -119,3 +84,40 @@ try_getting_tile_at : (
    )
 try_getting_tile_at bmap loc =
    (Array.get (location_to_index bmap loc) bmap.content)
+
+get_movement_cost_function : (
+      Type ->
+      Struct.Location.Type ->
+      (List Struct.Character.Type) ->
+      Struct.Location.Type ->
+      Int
+   )
+get_movement_cost_function bmap start_loc char_list loc =
+   if
+      (
+         (Struct.Location.get_ref start_loc)
+         ==
+         (Struct.Location.get_ref loc)
+      )
+   then
+      0
+   else
+      if (has_location bmap loc)
+      then
+         case
+            (Array.get (location_to_index bmap loc) bmap.content)
+         of
+            (Just tile) ->
+               if
+                  (List.any
+                     (\c -> ((Struct.Character.get_location c) == loc))
+                     char_list
+                  )
+               then
+                  Constants.Movement.cost_when_occupied_tile
+               else
+                  (Struct.Tile.get_cost tile)
+
+            Nothing -> Constants.Movement.cost_when_out_of_bounds
+      else
+         Constants.Movement.cost_when_out_of_bounds

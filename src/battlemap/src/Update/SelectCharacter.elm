@@ -12,6 +12,7 @@ import Struct.Error
 import Struct.Event
 import Struct.UI
 import Struct.Model
+import Struct.Navigator
 
 import Update.RequestDirection
 
@@ -28,8 +29,9 @@ attack_character : (
 attack_character model main_char_id target_char_id target_char =
    {model |
       char_turn =
-         (Struct.CharacterTurn.add_target target_char_id model.char_turn),
-      ui = (Struct.UI.set_previous_action model.ui Nothing)
+         (Struct.CharacterTurn.add_target model.char_turn target_char_id),
+      ui =
+         (Struct.UI.set_previous_action model.ui Nothing)
    }
 
 select_character : (
@@ -47,15 +49,17 @@ select_character model target_char_id target_char =
             (Struct.CharacterTurn.set_navigator
                (Struct.CharacterTurn.set_controlled_character
                   model.char_turn
-                  target_char_id
+                  target_char
                )
-               (Struct.Character.get_location target_char)
-               (Struct.Character.get_movement_points target_char)
-               (Struct.Character.get_attack_range target_char)
-               (Struct.Battlemap.get_movement_cost_function
-                  (Dict.values model.characters)
+               (Struct.Navigator.new
                   (Struct.Character.get_location target_char)
-                  model.battlemap
+                  (Struct.Character.get_movement_points target_char)
+                  (Struct.Character.get_attack_range target_char)
+                  (Struct.Battlemap.get_movement_cost_function
+                     model.battlemap
+                     (Struct.Character.get_location target_char)
+                     (Dict.values model.characters)
+                  )
                )
             ),
          ui = (Struct.UI.set_previous_action model.ui Nothing)
