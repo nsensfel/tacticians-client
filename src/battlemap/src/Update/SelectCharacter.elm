@@ -18,14 +18,6 @@ import Update.RequestDirection
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-autopilot : (
-      Struct.Direction.Type ->
-      Struct.Model.Type ->
-      (Struct.Model.Type, (Cmd Struct.Event.Type))
-   )
-autopilot dir model =
-   (Update.RequestDirection.apply_to model dir)
-
 attack_character : (
       Struct.Model.Type ->
       Struct.Character.Ref ->
@@ -35,7 +27,8 @@ attack_character : (
    )
 attack_character model main_char_id target_char_id target_char =
    {model |
-      targets = [target_char_id],
+      char_turn =
+         (Struct.CharacterTurn.add_target target_char_id model.char_turn),
       ui = (Struct.UI.set_previous_action model.ui Nothing)
    }
 
@@ -46,24 +39,26 @@ select_character : (
       Struct.Model.Type
    )
 select_character model target_char_id target_char =
-   if ((Struct.Character.is_enabled target_char))
+   if (Struct.Character.is_enabled target_char)
    then
       {model |
          state = Struct.Model.Default,
          char_turn =
-            (Struct.CharacterTurn.set_controlled_character
-               model.char_turn
-               target_char_id
+            (Struct.CharacterTurn.set_navigator
+               (Struct.CharacterTurn.set_controlled_character
+                  model.char_turn
+                  target_char_id
+               )
+               (Struct.Character.get_location target_char)
+               (Struct.Character.get_movement_points target_char)
+               (Struct.Character.get_attack_range target_char)
+               (Struct.Battlemap.get_movement_cost_function
+                  (Dict.values model.characters)
+                  (Struct.Character.get_location target_char)
+                  model.battlemap
+               )
             ),
-         ui = (Struct.UI.set_previous_action model.ui Nothing),
-         battlemap =
---            (Struct.Battlemap.set_navigator
---               (Struct.Character.get_location target_char)
---               (Struct.Character.get_movement_points target_char)
---               (Struct.Character.get_attack_range target_char)
---               (Dict.values model.characters)
-                 model.battlemap
---            )
+         ui = (Struct.UI.set_previous_action model.ui Nothing)
       }
    else
       {model |

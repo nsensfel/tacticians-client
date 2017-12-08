@@ -7,7 +7,9 @@ module Struct.CharacterTurn exposing
       set_controlled_character,
       get_state,
       get_path,
-      set_path,
+      lock_path,
+      try_getting_navigator,
+      set_navigator,
       add_target,
       remove_target,
       get_targets
@@ -61,27 +63,19 @@ new =
 try_getting_controlled_character : Type -> (Maybe Struct.Character.Ref)
 try_getting_controlled_character ct = ct.controlled_character
 
+
 set_controlled_character : (
       Type ->
       Struct.Character.Type ->
-      (Struct.Location.Type -> Int) ->
       Type
-)
-set_controlled_character ct char mov_cost_fun =
-   {
+   )
+set_controlled_character ct char =
+   {ct |
       state = SelectedCharacter,
       controlled_character = (Just (Struct.Character.get_ref char)),
       path = [],
       targets = [],
-      navigator =
-         (Just
-            (Struct.Navigator.new
-               (Struct.Character.get_location char)
-               (Struct.Character.get_movement_points char)
-               (Struct.Character.get_attack_range char)
-               mov_cost_fun
-            )
-         )
+      navigator = Nothing
    }
 
 get_state : Type -> State
@@ -90,24 +84,31 @@ get_state ct = ct.state
 get_path : Type -> (List Struct.Direction.Type)
 get_path ct = ct.path
 
-try_locking_path : Type -> (Just Type)
-try_locking_path ct =
+lock_path : Type -> Type
+lock_path ct =
    case ct.navigator of
       (Just old_nav) ->
          {ct |
             state = MovedCharacter,
             path = (Struct.Navigator.get_path old_nav),
             targets = [],
-            navigator =
-               (Just
-                  (Struct.Navigator.new
-                     (Struct.Navigator.get_current_location old_nav)
-                     0
-                     (Struct.Character.get_attack_range char)
-                     mov_cost_fun
-                  )
-               )
+            navigator = (Just (Struct.Navigator.lock_path old_nav))
          }
+
+      Nothing ->
+         ct
+
+try_getting_navigator : Type -> (Maybe Struct.Navigator.Type)
+try_getting_navigator ct = ct.navigator
+
+set_navigator : Type -> Struct.Navigator.Type -> Type
+set_navigator ct navigator =
+   {ct |
+      state = SelectedCharacter,
+      path = [],
+      targets = [],
+      navigator = (Just navigator)
+   }
 
 add_target : Type -> Struct.Character.Ref -> Type
 add_target ct target_ref =

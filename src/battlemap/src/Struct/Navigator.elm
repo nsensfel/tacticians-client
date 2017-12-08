@@ -10,6 +10,7 @@ module Struct.Navigator exposing
       get_path,
       get_summary,
       clear_path,
+      lock_path,
       try_adding_step,
       try_getting_path_to
    )
@@ -36,7 +37,8 @@ type alias Type =
          (Dict.Dict
             Struct.Location.Ref
             Struct.RangeIndicator.Type
-         )
+         ),
+      cost_fun: (Struct.Location.Type -> Int)
    }
 
 type alias Summary =
@@ -72,7 +74,8 @@ new start_loc mov_dist atk_dist cost_fun =
             mov_dist
             atk_dist
             (cost_fun)
-         )
+         ),
+      cost_fun = cost_fun
    }
 
 get_current_location : Type -> Struct.Location.Type
@@ -128,16 +131,27 @@ clear_path navigator =
          )
    }
 
+lock_path : Type -> Type
+lock_path navigator =
+   {navigator |
+      range_indicators =
+         (Struct.RangeIndicator.generate
+            (Struct.Path.get_current_location navigator.path)
+            0
+            navigator.attack_dist
+            (navigator.cost_fun)
+         )
+   }
+
 try_adding_step : (
       Type ->
       Struct.Direction.Type ->
-      (Struct.Location.Type -> Int) ->
       (Maybe Type)
    )
-try_adding_step navigator dir cost_fun =
+try_adding_step navigator dir =
    case
       (Struct.Path.try_following_direction
-         cost_fun
+         (navigator.cost_fun)
          (Just navigator.path)
          dir
       )

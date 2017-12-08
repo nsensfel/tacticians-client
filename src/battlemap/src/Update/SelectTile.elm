@@ -5,10 +5,13 @@ module Update.SelectTile exposing (apply_to)
 -- Battlemap -------------------------------------------------------------------
 import Struct.Battlemap
 import Struct.Character
+import Struct.CharacterTurn
 import Struct.Direction
+import Struct.Error
 import Struct.Event
 import Struct.Location
 import Struct.Model
+import Struct.Navigator
 import Struct.UI
 
 import Update.EndTurn
@@ -17,85 +20,105 @@ import Update.RequestDirection
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-autopilot : Struct.Direction.Type -> Struct.Model.Type -> Struct.Model.Type
-autopilot dir model =
-   (Update.RequestDirection.apply_to model dir)
+try_autopiloting : (
+      Struct.Direction.Type ->
+      (Maybe Struct.Navigator.Type) ->
+      (Maybe Struct.Navigator.Type)
+   )
+try_autopiloting dir maybe_nav =
+   case maybe_nav of
+      (Just navigator) ->
+         (Struct.Navigator.try_adding_step navigator dir)
+
+      Nothing -> Nothing
 
 go_to_tile : (
       Struct.Model.Type ->
-      Struct.Character.Ref ->
+      Struct.Navigator.Type ->
       Struct.Location.Ref ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-go_to_tile model char_ref loc_ref =
-   case -- (Struct.Battlemap.try_getting_navigator_location model.battlemap)
-      (Just {x = 0, y = 0})
-   of
-      (Just nav_loc) ->
-         if (loc_ref == (Struct.Location.get_ref nav_loc))
-         then
-            -- We are already there.
-            if
-            (
-               (Struct.UI.get_previous_action model.ui)
-               ==
-               (Just (Struct.UI.SelectedLocation loc_ref))
-            )
-            then
-               -- And we just clicked on that tile.
-               (Update.EndTurn.apply_to model)
-            else
-               -- And we didn't just click on that tile.
-               (
-                  {model |
-                     ui =
-                        (Struct.UI.set_previous_action
-                           model.ui
-                           (Just (Struct.UI.SelectedLocation loc_ref))
+go_to_tile model navigator loc_ref =
+   if
+   (
+      loc_ref
+      ==
+      (Struct.Location.get_ref
+         (Struct.Navigator.get_current_location navigator)
+      )
+   )
+   then
+      -- We are already there.
+      if
+      (
+         (Struct.UI.get_previous_action model.ui)
+         ==
+         (Just (Struct.UI.SelectedLocation loc_ref))
+      )
+      then
+         -- And we just clicked on that tile.
+         (
+            {model |
+               char_turn =
+                  (Struct.CharacterTurn.lock_path model.char_turn)
+            },
+            Cmd.none
+         )
+      else
+         -- And we didn't just click on that tile.
+         (
+            {model |
+               ui =
+                  (Struct.UI.set_previous_action
+                     model.ui
+                     (Just (Struct.UI.SelectedLocation loc_ref))
+                  )
+            },
+            Cmd.none
+         )
+   else
+      -- We have to try getting there.
+      case
+         (Struct.Navigator.try_getting_path_to
+            navigator
+            loc_ref
+         )
+      of
+         (Just path) ->
+            case (List.foldr (try_autopiloting) (Just navigator) path) of
+               (Just new_navigator) ->
+                  (
+                     {model |
+                        char_turn =
+                           (Struct.CharacterTurn.set_navigator
+                              model.char_turn
+                              new_navigator
+                           ),
+                        ui =
+                           (Struct.UI.set_previous_action
+                              model.ui
+                              (Just (Struct.UI.SelectedLocation loc_ref))
+                           )
+                     },
+                     Cmd.none
+                  )
+
+               Nothing ->
+                  (
+                     (Struct.Model.invalidate
+                        model
+                        (Struct.Error.new
+                           Struct.Error.Programming
+                           "SelectTile/Navigator: Could not follow own path."
                         )
-                  },
-                  Cmd.none
-               )
-         else
-            -- We have to try getting there.
-            case
-               (Struct.Battlemap.try_getting_navigator_path_to
-                  model.battlemap
-                  loc_ref
-               )
-            of
-               (Just path) ->
-                  let
-                     new_model =
-                        (List.foldr
-                           (autopilot)
-                           {model |
-                              battlemap =
-                                 (Struct.Battlemap.clear_navigator_path
-                                    model.battlemap
-                                 )
-                           }
-                           path
-                        )
-                  in
-                     (
-                        {new_model |
-                           ui =
-                              (Struct.UI.set_previous_action
-                                 new_model.ui
-                                 (Just (Struct.UI.SelectedLocation loc_ref))
-                              )
-                        },
-                        Cmd.none
-                     )
+                     ),
+                     Cmd.none
+                  )
 
-               Nothing -> -- Clicked outside of the range indicator
-                  ((Struct.Model.reset model model.characters), Cmd.none)
+         Nothing -> -- Clicked outside of the range indicator
+            ((Struct.Model.reset model model.characters), Cmd.none)
 
-      Nothing -> -- Clicked outside of the range indicator
-         ((Struct.Model.reset model model.characters), Cmd.none)
-
---------------------------------------------------------------------------------
+------------------------------------------------ maybe_nav--------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to : (
@@ -104,10 +127,8 @@ apply_to : (
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model loc_ref =
-   case
-      (Struct.CharacterTurn model.char_turn)
-   of
-      (Just char_ref) ->
-         (go_to_tile model char_ref loc_ref)
+   case (Struct.CharacterTurn.try_getting_navigator model.char_turn) of
+      (Just navigator) ->
+         (go_to_tile model navigator loc_ref)
 
       _ -> ({model | state = (Struct.Model.InspectingTile loc_ref)}, Cmd.none)
