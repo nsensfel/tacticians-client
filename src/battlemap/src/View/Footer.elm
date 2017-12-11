@@ -12,6 +12,7 @@ import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
+import Struct.Navigator
 import Struct.UI
 
 import Util.Html
@@ -25,20 +26,20 @@ get_curr_char_info_htmls : (
       (List (Html.Html Struct.Event.Type))
    )
 get_curr_char_info_htmls model char_ref =
-   case (Dict.get char_ref model.characters) of
-      (Just char) ->
+   case
+      (
+         (Dict.get char_ref model.characters),
+         (Struct.CharacterTurn.try_getting_navigator model.char_turn)
+      )
+   of
+      ((Just char), (Just nav)) ->
          [
             (Html.text
                (
                   "Controlling "
                   ++ char.name
                   ++ ": "
-                  ++ (toString
---                        (Struct.Battlemap.get_navigator_remaining_points
---                           model.battlemap
---                        )
-                        0
-                     )
+                  ++ (toString (Struct.Navigator.get_remaining_points nav))
                   ++ "/"
                   ++ (toString (Struct.Character.get_movement_points char))
                   ++ " movement points remaining."
@@ -46,7 +47,7 @@ get_curr_char_info_htmls model char_ref =
             )
          ]
 
-      Nothing ->
+      (_, _) ->
          [(Html.text "Error: Unknown character selected.")]
 
 --------------------------------------------------------------------------------
