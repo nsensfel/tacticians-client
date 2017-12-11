@@ -5,6 +5,7 @@ import Dict
 
 import Html
 import Html.Attributes
+import Html.Events
 
 -- Struct.Battlemap -------------------------------------------------------------------
 import Struct.Battlemap
@@ -20,6 +21,13 @@ import Util.Html
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+end_turn_button : (Html.Html Struct.Event.Type)
+end_turn_button =
+   (Html.button
+      [ (Html.Events.onClick Struct.Event.TurnEnded) ]
+      [ (Html.text "End Turn") ]
+   )
+
 get_curr_char_info_htmls : (
       Struct.Model.Type ->
       Struct.Character.Ref ->
@@ -44,7 +52,8 @@ get_curr_char_info_htmls model char_ref =
                   ++ (toString (Struct.Character.get_movement_points char))
                   ++ " movement points remaining."
                )
-            )
+            ),
+            (end_turn_button)
          ]
 
       (_, _) ->

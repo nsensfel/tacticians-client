@@ -27,13 +27,6 @@ direction_button dir label =
       [ (Html.text label) ]
    )
 
-end_turn_button : (Html.Html Struct.Event.Type)
-end_turn_button =
-   (Html.button
-      [ (Html.Events.onClick Struct.Event.TurnEnded) ]
-      [ (Html.text "End Turn") ]
-   )
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -47,7 +40,6 @@ get_html =
          (direction_button Struct.Direction.Left "Left"),
          (direction_button Struct.Direction.Down "Down"),
          (direction_button Struct.Direction.Up "Up"),
-         (direction_button Struct.Direction.Right "Right"),
-         (end_turn_button)
+         (direction_button Struct.Direction.Right "Right")
       ]
    )

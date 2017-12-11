@@ -12,6 +12,7 @@ import Struct.CharacterTurn
 import Struct.Error
 import Struct.Event
 import Struct.Model
+import Struct.Navigator
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
