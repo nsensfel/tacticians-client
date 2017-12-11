@@ -33,6 +33,7 @@ type alias Type =
       movement_dist: Int,
       attack_dist: Int,
       path: Struct.Path.Type,
+      locked_path: Bool,
       range_indicators:
          (Dict.Dict
             Struct.Location.Ref
@@ -68,6 +69,7 @@ new start_loc mov_dist atk_dist cost_fun =
       movement_dist = mov_dist,
       attack_dist = atk_dist,
       path = (Struct.Path.new start_loc mov_dist),
+      locked_path = False,
       range_indicators =
          (Struct.RangeIndicator.generate
             start_loc
@@ -123,13 +125,17 @@ get_summary navigator =
 
 clear_path : Type -> Type
 clear_path navigator =
-   {navigator |
-      path =
-         (Struct.Path.new
-            navigator.starting_location
-            navigator.movement_dist
-         )
-   }
+   if (navigator.locked_path)
+   then
+      navigator
+   else
+      {navigator |
+         path =
+            (Struct.Path.new
+               navigator.starting_location
+               navigator.movement_dist
+            )
+      }
 
 lock_path : Type -> Type
 lock_path navigator =
@@ -140,7 +146,8 @@ lock_path navigator =
             0
             navigator.attack_dist
             (navigator.cost_fun)
-         )
+         ),
+      locked_path = True
    }
 
 try_adding_step : (
@@ -149,15 +156,19 @@ try_adding_step : (
       (Maybe Type)
    )
 try_adding_step navigator dir =
-   case
-      (Struct.Path.try_following_direction
-         (navigator.cost_fun)
-         (Just navigator.path)
-         dir
-      )
-   of
-      (Just path) -> (Just {navigator | path = path})
-      Nothing -> Nothing
+   if (navigator.locked_path)
+   then
+      Nothing
+   else
+      case
+         (Struct.Path.try_following_direction
+            (navigator.cost_fun)
+            (Just navigator.path)
+            dir
+         )
+      of
+         (Just path) -> (Just {navigator | path = path})
+         Nothing -> Nothing
 
 try_getting_path_to : (
       Type ->
