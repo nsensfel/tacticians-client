@@ -16,64 +16,72 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-make_it_so : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
-make_it_so model =
-   case -- (Struct.Battlemap.try_getting_navigator_location model.battlemap) of
-      (Just {x = 0, y = 0})
-   of
-      (Just location) ->
-         case (Send.CharacterTurn.try model) of
-            (Just cmd) ->
-               (
-                  (Struct.Model.reset
-                     model
-                     (Dict.update
-                        "0" --char_ref
-                        (\maybe_char ->
-                           case maybe_char of
-                              (Just char) ->
-                                 (Just
-                                    (Struct.Character.set_enabled
-                                       (Struct.Character.set_location
-                                          location
-                                          char
-                                       )
-                                       False
-                                    )
-                                 )
-                              Nothing -> Nothing
-                        )
-                        model.characters
-                     )
-                  ),
-                  cmd
-               )
-
-            Nothing ->
-               (model, Cmd.none)
-
-      Nothing ->
+make_it_so : (
+      Struct.Model.Type ->
+      Struct.Character.Ref ->
+      Struct.Navigator.Type ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
+make_it_so model char_id nav =
+   case (Send.CharacterTurn.try model) of
+      (Just cmd) ->
          (
-            (Struct.Model.invalidate
+            (Struct.Model.reset
                model
-               (Struct.Error.new
-                  Struct.Error.Programming
-                  "EndTurn: model moving char, no navigator location."
+               (Dict.update
+                  char_id
+                  (\maybe_char ->
+                     case maybe_char of
+                        (Just char) ->
+                           (Just
+                              (Struct.Character.set_enabled
+                                 (Struct.Character.set_location
+                                    (Struct.Navigator.get_current_location nav)
+                                    char
+                                 )
+                                 False
+                              )
+                           )
+                        Nothing -> Nothing
+                  )
+                  model.characters
                )
             ),
-            Cmd.none
+            cmd
          )
+
+      Nothing ->
+         (model, Cmd.none)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 apply_to model =
-   case (Struct.CharacterTurn.get_state model.char_turn) of
-      Struct.CharacterTurn.MovedCharacter -> (make_it_so model)
-      Struct.CharacterTurn.ChoseTarget -> (make_it_so model)
+   case
+      (
+         (Struct.CharacterTurn.get_state model.char_turn),
+         (Struct.CharacterTurn.try_getting_controlled_character
+            model.char_turn
+         ),
+         (Struct.CharacterTurn.try_getting_navigator model.char_turn)
+      )
+   of
+      (
+         Struct.CharacterTurn.MovedCharacter,
+         (Just char_id),
+         (Just nav)
+      ) ->
+         (make_it_so model char_id nav)
 
-      _ ->
+      (
+         Struct.CharacterTurn.ChoseTarget,
+         (Just char_id),
+         (Just nav)
+      ) ->
+         (make_it_so model char_id nav)
+
+      (_, _, _) ->
          (
             (Struct.Model.invalidate
                model
