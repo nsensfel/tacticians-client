@@ -13,10 +13,14 @@ import List
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Battlemap
+import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
+import Struct.Navigator
 import Struct.Tile
 import Struct.UI
+
+import Util.Html
 
 import View.Battlemap.Character
 import View.Battlemap.Navigator
@@ -123,5 +127,14 @@ get_html model =
             (View.Battlemap.Character.get_html)
             (Dict.values model.characters)
          )
+         ++
+         case (Struct.CharacterTurn.try_getting_navigator model.char_turn) of
+            (Just navigator) ->
+               (View.Battlemap.Navigator.get_html
+                  (Struct.Navigator.get_summary navigator)
+               )
+
+            Nothing ->
+               [(Util.Html.nothing)]
       )
    )

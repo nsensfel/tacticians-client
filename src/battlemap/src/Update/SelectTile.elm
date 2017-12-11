@@ -1,6 +1,6 @@
 module Update.SelectTile exposing (apply_to)
 
--- Elrm ------------------------------------------------------------------------
+-- Elm -------------------------------------------------------------------------
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Battlemap
@@ -85,7 +85,13 @@ go_to_tile model navigator loc_ref =
          )
       of
          (Just path) ->
-            case (List.foldr (try_autopiloting) (Just navigator) path) of
+            case
+               (List.foldr
+                  (try_autopiloting)
+                  (Just (Struct.Navigator.clear_path navigator))
+                  path
+               )
+            of
                (Just new_navigator) ->
                   (
                      {model |
