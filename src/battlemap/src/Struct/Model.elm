@@ -1,9 +1,7 @@
 module Struct.Model exposing
    (
       Type,
-      State(..),
       add_character,
-      get_state,
       invalidate,
       reset,
       clear_error
@@ -23,14 +21,8 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-type State =
-   Default
-   | InspectingTile Struct.Location.Ref
-   | InspectingCharacter Struct.Character.Ref
-
 type alias Type =
    {
-      state: State,
       battlemap: Struct.Battlemap.Type,
       characters: (Dict.Dict Struct.Character.Ref Struct.Character.Type),
       error: (Maybe Struct.Error.Type),
@@ -58,13 +50,9 @@ add_character model char =
          )
    }
 
-get_state : Type -> State
-get_state model = model.state
-
 reset : Type -> (Dict.Dict Struct.Character.Ref Struct.Character.Type) -> Type
 reset model characters =
    {model |
-      state = Default,
       characters = characters,
       error = Nothing,
       ui = (Struct.UI.set_previous_action model.ui Nothing),

@@ -19,7 +19,6 @@ import Struct.UI
 --generate : Struct.Model.Type
 generate =
    {
-      state = Struct.Model.Default,
       battlemap = (Struct.Battlemap.empty),
       characters = (Dict.empty),
       error = Nothing,

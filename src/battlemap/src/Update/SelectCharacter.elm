@@ -44,7 +44,6 @@ select_character model target_char_id target_char =
    if (Struct.Character.is_enabled target_char)
    then
       {model |
-         state = Struct.Model.Default,
          char_turn =
             (Struct.CharacterTurn.set_navigator
                (Struct.CharacterTurn.set_controlled_character

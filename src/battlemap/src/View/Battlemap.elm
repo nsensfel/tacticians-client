@@ -132,6 +132,7 @@ get_html model =
             (Just navigator) ->
                (View.Battlemap.Navigator.get_html
                   (Struct.Navigator.get_summary navigator)
+                  True
                )
 
             Nothing ->

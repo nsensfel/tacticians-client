@@ -20,10 +20,11 @@ import Struct.Navigator
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 marker_get_html : (
+      Bool ->
       (Struct.Location.Ref, Struct.Marker.Type) ->
       (Html.Html Struct.Event.Type)
    )
-marker_get_html (loc_ref, marker) =
+marker_get_html is_interactive (loc_ref, marker) =
    (Html.div
       [
          (Html.Attributes.class "battlemap-marker-icon"),
@@ -43,8 +44,14 @@ marker_get_html (loc_ref, marker) =
                "-marker"
             )
          ),
-         (Html.Events.onClick
-            (Struct.Event.TileSelected loc_ref)
+         (
+            if (is_interactive && (marker == Struct.Marker.CanGoTo))
+            then
+               (Html.Events.onClick
+                  (Struct.Event.TileSelected loc_ref)
+               )
+            else
+               (Html.Attributes.class "")
          ),
          (Html.Attributes.style
             (
@@ -178,21 +185,26 @@ mark_the_spot loc origin_dir =
 --------------------------------------------------------------------------------
 get_html : (
       Struct.Navigator.Summary ->
+      Bool ->
       (List (Html.Html Struct.Event.Type))
    )
-get_html nav_summary =
-   (
-      (List.map (marker_get_html) nav_summary.markers)
-      ++
+get_html nav_summary is_interactive =
+   if (is_interactive)
+   then
       (
-         let
-            (final_loc, final_dir, path_node_htmls) =
-               (List.foldr
-                  (path_node_get_html)
-                  (nav_summary.starting_location, Struct.Direction.None, [])
-                  nav_summary.path
-               )
-         in
-            ((mark_the_spot final_loc final_dir) :: path_node_htmls)
+         (List.map (marker_get_html True) nav_summary.markers)
+         ++
+         (
+            let
+               (final_loc, final_dir, path_node_htmls) =
+                  (List.foldr
+                     (path_node_get_html)
+                     (nav_summary.starting_location, Struct.Direction.None, [])
+                     nav_summary.path
+                  )
+            in
+               ((mark_the_spot final_loc final_dir) :: path_node_htmls)
+         )
       )
-   )
+   else
+      (List.map (marker_get_html False) nav_summary.markers)

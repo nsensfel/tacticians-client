@@ -137,4 +137,14 @@ apply_to model loc_ref =
       (Just navigator) ->
          (go_to_tile model navigator loc_ref)
 
-      _ -> ({model | state = (Struct.Model.InspectingTile loc_ref)}, Cmd.none)
+      _ ->
+         (
+            {model |
+               ui =
+                  (Struct.UI.set_previous_action
+                     model.ui
+                     (Just (Struct.UI.SelectedLocation loc_ref))
+                  )
+            },
+            Cmd.none
+         )

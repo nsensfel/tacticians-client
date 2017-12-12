@@ -48,32 +48,6 @@ get_char_info_html model char_ref =
             )
          )
 
-get_char_attack_info_html : (
-      Struct.Model.Type ->
-      Struct.Character.Ref ->
-      (Html.Html Struct.Event.Type)
-   )
-get_char_attack_info_html model char_ref =
-   case (Dict.get char_ref model.characters) of
-      Nothing -> (Html.text "Error: Unknown character selected.")
-      (Just char) ->
-         (Html.text
-            (
-               "Attacking "
-               ++ char.name
-               ++ " (Team "
-               ++ (toString (Struct.Character.get_team char))
-               ++ "): "
-               ++ (toString (Struct.Character.get_movement_points char))
-               ++ " movement points; "
-               ++ (toString (Struct.Character.get_attack_range char))
-               ++ " attack range. Health: "
-               ++ (toString (Struct.Character.get_current_health char))
-               ++ "/"
-               ++ (toString (Struct.Character.get_max_health char))
-            )
-         )
-
 get_error_html : Struct.Error.Type -> (Html.Html Struct.Event.Type)
 get_error_html err =
    (Html.div
@@ -149,28 +123,19 @@ get_html model =
          (Html.Attributes.class "battlemap-footer-tabmenu-content"),
          (Html.Attributes.class "battlemap-footer-tabmenu-content-status")
       ]
-      (case model.state of
-         (Struct.Model.InspectingTile tile_loc) ->
-            [(get_tile_info_html model (Struct.Location.from_ref tile_loc))]
-
-         (Struct.Model.InspectingCharacter char_ref) ->
-            [(get_char_info_html model char_ref)]
-
-         _ ->
-            [
-               (case (Struct.UI.get_previous_action model.ui) of
-                  (Just (Struct.UI.SelectedLocation loc)) ->
-                     (get_tile_info_html
-                        model
-                        (Struct.Location.from_ref loc)
-                     )
-
-                  (Just (Struct.UI.SelectedCharacter target_char)) ->
-                     (get_char_info_html model target_char)
-
-                  _ ->
-                     (Html.text "Double-click on a character to control it.")
+      [
+         (case (Struct.UI.get_previous_action model.ui) of
+            (Just (Struct.UI.SelectedLocation loc)) ->
+               (get_tile_info_html
+                  model
+                  (Struct.Location.from_ref loc)
                )
-            ]
-      )
+
+            (Just (Struct.UI.SelectedCharacter target_char)) ->
+               (get_char_info_html model target_char)
+
+            _ ->
+               (Html.text "Double-click on a character to control it.")
+         )
+      ]
    )
