@@ -28,6 +28,26 @@ end_turn_button =
       [ (Html.text "End Turn") ]
    )
 
+get_navigator_info : (
+      Struct.Model.Type ->
+      Struct.Character.Type->
+      String
+   )
+get_navigator_info model char =
+   case
+      (Struct.CharacterTurn.try_getting_navigator model.char_turn)
+   of
+      (Just nav) ->
+         (
+            (toString (Struct.Navigator.get_remaining_points nav))
+            ++ "/"
+            ++ (toString (Struct.Character.get_movement_points char))
+            ++ " movement points remaining"
+         )
+
+      _ ->
+         "[Error: Unknown character selected.]"
+
 get_curr_char_info_htmls : (
       Struct.Model.Type ->
       Struct.Character.Ref ->
@@ -36,21 +56,42 @@ get_curr_char_info_htmls : (
 get_curr_char_info_htmls model char_ref =
    case
       (
-         (Dict.get char_ref model.characters),
-         (Struct.CharacterTurn.try_getting_navigator model.char_turn)
+         (Struct.CharacterTurn.get_state model.char_turn),
+         (Dict.get char_ref model.characters)
       )
    of
-      ((Just char), (Just nav)) ->
+      (Struct.CharacterTurn.SelectedCharacter, (Just char)) ->
          [
             (Html.text
                (
                   "Controlling "
                   ++ char.name
-                  ++ ": "
-                  ++ (toString (Struct.Navigator.get_remaining_points nav))
-                  ++ "/"
-                  ++ (toString (Struct.Character.get_movement_points char))
-                  ++ " movement points remaining."
+                  ++ ". Moving ("
+                  ++ (get_navigator_info model char)
+                  ++ ")."
+               )
+            )
+         ]
+
+      (Struct.CharacterTurn.MovedCharacter, (Just char)) ->
+         [
+            (Html.text
+               (
+                  "Controlling "
+                  ++ char.name
+                  ++ ". Moved. Select targets or "
+               )
+            ),
+            (end_turn_button)
+         ]
+
+      (Struct.CharacterTurn.ChoseTarget, (Just char)) ->
+         [
+            (Html.text
+               (
+                  "Controlling "
+                  ++ char.name
+                  ++ ". Moved. Chose target(s). Select additional targets or "
                )
             ),
             (end_turn_button)
