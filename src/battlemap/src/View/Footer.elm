@@ -28,6 +28,13 @@ end_turn_button =
       [ (Html.text "End Turn") ]
    )
 
+inventory_button : (Html.Html Struct.Event.Type)
+inventory_button =
+   (Html.button
+      [ (Html.Events.onClick Struct.Event.InventoryRequested) ]
+      [ (Html.text "Switch Weapon") ]
+   )
+
 get_navigator_info : (
       Struct.Model.Type ->
       Struct.Character.Type->
@@ -66,11 +73,12 @@ get_curr_char_info_htmls model char_ref =
                (
                   "Controlling "
                   ++ char.name
-                  ++ ". Moving ("
+                  ++ ". Move ("
                   ++ (get_navigator_info model char)
-                  ++ ")."
+                  ++ ") or "
                )
-            )
+            ),
+            (inventory_button)
          ]
 
       (Struct.CharacterTurn.MovedCharacter, (Just char)) ->

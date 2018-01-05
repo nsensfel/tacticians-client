@@ -20,5 +20,6 @@ type Type =
    | ScaleChangeRequested Float
    | TabSelected Struct.UI.Tab
    | ServerReplied (Result Http.Error (List (List String)))
+   | InventoryRequested
    | DebugTeamSwitchRequest
    | DebugLoadBattlemapRequest
