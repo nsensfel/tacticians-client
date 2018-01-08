@@ -10,9 +10,10 @@ import Struct.CharacterTurn
 import Struct.Direction
 import Struct.Error
 import Struct.Event
-import Struct.UI
+import Struct.Location
 import Struct.Model
 import Struct.Navigator
+import Struct.UI
 
 import Update.RequestDirection
 
@@ -34,13 +35,13 @@ attack_character model main_char_id target_char_id target_char =
          (Struct.UI.set_previous_action model.ui Nothing)
    }
 
-select_character : (
+ctrl_or_focus_character : (
       Struct.Model.Type ->
       Struct.Character.Ref ->
       Struct.Character.Type ->
       Struct.Model.Type
    )
-select_character model target_char_id target_char =
+ctrl_or_focus_character model target_char_id target_char =
    if (Struct.Character.is_enabled target_char)
    then
       {model |
@@ -72,6 +73,93 @@ select_character model target_char_id target_char =
             )
       }
 
+can_target_character : (
+      Struct.Model.Type ->
+      Struct.Character.Type ->
+      Bool
+   )
+can_target_character model target =
+   (
+      (Struct.CharacterTurn.can_select_targets model.char_turn)
+      &&
+      (
+         case
+            (Struct.CharacterTurn.try_getting_navigator
+               model.char_turn
+            )
+         of
+            (Just nav) ->
+               case
+                  (Struct.Navigator.try_getting_path_to
+                     nav
+                     (Struct.Location.get_ref
+                        (Struct.Character.get_location target)
+                     )
+                  )
+               of
+                  (Just _) -> True
+                  _ -> False
+
+            _ ->
+               False
+      )
+   )
+
+double_clicked_character : (
+      Struct.Model.Type ->
+      Struct.Character.Ref ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
+double_clicked_character model target_char_id =
+   case (Dict.get target_char_id model.characters) of
+      (Just target_char) ->
+         case
+            (Struct.CharacterTurn.try_getting_controlled_character
+               model.char_turn
+            )
+         of
+            (Just main_char_id) ->
+               if (can_target_character model target_char)
+               then
+                  (
+                     (attack_character
+                        model
+                        main_char_id
+                        target_char_id
+                        target_char
+                     ),
+                     Cmd.none
+                  )
+               else
+                  (
+                     (Struct.Model.invalidate
+                        model
+                        (Struct.Error.new
+                           Struct.Error.IllegalAction
+                           "Has not yet moved or target is out of range."
+                        )
+                     ),
+                     Cmd.none
+                  )
+
+            _ ->
+               (
+                  (ctrl_or_focus_character model target_char_id target_char),
+                  Cmd.none
+               )
+
+      Nothing ->
+         (
+            (Struct.Model.invalidate
+               model
+               (Struct.Error.new
+                  Struct.Error.Programming
+                  "SelectCharacter: Unknown char selected."
+               )
+            ),
+            Cmd.none
+         )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -88,41 +176,7 @@ apply_to model target_char_id =
       (Just (Struct.UI.SelectedCharacter target_char_id))
    )
    then
-      case (Dict.get target_char_id model.characters) of
-         (Just target_char) ->
-            case
-               (Struct.CharacterTurn.try_getting_controlled_character
-                  model.char_turn
-               )
-            of
-               (Just main_char_id) ->
-                  (
-                     (attack_character
-                        model
-                        main_char_id
-                        target_char_id
-                        target_char
-                     ),
-                     Cmd.none
-                  )
-
-               _ ->
-                  (
-                     (select_character model target_char_id target_char),
-                     Cmd.none
-                  )
-
-         Nothing ->
-            (
-               (Struct.Model.invalidate
-                  model
-                  (Struct.Error.new
-                     Struct.Error.Programming
-                     "SelectCharacter: Unknown char selected."
-                  )
-               ),
-               Cmd.none
-            )
+      (double_clicked_character model target_char_id)
    else
       (
          {model |

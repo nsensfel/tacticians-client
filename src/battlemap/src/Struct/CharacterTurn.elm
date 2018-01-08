@@ -2,17 +2,18 @@ module Struct.CharacterTurn exposing
    (
       Type,
       State(..),
-      new,
-      try_getting_controlled_character,
-      set_controlled_character,
-      get_state,
-      get_path,
-      lock_path,
-      try_getting_navigator,
-      set_navigator,
       add_target,
+      can_select_targets,
+      get_path,
+      get_state,
+      get_targets,
+      lock_path,
+      new,
       remove_target,
-      get_targets
+      set_controlled_character,
+      set_navigator,
+      try_getting_controlled_character,
+      try_getting_navigator
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -63,6 +64,10 @@ new =
 try_getting_controlled_character : Type -> (Maybe Struct.Character.Ref)
 try_getting_controlled_character ct = ct.controlled_character
 
+
+can_select_targets : Type -> Bool
+can_select_targets ct =
+   ((ct.state == MovedCharacter) || ((ct.state == ChoseTarget)))
 
 set_controlled_character : (
       Type ->
