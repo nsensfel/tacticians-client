@@ -23,7 +23,10 @@ get_character_portrait_html char =
       [
          (Html.Attributes.class "battlemap-character-portrait"),
          (Html.Attributes.class
-            ("asset-char-portrait-" ++ (Struct.Character.get_portrait_id char))
+            (
+               "asset-character-portrait-"
+               ++ (Struct.Character.get_portrait_id char)
+            )
          )
       ]
       [
