@@ -23,7 +23,7 @@ SENSITIVITY_LIST = \
 	$(GENERATE_N_COLORS_SCRIPT) $(GENERATE_N_ENTITIES)
 
 ################################################################################
-build: $(TILE_STYLE_CSS) $(CHAR_STYLE_CSS)
+build: $(CSS_DIR) $(TILE_STYLE_CSS) $(CHAR_STYLE_CSS)
 
 clean:
 	rm -f $(CHAR_STYLE_CSS) $(TILE_STYLE_CSS)
@@ -42,3 +42,5 @@ $(CHAR_STYLE_CSS): $(SENSITIVITY_LIST) $(CHAR_STYLE_TEMPLATE)
 		$(GENERATE_N_ENTITIES) $(NUMBER_OF_CHAR_TYPES) $(CHAR_STYLE_TEMPLATE) > \
 		$(CHAR_STYLE_CSS)
 
+$(CSS_DIR):
+	mkdir -p $@
