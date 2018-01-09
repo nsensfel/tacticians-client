@@ -1,3 +1,6 @@
+/******************************************************************************/
+/** LAYOUT ********************************************************************/
+/******************************************************************************/
 .battlemap-left-panel
 {
    flex-grow: 1;
@@ -14,6 +17,7 @@
    display: flex;
 }
 
+/** Left Panel ****************************************************************/
 .battlemap-container
 {
    flex-grow: 1;
@@ -21,17 +25,6 @@
 
    overflow: auto;
    width: inherit;
-}
-
-.battlemap-side-bar
-{
-   flex-grow: 1;
-   overflow-y: auto;
-   width: inherit;
-   height: inherit;
-   word-wrap: break-word;
-   display: flex;
-   flex-direction: column;
 }
 
 .battlemap-footer
@@ -44,13 +37,99 @@
    padding-bottom: 1em;
 }
 
+/*** Main View ****************************************************************/
 .battlemap-actual
 {
    display: inline-block;
    transform-origin: top left;
 }
 
-/** Inside the container ******************************************************/
+/******************************************************************************/
+/** RIGHT PANEL ***************************************************************/
+/******************************************************************************/
+.battlemap-side-bar
+{
+   flex-grow: 1;
+   overflow-y: auto;
+   width: inherit;
+   height: inherit;
+   word-wrap: break-word;
+   display: flex;
+   flex-direction: column;
+}
+
+.battlemap-tabmenu
+{
+   flex-grow: 1;
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+   width: inherit;
+}
+
+/** Tab Menu Specifics ********************************************************/
+.battlemap-tabmenu-selector
+{
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   justify-content: space-between;
+}
+
+.battlemap-tabmenu-selector button
+{
+   flex: 1;
+}
+
+.battlemap-tabmenu-content
+{
+   flex: initial;
+}
+
+/** General *******************************************************************/
+.battlemap-side-bar-targets
+{
+   flex-grow: 1;
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+   width: inherit;
+}
+
+.battlemap-manual-controls
+{
+   max-height: 30%;
+   width: inherit;
+   flex: initial;
+
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+}
+
+/** Tabs **********************************************************************/
+
+/**** Characters Tab */
+.battlemap-tabmenu-characters-tab
+{
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+}
+
+.battlemap-character-portrait
+{
+   margin: 0.5em;
+   box-sizing: border-box;
+   border: 2px solid rgba(0,0,0,0.5);
+   border-radius: 25px 25px 0 25px;
+   width: 100px;
+   height: 100px;
+}
+
+/******************************************************************************/
+/** Main View Elements ********************************************************/
+/******************************************************************************/
 .battlemap-tiled
 {
    height: 32px;
@@ -148,70 +227,4 @@
 .battlemap-path-icon-markR:before
 {
    content: "x";
-}
-
-/** Footer ********************************************************************/
-.battlemap-tabmenu
-{
-   flex-grow: 1;
-   display: flex;
-   flex-direction: column;
-   flex-wrap: wrap;
-   width: inherit;
-}
-
-.battlemap-side-bar-targets
-{
-   flex-grow: 1;
-   display: flex;
-   flex-direction: column;
-   flex-wrap: wrap;
-   width: inherit;
-}
-
-.battlemap-manual-controls
-{
-   max-height: 30%;
-   width: inherit;
-   flex: initial;
-
-   display: flex;
-   flex-direction: row;
-   flex-wrap: wrap;
-}
-/**** Tabmenu *****************************************************************/
-.battlemap-tabmenu-selector
-{
-   display: flex;
-   flex-direction: row;
-   flex-wrap: wrap;
-   justify-content: space-between;
-}
-
-.battlemap-tabmenu-selector button
-{
-   flex: 1;
-}
-
-.battlemap-tabmenu-content
-{
-   flex: initial;
-}
-
-/******************************************************************************/
-.battlemap-character-portrait
-{
-   margin: 0.5em;
-   box-sizing: border-box;
-   border: 2px solid rgba(0,0,0,0.5);
-   border-radius: 25px 25px 0 25px;
-   width: 128px;
-   height: 128px;
-}
-
-.battlemap-tabmenu-characters-tab
-{
-   display: flex;
-   flex-direction: row;
-   flex-wrap: wrap;
 }
