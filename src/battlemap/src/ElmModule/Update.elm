@@ -11,7 +11,6 @@ import Struct.Model
 import Update.ChangeScale
 import Update.EndTurn
 import Update.HandleServerReply
-import Update.OpenInventory
 import Update.RequestDirection
 import Update.SelectCharacter
 import Update.SelectTab
@@ -57,6 +56,3 @@ update event model =
 
       (Struct.Event.ServerReplied result) ->
          (Update.HandleServerReply.apply_to model result)
-
-      Struct.Event.InventoryRequested ->
-         (Update.OpenInventory.apply_to model)

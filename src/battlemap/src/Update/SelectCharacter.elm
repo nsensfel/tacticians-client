@@ -182,7 +182,10 @@ apply_to model target_char_id =
          {model |
             ui =
                (Struct.UI.set_previous_action
-                  model.ui
+                  (Struct.UI.set_displayed_tab
+                     model.ui
+                     Struct.UI.StatusTab
+                  )
                   (Just (Struct.UI.SelectedCharacter target_char_id))
                )
          },

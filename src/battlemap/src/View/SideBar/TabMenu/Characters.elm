@@ -5,6 +5,7 @@ import Dict
 
 import Html
 import Html.Attributes
+import Html.Events
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Character
@@ -27,6 +28,10 @@ get_character_portrait_html char =
                "asset-character-portrait-"
                ++ (Struct.Character.get_portrait_id char)
             )
+         ),
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (Struct.Event.CharacterSelected (Struct.Character.get_ref char))
          )
       ]
       [

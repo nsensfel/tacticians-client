@@ -45,6 +45,7 @@ get_html char =
                   ++ (toString (Struct.Character.get_team char))
                )
             ),
+            (Html.Attributes.class "clickable"),
             (Html.Events.onClick
                (Struct.Event.CharacterSelected (Struct.Character.get_ref char))
             ),

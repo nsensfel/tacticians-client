@@ -34,6 +34,7 @@ get_html tile =
             (Html.Attributes.class
                ("asset-tile-" ++ (Struct.Tile.get_icon_id tile))
             ),
+            (Html.Attributes.class "clickable"),
             (Html.Events.onClick
                (Struct.Event.TileSelected (Struct.Location.get_ref tile_loc))
             )

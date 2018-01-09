@@ -26,51 +26,57 @@ marker_get_html : (
    )
 marker_get_html is_interactive (loc_ref, marker) =
    (Html.div
-      [
-         (Html.Attributes.class "battlemap-marker-icon"),
-         (Html.Attributes.class "battlemap-tiled"),
-         (Html.Attributes.class
-            (
-               "battlemap-"
-               ++
+      (
+         [
+            (Html.Attributes.class "battlemap-marker-icon"),
+            (Html.Attributes.class "battlemap-tiled"),
+            (Html.Attributes.class
                (
-                  if (marker == Struct.Marker.CanGoTo)
-                  then
-                     "can-go-to"
-                  else
-                     "can-attack"
+                  "battlemap-"
+                  ++
+                  (
+                     if (marker == Struct.Marker.CanGoTo)
+                     then
+                        "can-go-to"
+                     else
+                        "can-attack"
+                  )
+                  ++
+                  "-marker"
                )
-               ++
-               "-marker"
+            ),
+            (Html.Attributes.style
+               (
+                  let
+                     loc = (Struct.Location.from_ref loc_ref)
+                  in
+                     [
+                        (
+                           "top",
+                           ((toString (loc.y * Constants.UI.tile_size)) ++ "px")
+                        ),
+                        (
+                           "left",
+                           ((toString (loc.x * Constants.UI.tile_size)) ++ "px")
+                        )
+                     ]
+               )
             )
-         ),
+         ]
+         ++
          (
             if (is_interactive && (marker == Struct.Marker.CanGoTo))
             then
-               (Html.Events.onClick
-                  (Struct.Event.TileSelected loc_ref)
-               )
+               [
+                  (Html.Attributes.class "clickable"),
+                  (Html.Events.onClick
+                     (Struct.Event.TileSelected loc_ref)
+                  )
+               ]
             else
-               (Html.Attributes.class "")
-         ),
-         (Html.Attributes.style
-            (
-               let
-                  loc = (Struct.Location.from_ref loc_ref)
-               in
-                  [
-                     (
-                        "top",
-                        ((toString (loc.y * Constants.UI.tile_size)) ++ "px")
-                     ),
-                     (
-                        "left",
-                        ((toString (loc.x * Constants.UI.tile_size)) ++ "px")
-                     )
-                  ]
-            )
+               []
          )
-      ]
+      )
       [
       ]
    )
