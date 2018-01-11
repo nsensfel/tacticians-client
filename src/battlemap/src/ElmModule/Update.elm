@@ -9,6 +9,7 @@ import Struct.UI
 import Struct.Model
 
 import Update.ChangeScale
+import Update.DisplayCharacterInfo
 import Update.EndTurn
 import Update.HandleServerReply
 import Update.RequestDirection
@@ -38,6 +39,9 @@ update event model =
 
       (Struct.Event.CharacterSelected char_id) ->
          (Update.SelectCharacter.apply_to new_model char_id)
+
+      (Struct.Event.CharacterInfoRequested char_id) ->
+         (Update.DisplayCharacterInfo.apply_to new_model char_id)
 
       Struct.Event.TurnEnded ->
          (Update.EndTurn.apply_to new_model)

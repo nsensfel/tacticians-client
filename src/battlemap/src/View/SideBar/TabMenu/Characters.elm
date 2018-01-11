@@ -31,7 +31,9 @@ get_character_portrait_html char =
          ),
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
-            (Struct.Event.CharacterSelected (Struct.Character.get_ref char))
+            (Struct.Event.CharacterInfoRequested
+               (Struct.Character.get_ref char)
+            )
          )
       ]
       [

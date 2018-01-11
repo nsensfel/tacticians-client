@@ -16,6 +16,7 @@ type Type =
    DirectionRequested Struct.Direction.Type
    | TileSelected Struct.Location.Ref
    | CharacterSelected Struct.Character.Ref
+   | CharacterInfoRequested Struct.Character.Ref
    | TurnEnded
    | ScaleChangeRequested Float
    | TabSelected Struct.UI.Tab
