@@ -18,10 +18,10 @@ import Struct.UI
 
 import Util.Html
 
+import View.SideBar.TabMenu.Status.CharacterInfo
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
 get_char_info_html : (
       Struct.Model.Type ->
       Struct.Character.Ref ->
@@ -132,7 +132,14 @@ get_html model =
                )
 
             (Just (Struct.UI.SelectedCharacter target_char)) ->
-               (get_char_info_html model target_char)
+               case (Dict.get target_char model.characters) of
+                  (Just char) ->
+                     (View.SideBar.TabMenu.Status.CharacterInfo.get_html
+                        model
+                        char
+                     )
+
+                  _ -> (Html.text "Error: Unknown character selected.")
 
             _ ->
                (Html.text "Double-click on a character to control it.")
