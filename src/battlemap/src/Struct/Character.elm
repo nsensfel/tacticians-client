@@ -18,6 +18,7 @@ module Struct.Character exposing
    )
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Attributes
 import Struct.Location
 
 --------------------------------------------------------------------------------
@@ -31,11 +32,10 @@ type alias Type =
       portrait : String,
       location : Struct.Location.Type,
       health : Int,
-      max_health : Int,
       team : Int,
-      movement_points : Int,
-      atk_dist : Int,
-      enabled : Bool
+      enabled : Bool,
+      attributes : Struct.Attributes.Type,
+      statistics : Struct.Statistics.Type
    }
 
 type alias Ref = String
