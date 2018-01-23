@@ -20,6 +20,7 @@ module Struct.Character exposing
 -- Battlemap -------------------------------------------------------------------
 import Struct.Attributes
 import Struct.Location
+import Struct.Statistics
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------

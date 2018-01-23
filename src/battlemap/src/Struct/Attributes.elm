@@ -40,13 +40,13 @@ get_intelligence : Type -> Int
 get_intelligence t = t.intelligence
 
 get_mind : Type -> Int
-get_mind = t.mind
+get_mind t = t.mind
 
 get_speed : Type -> Int
-get_speed = t.speed
+get_speed t = t.speed
 
 get_strength : Type -> Int
-get_strength = t.strength
+get_strength t = t.strength
 
 new : (
       Int -> -- constitution
