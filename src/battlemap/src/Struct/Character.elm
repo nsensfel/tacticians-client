@@ -8,11 +8,10 @@ module Struct.Character exposing
       get_icon_id,
       get_portrait_id,
       get_current_health,
-      get_max_health,
       get_location,
       set_location,
-      get_movement_points,
-      get_attack_range,
+      get_attributes,
+      get_statistics,
       is_enabled,
       set_enabled
    )
@@ -21,6 +20,7 @@ module Struct.Character exposing
 import Struct.Attributes
 import Struct.Location
 import Struct.Statistics
+import Struct.Weapon
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -53,32 +53,28 @@ new : (
       String -> -- name
       String -> -- icon
       String -> -- portrait
-      Int -> -- health
-      Int -> -- max_health
       Struct.Location.Type -> -- location
+      Int -> -- health
+      Struct.Attributes.Type ->
       Int -> -- team
-      Int -> -- movement_points
-      Int -> -- atk_dist
       Bool -> -- enabled
       Type
    )
 new
    id name icon portrait
-   health max_health
-   location
-   team movement_points atk_dist
-   enabled =
+   location health
+   attributes
+   team enabled =
    {
       id = id,
       name = name,
       icon = icon,
       portrait = portrait,
-      health = health,
-      max_health = max_health,
       location = location,
+      health = health,
+      attributes = attributes,
+      statistics = (Struct.Statistics.new attributes (Struct.Weapon.none)),
       team = team,
-      movement_points = movement_points,
-      atk_dist = atk_dist,
       enabled = enabled
    }
 
@@ -97,20 +93,17 @@ get_portrait_id c = c.portrait
 get_current_health : Type -> Int
 get_current_health c = c.health
 
-get_max_health : Type -> Int
-get_max_health c = c.max_health
-
 get_location : Type -> Struct.Location.Type
 get_location t = t.location
 
 set_location : Struct.Location.Type -> Type -> Type
 set_location location char = {char | location = location}
 
-get_movement_points : Type -> Int
-get_movement_points char = char.movement_points
+get_attributes : Type -> Struct.Attributes.Type
+get_attributes char = char.attributes
 
-get_attack_range : Type -> Int
-get_attack_range char = char.atk_dist
+get_statistics : Type -> Struct.Statistics.Type
+get_statistics char = char.statistics
 
 is_enabled : Type -> Bool
 is_enabled char = char.enabled

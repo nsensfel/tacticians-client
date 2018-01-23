@@ -14,6 +14,7 @@ import Struct.Error
 import Struct.Event
 import Struct.Location
 import Struct.Model
+import Struct.Statistics
 import Struct.Tile
 import Struct.UI
 
@@ -39,13 +40,23 @@ get_target_info_html model char_ref =
                ++ " (Team "
                ++ (toString (Struct.Character.get_team char))
                ++ "): "
-               ++ (toString (Struct.Character.get_movement_points char))
+               ++
+               (toString
+                  (Struct.Statistics.get_movement_points
+                     (Struct.Character.get_statistics char)
+                  )
+               )
                ++ " movement points; "
-               ++ (toString (Struct.Character.get_attack_range char))
+               ++ "???"
                ++ " attack range. Health: "
                ++ (toString (Struct.Character.get_current_health char))
                ++ "/"
-               ++ (toString (Struct.Character.get_max_health char))
+               ++
+               (toString
+                  (Struct.Statistics.get_max_health
+                     (Struct.Character.get_statistics char)
+                  )
+               )
             )
          )
 

@@ -8,12 +8,14 @@ import Html.Attributes
 import Html.Events
 
 -- Struct.Battlemap -------------------------------------------------------------------
+import Struct.Attributes
 import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.Navigator
+import Struct.Statistics
 import Struct.UI
 
 import Util.Html
@@ -48,7 +50,12 @@ get_navigator_info model char =
          (
             (toString (Struct.Navigator.get_remaining_points nav))
             ++ "/"
-            ++ (toString (Struct.Character.get_movement_points char))
+            ++
+            (toString
+               (Struct.Statistics.get_movement_points
+                  (Struct.Character.get_statistics char)
+               )
+            )
             ++ " movement points remaining"
          )
 
