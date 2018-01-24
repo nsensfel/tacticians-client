@@ -5,6 +5,7 @@ import Json.Decode
 import Json.Decode.Pipeline
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Attributes
 import Struct.Character
 import Struct.Error
 import Struct.Model
@@ -12,25 +13,45 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+type alias CharAtt =
+   {
+      con : Int,
+      dex : Int,
+      int : Int,
+      min : Int,
+      spe : Int,
+      str : Int
+   }
+
 type alias CharData =
    {
       id : String,
       name : String,
       icon : String,
       portrait : String,
-      health : Int,
-      max_health : Int,
       loc_x : Int,
       loc_y : Int,
+      health : Int,
       team : Int,
-      mov_pts : Int,
-      atk_rg : Int,
-      enabled : Bool
+      enabled : Bool,
+      att : CharAtt
    }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+attributes_decoder : (Json.Decode.Decoder CharAtt)
+attributes_decoder =
+   (Json.Decode.Pipeline.decode
+      CharAtt
+      |> (Json.Decode.Pipeline.required "con" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "dex" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "int" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "min" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "spe" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "str" Json.Decode.int)
+   )
+
 char_decoder : (Json.Decode.Decoder CharData)
 char_decoder =
    (Json.Decode.Pipeline.decode
@@ -39,14 +60,12 @@ char_decoder =
       |> (Json.Decode.Pipeline.required "name" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "icon" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "portrait" Json.Decode.string)
-      |> (Json.Decode.Pipeline.required "health" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "max_health" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "loc_x" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "loc_y" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "health" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "team" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "mov_pts" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "atk_rg" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "enabled" Json.Decode.bool)
+      |> (Json.Decode.Pipeline.required "att" attributes_decoder)
    )
 
 --------------------------------------------------------------------------------
@@ -68,13 +87,18 @@ apply_to model serialized_char =
                char_data.name
                char_data.icon
                char_data.portrait
-               char_data.health
-               char_data.max_health
                {x = char_data.loc_x, y = char_data.loc_y}
+               char_data.health
                char_data.team
-               char_data.mov_pts
-               char_data.atk_rg
                char_data.enabled
+               (Struct.Attributes.new
+                  char_data.att.con
+                  char_data.att.dex
+                  char_data.att.int
+                  char_data.att.min
+                  char_data.att.spe
+                  char_data.att.str
+               )
             )
          )
 

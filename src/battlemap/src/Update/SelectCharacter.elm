@@ -13,6 +13,7 @@ import Struct.Event
 import Struct.Location
 import Struct.Model
 import Struct.Navigator
+import Struct.Statistics
 import Struct.UI
 
 import Update.RequestDirection
@@ -53,8 +54,10 @@ ctrl_or_focus_character model target_char_id target_char =
                )
                (Struct.Navigator.new
                   (Struct.Character.get_location target_char)
-                  (Struct.Character.get_movement_points target_char)
-                  (Struct.Character.get_attack_range target_char)
+                  (Struct.Statistics.get_movement_points
+                     (Struct.Character.get_statistics target_char)
+                  )
+                  1 -- Attack Range
                   (Struct.Battlemap.get_movement_cost_function
                      model.battlemap
                      (Struct.Character.get_location target_char)

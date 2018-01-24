@@ -55,16 +55,16 @@ new : (
       String -> -- portrait
       Struct.Location.Type -> -- location
       Int -> -- health
-      Struct.Attributes.Type ->
       Int -> -- team
       Bool -> -- enabled
+      Struct.Attributes.Type ->
       Type
    )
 new
    id name icon portrait
    location health
-   attributes
-   team enabled =
+   team enabled
+   attributes =
    {
       id = id,
       name = name,
