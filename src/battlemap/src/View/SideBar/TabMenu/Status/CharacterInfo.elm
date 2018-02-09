@@ -52,17 +52,6 @@ get_attributes_html att =
             [
                (Html.text
                   (
-                     "Dexterity: "
-                     ++ (toString (Struct.Attributes.get_dexterity att))
-                  )
-               )
-            ]
-         ),
-         (Html.li
-            []
-            [
-               (Html.text
-                  (
                      "Intelligence: "
                      ++ (toString (Struct.Attributes.get_intelligence att))
                   )
