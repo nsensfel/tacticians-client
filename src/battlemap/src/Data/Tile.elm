@@ -10,6 +10,6 @@ get_cost : Int -> Int
 get_cost i =
    if (i <= 200)
    then
-      (i + 1)
+      (i + 8)
    else
       Constants.Movement.cost_when_out_of_bounds
