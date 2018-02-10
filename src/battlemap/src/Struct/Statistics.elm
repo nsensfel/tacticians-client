@@ -19,6 +19,7 @@ import List
 -- Battlemap -------------------------------------------------------------------
 import Struct.Attributes
 import Struct.Weapon
+import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -96,10 +97,10 @@ get_critical_hits t = t.critical_hits
 
 new : (
       Struct.Attributes.Type ->
-      Struct.Weapon.Type ->
+      Struct.WeaponSet.Type ->
       Type
    )
-new att wp =
+new att wp_set =
    {
       movement_points =
          (gentle_squared_growth (Struct.Attributes.get_speed att)),

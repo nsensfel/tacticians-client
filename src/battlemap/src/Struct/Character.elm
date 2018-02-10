@@ -20,7 +20,7 @@ module Struct.Character exposing
 import Struct.Attributes
 import Struct.Location
 import Struct.Statistics
-import Struct.Weapon
+import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -36,7 +36,8 @@ type alias Type =
       team : Int,
       enabled : Bool,
       attributes : Struct.Attributes.Type,
-      statistics : Struct.Statistics.Type
+      statistics : Struct.Statistics.Type,
+      weapons : Struct.WeaponSet.Type
    }
 
 type alias Ref = String
@@ -58,13 +59,14 @@ new : (
       Int -> -- team
       Bool -> -- enabled
       Struct.Attributes.Type ->
+      Struct.WeaponSet.Type ->
       Type
    )
 new
    id name icon portrait
    location health
    team enabled
-   attributes =
+   attributes weapons =
    {
       id = id,
       name = name,
@@ -73,9 +75,14 @@ new
       location = location,
       health = health,
       attributes = attributes,
-      statistics = (Struct.Statistics.new attributes (Struct.Weapon.none)),
+      statistics =
+         (Struct.Statistics.new
+            attributes
+            weapons
+         ),
       team = team,
-      enabled = enabled
+      enabled = enabled,
+      weapons = weapons
    }
 
 get_ref : Type -> Ref
