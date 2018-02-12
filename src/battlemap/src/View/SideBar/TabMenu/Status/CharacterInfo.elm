@@ -160,6 +160,7 @@ get_statistics_html stats =
                   (
                      "Chance to Double Hit: "
                      ++ (toString (Struct.Statistics.get_double_hits stats))
+                     ++ "%"
                   )
                )
             ]
@@ -171,6 +172,7 @@ get_statistics_html stats =
                   (
                      "Chance to Critical Hit: "
                      ++ (toString (Struct.Statistics.get_critical_hits stats))
+                     ++ "%"
                   )
                )
             ]
