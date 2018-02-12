@@ -1,6 +1,7 @@
 module Struct.Weapon exposing
    (
       Type,
+      WeaponType
       new,
       none
    )
@@ -15,6 +16,10 @@ type alias Type =
    {
       id : Int
    }
+
+type WeaponRangeType = Ranged | Melee
+type WeaponRangeModifier = Long | Sort
+type WeaponDamageType = Slash | Blunt | Pierce
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
