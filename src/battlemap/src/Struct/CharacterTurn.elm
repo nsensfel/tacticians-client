@@ -20,10 +20,8 @@ module Struct.CharacterTurn exposing
 import List
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Battlemap
 import Struct.Character
 import Struct.Direction
-import Struct.Error
 import Struct.Navigator
 
 --------------------------------------------------------------------------------

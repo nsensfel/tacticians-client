@@ -6,7 +6,6 @@ import Dict
 -- Struct.Battlemap -------------------------------------------------------------------
 import Struct.Battlemap
 import Struct.CharacterTurn
-import Struct.Model
 import Struct.UI
 
 --------------------------------------------------------------------------------

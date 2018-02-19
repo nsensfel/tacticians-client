@@ -17,8 +17,6 @@ import Struct.Statistics
 import Struct.Tile
 import Struct.UI
 
-import Util.Html
-
 import View.SideBar.TabMenu.Status.CharacterInfo
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------

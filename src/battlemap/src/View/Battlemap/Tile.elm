@@ -6,8 +6,6 @@ import Html.Attributes
 import Html.Events
 
 -- Battlemap -------------------------------------------------------------------
-import Constants.UI
-
 import Struct.Event
 import Struct.Location
 import Struct.Tile

@@ -4,8 +4,6 @@ module ElmModule.Update exposing (update)
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Event
-import Struct.Error
-import Struct.UI
 import Struct.Model
 
 import Update.ChangeScale
@@ -18,8 +16,6 @@ import Update.SelectTab
 import Update.SelectTile
 import Update.SendLoadBattlemapRequest
 import Update.SwitchTeam
-
-import Send.LoadBattlemap
 
 update : (
       Struct.Event.Type ->

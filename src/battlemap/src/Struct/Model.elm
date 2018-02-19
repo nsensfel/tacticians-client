@@ -15,7 +15,6 @@ import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error
-import Struct.Location
 import Struct.UI
 
 --------------------------------------------------------------------------------

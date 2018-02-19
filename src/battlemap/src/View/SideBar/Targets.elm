@@ -7,18 +7,11 @@ import Html
 import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
-import Struct.Error
 import Struct.Event
-import Struct.Location
 import Struct.Model
 import Struct.Statistics
-import Struct.Tile
-import Struct.UI
-
-import Util.Html
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------

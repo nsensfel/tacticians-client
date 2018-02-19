@@ -1,22 +1,17 @@
 module View.Footer exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
-
 import Html
 import Html.Attributes
 import Html.Events
 
 -- Struct.Battlemap -------------------------------------------------------------------
-import Struct.Attributes
-import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.Navigator
 import Struct.Statistics
-import Struct.UI
 
 import Util.Html
 

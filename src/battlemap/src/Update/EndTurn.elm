@@ -6,7 +6,6 @@ import Dict
 -- Struct.Battlemap -------------------------------------------------------------------
 import Send.CharacterTurn
 
-import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error

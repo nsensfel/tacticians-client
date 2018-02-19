@@ -6,7 +6,6 @@ import Send.LoadBattlemap
 
 import Struct.Event
 import Struct.Model
-import Struct.UI
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------

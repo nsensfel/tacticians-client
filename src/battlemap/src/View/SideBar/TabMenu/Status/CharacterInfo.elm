@@ -1,8 +1,6 @@
 module View.SideBar.TabMenu.Status.CharacterInfo exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
-
 import Html
 import Html.Attributes
 

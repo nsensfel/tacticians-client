@@ -8,13 +8,11 @@ import Constants.IO
 
 import Send.Send
 
-import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Direction
 import Struct.Event
 import Struct.Model
-import Struct.UI
 
 --------------------------------------------------------------------------------
 -- TYPES ------------------------------------------------------------------------

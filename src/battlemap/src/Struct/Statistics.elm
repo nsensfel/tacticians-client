@@ -18,7 +18,6 @@ import List
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Attributes
-import Struct.Weapon
 import Struct.WeaponSet
 
 --------------------------------------------------------------------------------

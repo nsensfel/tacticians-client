@@ -1,10 +1,8 @@
 module Update.RequestDirection exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Character
 import Struct.CharacterTurn
 import Struct.Direction
 import Struct.Error

@@ -15,9 +15,7 @@ import Array
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Character
-import Struct.Navigator
 import Struct.Tile
-import Struct.Direction
 import Struct.Location
 
 import Constants.Movement

@@ -3,8 +3,6 @@ module Update.SelectTile exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Battlemap
-import Struct.Character
 import Struct.CharacterTurn
 import Struct.Direction
 import Struct.Error
@@ -13,9 +11,6 @@ import Struct.Location
 import Struct.Model
 import Struct.Navigator
 import Struct.UI
-
-import Update.EndTurn
-import Update.RequestDirection
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
