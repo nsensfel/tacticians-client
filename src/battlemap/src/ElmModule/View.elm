@@ -1,13 +1,10 @@
 module ElmModule.View exposing (view)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
-
 import Html
 import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.UI
 import Struct.Event
 import Struct.Model
 

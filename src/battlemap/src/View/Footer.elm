@@ -34,11 +34,12 @@ inventory_button =
 
 get_navigator_info : (
       Struct.Model.Type ->
+      Struct.Character.Type ->
       String
    )
 get_navigator_info model char =
    case
-      (Struct.CharacterTurn.try_getting_active_character model.char_turn)
+      (Struct.CharacterTurn.try_getting_navigator model.char_turn)
    of
       (Just nav) ->
          (
@@ -106,9 +107,11 @@ get_curr_char_info_htmls model char =
       _ ->
          [
             (Html.text
-               "Error: CharacterTurn structure in an inconsistent state:"
-               ++ " Has an active character yet the 'state' is not any of those"
-               ++ " expected in such cases."
+               (
+                  "Error: CharacterTurn structure in an inconsistent state:"
+                  ++ " Has an active character yet the 'state' is not any of"
+                  ++ " those expected in such cases."
+               )
             )
          ]
 
