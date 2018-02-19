@@ -1,7 +1,6 @@
 module Struct.Weapon exposing
    (
       Type,
-      WeaponType
       new,
       none
    )
@@ -20,6 +19,14 @@ type alias Type =
 type WeaponRangeType = Ranged | Melee
 type WeaponRangeModifier = Long | Sort
 type WeaponDamageType = Slash | Blunt | Pierce
+
+type alias WeaponType =
+   {
+      range : WeaponRangeType,
+      range_mod : WeaponRangeModifier,
+      dmg_type : WeaponDamageType
+   }
+
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------

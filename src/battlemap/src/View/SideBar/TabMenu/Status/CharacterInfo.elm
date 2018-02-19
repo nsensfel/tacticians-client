@@ -12,6 +12,7 @@ import Struct.Character
 import Struct.Event
 import Struct.Model
 import Struct.Statistics
+import Struct.Weapon
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -180,11 +181,11 @@ get_statistics_html stats =
       ]
    )
 
-get_weapon_html: (
+get_weapon_html : (
       Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_statistics_html stats =
+get_weapon_html wp =
    (Html.ul
       [
       ]
