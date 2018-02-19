@@ -19,18 +19,18 @@ import Struct.Navigator
 --------------------------------------------------------------------------------
 make_it_so : (
       Struct.Model.Type ->
-      Struct.Character.Ref ->
+      Struct.Character.Type ->
       Struct.Navigator.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-make_it_so model char_id nav =
+make_it_so model char nav =
    case (Send.CharacterTurn.try model) of
       (Just cmd) ->
          (
             (Struct.Model.reset
                model
                (Dict.update
-                  char_id
+                  (Struct.Character.get_ref char)
                   (\maybe_char ->
                      case maybe_char of
                         (Just char) ->
@@ -62,7 +62,7 @@ apply_to model =
    case
       (
          (Struct.CharacterTurn.get_state model.char_turn),
-         (Struct.CharacterTurn.try_getting_controlled_character
+         (Struct.CharacterTurn.try_getting_active_character
             model.char_turn
          ),
          (Struct.CharacterTurn.try_getting_navigator model.char_turn)
@@ -70,17 +70,17 @@ apply_to model =
    of
       (
          Struct.CharacterTurn.MovedCharacter,
-         (Just char_id),
+         (Just char),
          (Just nav)
       ) ->
-         (make_it_so model char_id nav)
+         (make_it_so model char nav)
 
       (
          Struct.CharacterTurn.ChoseTarget,
-         (Just char_id),
+         (Just char),
          (Just nav)
       ) ->
-         (make_it_so model char_id nav)
+         (make_it_so model char nav)
 
       (_, _, _) ->
          (

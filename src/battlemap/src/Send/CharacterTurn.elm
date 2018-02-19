@@ -9,6 +9,7 @@ import Constants.IO
 import Send.Send
 
 import Struct.Battlemap
+import Struct.Character
 import Struct.CharacterTurn
 import Struct.Direction
 import Struct.Event
@@ -25,9 +26,9 @@ import Struct.UI
 try_encoding : Struct.Model.Type -> (Maybe Json.Encode.Value)
 try_encoding model =
    case
-      (Struct.CharacterTurn.try_getting_controlled_character model.char_turn)
+      (Struct.CharacterTurn.try_getting_active_character model.char_turn)
    of
-      (Just char_ref) ->
+      (Just char) ->
          (Just
             (Json.Encode.object
                [
@@ -35,7 +36,10 @@ try_encoding model =
                   ("player_id", (Json.Encode.string model.player_id)),
                   ("battlemap_id", (Json.Encode.string "0")),
                   ("instance_id", (Json.Encode.string "0")),
-                  ("char_id", (Json.Encode.string char_ref)),
+                  (
+                     "char_id",
+                     (Json.Encode.string (Struct.Character.get_ref char))
+                  ),
                   (
                      "path",
                      (Json.Encode.list

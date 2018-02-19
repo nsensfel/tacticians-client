@@ -10,9 +10,9 @@ module Struct.CharacterTurn exposing
       lock_path,
       new,
       remove_target,
-      set_controlled_character,
+      set_active_character,
       set_navigator,
-      try_getting_controlled_character,
+      try_getting_active_character,
       try_getting_navigator
    )
 
@@ -38,7 +38,7 @@ type State =
 type alias Type =
    {
       state : State,
-      controlled_character : (Maybe Struct.Character.Ref),
+      active_character : (Maybe Struct.Character.Type),
       path : (List Struct.Direction.Type),
       targets : (List Struct.Character.Ref),
       navigator : (Maybe Struct.Navigator.Type)
@@ -55,29 +55,29 @@ new : Type
 new =
    {
       state = Default,
-      controlled_character = Nothing,
+      active_character = Nothing,
       path = [],
       targets = [],
       navigator = Nothing
    }
 
-try_getting_controlled_character : Type -> (Maybe Struct.Character.Ref)
-try_getting_controlled_character ct = ct.controlled_character
+try_getting_active_character : Type -> (Maybe Struct.Character.Type)
+try_getting_active_character ct = ct.active_character
 
 
 can_select_targets : Type -> Bool
 can_select_targets ct =
    ((ct.state == MovedCharacter) || ((ct.state == ChoseTarget)))
 
-set_controlled_character : (
+set_active_character : (
       Type ->
       Struct.Character.Type ->
       Type
    )
-set_controlled_character ct char =
+set_active_character ct char =
    {ct |
       state = SelectedCharacter,
-      controlled_character = (Just (Struct.Character.get_ref char)),
+      active_character = (Just char),
       path = [],
       targets = [],
       navigator = Nothing

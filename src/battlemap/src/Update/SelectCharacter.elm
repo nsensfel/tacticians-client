@@ -7,7 +7,6 @@ import Dict
 import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
-import Struct.Direction
 import Struct.Error
 import Struct.Event
 import Struct.Location
@@ -16,19 +15,16 @@ import Struct.Navigator
 import Struct.Statistics
 import Struct.UI
 
-import Update.RequestDirection
-
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 attack_character : (
       Struct.Model.Type ->
       Struct.Character.Ref ->
-      Struct.Character.Ref ->
       Struct.Character.Type ->
       Struct.Model.Type
    )
-attack_character model main_char_id target_char_id target_char =
+attack_character model target_char_id target_char =
    {model |
       char_turn =
          (Struct.CharacterTurn.add_target model.char_turn target_char_id),
@@ -48,7 +44,7 @@ ctrl_or_focus_character model target_char_id target_char =
       {model |
          char_turn =
             (Struct.CharacterTurn.set_navigator
-               (Struct.CharacterTurn.set_controlled_character
+               (Struct.CharacterTurn.set_active_character
                   model.char_turn
                   target_char
                )
@@ -117,17 +113,16 @@ double_clicked_character model target_char_id =
    case (Dict.get target_char_id model.characters) of
       (Just target_char) ->
          case
-            (Struct.CharacterTurn.try_getting_controlled_character
+            (Struct.CharacterTurn.try_getting_active_character
                model.char_turn
             )
          of
-            (Just main_char_id) ->
+            (Just _) ->
                if (can_target_character model target_char)
                then
                   (
                      (attack_character
                         model
-                        main_char_id
                         target_char_id
                         target_char
                      ),

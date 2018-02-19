@@ -39,12 +39,11 @@ inventory_button =
 
 get_navigator_info : (
       Struct.Model.Type ->
-      Struct.Character.Type->
       String
    )
 get_navigator_info model char =
    case
-      (Struct.CharacterTurn.try_getting_navigator model.char_turn)
+      (Struct.CharacterTurn.try_getting_active_character model.char_turn)
    of
       (Just nav) ->
          (
@@ -60,21 +59,18 @@ get_navigator_info model char =
          )
 
       _ ->
-         "[Error: Unknown character selected.]"
+         "[Error: Character selected yet navigator undefined.]"
 
 get_curr_char_info_htmls : (
       Struct.Model.Type ->
-      Struct.Character.Ref ->
+      Struct.Character.Type ->
       (List (Html.Html Struct.Event.Type))
    )
-get_curr_char_info_htmls model char_ref =
+get_curr_char_info_htmls model char =
    case
-      (
-         (Struct.CharacterTurn.get_state model.char_turn),
-         (Dict.get char_ref model.characters)
-      )
+      (Struct.CharacterTurn.get_state model.char_turn)
    of
-      (Struct.CharacterTurn.SelectedCharacter, (Just char)) ->
+      Struct.CharacterTurn.SelectedCharacter ->
          [
             (Html.text
                (
@@ -88,7 +84,7 @@ get_curr_char_info_htmls model char_ref =
             (inventory_button)
          ]
 
-      (Struct.CharacterTurn.MovedCharacter, (Just char)) ->
+      Struct.CharacterTurn.MovedCharacter ->
          [
             (Html.text
                (
@@ -100,7 +96,7 @@ get_curr_char_info_htmls model char_ref =
             (end_turn_button)
          ]
 
-      (Struct.CharacterTurn.ChoseTarget, (Just char)) ->
+      Struct.CharacterTurn.ChoseTarget ->
          [
             (Html.text
                (
@@ -112,8 +108,14 @@ get_curr_char_info_htmls model char_ref =
             (end_turn_button)
          ]
 
-      (_, _) ->
-         [(Html.text "Error: Unknown character selected.")]
+      _ ->
+         [
+            (Html.text
+               "Error: CharacterTurn structure in an inconsistent state:"
+               ++ " Has an active character yet the 'state' is not any of those"
+               ++ " expected in such cases."
+            )
+         ]
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -121,12 +123,12 @@ get_curr_char_info_htmls model char_ref =
 get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    case
-      (Struct.CharacterTurn.try_getting_controlled_character model.char_turn)
+      (Struct.CharacterTurn.try_getting_active_character model.char_turn)
    of
-      (Just char_id) ->
+      (Just char) ->
          (Html.div
             [(Html.Attributes.class "battlemap-footer")]
-            (get_curr_char_info_htmls model char_id)
+            (get_curr_char_info_htmls model char)
          )
 
       Nothing -> (Util.Html.nothing)
