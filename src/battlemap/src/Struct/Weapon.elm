@@ -1,13 +1,18 @@
 module Struct.Weapon exposing
    (
       Type,
+      RangeType(..),
+      RangeModifier(..),
+      DamageType(..),
+      DamageModifier(..),
       new,
       get_max_range,
       get_min_range,
-      none
+      apply_to_attributes
    )
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Attributes
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -15,42 +20,81 @@ module Struct.Weapon exposing
 type alias Type =
    {
       id : Int,
+      name : String,
+      range_type : RangeType,
+      range_mod : RangeModifier,
+      dmg_type : DamageType,
+      dmg_mod : DamageModifier,
       range_min : Int,
-      range_max : Int
+      range_max : Int,
+      dmg_min : Int,
+      dmg_max : Int
    }
 
-type WeaponRangeType = Ranged | Melee
-type WeaponRangeModifier = Long | Sort
-type WeaponDamageType = Slash | Blunt | Pierce
+type RangeType = Ranged | Melee
+type RangeModifier = Long | Short
+-- Having multiple types at the same time, like Warframe does, would be nice.
+type DamageType = Slash | Blunt | Pierce
+type DamageModifier = Heavy | Light
 
 type alias WeaponType =
    {
-      range : WeaponRangeType,
-      range_mod : WeaponRangeModifier,
-      dmg_type : WeaponDamageType
+      range : RangeType,
+      range_mod : RangeModifier,
+      dmg_type : DamageType
    }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+get_ranges : RangeType -> RangeModifier -> (Int, Int)
+get_ranges rt rm =
+   case (rt, rm) of
+      (Ranged, Long) -> (2, 6)
+      (Ranged, Short) -> (2, 4)
+      (Melee, Long) -> (1, 2)
+      (Melee, Short) -> (1, 1)
+
+get_damages : RangeType -> DamageModifier -> (Int, Int)
+get_damages rt dm =
+   case (rt, dm) of
+      (Ranged, Heavy) -> (10, 25)
+      (Ranged, Light) -> (5, 20)
+      (Melee, Heavy) -> (20, 35)
+      (Melee, Light) -> (15, 30)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Int -> Type
-new id =
+new : (
+      Int ->
+      String ->
+      RangeType ->
+      RangeModifier ->
+      DamageType ->
+      DamageModifier ->
+      Type
+   )
+new
+   id name
+   range_type range_mod
+   dmg_type dmg_mod
+   =
+   let
+      (range_min, range_max) = (get_ranges range_type range_mod)
+      (dmg_min, dmg_max) = (get_damages range_type dmg_mod)
+   in
    {
       id = id,
-      range_min = 1,
-      range_max = 1
-   }
-
-none : Type
-none =
-   {
-      id = 0,
-      range_min = 0,
-      range_max = 0
+      name = name,
+      range_type = range_type,
+      range_mod = range_mod,
+      dmg_type = dmg_type,
+      dmg_mod = dmg_mod,
+      range_min = range_min,
+      range_max = range_max,
+      dmg_min = dmg_min,
+      dmg_max = dmg_max
    }
 
 get_max_range : Type -> Int
@@ -58,3 +102,18 @@ get_max_range wp = wp.range_max
 
 get_min_range : Type -> Int
 get_min_range wp = wp.range_min
+
+apply_to_attributes : Type -> Struct.Attributes.Type -> Struct.Attributes.Type
+apply_to_attributes wp atts =
+   case (wp.range_mod, wp.dmg_mod) of
+      (Long, Heavy) ->
+         (Struct.Attributes.mod_dexterity
+            -20
+            (Struct.Attributes.mod_speed -20 atts)
+         )
+
+      (Long, Light) ->  (Struct.Attributes.mod_dexterity -20 atts)
+
+      (Short, Heavy) -> (Struct.Attributes.mod_speed -20 atts)
+
+      (Short, Light) -> atts

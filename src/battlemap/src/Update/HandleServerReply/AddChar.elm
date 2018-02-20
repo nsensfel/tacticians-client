@@ -5,11 +5,12 @@ import Json.Decode
 import Json.Decode.Pipeline
 
 -- Battlemap -------------------------------------------------------------------
+import Data.Weapon
+
 import Struct.Attributes
 import Struct.Character
 import Struct.Error
 import Struct.Model
-import Struct.Weapon
 import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
@@ -109,8 +110,8 @@ apply_to model serialized_char =
                )
                (
                   let
-                     wp_0 = (Struct.Weapon.new char_data.wp_0)
-                     wp_1 = (Struct.Weapon.new char_data.wp_1)
+                     wp_0 = (Data.Weapon.shim_none)
+                     wp_1 = (Data.Weapon.shim_none)
                   in
                      case char_data.act_wp of
                         0 -> (Struct.WeaponSet.new wp_0 wp_1)
