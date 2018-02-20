@@ -27,7 +27,7 @@ attack_character : (
 attack_character model target_char_id target_char =
    {model |
       char_turn =
-         (Struct.CharacterTurn.add_target model.char_turn target_char_id),
+         (Struct.CharacterTurn.add_target target_char_id model.char_turn),
       ui =
          (Struct.UI.set_previous_action model.ui Nothing)
    }
@@ -44,10 +44,6 @@ ctrl_or_focus_character model target_char_id target_char =
       {model |
          char_turn =
             (Struct.CharacterTurn.set_navigator
-               (Struct.CharacterTurn.set_active_character
-                  model.char_turn
-                  target_char
-               )
                (Struct.Navigator.new
                   (Struct.Character.get_location target_char)
                   (Struct.Statistics.get_movement_points
@@ -59,6 +55,10 @@ ctrl_or_focus_character model target_char_id target_char =
                      (Struct.Character.get_location target_char)
                      (Dict.values model.characters)
                   )
+               )
+               (Struct.CharacterTurn.set_active_character
+                  target_char
+                  model.char_turn
                )
             ),
          ui = (Struct.UI.set_previous_action model.ui Nothing)

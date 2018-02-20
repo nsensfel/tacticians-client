@@ -62,17 +62,16 @@ new =
 try_getting_active_character : Type -> (Maybe Struct.Character.Type)
 try_getting_active_character ct = ct.active_character
 
-
 can_select_targets : Type -> Bool
 can_select_targets ct =
    ((ct.state == MovedCharacter) || ((ct.state == ChoseTarget)))
 
 set_active_character : (
-      Type ->
       Struct.Character.Type ->
+      Type ->
       Type
    )
-set_active_character ct char =
+set_active_character char ct =
    {ct |
       state = SelectedCharacter,
       active_character = (Just char),
@@ -104,8 +103,8 @@ lock_path ct =
 try_getting_navigator : Type -> (Maybe Struct.Navigator.Type)
 try_getting_navigator ct = ct.navigator
 
-set_navigator : Type -> Struct.Navigator.Type -> Type
-set_navigator ct navigator =
+set_navigator : Struct.Navigator.Type -> Type -> Type
+set_navigator navigator ct =
    {ct |
       state = SelectedCharacter,
       path = [],
@@ -113,15 +112,15 @@ set_navigator ct navigator =
       navigator = (Just navigator)
    }
 
-add_target : Type -> Struct.Character.Ref -> Type
-add_target ct target_ref =
+add_target : Struct.Character.Ref -> Type -> Type
+add_target target_ref ct =
    {ct |
       state = ChoseTarget,
       targets = (List.append ct.targets [target_ref])
    }
 
-remove_target : Type -> Int -> Type
-remove_target ct i =
+remove_target : Int -> Type -> Type
+remove_target i ct =
    let
       new_targets = (List.drop i ct.targets)
    in

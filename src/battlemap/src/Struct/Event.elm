@@ -23,3 +23,4 @@ type Type =
    | ServerReplied (Result Http.Error (List (List String)))
    | DebugTeamSwitchRequest
    | DebugLoadBattlemapRequest
+   | WeaponSwitchRequest

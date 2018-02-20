@@ -16,6 +16,7 @@ import Update.SelectTab
 import Update.SelectTile
 import Update.SendLoadBattlemapRequest
 import Update.SwitchTeam
+import Update.SwitchWeapon
 
 update : (
       Struct.Event.Type ->
@@ -56,3 +57,6 @@ update event model =
 
       (Struct.Event.ServerReplied result) ->
          (Update.HandleServerReply.apply_to model result)
+
+      Struct.Event.WeaponSwitchRequest ->
+         (Update.SwitchWeapon.apply_to new_model)

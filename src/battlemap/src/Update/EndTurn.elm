@@ -35,11 +35,11 @@ make_it_so model char nav =
                         (Just char) ->
                            (Just
                               (Struct.Character.set_enabled
+                                 False
                                  (Struct.Character.set_location
                                     (Struct.Navigator.get_current_location nav)
                                     char
                                  )
-                                 False
                               )
                            )
                         Nothing -> Nothing

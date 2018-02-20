@@ -13,7 +13,9 @@ module Struct.Character exposing
       get_attributes,
       get_statistics,
       is_enabled,
-      set_enabled
+      set_enabled,
+      get_weapons,
+      set_weapons
    )
 
 -- Battlemap -------------------------------------------------------------------
@@ -115,5 +117,19 @@ get_statistics char = char.statistics
 is_enabled : Type -> Bool
 is_enabled char = char.enabled
 
-set_enabled : Type -> Bool -> Type
-set_enabled char enabled = {char | enabled = enabled}
+set_enabled : Bool -> Type -> Type
+set_enabled enabled char = {char | enabled = enabled}
+
+get_weapons : Type -> Struct.WeaponSet.Type
+get_weapons char = char.weapons
+
+set_weapons : Struct.WeaponSet.Type -> Type -> Type
+set_weapons weapons char =
+   {char |
+      weapons = weapons,
+      statistics =
+         (Struct.Statistics.new
+            char.attributes
+            weapons
+         )
+   }

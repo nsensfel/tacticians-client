@@ -92,8 +92,8 @@ go_to_tile model navigator loc_ref =
                      {model |
                         char_turn =
                            (Struct.CharacterTurn.set_navigator
-                              model.char_turn
                               new_navigator
+                              model.char_turn
                            ),
                         ui =
                            (Struct.UI.set_previous_action

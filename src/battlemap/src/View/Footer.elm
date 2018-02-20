@@ -28,7 +28,7 @@ end_turn_button =
 inventory_button : (Html.Html Struct.Event.Type)
 inventory_button =
    (Html.button
-      [ ]
+      [ (Html.Events.onClick Struct.Event.WeaponSwitchRequest) ]
       [ (Html.text "Switch Weapon") ]
    )
 

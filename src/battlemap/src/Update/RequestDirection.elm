@@ -26,8 +26,8 @@ make_it_so model navigator dir =
          {model |
             char_turn =
                (Struct.CharacterTurn.set_navigator
-                  model.char_turn
                   new_navigator
+                  model.char_turn
                ),
             ui =
                (Struct.UI.set_previous_action
