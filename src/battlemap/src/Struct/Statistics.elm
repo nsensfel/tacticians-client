@@ -62,12 +62,11 @@ sudden_exp_growth_f f = (float_to_int (4.0^(f/25.0)))
 already_high_slow_growth : Int -> Int
 already_high_slow_growth v =
    (float_to_int
-      (30.0 * (logBase 10.0 (((toFloat v) + 5.0)/4.0)))
+      (30.0 * (logBase 2.718281828459 (((toFloat v) + 5.0)/4.0)))
    )
 
--- FIXME: Bad scaling.
 damage_base_mod : Float -> Float
-damage_base_mod str = ((str - 50.0)/75.0)
+damage_base_mod str = (((str^1.8)/2000.0) - 0.75)
 
 apply_damage_base_mod : Float -> Float -> Int
 apply_damage_base_mod bmod dmg =
@@ -158,13 +157,14 @@ new att wp_set =
                (toFloat (Struct.Weapon.get_max_damage active_weapon))
             ),
          accuracy =
-            (already_high_slow_growth (Struct.Attributes.get_dexterity att)),
+            (sudden_squared_growth (Struct.Attributes.get_dexterity att)),
          double_hits =
             (clamp
                0
                100
                (sudden_squared_growth (Struct.Attributes.get_speed att))
             ),
+         --- This should be weapon dependent
          critical_hits =
             (clamp
                0

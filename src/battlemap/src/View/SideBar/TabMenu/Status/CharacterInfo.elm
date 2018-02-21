@@ -108,7 +108,7 @@ get_statistics_html stats =
             [
                (Html.text
                   (
-                     "Chance to Dodge (Graze): "
+                     "Chance to Dodge (Base): "
                      ++ (toString (Struct.Statistics.get_dodges stats))
                      ++ "%"
                   )
@@ -146,9 +146,8 @@ get_statistics_html stats =
             [
                (Html.text
                   (
-                     "Chance to Hit: "
+                     "Accuracy: "
                      ++ (toString (Struct.Statistics.get_accuracy stats))
-                     ++ "%"
                   )
                )
             ]
