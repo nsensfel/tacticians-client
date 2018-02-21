@@ -18,6 +18,7 @@ import List
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Attributes
+import Struct.Weapon
 import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
@@ -64,6 +65,14 @@ already_high_slow_growth v =
       (30.0 * (logBase 10.0 (((toFloat v) + 5.0)/4.0)))
    )
 
+-- FIXME: Bad scaling.
+damage_base_mod : Float -> Float
+damage_base_mod str = ((str - 50.0)/75.0)
+
+apply_damage_base_mod : Float -> Float -> Int
+apply_damage_base_mod bmod dmg =
+   (max 0 (float_to_int (dmg + (bmod * dmg))))
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -100,53 +109,66 @@ new : (
       Type
    )
 new att wp_set =
-   {
-      movement_points =
-         (gentle_squared_growth (Struct.Attributes.get_speed att)),
-      max_health =
-         (gentle_squared_growth (Struct.Attributes.get_constitution att)),
-      dodges =
-         (clamp
-            5
-            75
-            (sudden_exp_growth_f
-               (average
-                  [
-                     (Struct.Attributes.get_dexterity att),
-                     (Struct.Attributes.get_mind att),
-                     (Struct.Attributes.get_speed att)
-                  ]
+   let
+      active_weapon = (Struct.WeaponSet.get_active_weapon wp_set)
+      dmg_bmod =
+         (damage_base_mod (toFloat (Struct.Attributes.get_strength att)))
+   in
+      {
+         movement_points =
+            (gentle_squared_growth (Struct.Attributes.get_speed att)),
+         max_health =
+            (gentle_squared_growth (Struct.Attributes.get_constitution att)),
+         dodges =
+            (clamp
+               5
+               75
+               (sudden_exp_growth_f
+                  (average
+                     [
+                        (Struct.Attributes.get_dexterity att),
+                        (Struct.Attributes.get_mind att),
+                        (Struct.Attributes.get_speed att)
+                     ]
+                  )
                )
-            )
-         ),
-      parries =
-         (clamp
-            0
-            75
-            (sudden_exp_growth_f
-               (average
-                  [
-                     (Struct.Attributes.get_dexterity att),
-                     (Struct.Attributes.get_speed att),
-                     (Struct.Attributes.get_strength att)
-                  ]
+            ),
+         parries =
+            (clamp
+               0
+               75
+               (sudden_exp_growth_f
+                  (average
+                     [
+                        (Struct.Attributes.get_dexterity att),
+                        (Struct.Attributes.get_speed att),
+                        (Struct.Attributes.get_strength att)
+                     ]
+                  )
                )
+            ),
+         damage_min =
+            (apply_damage_base_mod
+               dmg_bmod
+               (toFloat (Struct.Weapon.get_min_damage active_weapon))
+            ),
+         damage_max =
+            (apply_damage_base_mod
+               dmg_bmod
+               (toFloat (Struct.Weapon.get_max_damage active_weapon))
+            ),
+         accuracy =
+            (already_high_slow_growth (Struct.Attributes.get_dexterity att)),
+         double_hits =
+            (clamp
+               0
+               100
+               (sudden_squared_growth (Struct.Attributes.get_speed att))
+            ),
+         critical_hits =
+            (clamp
+               0
+               100
+               (sudden_squared_growth (Struct.Attributes.get_intelligence att))
             )
-         ),
-      damage_min = 0,
-      damage_max = 100,
-      accuracy =
-         (already_high_slow_growth (Struct.Attributes.get_dexterity att)),
-      double_hits =
-         (clamp
-            0
-            100
-            (sudden_squared_growth (Struct.Attributes.get_speed att))
-         ),
-      critical_hits =
-         (clamp
-            0
-            100
-            (sudden_squared_growth (Struct.Attributes.get_intelligence att))
-         )
    }

@@ -11,6 +11,7 @@ import Struct.Event
 import Struct.Model
 import Struct.Statistics
 import Struct.Weapon
+import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -131,7 +132,7 @@ get_statistics_html stats =
             [
                (Html.text
                   (
-                     "Damage: ["
+                     "Actual Damage: ["
                      ++ (toString (Struct.Statistics.get_damage_min stats))
                      ++ ", "
                      ++ (toString (Struct.Statistics.get_damage_max stats))
@@ -193,7 +194,60 @@ get_weapon_html wp =
             [
                (Html.text
                   (
-                     ""
+                     (Struct.Weapon.get_name wp)
+                     ++ " ("
+                     ++
+                     (case (Struct.Weapon.get_range_modifier wp) of
+                        Struct.Weapon.Short -> "Short"
+                        Struct.Weapon.Long -> "Long"
+                     )
+                     ++ " "
+                     ++
+                     (case (Struct.Weapon.get_damage_modifier wp) of
+                        Struct.Weapon.Heavy -> "Heavy"
+                        Struct.Weapon.Light -> "Light"
+                     )
+                     ++ " "
+                     ++
+                     (case (Struct.Weapon.get_range_type wp) of
+                        Struct.Weapon.Ranged -> "Ranged"
+                        Struct.Weapon.Melee -> "Melee"
+                     )
+                     ++ ")"
+                  )
+               )
+            ]
+         ),
+         (Html.li
+            []
+            [
+               (Html.text
+                  (
+                     "Damage: ["
+                     ++ (toString (Struct.Weapon.get_min_damage wp))
+                     ++ ", "
+                     ++ (toString (Struct.Weapon.get_max_damage wp))
+                     ++ "] "
+                     ++
+                     (case (Struct.Weapon.get_damage_type wp) of
+                        Struct.Weapon.Slash -> "Slashing"
+                        Struct.Weapon.Pierce -> "Piercing"
+                        Struct.Weapon.Blunt -> "Bludgeoning"
+                     )
+                  )
+               )
+            ]
+         ),
+         (Html.li
+            []
+            [
+               (Html.text
+                  (
+                     "Range: ["
+                     ++ (toString (Struct.Weapon.get_min_range wp))
+                     ++ ", "
+                     ++ (toString (Struct.Weapon.get_max_range wp))
+                     ++ "]"
                   )
                )
             ]
@@ -264,11 +318,15 @@ get_html model char =
                      )
                   ]
                ),
-               (Html.dt [] [(Html.text "Attack Range")]),
+               (Html.dt [] [(Html.text "Active Weapon:")]),
                (Html.dd
                   []
                   [
-                     (Html.text "???")
+                     (get_weapon_html
+                        (Struct.WeaponSet.get_active_weapon
+                           (Struct.Character.get_weapons char)
+                        )
+                     )
                   ]
                )
             ]

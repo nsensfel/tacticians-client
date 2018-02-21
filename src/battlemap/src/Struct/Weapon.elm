@@ -6,8 +6,15 @@ module Struct.Weapon exposing
       DamageType(..),
       DamageModifier(..),
       new,
+      get_name,
+      get_range_type,
+      get_range_modifier,
+      get_damage_type,
+      get_damage_modifier,
       get_max_range,
       get_min_range,
+      get_max_damage,
+      get_min_damage,
       apply_to_attributes
    )
 
@@ -97,11 +104,32 @@ new
       dmg_max = dmg_max
    }
 
+get_name : Type -> String
+get_name wp = wp.name
+
+get_range_type : Type -> RangeType
+get_range_type wp = wp.range_type
+
+get_range_modifier : Type -> RangeModifier
+get_range_modifier wp = wp.range_mod
+
+get_damage_type : Type -> DamageType
+get_damage_type wp = wp.dmg_type
+
+get_damage_modifier : Type -> DamageModifier
+get_damage_modifier wp = wp.dmg_mod
+
 get_max_range : Type -> Int
 get_max_range wp = wp.range_max
 
 get_min_range : Type -> Int
 get_min_range wp = wp.range_min
+
+get_max_damage : Type -> Int
+get_max_damage wp = wp.dmg_max
+
+get_min_damage : Type -> Int
+get_min_damage wp = wp.dmg_min
 
 apply_to_attributes : Type -> Struct.Attributes.Type -> Struct.Attributes.Type
 apply_to_attributes wp atts =
