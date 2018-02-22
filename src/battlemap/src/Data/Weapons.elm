@@ -256,9 +256,9 @@ dataset =
          )
       ),
       (
-         19,
+         22,
          (Struct.Weapon.new
-            19
+            22
             "Arbalest (Broadhead)"
             Struct.Weapon.Ranged
             Struct.Weapon.Long
@@ -267,9 +267,9 @@ dataset =
          )
       ),
       (
-         20,
+         23,
          (Struct.Weapon.new
-            20
+            23
             "Arbalest (Blunt)"
             Struct.Weapon.Ranged
             Struct.Weapon.Long
@@ -278,9 +278,9 @@ dataset =
          )
       ),
       (
-         21,
+         24,
          (Struct.Weapon.new
-            21
+            24
             "Arbalest (Bodkin Point)"
             Struct.Weapon.Ranged
             Struct.Weapon.Long
