@@ -1,4 +1,4 @@
-module Data.Weapon exposing (generate_dict, shim_none)
+module Data.Weapons exposing (generate_dict, none)
 -- Elm -------------------------------------------------------------------------
 import Dict
 
@@ -8,7 +8,7 @@ import Struct.Weapon
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-dataset : (List (Int, Struct.Weapon.Type))
+dataset : (List (Struct.Weapon.Ref, Struct.Weapon.Type))
 dataset =
    [
       -- TODO: have those in separate text files, and put them here only at
@@ -293,12 +293,12 @@ dataset =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-generate_dict : (Dict.Dict Int Struct.Weapon.Type)
+generate_dict : (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type)
 generate_dict = (Dict.fromList dataset)
 
--- Let's not handle the dict just yet.
-shim_none : (Struct.Weapon.Type)
-shim_none =
+-- If it's not found.
+none : (Struct.Weapon.Type)
+none =
    (Struct.Weapon.new
       0
       "None"

@@ -1,11 +1,13 @@
 module Update.HandleServerReply.AddChar exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
+import Dict
+
 import Json.Decode
 import Json.Decode.Pipeline
 
 -- Battlemap -------------------------------------------------------------------
-import Data.Weapon
+import Data.Weapons
 
 import Struct.Attributes
 import Struct.Character
@@ -39,8 +41,7 @@ type alias CharData =
       enabled : Bool,
       att : CharAtt,
       wp_0 : Int,
-      wp_1 : Int,
-      act_wp : Int
+      wp_1 : Int
    }
 
 --------------------------------------------------------------------------------
@@ -74,7 +75,6 @@ char_decoder =
       |> (Json.Decode.Pipeline.required "att" attributes_decoder)
       |> (Json.Decode.Pipeline.required "wp_0" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "wp_1" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "act_wp" Json.Decode.int)
    )
 
 --------------------------------------------------------------------------------
@@ -109,13 +109,20 @@ apply_to model serialized_char =
                   char_data.att.str
                )
                (
-                  let
-                     wp_0 = (Data.Weapon.shim_none)
-                     wp_1 = (Data.Weapon.shim_none)
-                  in
-                     case char_data.act_wp of
-                        0 -> (Struct.WeaponSet.new wp_0 wp_1)
-                        _ -> (Struct.WeaponSet.new wp_1 wp_0)
+                  case
+                     (
+                        (Dict.get char_data.wp_0 model.weapons),
+                        (Dict.get char_data.wp_1 model.weapons)
+                     )
+                  of
+                     ((Just wp_0), (Just wp_1)) ->
+                        (Struct.WeaponSet.new wp_0 wp_1)
+
+                     _ ->
+                        (Struct.WeaponSet.new
+                           (Data.Weapons.none)
+                           (Data.Weapons.none)
+                        )
                )
             )
          )

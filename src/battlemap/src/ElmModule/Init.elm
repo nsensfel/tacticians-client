@@ -3,8 +3,6 @@ module ElmModule.Init exposing (init)
 -- Battlemap -------------------------------------------------------------------
 import Send.LoadBattlemap
 
-import Shim.Model
-
 import Struct.Event
 import Struct.Model
 
@@ -18,7 +16,7 @@ import Struct.Model
 init : (Struct.Model.Type, (Cmd Struct.Event.Type))
 init =
    let
-      model = (Shim.Model.generate)
+      model = (Struct.Model.new)
    in
       (
          model,

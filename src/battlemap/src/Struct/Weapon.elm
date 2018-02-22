@@ -1,6 +1,7 @@
 module Struct.Weapon exposing
    (
       Type,
+      Ref,
       RangeType(..),
       RangeModifier(..),
       DamageType(..),
@@ -37,6 +38,8 @@ type alias Type =
       dmg_min : Int,
       dmg_max : Int
    }
+
+type alias Ref = Int
 
 type RangeType = Ranged | Melee
 type RangeModifier = Long | Short

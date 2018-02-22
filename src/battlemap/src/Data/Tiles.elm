@@ -1,4 +1,4 @@
-module Data.Tile exposing (..)
+module Data.Tiles exposing (..)
 
 import Constants.Movement
 

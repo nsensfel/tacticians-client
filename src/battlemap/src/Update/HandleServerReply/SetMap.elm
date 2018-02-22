@@ -5,7 +5,7 @@ import Dict
 import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
-import Data.Tile
+import Data.Tiles
 
 import Struct.Battlemap
 import Struct.Model
@@ -29,8 +29,8 @@ deserialize_tile map_width index id =
    (Struct.Tile.new
       (index % map_width)
       (index // map_width)
-      (Data.Tile.get_icon id)
-      (Data.Tile.get_cost id)
+      (Data.Tiles.get_icon id)
+      (Data.Tiles.get_cost id)
    )
 
 --------------------------------------------------------------------------------

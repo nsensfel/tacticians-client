@@ -1,6 +1,7 @@
 module Struct.Model exposing
    (
       Type,
+      new,
       add_character,
       invalidate,
       reset,
@@ -11,11 +12,14 @@ module Struct.Model exposing
 import Dict
 
 -- Battlemap -------------------------------------------------------------------
+import Data.Weapons
+
 import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error
 import Struct.UI
+import Struct.Weapon
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -24,6 +28,7 @@ type alias Type =
    {
       battlemap: Struct.Battlemap.Type,
       characters: (Dict.Dict Struct.Character.Ref Struct.Character.Type),
+      weapons: (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type),
       error: (Maybe Struct.Error.Type),
       controlled_team: Int,
       player_id: String,
@@ -38,6 +43,19 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+new : Type
+new =
+   {
+      battlemap = (Struct.Battlemap.empty),
+      characters = (Dict.empty),
+      weapons = (Data.Weapons.generate_dict),
+      error = Nothing,
+      controlled_team = 0,
+      player_id = "0",
+      ui = (Struct.UI.default),
+      char_turn = (Struct.CharacterTurn.new)
+   }
+
 add_character : Type -> Struct.Character.Type -> Type
 add_character model char =
    {model |
