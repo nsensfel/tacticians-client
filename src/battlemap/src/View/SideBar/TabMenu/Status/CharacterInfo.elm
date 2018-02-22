@@ -242,11 +242,11 @@ get_weapon_html wp =
             [
                (Html.text
                   (
-                     "Range: ["
-                     ++ (toString (Struct.Weapon.get_min_range wp))
+                     "Range: ("
+                     ++ (toString (Struct.Weapon.get_defense_range wp))
                      ++ ", "
-                     ++ (toString (Struct.Weapon.get_max_range wp))
-                     ++ "]"
+                     ++ (toString (Struct.Weapon.get_attack_range wp))
+                     ++ ")"
                   )
                )
             ]

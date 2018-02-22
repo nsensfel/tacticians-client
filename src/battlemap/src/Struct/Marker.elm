@@ -6,3 +6,4 @@ module Struct.Marker exposing (Type(..))
 type Type =
    CanAttack
    | CanGoTo
+   | CantDefend

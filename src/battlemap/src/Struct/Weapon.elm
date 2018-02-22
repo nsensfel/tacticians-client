@@ -12,8 +12,8 @@ module Struct.Weapon exposing
       get_range_modifier,
       get_damage_type,
       get_damage_modifier,
-      get_max_range,
-      get_min_range,
+      get_attack_range,
+      get_defense_range,
       get_max_damage,
       get_min_damage,
       apply_to_attributes
@@ -33,8 +33,8 @@ type alias Type =
       range_mod : RangeModifier,
       dmg_type : DamageType,
       dmg_mod : DamageModifier,
-      range_min : Int,
-      range_max : Int,
+      def_range : Int,
+      atk_range : Int,
       dmg_min : Int,
       dmg_max : Int
    }
@@ -61,9 +61,9 @@ get_ranges : RangeType -> RangeModifier -> (Int, Int)
 get_ranges rt rm =
    case (rt, rm) of
       (Ranged, Long) -> (2, 6)
-      (Ranged, Short) -> (2, 4)
-      (Melee, Long) -> (1, 2)
-      (Melee, Short) -> (1, 1)
+      (Ranged, Short) -> (1, 4)
+      (Melee, Long) -> (0, 2)
+      (Melee, Short) -> (0, 1)
 
 get_damages : RangeType -> DamageModifier -> (Int, Int)
 get_damages rt dm =
@@ -91,7 +91,7 @@ new
    dmg_type dmg_mod
    =
    let
-      (range_min, range_max) = (get_ranges range_type range_mod)
+      (def_range, atk_range) = (get_ranges range_type range_mod)
       (dmg_min, dmg_max) = (get_damages range_type dmg_mod)
    in
    {
@@ -101,8 +101,8 @@ new
       range_mod = range_mod,
       dmg_type = dmg_type,
       dmg_mod = dmg_mod,
-      range_min = range_min,
-      range_max = range_max,
+      def_range = def_range,
+      atk_range = atk_range,
       dmg_min = dmg_min,
       dmg_max = dmg_max
    }
@@ -122,11 +122,11 @@ get_damage_type wp = wp.dmg_type
 get_damage_modifier : Type -> DamageModifier
 get_damage_modifier wp = wp.dmg_mod
 
-get_max_range : Type -> Int
-get_max_range wp = wp.range_max
+get_attack_range : Type -> Int
+get_attack_range wp = wp.atk_range
 
-get_min_range : Type -> Int
-get_min_range wp = wp.range_min
+get_defense_range : Type -> Int
+get_defense_range wp = wp.def_range
 
 get_max_damage : Type -> Int
 get_max_damage wp = wp.dmg_max

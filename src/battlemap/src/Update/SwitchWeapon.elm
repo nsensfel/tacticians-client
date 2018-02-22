@@ -37,7 +37,10 @@ make_it_so model =
                         (Struct.Statistics.get_movement_points
                            (Struct.Character.get_statistics new_char)
                         )
-                        (Struct.Weapon.get_max_range
+                        (Struct.Weapon.get_attack_range
+                           (Struct.WeaponSet.get_active_weapon new_weapons)
+                        )
+                        (Struct.Weapon.get_defense_range
                            (Struct.WeaponSet.get_active_weapon new_weapons)
                         )
                         (Struct.Battlemap.get_movement_cost_function

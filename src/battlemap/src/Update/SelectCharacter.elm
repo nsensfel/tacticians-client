@@ -43,32 +43,35 @@ ctrl_or_focus_character : (
 ctrl_or_focus_character model target_char_id target_char =
    if (Struct.Character.is_enabled target_char)
    then
-      {model |
-         char_turn =
-            (Struct.CharacterTurn.set_navigator
-               (Struct.Navigator.new
-                  (Struct.Character.get_location target_char)
-                  (Struct.Statistics.get_movement_points
-                     (Struct.Character.get_statistics target_char)
-                  )
-                  (Struct.Weapon.get_max_range
-                     (Struct.WeaponSet.get_active_weapon
-                        (Struct.Character.get_weapons target_char)
+      let
+         weapon =
+            (Struct.WeaponSet.get_active_weapon
+               (Struct.Character.get_weapons target_char)
+            )
+      in
+         {model |
+            char_turn =
+               (Struct.CharacterTurn.set_navigator
+                  (Struct.Navigator.new
+                     (Struct.Character.get_location target_char)
+                     (Struct.Statistics.get_movement_points
+                        (Struct.Character.get_statistics target_char)
+                     )
+                     (Struct.Weapon.get_attack_range weapon)
+                     (Struct.Weapon.get_defense_range weapon)
+                     (Struct.Battlemap.get_movement_cost_function
+                        model.battlemap
+                        (Struct.Character.get_location target_char)
+                        (Dict.values model.characters)
                      )
                   )
-                  (Struct.Battlemap.get_movement_cost_function
-                     model.battlemap
-                     (Struct.Character.get_location target_char)
-                     (Dict.values model.characters)
+                  (Struct.CharacterTurn.set_active_character
+                     target_char
+                     model.char_turn
                   )
-               )
-               (Struct.CharacterTurn.set_active_character
-                  target_char
-                  model.char_turn
-               )
-            ),
-         ui = (Struct.UI.set_previous_action model.ui Nothing)
-      }
+               ),
+            ui = (Struct.UI.set_previous_action model.ui Nothing)
+         }
    else
       {model |
          ui =

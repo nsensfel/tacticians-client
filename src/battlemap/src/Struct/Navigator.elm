@@ -32,6 +32,7 @@ type alias Type =
       starting_location: Struct.Location.Type,
       movement_dist: Int,
       attack_dist: Int,
+      defense_dist: Int,
       path: Struct.Path.Type,
       locked_path: Bool,
       range_indicators:
@@ -60,14 +61,16 @@ new : (
       Struct.Location.Type ->
       Int ->
       Int ->
+      Int ->
       (Struct.Location.Type -> Int) ->
       Type
    )
-new start_loc mov_dist atk_dist cost_fun =
+new start_loc mov_dist atk_dist def_dist cost_fun =
    {
       starting_location = start_loc,
       movement_dist = mov_dist,
       attack_dist = atk_dist,
+      defense_dist = def_dist,
       path = (Struct.Path.new start_loc mov_dist),
       locked_path = False,
       range_indicators =
@@ -75,6 +78,7 @@ new start_loc mov_dist atk_dist cost_fun =
             start_loc
             mov_dist
             atk_dist
+            0
             (cost_fun)
          ),
       cost_fun = cost_fun
@@ -145,6 +149,7 @@ lock_path navigator =
             (Struct.Path.get_current_location navigator.path)
             0
             navigator.attack_dist
+            navigator.defense_dist
             (navigator.cost_fun)
          ),
       locked_path = True

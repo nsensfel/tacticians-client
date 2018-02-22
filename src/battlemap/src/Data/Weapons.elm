@@ -153,7 +153,7 @@ dataset =
             Struct.Weapon.Melee
             Struct.Weapon.Long
             Struct.Weapon.Blunt
-            Struct.Weapon.Light
+            Struct.Weapon.Heavy
          )
       ),
       (

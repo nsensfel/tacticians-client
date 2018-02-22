@@ -144,10 +144,11 @@ search : (
       (Dict.Dict Struct.Location.Ref Type) ->
       Int ->
       Int ->
+      Int ->
       (Struct.Location.Type -> Int) ->
       (Dict.Dict Struct.Location.Ref Type)
    )
-search result remaining dist range cost_fun =
+search result remaining dist atk_range def_range cost_fun =
    if (Dict.isEmpty remaining)
    then
       result
@@ -176,7 +177,11 @@ search result remaining dist range cost_fun =
                      (
                         if (min.range > 0)
                         then
-                           Struct.Marker.CanAttack
+                           if (min.range <= def_range)
+                           then
+                              Struct.Marker.CantDefend
+                           else
+                              Struct.Marker.CanAttack
                         else
                            Struct.Marker.CanGoTo
                      )
@@ -188,7 +193,7 @@ search result remaining dist range cost_fun =
                   min
                   (Struct.Location.from_ref min_loc_ref)
                   dist
-                  range
+                  atk_range
                   result
                   (cost_fun)
                )
@@ -201,7 +206,8 @@ search result remaining dist range cost_fun =
                ]
             )
             dist
-            range
+            atk_range
+            def_range
             (cost_fun)
          )
 
@@ -212,10 +218,11 @@ generate : (
       Struct.Location.Type ->
       Int ->
       Int ->
+      Int ->
       (Struct.Location.Type -> Int) ->
       (Dict.Dict Struct.Location.Ref Type)
    )
-generate location dist range cost_fun =
+generate location dist atk_range def_range cost_fun =
    (search
       Dict.empty
       (Dict.insert
@@ -229,7 +236,8 @@ generate location dist range cost_fun =
          Dict.empty
       )
       dist
-      range
+      atk_range
+      def_range
       (cost_fun)
    )
 

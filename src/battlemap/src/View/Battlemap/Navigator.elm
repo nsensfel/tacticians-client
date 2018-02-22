@@ -35,11 +35,10 @@ marker_get_html is_interactive (loc_ref, marker) =
                   "battlemap-"
                   ++
                   (
-                     if (marker == Struct.Marker.CanGoTo)
-                     then
-                        "can-go-to"
-                     else
-                        "can-attack"
+                     case marker of
+                        Struct.Marker.CanGoTo -> "can-go-to"
+                        Struct.Marker.CanAttack -> "can-attack"
+                        Struct.Marker.CantDefend -> "cant-defend"
                   )
                   ++
                   "-marker"
