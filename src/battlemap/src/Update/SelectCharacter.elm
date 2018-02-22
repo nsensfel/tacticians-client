@@ -14,6 +14,8 @@ import Struct.Model
 import Struct.Navigator
 import Struct.Statistics
 import Struct.UI
+import Struct.Weapon
+import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -49,7 +51,11 @@ ctrl_or_focus_character model target_char_id target_char =
                   (Struct.Statistics.get_movement_points
                      (Struct.Character.get_statistics target_char)
                   )
-                  1 -- Attack Range
+                  (Struct.Weapon.get_max_range
+                     (Struct.WeaponSet.get_active_weapon
+                        (Struct.Character.get_weapons target_char)
+                     )
+                  )
                   (Struct.Battlemap.get_movement_cost_function
                      model.battlemap
                      (Struct.Character.get_location target_char)
