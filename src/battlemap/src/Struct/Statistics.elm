@@ -50,8 +50,14 @@ float_to_int f =
 gentle_squared_growth : Int -> Int
 gentle_squared_growth v = (float_to_int (((toFloat v)^1.8)/20.0))
 
+gentle_squared_growth_f : Float -> Int
+gentle_squared_growth_f v = (float_to_int ((v^1.8)/20.0))
+
 sudden_squared_growth : Int -> Int
 sudden_squared_growth v = (float_to_int (((toFloat v)^2.5)/1000.0))
+
+sudden_squared_growth_f : Float -> Int
+sudden_squared_growth_f v = (float_to_int ((v^2.5)/1000.0))
 
 sudden_exp_growth : Int -> Int
 sudden_exp_growth v = (float_to_int (4.0^((toFloat v)/25.0)))
@@ -111,21 +117,21 @@ new att wp_set =
    let
       active_weapon = (Struct.WeaponSet.get_active_weapon wp_set)
       actual_att = (Struct.Weapon.apply_to_attributes active_weapon att)
-      constitution = (Struct,Attributes.get_constitution actual_att)
-      dexterity = (Struct,Attributes.get_dexterity actual_att)
-      intelligence = (Struct,Attributes.get_intelligence actual_att)
-      mind = (Struct,Attributes.get_mind actual_att)
-      speed = (Struct,Attributes.get_speed actual_att)
-      strength = (Struct,Attributes.get_strength actual_att)
+      constitution = (Struct.Attributes.get_constitution actual_att)
+      dexterity = (Struct.Attributes.get_dexterity actual_att)
+      intelligence = (Struct.Attributes.get_intelligence actual_att)
+      mind = (Struct.Attributes.get_mind actual_att)
+      speed = (Struct.Attributes.get_speed actual_att)
+      strength = (Struct.Attributes.get_strength actual_att)
       dmg_bmod = (damage_base_mod (toFloat strength))
    in
       {
          movement_points =
-            (gentle_squared_growth
+            (gentle_squared_growth_f
                (average [mind, constitution, constitution, speed, speed, speed])
             ),
          max_health =
-            (gentle_squared_growth
+            (gentle_squared_growth_f
                (average [mind, constitution, constitution])
             ),
          dodges =
@@ -158,7 +164,7 @@ new att wp_set =
             ),
          accuracy = (sudden_squared_growth dexterity),
          double_hits =
-            (clamp 0 100 (sudden_squared_growth (average [mind, speed]))),
+            (clamp 0 100 (sudden_squared_growth_f (average [mind, speed]))),
          critical_hits =
             (clamp 0 100 (sudden_squared_growth intelligence))
    }
