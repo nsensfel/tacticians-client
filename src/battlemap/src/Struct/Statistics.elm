@@ -111,29 +111,30 @@ new att wp_set =
    let
       active_weapon = (Struct.WeaponSet.get_active_weapon wp_set)
       actual_att = (Struct.Weapon.apply_to_attributes active_weapon att)
-      dmg_bmod =
-         (damage_base_mod
-            (toFloat (Struct.Attributes.get_strength actual_att))
-         )
+      constitution = (Struct,Attributes.get_constitution actual_att)
+      dexterity = (Struct,Attributes.get_dexterity actual_att)
+      intelligence = (Struct,Attributes.get_intelligence actual_att)
+      mind = (Struct,Attributes.get_mind actual_att)
+      speed = (Struct,Attributes.get_speed actual_att)
+      strength = (Struct,Attributes.get_strength actual_att)
+      dmg_bmod = (damage_base_mod (toFloat strength))
    in
       {
          movement_points =
-            (gentle_squared_growth (Struct.Attributes.get_speed actual_att)),
+            (gentle_squared_growth
+               (average [mind, constitution, constitution, speed, speed, speed])
+            ),
          max_health =
             (gentle_squared_growth
-               (Struct.Attributes.get_constitution actual_att)
+               (average [mind, constitution, constitution])
             ),
          dodges =
             (clamp
-               5
-               75
+               0
+               100
                (sudden_exp_growth_f
                   (average
-                     [
-                        (Struct.Attributes.get_dexterity actual_att),
-                        (Struct.Attributes.get_mind actual_att),
-                        (Struct.Attributes.get_speed actual_att)
-                     ]
+                     [dexterity, mind, speed]
                   )
                )
             ),
@@ -142,13 +143,7 @@ new att wp_set =
                0
                75
                (sudden_exp_growth_f
-                  (average
-                     [
-                        (Struct.Attributes.get_dexterity actual_att),
-                        (Struct.Attributes.get_speed actual_att),
-                        (Struct.Attributes.get_strength actual_att)
-                     ]
-                  )
+                  (average [dexterity, intelligence, speed, strength])
                )
             ),
          damage_min =
@@ -161,25 +156,9 @@ new att wp_set =
                dmg_bmod
                (toFloat (Struct.Weapon.get_max_damage active_weapon))
             ),
-         accuracy =
-            (sudden_squared_growth
-               (Struct.Attributes.get_dexterity actual_att)
-            ),
+         accuracy = (sudden_squared_growth dexterity),
          double_hits =
-            (clamp
-               0
-               100
-               (sudden_squared_growth
-                  (Struct.Attributes.get_speed actual_att)
-               )
-            ),
-         --- This should be weapon dependent
+            (clamp 0 100 (sudden_squared_growth (average [mind, speed]))),
          critical_hits =
-            (clamp
-               0
-               100
-               (sudden_squared_growth
-                  (Struct.Attributes.get_intelligence actual_att)
-               )
-            )
+            (clamp 0 100 (sudden_squared_growth intelligence))
    }
