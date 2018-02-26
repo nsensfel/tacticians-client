@@ -30,18 +30,18 @@ type alias CharAtt =
 
 type alias CharData =
    {
-      id : String,
-      name : String,
-      icon : String,
-      portrait : String,
-      loc_x : Int,
-      loc_y : Int,
-      health : Int,
-      team : Int,
-      enabled : Bool,
+      ix : Int,
+      nam : String,
+      ico : String,
+      prt : String,
+      lcx : Int,
+      lcy : Int,
+      hea : Int,
+      pla : String,
+      ena : Bool,
       att : CharAtt,
-      wp_0 : Int,
-      wp_1 : Int
+      awp : Int,
+      swp : Int
    }
 
 --------------------------------------------------------------------------------
@@ -63,18 +63,18 @@ char_decoder : (Json.Decode.Decoder CharData)
 char_decoder =
    (Json.Decode.Pipeline.decode
       CharData
-      |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
-      |> (Json.Decode.Pipeline.required "name" Json.Decode.string)
-      |> (Json.Decode.Pipeline.required "icon" Json.Decode.string)
-      |> (Json.Decode.Pipeline.required "portrait" Json.Decode.string)
-      |> (Json.Decode.Pipeline.required "loc_x" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "loc_y" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "health" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "team" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "enabled" Json.Decode.bool)
+      |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "ico" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "prt" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "lcx" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "lcy" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "hea" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "pla" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "ena" Json.Decode.bool)
       |> (Json.Decode.Pipeline.required "att" attributes_decoder)
-      |> (Json.Decode.Pipeline.required "wp_0" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "wp_1" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "awp" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "swp" Json.Decode.int)
    )
 
 --------------------------------------------------------------------------------
@@ -92,14 +92,14 @@ apply_to model serialized_char =
          (Struct.Model.add_character
             model
             (Struct.Character.new
-               char_data.id
-               char_data.name
-               char_data.icon
-               char_data.portrait
-               {x = char_data.loc_x, y = char_data.loc_y}
-               char_data.health
-               char_data.team
-               char_data.enabled
+               (toString char_data.ix)
+               char_data.nam
+               char_data.ico
+               char_data.prt
+               {x = char_data.lcx, y = char_data.lcy}
+               char_data.hea
+               char_data.pla
+               char_data.ena
                (Struct.Attributes.new
                   char_data.att.con
                   char_data.att.dex
@@ -111,8 +111,8 @@ apply_to model serialized_char =
                (
                   case
                      (
-                        (Dict.get char_data.wp_0 model.weapons),
-                        (Dict.get char_data.wp_1 model.weapons)
+                        (Dict.get char_data.awp model.weapons),
+                        (Dict.get char_data.swp model.weapons)
                      )
                   of
                      ((Just wp_0), (Just wp_1)) ->

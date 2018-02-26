@@ -30,7 +30,6 @@ type alias Type =
       characters: (Dict.Dict Struct.Character.Ref Struct.Character.Type),
       weapons: (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type),
       error: (Maybe Struct.Error.Type),
-      controlled_team: Int,
       player_id: String,
       ui: Struct.UI.Type,
       char_turn: Struct.CharacterTurn.Type
@@ -50,7 +49,6 @@ new =
       characters = (Dict.empty),
       weapons = (Data.Weapons.generate_dict),
       error = Nothing,
-      controlled_team = 0,
       player_id = "0",
       ui = (Struct.UI.default),
       char_turn = (Struct.CharacterTurn.new)

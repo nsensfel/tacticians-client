@@ -30,8 +30,8 @@ get_target_info_html model char_ref =
             (
                "Attacking "
                ++ char.name
-               ++ " (Team "
-               ++ (toString (Struct.Character.get_team char))
+               ++ " (player "
+               ++ (Struct.Character.get_player_id char)
                ++ "): "
                ++
                (toString

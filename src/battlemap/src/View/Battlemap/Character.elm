@@ -39,12 +39,6 @@ get_html char =
             (Html.Attributes.class
                ("asset-character-icon-" ++ (Struct.Character.get_icon_id char))
             ),
-            (Html.Attributes.class
-               (
-                  "battlemap-character-team-"
-                  ++ (toString (Struct.Character.get_team char))
-               )
-            ),
             (Html.Attributes.class "clickable"),
             (Html.Events.onClick
                (Struct.Event.CharacterSelected (Struct.Character.get_ref char))

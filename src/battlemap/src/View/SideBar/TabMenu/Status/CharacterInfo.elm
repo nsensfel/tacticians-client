@@ -273,14 +273,32 @@ get_html model char =
             [
             ]
             [
-               (Html.dt [] [(Html.text "Team")]),
+               (Html.dt [] [(Html.text "Location")]),
+               (Html.dd
+                  []
+                  (
+                     let
+                        location = (Struct.Character.get_location char)
+                     in
+                        [
+                           (Html.text
+                              (
+                                 (toString location.x)
+                                 ++
+                                 ", "
+                                 ++
+                                 (toString location.y)
+                              )
+                           )
+                        ]
+                  )
+               ),
+               (Html.dt [] [(Html.text "Player")]),
                (Html.dd
                   []
                   [
                      (Html.text
-                        (toString
-                           (Struct.Character.get_team char)
-                        )
+                        (Struct.Character.get_player_id char)
                      )
                   ]
                ),

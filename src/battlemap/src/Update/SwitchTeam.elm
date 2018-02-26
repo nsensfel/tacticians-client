@@ -17,12 +17,11 @@ apply_to : (
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model =
-   if (model.controlled_team == 0)
+   if (model.player_id == "0")
    then
       (
          (Struct.Model.reset
             {model |
-               controlled_team = 1,
                player_id = "1"
             }
             model.characters
@@ -33,7 +32,6 @@ apply_to model =
       (
          (Struct.Model.reset
             {model |
-               controlled_team = 0,
                player_id = "0"
             }
             model.characters

@@ -16,9 +16,9 @@ import Struct.Tile
 --------------------------------------------------------------------------------
 type alias MapData =
    {
-      width : Int,
-      height : Int,
-      content : (List Int)
+      w : Int,
+      h : Int,
+      t : (List Int)
    }
 
 --------------------------------------------------------------------------------
@@ -41,10 +41,10 @@ apply_to model serialized_map =
    case
       (Json.Decode.decodeString
          (Json.Decode.map3 MapData
-            (Json.Decode.field "width" Json.Decode.int)
-            (Json.Decode.field "height" Json.Decode.int)
+            (Json.Decode.field "w" Json.Decode.int)
+            (Json.Decode.field "h" Json.Decode.int)
             (Json.Decode.field
-               "content"
+               "t"
                (Json.Decode.list Json.Decode.int)
             )
          )
@@ -56,11 +56,11 @@ apply_to model serialized_map =
             {model |
                battlemap =
                   (Struct.Battlemap.new
-                     map_data.width
-                     map_data.height
+                     map_data.w
+                     map_data.h
                      (List.indexedMap
-                        (deserialize_tile map_data.width)
-                        map_data.content
+                        (deserialize_tile map_data.w)
+                        map_data.t
                      )
                   )
             }

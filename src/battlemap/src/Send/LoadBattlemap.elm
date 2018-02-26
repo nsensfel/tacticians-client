@@ -23,10 +23,9 @@ try_encoding model =
    (Just
       (Json.Encode.object
          [
-            ("session_token", (Json.Encode.string "0")),
-            ("player_id", (Json.Encode.string model.player_id)),
-            ("battlemap_id", (Json.Encode.string "0")),
-            ("instance_id", (Json.Encode.string "0"))
+            ("stk", (Json.Encode.string "0")),
+            ("pid", (Json.Encode.string model.player_id)),
+            ("bmi", (Json.Encode.string "0"))
          ]
       )
    )

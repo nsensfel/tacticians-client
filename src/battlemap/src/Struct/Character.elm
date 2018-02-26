@@ -4,7 +4,7 @@ module Struct.Character exposing
       Ref,
       new,
       get_ref,
-      get_team,
+      get_player_id,
       get_icon_id,
       get_portrait_id,
       get_current_health,
@@ -35,7 +35,7 @@ type alias Type =
       portrait : String,
       location : Struct.Location.Type,
       health : Int,
-      team : Int,
+      player_id : String,
       enabled : Bool,
       attributes : Struct.Attributes.Type,
       statistics : Struct.Statistics.Type,
@@ -58,7 +58,7 @@ new : (
       String -> -- portrait
       Struct.Location.Type -> -- location
       Int -> -- health
-      Int -> -- team
+      String -> -- player_id
       Bool -> -- enabled
       Struct.Attributes.Type ->
       Struct.WeaponSet.Type ->
@@ -67,7 +67,7 @@ new : (
 new
    id name icon portrait
    location health
-   team enabled
+   player_id enabled
    attributes weapons =
    {
       id = id,
@@ -82,7 +82,7 @@ new
             attributes
             weapons
          ),
-      team = team,
+      player_id = player_id,
       enabled = enabled,
       weapons = weapons
    }
@@ -90,8 +90,8 @@ new
 get_ref : Type -> Ref
 get_ref c = c.id
 
-get_team : Type -> Int
-get_team c = c.team
+get_player_id : Type -> String
+get_player_id c = c.player_id
 
 get_icon_id : Type -> String
 get_icon_id c = c.icon

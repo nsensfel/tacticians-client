@@ -34,8 +34,8 @@ get_char_info_html model char_ref =
             (
                "Focusing "
                ++ char.name
-               ++ " (Team "
-               ++ (toString (Struct.Character.get_team char))
+               ++ " (Player "
+               ++ (Struct.Character.get_player_id char)
                ++ "): "
                ++
                (toString

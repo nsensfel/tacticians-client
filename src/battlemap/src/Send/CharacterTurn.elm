@@ -30,16 +30,15 @@ try_encoding model =
          (Just
             (Json.Encode.object
                [
-                  ("session_token", (Json.Encode.string "0")),
-                  ("player_id", (Json.Encode.string model.player_id)),
-                  ("battlemap_id", (Json.Encode.string "0")),
-                  ("instance_id", (Json.Encode.string "0")),
+                  ("stk", (Json.Encode.string "0")),
+                  ("pid", (Json.Encode.string model.player_id)),
+                  ("bmi", (Json.Encode.string "0")),
                   (
-                     "char_id",
+                     "cix",
                      (Json.Encode.string (Struct.Character.get_ref char))
                   ),
                   (
-                     "path",
+                     "p",
                      (Json.Encode.list
                         (List.map
                            (
@@ -54,11 +53,14 @@ try_encoding model =
                      )
                   ),
                   (
-                     "targets_id",
-                     (Json.Encode.list
-                        (List.map
-                           (Json.Encode.string)
-                           (Struct.CharacterTurn.get_targets model.char_turn)
+                     "tix",
+                     (Json.Encode.string
+                        (
+                           case
+                              (Struct.CharacterTurn.get_targets model.char_turn)
+                           of
+                              [a] -> a
+                              _ -> "-1"
                         )
                      )
                   )
