@@ -8,7 +8,6 @@ import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Character
-import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.Statistics
@@ -56,14 +55,15 @@ get_target_info_html model char_ref =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
-get_html model =
+get_html : (
+      Struct.Model.Type ->
+      Struct.Character.Ref ->
+      (Html.Html Struct.Event.Type)
+   )
+get_html model target_ref =
    (Html.div
       [
          (Html.Attributes.class "battlemap-side-bar-targets")
       ]
-      (List.map
-         (get_target_info_html model)
-         (Struct.CharacterTurn.get_targets model.char_turn)
-      )
+      [(get_target_info_html model target_ref)]
    )

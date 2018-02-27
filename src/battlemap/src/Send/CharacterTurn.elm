@@ -40,15 +40,26 @@ try_encoding model =
                   (
                      "p",
                      (Json.Encode.list
-                        (List.map
-                           (
-                              (Json.Encode.string)
-                              <<
-                              (Struct.Direction.to_string)
-                           )
-                           (List.reverse
-                              (Struct.CharacterTurn.get_path model.char_turn)
-                           )
+                        (
+                           if
+                              (Struct.CharacterTurn.has_switched_weapons
+                                 model.char_turn
+                              )
+                           then
+                              [(Json.Encode.string "S")]
+                           else
+                              (List.map
+                                 (
+                                    (Json.Encode.string)
+                                    <<
+                                    (Struct.Direction.to_string)
+                                 )
+                                 (List.reverse
+                                    (Struct.CharacterTurn.get_path
+                                       model.char_turn
+                                    )
+                                 )
+                              )
                         )
                      )
                   ),
@@ -57,9 +68,9 @@ try_encoding model =
                      (Json.Encode.string
                         (
                            case
-                              (Struct.CharacterTurn.get_targets model.char_turn)
+                              (Struct.CharacterTurn.get_target model.char_turn)
                            of
-                              [a] -> a
+                              (Just target_ref) -> target_ref
                               _ -> "-1"
                         )
                      )

@@ -2,14 +2,15 @@ module Struct.CharacterTurn exposing
    (
       Type,
       State(..),
-      add_target,
-      can_select_targets,
+      set_target,
+      can_select_target,
+      set_has_switched_weapons,
+      has_switched_weapons,
       get_path,
       get_state,
-      get_targets,
+      get_target,
       lock_path,
       new,
-      remove_target,
       set_active_character,
       set_navigator,
       try_getting_active_character,
@@ -17,7 +18,6 @@ module Struct.CharacterTurn exposing
    )
 
 -- Elm -------------------------------------------------------------------------
-import List
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Character
@@ -38,8 +38,9 @@ type alias Type =
       state : State,
       active_character : (Maybe Struct.Character.Type),
       path : (List Struct.Direction.Type),
-      targets : (List Struct.Character.Ref),
-      navigator : (Maybe Struct.Navigator.Type)
+      target : (Maybe Struct.Character.Ref),
+      navigator : (Maybe Struct.Navigator.Type),
+      has_switched_weapons : Bool
    }
 
 --------------------------------------------------------------------------------
@@ -55,16 +56,16 @@ new =
       state = Default,
       active_character = Nothing,
       path = [],
-      targets = [],
-      navigator = Nothing
+      target = Nothing,
+      navigator = Nothing,
+      has_switched_weapons = False
    }
 
 try_getting_active_character : Type -> (Maybe Struct.Character.Type)
 try_getting_active_character ct = ct.active_character
 
-can_select_targets : Type -> Bool
-can_select_targets ct =
-   ((ct.state == MovedCharacter) || ((ct.state == ChoseTarget)))
+can_select_target : Type -> Bool
+can_select_target ct = (ct.state == MovedCharacter)
 
 set_active_character : (
       Struct.Character.Type ->
@@ -76,8 +77,9 @@ set_active_character char ct =
       state = SelectedCharacter,
       active_character = (Just char),
       path = [],
-      targets = [],
-      navigator = Nothing
+      target = Nothing,
+      navigator = Nothing,
+      has_switched_weapons = False
    }
 
 get_state : Type -> State
@@ -93,7 +95,7 @@ lock_path ct =
          {ct |
             state = MovedCharacter,
             path = (Struct.Navigator.get_path old_nav),
-            targets = [],
+            target = Nothing,
             navigator = (Just (Struct.Navigator.lock_path old_nav))
          }
 
@@ -108,34 +110,25 @@ set_navigator navigator ct =
    {ct |
       state = SelectedCharacter,
       path = [],
-      targets = [],
+      target = Nothing,
       navigator = (Just navigator)
    }
 
-add_target : Struct.Character.Ref -> Type -> Type
-add_target target_ref ct =
+set_has_switched_weapons : Bool -> Type -> Type
+set_has_switched_weapons v ct =
    {ct |
-      state = ChoseTarget,
-      targets = (List.append ct.targets [target_ref])
+      has_switched_weapons = v
    }
 
-remove_target : Int -> Type -> Type
-remove_target i ct =
-   let
-      new_targets = (List.drop i ct.targets)
-   in
-      case new_targets of
-         [] ->
-            {ct |
-               state = MovedCharacter,
-               targets = []
-            }
+has_switched_weapons : Type -> Bool
+has_switched_weapons ct = ct.has_switched_weapons
 
-         _ ->
-            {ct |
-               state = ChoseTarget,
-               targets = new_targets
-            }
+set_target : (Maybe Struct.Character.Ref) -> Type -> Type
+set_target target ct =
+   {ct |
+      state = ChoseTarget,
+      target = target
+   }
 
-get_targets : Type -> (List Struct.Character.Ref)
-get_targets ct = ct.targets
+get_target : Type -> (Maybe Struct.Character.Ref)
+get_target ct = ct.target

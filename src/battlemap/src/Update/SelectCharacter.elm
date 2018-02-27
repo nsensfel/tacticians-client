@@ -29,7 +29,10 @@ attack_character : (
 attack_character model target_char_id target_char =
    {model |
       char_turn =
-         (Struct.CharacterTurn.add_target target_char_id model.char_turn),
+         (Struct.CharacterTurn.set_target
+            (Just target_char_id)
+            model.char_turn
+         ),
       ui =
          (Struct.UI.set_previous_action model.ui Nothing)
    }
@@ -88,7 +91,7 @@ can_target_character : (
    )
 can_target_character model target =
    (
-      (Struct.CharacterTurn.can_select_targets model.char_turn)
+      (Struct.CharacterTurn.can_select_target model.char_turn)
       &&
       (
          case

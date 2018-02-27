@@ -29,11 +29,12 @@ get_html model =
       [
          (View.SideBar.TabMenu.get_html model),
          (
-            if ((Struct.CharacterTurn.get_targets model.char_turn) == [])
-            then
+            case (Struct.CharacterTurn.get_target model.char_turn) of
+               (Just target_ref) ->
+                  (View.SideBar.Targets.get_html model target_ref)
+
+               _ ->
                (Util.Html.nothing)
-            else
-               (View.SideBar.Targets.get_html model)
          ),
          (
             if (Struct.UI.has_manual_controls_enabled model.ui)

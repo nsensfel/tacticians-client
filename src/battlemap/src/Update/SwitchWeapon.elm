@@ -30,28 +30,31 @@ make_it_so model =
          in
          {model |
             char_turn =
-               (Struct.CharacterTurn.lock_path
-                  (Struct.CharacterTurn.set_navigator
-                     (Struct.Navigator.new
-                        (Struct.Character.get_location new_char)
-                        (Struct.Statistics.get_movement_points
-                           (Struct.Character.get_statistics new_char)
-                        )
-                        (Struct.Weapon.get_attack_range
-                           (Struct.WeaponSet.get_active_weapon new_weapons)
-                        )
-                        (Struct.Weapon.get_defense_range
-                           (Struct.WeaponSet.get_active_weapon new_weapons)
-                        )
-                        (Struct.Battlemap.get_movement_cost_function
-                           model.battlemap
+               (Struct.CharacterTurn.set_has_switched_weapons
+                  True
+                  (Struct.CharacterTurn.lock_path
+                     (Struct.CharacterTurn.set_navigator
+                        (Struct.Navigator.new
                            (Struct.Character.get_location new_char)
-                           (Dict.values model.characters)
+                           (Struct.Statistics.get_movement_points
+                              (Struct.Character.get_statistics new_char)
+                           )
+                           (Struct.Weapon.get_attack_range
+                              (Struct.WeaponSet.get_active_weapon new_weapons)
+                           )
+                           (Struct.Weapon.get_defense_range
+                              (Struct.WeaponSet.get_active_weapon new_weapons)
+                           )
+                           (Struct.Battlemap.get_movement_cost_function
+                              model.battlemap
+                              (Struct.Character.get_location new_char)
+                              (Dict.values model.characters)
+                           )
                         )
-                     )
-                     (Struct.CharacterTurn.set_active_character
-                        new_char
-                        model.char_turn
+                        (Struct.CharacterTurn.set_active_character
+                           new_char
+                           model.char_turn
+                        )
                      )
                   )
                )
