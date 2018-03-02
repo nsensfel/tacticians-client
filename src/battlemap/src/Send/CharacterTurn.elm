@@ -21,6 +21,76 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+encode_move : Struct.Model.Type -> (Maybe Json.Encode.Value)
+encode_move model =
+   case (Struct.CharacterTurn.get_path model.char_turn) of
+      [] -> Nothing
+      path ->
+         (Just
+            (Json.Encode.object
+               [
+                  ("t", (Json.Encode.string "mov")),
+                  (
+                     "p",
+                     (Json.Encode.list
+                        (List.map
+                           (
+                              (Json.Encode.string)
+                              <<
+                              (Struct.Direction.to_string)
+                           )
+                           (List.reverse path)
+                        )
+                     )
+                  )
+               ]
+            )
+         )
+
+encode_weapon_switch : Struct.Model.Type -> (Maybe Json.Encode.Value)
+encode_weapon_switch model =
+   if (Struct.CharacterTurn.has_switched_weapons model.char_turn)
+   then
+      (Just
+         (Json.Encode.object
+            [
+               ("t", (Json.Encode.string "swp"))
+            ]
+         )
+      )
+   else
+      Nothing
+
+encode_attack : Struct.Model.Type -> (Maybe Json.Encode.Value)
+encode_attack model =
+   case (Struct.CharacterTurn.get_target model.char_turn) of
+      Nothing -> Nothing
+      (Just ix) ->
+         (Just
+            (Json.Encode.object
+               [
+                  ("t", (Json.Encode.string "atk")),
+                  ("tix", (Json.Encode.string ix))
+               ]
+            )
+         )
+
+encode_actions : Struct.Model.Type -> (List Json.Encode.Value)
+encode_actions model =
+   case
+      (
+         (encode_move model),
+         (encode_weapon_switch model),
+         (encode_attack model)
+      )
+   of
+      ((Just move), Nothing, Nothing) -> [move]
+      ((Just move), Nothing, (Just attack)) -> [move, attack]
+      (Nothing, (Just switch_weapon), Nothing) -> [switch_weapon]
+      (Nothing, (Just switch_weapon), (Just attack)) -> [switch_weapon, attack]
+      (Nothing, Nothing, (Just attack)) -> [attack]
+      _ -> []
+
 try_encoding : Struct.Model.Type -> (Maybe Json.Encode.Value)
 try_encoding model =
    case
@@ -32,48 +102,14 @@ try_encoding model =
                [
                   ("stk", (Json.Encode.string "0")),
                   ("pid", (Json.Encode.string model.player_id)),
-                  ("bmi", (Json.Encode.string "0")),
+                  ("bid", (Json.Encode.string "0")),
                   (
                      "cix",
                      (Json.Encode.string (Struct.Character.get_ref char))
                   ),
                   (
-                     "p",
-                     (Json.Encode.list
-                        (
-                           if
-                              (Struct.CharacterTurn.has_switched_weapons
-                                 model.char_turn
-                              )
-                           then
-                              [(Json.Encode.string "S")]
-                           else
-                              (List.map
-                                 (
-                                    (Json.Encode.string)
-                                    <<
-                                    (Struct.Direction.to_string)
-                                 )
-                                 (List.reverse
-                                    (Struct.CharacterTurn.get_path
-                                       model.char_turn
-                                    )
-                                 )
-                              )
-                        )
-                     )
-                  ),
-                  (
-                     "tix",
-                     (Json.Encode.string
-                        (
-                           case
-                              (Struct.CharacterTurn.get_target model.char_turn)
-                           of
-                              (Just target_ref) -> target_ref
-                              _ -> "-1"
-                        )
-                     )
+                     "act",
+                     (Json.Encode.list (encode_actions model))
                   )
                ]
             )
