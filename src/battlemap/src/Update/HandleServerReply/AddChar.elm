@@ -28,14 +28,19 @@ type alias CharAtt =
       str : Int
    }
 
+type alias Location =
+   {
+      x : Int,
+      y : Int
+   }
+
 type alias CharData =
    {
       ix : Int,
       nam : String,
       ico : String,
       prt : String,
-      lcx : Int,
-      lcy : Int,
+      lc : Location,
       hea : Int,
       pla : String,
       ena : Bool,
@@ -59,6 +64,14 @@ attributes_decoder =
       |> (Json.Decode.Pipeline.required "str" Json.Decode.int)
    )
 
+location_decoder : (Json.Decode.Decoder Location)
+location_decoder =
+   (Json.Decode.Pipeline.decode
+      Location
+      |> (Json.Decode.Pipeline.required "x" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "y" Json.Decode.int)
+   )
+
 char_decoder : (Json.Decode.Decoder CharData)
 char_decoder =
    (Json.Decode.Pipeline.decode
@@ -67,8 +80,7 @@ char_decoder =
       |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "ico" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "prt" Json.Decode.string)
-      |> (Json.Decode.Pipeline.required "lcx" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "lcy" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "lc" location_decoder)
       |> (Json.Decode.Pipeline.required "hea" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "pla" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "ena" Json.Decode.bool)
@@ -96,7 +108,7 @@ apply_to model serialized_char =
                char_data.nam
                char_data.ico
                char_data.prt
-               {x = char_data.lcx, y = char_data.lcy}
+               {x = lc.x, y = lc.y}
                char_data.hea
                char_data.pla
                char_data.ena

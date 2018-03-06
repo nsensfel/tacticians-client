@@ -12,6 +12,14 @@ import Update.HandleServerReply.AddChar
 import Update.HandleServerReply.SetMap
 
 --------------------------------------------------------------------------------
+-- TYPES -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+type ServerReply =
+   (SetMap Update.HandleServerReply.SetMap.Type)
+   | (AddChar Update.HandleServerReply.SetMap.Type)
+   | (Other String)
+--------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_command: (List String) -> Struct.Model.Type -> Struct.Model.Type
