@@ -1,4 +1,4 @@
-module Update.HandleServerReply.SetMap exposing (apply_to)
+module Send.SetMap exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
 import Dict
@@ -9,6 +9,7 @@ import Data.Tiles
 
 import Struct.Battlemap
 import Struct.Model
+import Struct.ServerReply
 import Struct.Tile
 
 --------------------------------------------------------------------------------
@@ -36,8 +37,8 @@ deserialize_tile map_width index id =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : Struct.Model.Type -> String -> Struct.Model.Type
-apply_to model serialized_map =
+decode : (Struct.Model.Type -> (Json.Decode.Decoder Struct.ServerReply.Type))
+decode model input =
    case
       (Json.Decode.decodeString
          (Json.Decode.map3 MapData
@@ -48,23 +49,21 @@ apply_to model serialized_map =
                (Json.Decode.list Json.Decode.int)
             )
          )
-         serialized_map
+         input
       )
    of
       (Result.Ok map_data) ->
-         (Struct.Model.reset
-            {model |
-               battlemap =
-                  (Struct.Battlemap.new
-                     map_data.w
-                     map_data.h
-                     (List.indexedMap
-                        (deserialize_tile map_data.w)
-                        map_data.t
-                     )
+         (Result.Ok
+            (Struct.ServerReply.SetMap
+               (Struct.Battlemap.new
+                  map_data.w
+                  map_data.h
+                  (List.indexedMap
+                     (deserialize_tile map_data.w)
+                     map_data.t
                   )
-            }
-            (Dict.empty)
+               )
+            )
          )
 
-      _ -> model
+      error -> error

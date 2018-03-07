@@ -1,4 +1,4 @@
-module Send.Send exposing (Reply, try_sending)
+module Send.Send exposing (try_sending)
 
 -- Elm -------------------------------------------------------------------------
 import Http
@@ -7,20 +7,34 @@ import Json.Decode
 import Json.Encode
 
 -- Battlemap -------------------------------------------------------------------
+import Send.SetMap
+import Send.AddChar
+
 import Struct.Event
+import Struct.ServerReply
 import Struct.Model
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-type alias Reply = (List String)
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decoder : (Json.Decode.Decoder (List (List String)))
-decoder =
-   (Json.Decode.list (Json.Decode.list Json.Decode.string))
+internal_decoder : (
+      Struct.Model.Type ->
+      String ->
+      (Json.Decode.Decoder Struct.ServerReply.Type)
+   )
+internal_decoder model reply_type =
+   case reply_type of
+      "add_char" -> (Send.AddChar.decode model)
+      "set_map" -> (Send.SetMap.decode model)
+
+decode : Struct.Model.Type -> (Json.Decode.Decoder Struct.ServerReply.Type)
+decode model =
+   (Json.Decode.field "msg" Json.Decode.string)
+   |> (Json.Decode.andThen (internal_decoder model))
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -40,7 +54,7 @@ try_sending model recipient try_encoding_fun =
                (Http.post
                   recipient
                   (Http.jsonBody serial)
-                  (decoder)
+                  (decode model)
                )
             )
          )
