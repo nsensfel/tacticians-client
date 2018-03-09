@@ -30,6 +30,14 @@ internal_decoder model reply_type =
    case reply_type of
       "add_char" -> (Send.AddChar.decode model)
       "set_map" -> (Send.SetMap.decode model)
+      other ->
+         (Json.Decode.fail
+            (
+               "Unknown server command \""
+               ++ other
+               ++ "\""
+            )
+         )
 
 decode : Struct.Model.Type -> (Json.Decode.Decoder Struct.ServerReply.Type)
 decode model =
@@ -54,7 +62,7 @@ try_sending model recipient try_encoding_fun =
                (Http.post
                   recipient
                   (Http.jsonBody serial)
-                  (decode model)
+                  (Json.Decode.list (decode model))
                )
             )
          )

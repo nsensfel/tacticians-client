@@ -4,9 +4,10 @@ module Struct.Event exposing (Type(..))
 import Http
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Character
 import Struct.Direction
 import Struct.Location
-import Struct.Character
+import Struct.ServerReply
 import Struct.UI
 
 --------------------------------------------------------------------------------
@@ -20,7 +21,7 @@ type Type =
    | TurnEnded
    | ScaleChangeRequested Float
    | TabSelected Struct.UI.Tab
-   | ServerReplied (Result Http.Error (List (List String)))
+   | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
    | DebugTeamSwitchRequest
    | DebugLoadBattlemapRequest
    | WeaponSwitchRequest

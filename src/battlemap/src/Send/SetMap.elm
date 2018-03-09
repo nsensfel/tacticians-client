@@ -1,7 +1,6 @@
 module Send.SetMap exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
 import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
@@ -34,36 +33,32 @@ deserialize_tile map_width index id =
       (Data.Tiles.get_cost id)
    )
 
+internal_decoder : MapData -> Struct.ServerReply.Type
+internal_decoder map_data =
+   (Struct.ServerReply.SetMap
+      (Struct.Battlemap.new
+         map_data.w
+         map_data.h
+         (List.indexedMap
+            (deserialize_tile map_data.w)
+            map_data.t
+         )
+      )
+   )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 decode : (Struct.Model.Type -> (Json.Decode.Decoder Struct.ServerReply.Type))
-decode model input =
-   case
-      (Json.Decode.decodeString
-         (Json.Decode.map3 MapData
-            (Json.Decode.field "w" Json.Decode.int)
-            (Json.Decode.field "h" Json.Decode.int)
-            (Json.Decode.field
-               "t"
-               (Json.Decode.list Json.Decode.int)
-            )
+decode model =
+   (Json.Decode.map
+      internal_decoder
+      (Json.Decode.map3 MapData
+         (Json.Decode.field "w" Json.Decode.int)
+         (Json.Decode.field "h" Json.Decode.int)
+         (Json.Decode.field
+            "t"
+            (Json.Decode.list Json.Decode.int)
          )
-         input
       )
-   of
-      (Result.Ok map_data) ->
-         (Result.Ok
-            (Struct.ServerReply.SetMap
-               (Struct.Battlemap.new
-                  map_data.w
-                  map_data.h
-                  (List.indexedMap
-                     (deserialize_tile map_data.w)
-                     map_data.t
-                  )
-               )
-            )
-         )
-
-      error -> error
+   )

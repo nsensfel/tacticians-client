@@ -11,7 +11,6 @@ import Data.Weapons
 
 import Struct.Attributes
 import Struct.Character
-import Struct.Error
 import Struct.Model
 import Struct.ServerReply
 import Struct.WeaponSet
@@ -90,50 +89,47 @@ char_decoder =
       |> (Json.Decode.Pipeline.required "swp" Json.Decode.int)
    )
 
+internal_decoder : Struct.Model.Type -> CharData -> Struct.ServerReply.Type
+internal_decoder model char_data =
+   (Struct.ServerReply.AddCharacter
+      (Struct.Character.new
+         (toString char_data.ix)
+         char_data.nam
+         char_data.ico
+         char_data.prt
+         {x = char_data.lc.x, y = char_data.lc.y}
+         char_data.hea
+         char_data.pla
+         char_data.ena
+         (Struct.Attributes.new
+            char_data.att.con
+            char_data.att.dex
+            char_data.att.int
+            char_data.att.min
+            char_data.att.spe
+            char_data.att.str
+         )
+         (
+            case
+               (
+                  (Dict.get char_data.awp model.weapons),
+                  (Dict.get char_data.swp model.weapons)
+               )
+            of
+               ((Just wp_0), (Just wp_1)) ->
+                  (Struct.WeaponSet.new wp_0 wp_1)
+
+               _ ->
+                  (Struct.WeaponSet.new
+                     (Data.Weapons.none)
+                     (Data.Weapons.none)
+                  )
+         )
+      )
+   )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : (Struct.Model.Struct -> (Json.Decode.Decoder Struct.ServerReply.Type))
-decode model input =
-   case (Json.Decode.decodeString char_decoder input) of
-      (Result.Ok char_data) ->
-         (Result.Ok
-            (Struct.ServerReply.AddCharacter
-               (Struct.Character.new
-                  (toString char_data.ix)
-                  char_data.nam
-                  char_data.ico
-                  char_data.prt
-                  {x = char_data.lc.x, y = char_data.lc.y}
-                  char_data.hea
-                  char_data.pla
-                  char_data.ena
-                  (Struct.Attributes.new
-                     char_data.att.con
-                     char_data.att.dex
-                     char_data.att.int
-                     char_data.att.min
-                     char_data.att.spe
-                     char_data.att.str
-                  )
-                  (
-                     case
-                        (
-                           (Dict.get char_data.awp model.weapons),
-                           (Dict.get char_data.swp model.weapons)
-                        )
-                     of
-                        ((Just wp_0), (Just wp_1)) ->
-                           (Struct.WeaponSet.new wp_0 wp_1)
-
-                        _ ->
-                           (Struct.WeaponSet.new
-                              (Data.Weapons.none)
-                              (Data.Weapons.none)
-                           )
-                  )
-               )
-            )
-         )
-
-   other -> other
+decode : (Struct.Model.Type -> (Json.Decode.Decoder Struct.ServerReply.Type))
+decode model = (Json.Decode.map (internal_decoder model) char_decoder)
