@@ -54,8 +54,8 @@ new =
       char_turn = (Struct.CharacterTurn.new)
    }
 
-add_character : Type -> Struct.Character.Type -> Type
-add_character model char =
+add_character :  Struct.Character.Type -> Type -> Type
+add_character char model =
    {model |
       characters =
          (Dict.insert

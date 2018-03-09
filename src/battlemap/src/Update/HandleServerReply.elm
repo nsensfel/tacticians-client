@@ -4,10 +4,12 @@ module Update.HandleServerReply exposing (apply_to)
 import Http
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Battlemap
+import Struct.Character
 import Struct.Error
 import Struct.Event
-import Struct.ServerReply
 import Struct.Model
+import Struct.ServerReply
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -16,37 +18,55 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+
+add_character : (
+      Struct.Character.Type ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type))
+   )
+add_character char current_state =
+   case current_state of
+      (_, (Just _)) -> current_state
+      (model, _) ->
+         (
+            (Struct.Model.add_character
+               char
+               model
+            ),
+            Nothing
+         )
+
+set_map : (
+      Struct.Battlemap.Type ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type))
+   )
+set_map map current_state =
+   case current_state of
+      (_, (Just _)) -> current_state
+      (model, _) ->
+         (
+            {model | battlemap = map},
+            Nothing
+         )
+
 apply_command : (
       Struct.ServerReply.Type ->
       (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
       (Struct.Model.Type, (Maybe Struct.Error.Type))
    )
 apply_command command current_state =
-   case (command, current_state) of
-      (_, (_, (Just error))) -> current_state
+   case command of
+      (Struct.ServerReply.AddCharacter char) ->
+         (add_character char current_state)
 
-      (
-         (Struct.ServerReply.AddCharacter char),
-         (model, _)
-      ) ->
-         current_state
+      (Struct.ServerReply.SetMap map) ->
+         (set_map map current_state)
 
-      (
-         (Struct.ServerReply.SetMap map),
-         (model, _)
-      ) ->
-         current_state
+      (Struct.ServerReply.TurnResults results) -> current_state
 
-      (_, (model, _)) ->
-         (
-            model,
-            (Just
-               (Struct.Error.new
-                  Struct.Error.Unimplemented
-                  "Unimplemented server command received"
-               )
-            )
-         )
+      Struct.ServerReply.Okay -> current_state
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------

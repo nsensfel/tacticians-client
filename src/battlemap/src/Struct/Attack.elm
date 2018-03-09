@@ -1,22 +1,29 @@
-module Struct.ServerReply exposing (Type(..))
+module Struct.Attack exposing (Type, Order, Precision)
 
 -- Elm -------------------------------------------------------------------------
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Battlemap
-import Struct.Character
-import Struct.TurnResult
-import Struct.Model
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+type Order =
+   First
+   | Counter
+   | Second
 
-type Type =
-   Okay
-   | AddCharacter Struct.Character.Type
-   | SetMap Struct.Battlemap.Type
-   | TurnResults (List Struct.TurnResult.Type)
+type Precision =
+   Hit
+   | Graze
+   | Miss
+
+type alias Type =
+   {
+      order : Order,
+      precision : Precision,
+      parried : Bool,
+      damage : Int
+   }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
