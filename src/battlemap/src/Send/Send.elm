@@ -9,6 +9,7 @@ import Json.Encode
 -- Battlemap -------------------------------------------------------------------
 import Send.SetMap
 import Send.AddChar
+import Send.TurnResults
 
 import Struct.Event
 import Struct.ServerReply
@@ -30,6 +31,7 @@ internal_decoder model reply_type =
    case reply_type of
       "add_char" -> (Send.AddChar.decode model)
       "set_map" -> (Send.SetMap.decode model)
+      "turn_results" -> (Send.TurnResults.decode)
       other ->
          (Json.Decode.fail
             (

@@ -6,7 +6,6 @@ module Struct.ServerReply exposing (Type(..))
 import Struct.Battlemap
 import Struct.Character
 import Struct.TurnResult
-import Struct.Model
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------

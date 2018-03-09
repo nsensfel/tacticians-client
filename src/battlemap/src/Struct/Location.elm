@@ -1,6 +1,8 @@
 module Struct.Location exposing (..)
 
 -- Elm -------------------------------------------------------------------------
+import Json.Decode
+import Json.Decode.Pipeline
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Direction
@@ -46,4 +48,12 @@ dist loc_a loc_b =
       (abs (loc_a.x - loc_b.x))
       +
       (abs (loc_a.y - loc_b.y))
+   )
+
+decoder : (Json.Decode.Decoder Type)
+decoder =
+   (Json.Decode.Pipeline.decode
+      Type
+      |> (Json.Decode.Pipeline.required "x" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "y" Json.Decode.int)
    )

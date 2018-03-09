@@ -13,8 +13,15 @@ module Struct.Attributes exposing
       mod_mind,
       mod_speed,
       mod_strength,
-      new
+      new,
+      decoder
    )
+
+-- Elm -------------------------------------------------------------------------
+import Json.Decode
+import Json.Decode.Pipeline
+
+-- Battlemap -------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -113,3 +120,15 @@ new con dex int min spe str =
       speed = spe,
       strength = str
    }
+
+decoder : (Json.Decode.Decoder Type)
+decoder =
+   (Json.Decode.Pipeline.decode
+      Type
+      |> (Json.Decode.Pipeline.required "con" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "dex" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "int" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "min" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "spe" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "str" Json.Decode.int)
+   )

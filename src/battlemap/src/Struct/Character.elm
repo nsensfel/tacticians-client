@@ -2,7 +2,6 @@ module Struct.Character exposing
    (
       Type,
       Ref,
-      new,
       get_ref,
       get_player_id,
       get_icon_id,
@@ -15,18 +14,39 @@ module Struct.Character exposing
       is_enabled,
       set_enabled,
       get_weapons,
-      set_weapons
+      set_weapons,
+      decoder
    )
+
+-- Elm -------------------------------------------------------------------------
+import Json.Decode
+import Json.Decode.Pipeline
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Attributes
 import Struct.Location
 import Struct.Statistics
+import Struct.Weapon
 import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+type alias PartiallyDecoded =
+   {
+      ix : Int,
+      nam : String,
+      ico : String,
+      prt : String,
+      lc : Struct.Location.Type,
+      hea : Int,
+      pla : String,
+      ena : Bool,
+      att : Struct.Attributes.Type,
+      awp : Int,
+      swp : Int
+   }
+
 type alias Type =
    {
       id : String,
@@ -47,46 +67,34 @@ type alias Ref = String
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+finish_decoding : (
+      (Struct.Weapon.Ref -> Struct.Weapon.Type) ->
+      PartiallyDecoded ->
+      Type
+   )
+finish_decoding get_weapon add_char =
+   let
+      active_weapon = (get_weapon add_char.awp)
+      secondary_weapon = (get_weapon add_char.swp)
+      weapon_set = (Struct.WeaponSet.new active_weapon secondary_weapon)
+   in
+      {
+         id = (toString add_char.ix),
+         name = add_char.nam,
+         icon = add_char.ico,
+         portrait = add_char.prt,
+         location = add_char.lc,
+         health = add_char.hea,
+         attributes = add_char.att,
+         statistics = (Struct.Statistics.new add_char.att weapon_set),
+         player_id = add_char.pla,
+         enabled = add_char.ena,
+         weapons = weapon_set
+      }
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : (
-      String -> -- id
-      String -> -- name
-      String -> -- icon
-      String -> -- portrait
-      Struct.Location.Type -> -- location
-      Int -> -- health
-      String -> -- player_id
-      Bool -> -- enabled
-      Struct.Attributes.Type ->
-      Struct.WeaponSet.Type ->
-      Type
-   )
-new
-   id name icon portrait
-   location health
-   player_id enabled
-   attributes weapons =
-   {
-      id = id,
-      name = name,
-      icon = icon,
-      portrait = portrait,
-      location = location,
-      health = health,
-      attributes = attributes,
-      statistics =
-         (Struct.Statistics.new
-            attributes
-            weapons
-         ),
-      player_id = player_id,
-      enabled = enabled,
-      weapons = weapons
-   }
-
 get_ref : Type -> Ref
 get_ref c = c.id
 
@@ -133,3 +141,26 @@ set_weapons weapons char =
             weapons
          )
    }
+
+decoder : (
+      (Struct.Weapon.Ref -> Struct.Weapon.Type) ->
+      (Json.Decode.Decoder Type)
+   )
+decoder get_weapon =
+   (Json.Decode.map
+      (finish_decoding get_weapon)
+      (Json.Decode.Pipeline.decode
+         PartiallyDecoded
+         |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "ico" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "prt" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "lc" (Struct.Location.decoder))
+         |> (Json.Decode.Pipeline.required "hea" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "pla" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "ena" Json.Decode.bool)
+         |> (Json.Decode.Pipeline.required "att" (Struct.Attributes.decoder))
+         |> (Json.Decode.Pipeline.required "awp" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "swp" Json.Decode.int)
+      )
+   )
