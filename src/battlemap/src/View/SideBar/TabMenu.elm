@@ -16,6 +16,7 @@ import Util.Html
 import View.SideBar.TabMenu.Characters
 import View.SideBar.TabMenu.Settings
 import View.SideBar.TabMenu.Status
+import View.SideBar.TabMenu.Timeline
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -109,6 +110,12 @@ get_html model =
                      [
                         (get_active_tab_selector_html Struct.UI.SettingsTab),
                         (View.SideBar.TabMenu.Settings.get_html model)
+                     ]
+
+                  (Just Struct.UI.TimelineTab) ->
+                     [
+                        (get_active_tab_selector_html Struct.UI.TimelineTab),
+                        (View.SideBar.TabMenu.Timeline.get_html model)
                      ]
 
                   Nothing -> [(get_inactive_tab_selector_html)]

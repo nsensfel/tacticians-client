@@ -34,6 +34,7 @@ type Tab =
    StatusTab
    | CharactersTab
    | SettingsTab
+   | TimelineTab
 
 type Action =
    UsedManualControls
@@ -91,10 +92,11 @@ to_string tab =
       StatusTab -> "Status"
       CharactersTab -> "Characters"
       SettingsTab -> "Settings"
+      TimelineTab -> "Timeline"
 
 get_all_tabs : (List Tab)
 get_all_tabs =
-   [StatusTab, CharactersTab, SettingsTab]
+   [StatusTab, CharactersTab, SettingsTab, TimelineTab]
 
 -- ManualControls --------------------------------------------------------------
 has_manual_controls_enabled : Type -> Bool

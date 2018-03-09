@@ -10,6 +10,7 @@ module Struct.Model exposing
 
 -- Elm -------------------------------------------------------------------------
 import Dict
+import Array
 
 -- Battlemap -------------------------------------------------------------------
 import Data.Weapons
@@ -17,6 +18,7 @@ import Data.Weapons
 import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
+import Struct.TurnResult
 import Struct.Error
 import Struct.UI
 import Struct.Weapon
@@ -32,7 +34,8 @@ type alias Type =
       error: (Maybe Struct.Error.Type),
       player_id: String,
       ui: Struct.UI.Type,
-      char_turn: Struct.CharacterTurn.Type
+      char_turn: Struct.CharacterTurn.Type,
+      timeline: (Array.Array Struct.TurnResult.Type)
    }
 
 --------------------------------------------------------------------------------
@@ -51,7 +54,8 @@ new =
       error = Nothing,
       player_id = "0",
       ui = (Struct.UI.default),
-      char_turn = (Struct.CharacterTurn.new)
+      char_turn = (Struct.CharacterTurn.new),
+      timeline = (Array.empty)
    }
 
 add_character :  Struct.Character.Type -> Type -> Type

@@ -4,6 +4,7 @@ module Struct.Character exposing
       Ref,
       get_ref,
       get_player_id,
+      get_name,
       get_icon_id,
       get_portrait_id,
       get_current_health,
@@ -97,6 +98,9 @@ finish_decoding get_weapon add_char =
 --------------------------------------------------------------------------------
 get_ref : Type -> Ref
 get_ref c = c.id
+
+get_name : Type -> String
+get_name c = c.name
 
 get_player_id : Type -> String
 get_player_id c = c.player_id

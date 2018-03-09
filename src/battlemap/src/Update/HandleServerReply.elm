@@ -1,6 +1,8 @@
 module Update.HandleServerReply exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
+import Array
+
 import Http
 
 -- Battlemap -------------------------------------------------------------------
@@ -10,6 +12,7 @@ import Struct.Error
 import Struct.Event
 import Struct.Model
 import Struct.ServerReply
+import Struct.TurnResult
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -50,6 +53,26 @@ set_map map current_state =
             Nothing
          )
 
+add_to_timeline : (
+      (List Struct.TurnResult.Type) ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type))
+   )
+add_to_timeline turn_results current_state =
+   case current_state of
+      (_, (Just _)) -> current_state
+      (model, _) ->
+         (
+            {model |
+               timeline =
+                  (Array.append
+                     model.timeline
+                     (Array.fromList turn_results)
+                  )
+            },
+            Nothing
+         )
+
 apply_command : (
       Struct.ServerReply.Type ->
       (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
@@ -63,7 +86,8 @@ apply_command command current_state =
       (Struct.ServerReply.SetMap map) ->
          (set_map map current_state)
 
-      (Struct.ServerReply.TurnResults results) -> current_state
+      (Struct.ServerReply.TurnResults results) ->
+         (add_to_timeline results current_state)
 
       Struct.ServerReply.Okay -> current_state
 
