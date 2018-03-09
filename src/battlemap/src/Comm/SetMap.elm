@@ -1,4 +1,4 @@
-module Send.SetMap exposing (decode)
+module Comm.SetMap exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode

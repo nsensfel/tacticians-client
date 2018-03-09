@@ -4,7 +4,7 @@ module Update.EndTurn exposing (apply_to)
 import Dict
 
 -- Struct.Battlemap -------------------------------------------------------------------
-import Send.CharacterTurn
+import Comm.CharacterTurn
 
 import Struct.Character
 import Struct.CharacterTurn
@@ -23,7 +23,7 @@ make_it_so : (
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 make_it_so model char nav =
-   case (Send.CharacterTurn.try model) of
+   case (Comm.CharacterTurn.try model) of
       (Just cmd) ->
          (
             (Struct.Model.reset

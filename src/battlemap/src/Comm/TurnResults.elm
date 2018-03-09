@@ -1,42 +1,27 @@
-module Send.LoadBattlemap exposing (try)
+module Comm.TurnResults exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
-import Json.Encode
+import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
-import Constants.IO
-
-import Send.Send
-
-import Struct.Event
-import Struct.Model
+import Struct.ServerReply
+import Struct.TurnResult
 
 --------------------------------------------------------------------------------
--- TYPES ------------------------------------------------------------------------
+-- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try_encoding : Struct.Model.Type -> (Maybe Json.Encode.Value)
-try_encoding model =
-   (Just
-      (Json.Encode.object
-         [
-            ("stk", (Json.Encode.string "0")),
-            ("pid", (Json.Encode.string model.player_id)),
-            ("bmi", (Json.Encode.string "0"))
-         ]
-      )
-   )
+internal_decoder : (List Struct.TurnResult.Type) -> Struct.ServerReply.Type
+internal_decoder trl = (Struct.ServerReply.TurnResults trl)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
-try model =
-   (Send.Send.try_sending
-      model
-      Constants.IO.battlemap_loading_handler
-      try_encoding
+decode : (Json.Decode.Decoder Struct.ServerReply.Type)
+decode =
+   (Json.Decode.map
+      (internal_decoder)
+      (Json.Decode.field "cnt" (Json.Decode.list Struct.TurnResult.decoder))
    )

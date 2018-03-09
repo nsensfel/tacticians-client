@@ -1,40 +1,42 @@
-module Send.AddChar exposing (decode)
+module Comm.LoadBattlemap exposing (try)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
-
-import Json.Decode
+import Json.Encode
 
 -- Battlemap -------------------------------------------------------------------
-import Data.Weapons
+import Constants.IO
 
-import Struct.Character
+import Comm.Send
+
+import Struct.Event
 import Struct.Model
-import Struct.ServerReply
-import Struct.Weapon
 
 --------------------------------------------------------------------------------
--- TYPES -----------------------------------------------------------------------
+-- TYPES ------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-weapon_getter : Struct.Model.Type -> Struct.Weapon.Ref -> Struct.Weapon.Type
-weapon_getter model ref =
-   case (Dict.get ref model.weapons) of
-      (Just w) -> w
-      Nothing -> Data.Weapons.none
-
-internal_decoder : Struct.Character.Type -> Struct.ServerReply.Type
-internal_decoder char = (Struct.ServerReply.AddCharacter char)
+try_encoding : Struct.Model.Type -> (Maybe Json.Encode.Value)
+try_encoding model =
+   (Just
+      (Json.Encode.object
+         [
+            ("stk", (Json.Encode.string "0")),
+            ("pid", (Json.Encode.string model.player_id)),
+            ("bmi", (Json.Encode.string "0"))
+         ]
+      )
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : (Struct.Model.Type -> (Json.Decode.Decoder Struct.ServerReply.Type))
-decode model =
-   (Json.Decode.map
-      (internal_decoder)
-      (Struct.Character.decoder (weapon_getter model))
+try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
+try model =
+   (Comm.Send.try_sending
+      model
+      Constants.IO.battlemap_loading_handler
+      try_encoding
    )

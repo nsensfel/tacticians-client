@@ -2,7 +2,7 @@ module Update.SendLoadBattlemapRequest exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 
 -- Battlemap -------------------------------------------------------------------
-import Send.LoadBattlemap
+import Comm.LoadBattlemap
 
 import Struct.Event
 import Struct.Model
@@ -21,7 +21,7 @@ apply_to : (
 apply_to model =
    (
       model,
-      (case (Send.LoadBattlemap.try model) of
+      (case (Comm.LoadBattlemap.try model) of
          (Just cmd) -> cmd
          Nothing -> Cmd.none
       )

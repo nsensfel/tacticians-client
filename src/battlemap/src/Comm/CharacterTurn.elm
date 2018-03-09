@@ -1,4 +1,4 @@
-module Send.CharacterTurn exposing (try)
+module Comm.CharacterTurn exposing (try)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Encode
@@ -6,7 +6,7 @@ import Json.Encode
 -- Battlemap -------------------------------------------------------------------
 import Constants.IO
 
-import Send.Send
+import Comm.Send
 
 import Struct.Character
 import Struct.CharacterTurn
@@ -123,7 +123,7 @@ try_encoding model =
 --------------------------------------------------------------------------------
 try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
 try model =
-   (Send.Send.try_sending
+   (Comm.Send.try_sending
       model
       Constants.IO.character_turn_handler
       try_encoding

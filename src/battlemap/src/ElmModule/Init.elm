@@ -1,7 +1,7 @@
 module ElmModule.Init exposing (init)
 
 -- Battlemap -------------------------------------------------------------------
-import Send.LoadBattlemap
+import Comm.LoadBattlemap
 
 import Struct.Event
 import Struct.Model
@@ -20,7 +20,7 @@ init =
    in
       (
          model,
-         (case (Send.LoadBattlemap.try model) of
+         (case (Comm.LoadBattlemap.try model) of
             (Just cmd) -> cmd
             Nothing -> Cmd.none
          )

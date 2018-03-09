@@ -9,7 +9,6 @@ module Struct.TurnResult exposing
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
-import Json.Decode.Pipeline
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Direction
