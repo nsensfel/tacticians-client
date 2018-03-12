@@ -83,7 +83,7 @@
 
 .battlemap-tabmenu-content
 {
-   flex: initial;
+   flex: 1;
 }
 
 /** General *******************************************************************/
@@ -125,6 +125,28 @@
    border-radius: 25px 25px 0 25px;
    width: 100px;
    height: 100px;
+}
+
+/**** Timeline Tab */
+.battlemap-timeline-movement,
+.battlemap-timeline-attack,
+.battlemap-timeline-weapon-switch
+{
+   border-radius: 6px;
+   padding: 1em;
+   margin: 0.5em 0.5em 0 0.5em;
+   text-align: center;
+   box-shadow:
+      1px 0px 2px #888,
+      -1px 0px 2px #888,
+      0px 1px 2px #888,
+      0px -1px 2px #888;
+   background-color: #EEE;
+}
+
+.battlemap-tabmenu-timeline-tab
+{
+   background-color: #AAA;
 }
 
 /******************************************************************************/
