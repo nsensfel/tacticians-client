@@ -22,13 +22,26 @@ get_character_portrait_html : (
 get_character_portrait_html char =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-character-portrait"),
          (Html.Attributes.class
             (
                "asset-character-portrait-"
                ++ (Struct.Character.get_portrait_id char)
             )
          ),
+         (Html.Attributes.class "battlemap-character-portrait")
+      ]
+      [
+      ]
+   )
+
+get_character_element_html : (
+      Struct.Character.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_character_element_html char =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-characters-element"),
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
             (Struct.Event.CharacterInfoRequested
@@ -37,8 +50,29 @@ get_character_portrait_html char =
          )
       ]
       [
+         (get_character_portrait_html char),
+         (Html.text
+            (
+               (Struct.Character.get_name char)
+               ++ ": "
+               ++ (toString (Struct.Character.get_current_health char))
+               ++ " HP, "
+               ++
+               (
+                  if (Struct.Character.is_enabled char)
+                  then
+                     "active"
+                  else
+                     "inactive"
+               )
+               ++ " (Player "
+               ++ (Struct.Character.get_player_id char)
+               ++ ")."
+            )
+         )
       ]
    )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -50,7 +84,7 @@ get_html model =
          (Html.Attributes.class "battlemap-tabmenu-characters-tab")
       ]
       (List.map
-         (get_character_portrait_html)
+         (get_character_element_html)
          (Dict.values model.characters)
       )
    )

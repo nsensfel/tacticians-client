@@ -127,10 +127,8 @@
    height: 100px;
 }
 
-/**** Timeline Tab */
-.battlemap-timeline-movement,
-.battlemap-timeline-attack,
-.battlemap-timeline-weapon-switch
+.battlemap-timeline-element,
+.battlemap-characters-element
 {
    border-radius: 6px;
    padding: 1em;
@@ -144,11 +142,18 @@
    background-color: #EEE;
 }
 
-.battlemap-tabmenu-timeline-tab
+.battlemap-tabmenu-timeline-tab,
+.battlemap-tabmenu-characters-tab
 {
    background-color: #AAA;
 }
 
+.battlemap-tabmenu-characters-tab .battlemap-character-portrait
+{
+   width: 64px;
+   height: 64px;
+   float: left;
+}
 /******************************************************************************/
 /** Main View Elements ********************************************************/
 /******************************************************************************/

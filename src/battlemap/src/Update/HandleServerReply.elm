@@ -13,6 +13,7 @@ import Struct.Event
 import Struct.Model
 import Struct.ServerReply
 import Struct.TurnResult
+import Struct.UI
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -68,7 +69,8 @@ add_to_timeline turn_results current_state =
                   (Array.append
                      model.timeline
                      (Array.fromList turn_results)
-                  )
+                  ),
+               ui = (Struct.UI.set_displayed_tab model.ui Struct.UI.TimelineTab)
             },
             Nothing
          )

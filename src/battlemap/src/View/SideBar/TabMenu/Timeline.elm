@@ -34,6 +34,7 @@ get_attack_html model attack =
       ((Just atkchar), (Just defchar)) ->
          (Html.div
             [
+               (Html.Attributes.class "battlemap-timeline-element"),
                (Html.Attributes.class "battlemap-timeline-attack")
             ]
             [
@@ -51,6 +52,7 @@ get_attack_html model attack =
       _ ->
          (Html.div
             [
+               (Html.Attributes.class "battlemap-timeline-element"),
                (Html.Attributes.class "battlemap-timeline-attack")
             ]
             [
@@ -68,6 +70,7 @@ get_movement_html model movement =
       (Just char) ->
          (Html.div
             [
+               (Html.Attributes.class "battlemap-timeline-element"),
                (Html.Attributes.class "battlemap-timeline-movement")
             ]
             [
@@ -87,6 +90,7 @@ get_movement_html model movement =
       _ ->
          (Html.div
             [
+               (Html.Attributes.class "battlemap-timeline-element"),
                (Html.Attributes.class "battlemap-timeline-movement")
             ]
             [
@@ -104,6 +108,7 @@ get_weapon_switch_html model weapon_switch =
       (Just char) ->
          (Html.div
             [
+               (Html.Attributes.class "battlemap-timeline-element"),
                (Html.Attributes.class "battlemap-timeline-weapon-switch")
             ]
             [
@@ -119,6 +124,7 @@ get_weapon_switch_html model weapon_switch =
       _ ->
          (Html.div
             [
+               (Html.Attributes.class "battlemap-timeline-element"),
                (Html.Attributes.class "battlemap-timeline-weapon-switch")
             ]
             [
