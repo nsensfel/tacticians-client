@@ -96,6 +96,9 @@
    width: inherit;
 }
 
+.battlemap-float-left { float: left; }
+.battlemap-float-right { float: right; }
+
 .battlemap-manual-controls
 {
    max-height: 30%;
@@ -117,7 +120,8 @@
    flex-wrap: wrap;
 }
 
-.battlemap-character-portrait
+.battlemap-character-portrait,
+.battlemap-timeline-portrait
 {
    margin: 0.5em;
    box-sizing: border-box;
@@ -153,6 +157,12 @@
    width: 64px;
    height: 64px;
    float: left;
+}
+
+.battlemap-timeline-portrait
+{
+   width: 64px;
+   height: 64px;
 }
 /******************************************************************************/
 /** Main View Elements ********************************************************/

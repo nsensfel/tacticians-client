@@ -1,8 +1,8 @@
 module Struct.Attack exposing
    (
       Type,
-      Order,
-      Precision,
+      Order(..),
+      Precision(..),
       apply_to_characters,
       decoder
    )
