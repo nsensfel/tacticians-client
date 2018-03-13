@@ -1,27 +1,27 @@
-module Struct.ServerReply exposing (Type(..))
+module Comm.SetTimeline exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
+import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Battlemap
-import Struct.Character
+import Struct.ServerReply
 import Struct.TurnResult
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
-type Type =
-   Okay
-   | AddCharacter Struct.Character.Type
-   | SetMap Struct.Battlemap.Type
-   | TurnResults (List Struct.TurnResult.Type)
-   | SetTimeline (List Struct.TurnResult.Type)
-
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+internal_decoder : (List Struct.TurnResult.Type) -> Struct.ServerReply.Type
+internal_decoder trl = (Struct.ServerReply.SetTimeline trl)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+decode : (Json.Decode.Decoder Struct.ServerReply.Type)
+decode =
+   (Json.Decode.map
+      (internal_decoder)
+      (Json.Decode.field "cnt" (Json.Decode.list Struct.TurnResult.decoder))
+   )

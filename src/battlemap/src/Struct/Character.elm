@@ -8,6 +8,7 @@ module Struct.Character exposing
       get_icon_id,
       get_portrait_id,
       get_current_health,
+      set_current_health,
       get_location,
       set_location,
       get_attributes,
@@ -113,6 +114,9 @@ get_portrait_id c = c.portrait
 
 get_current_health : Type -> Int
 get_current_health c = c.health
+
+set_current_health : Int -> Type -> Type
+set_current_health health c = {c | health = health}
 
 get_location : Type -> Struct.Location.Type
 get_location t = t.location

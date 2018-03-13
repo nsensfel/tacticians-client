@@ -1,9 +1,19 @@
-module Struct.Attack exposing (Type, Order, Precision, decoder)
+module Struct.Attack exposing
+   (
+      Type,
+      Order,
+      Precision,
+      apply_to_characters,
+      decoder
+   )
 
 -- Elm -------------------------------------------------------------------------
+import Dict
+
 import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Character
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -62,7 +72,44 @@ decoder =
       (Json.Decode.field "dmg" (Json.Decode.int))
    )
 
+apply_damage_to_character : (
+      Int ->
+      (Maybe Struct.Character.Type) ->
+      (Maybe Struct.Character.Type)
+   )
+apply_damage_to_character damage maybe_character =
+   case maybe_character of
+      Nothing -> Nothing
+
+      (Just char) ->
+         (Just
+            (Struct.Character.set_current_health
+               ((Struct.Character.get_current_health char) - damage)
+               char
+            )
+         )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+apply_to_characters : (
+      Struct.Character.Ref ->
+      Struct.Character.Ref ->
+      Type ->
+      (Dict.Dict Struct.Character.Ref Struct.Character.Type) ->
+      (Dict.Dict Struct.Character.Ref Struct.Character.Type)
+   )
+apply_to_characters attacker_ref defender_ref attack characters =
+   if ((attack.order == Counter) == attack.parried)
+   then
+      (Dict.update
+         defender_ref
+         (apply_damage_to_character attack.damage)
+         characters
+      )
+   else
+      (Dict.update
+         attacker_ref
+         (apply_damage_to_character attack.damage)
+         characters
+      )

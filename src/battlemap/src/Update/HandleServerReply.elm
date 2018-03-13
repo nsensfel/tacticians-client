@@ -22,7 +22,6 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
 add_character : (
       Struct.Character.Type ->
       (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
@@ -62,16 +61,45 @@ add_to_timeline : (
 add_to_timeline turn_results current_state =
    case current_state of
       (_, (Just _)) -> current_state
+
+      (model, _) ->
+         let
+            updated_characters =
+               (List.foldl
+                  (Struct.TurnResult.apply_to_characters)
+                  model.characters
+                  turn_results
+               )
+         in
+            (
+               {model |
+                  timeline =
+                     (Array.append
+                        model.timeline
+                        (Array.fromList turn_results)
+                     ),
+                  ui =
+                     (Struct.UI.set_displayed_tab
+                        model.ui
+                        Struct.UI.TimelineTab
+                     ),
+                  characters = updated_characters
+               },
+               Nothing
+            )
+
+set_timeline : (
+      (List Struct.TurnResult.Type) ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type))
+   )
+set_timeline turn_results current_state =
+   case current_state of
+      (_, (Just _)) -> current_state
+
       (model, _) ->
          (
-            {model |
-               timeline =
-                  (Array.append
-                     model.timeline
-                     (Array.fromList turn_results)
-                  ),
-               ui = (Struct.UI.set_displayed_tab model.ui Struct.UI.TimelineTab)
-            },
+            {model | timeline = (Array.fromList turn_results)},
             Nothing
          )
 
@@ -90,6 +118,9 @@ apply_command command current_state =
 
       (Struct.ServerReply.TurnResults results) ->
          (add_to_timeline results current_state)
+
+      (Struct.ServerReply.SetTimeline timeline) ->
+         (set_timeline timeline current_state)
 
       Struct.ServerReply.Okay -> current_state
 

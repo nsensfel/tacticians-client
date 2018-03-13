@@ -4,16 +4,21 @@ module Struct.TurnResult exposing
       Attack,
       Movement,
       WeaponSwitch,
+      apply_to_characters,
       decoder
    )
 
 -- Elm -------------------------------------------------------------------------
+import Dict
+
 import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Attack
+import Struct.Character
 import Struct.Direction
 import Struct.Location
-import Struct.Attack
+import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -45,6 +50,50 @@ type Type =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+apply_movement_to_character : (
+      Movement ->
+      (Maybe Struct.Character.Type) ->
+      (Maybe Struct.Character.Type)
+   )
+apply_movement_to_character movement maybe_char =
+   case maybe_char of
+      Nothing -> Nothing
+
+      (Just char) ->
+         (Just (Struct.Character.set_location movement.destination char))
+
+apply_weapon_switch_to_character : (
+      (Maybe Struct.Character.Type) ->
+      (Maybe Struct.Character.Type)
+   )
+apply_weapon_switch_to_character maybe_char =
+   case maybe_char of
+      Nothing -> Nothing
+
+      (Just char) ->
+         (Just
+            (Struct.Character.set_weapons
+               (Struct.WeaponSet.switch_weapons
+                  (Struct.Character.get_weapons char)
+               )
+               char
+            )
+         )
+
+apply_attack_to_characters : (
+      Attack ->
+      (Dict.Dict Struct.Character.Ref Struct.Character.Type) ->
+      (Dict.Dict Struct.Character.Ref Struct.Character.Type)
+   )
+apply_attack_to_characters attack characters =
+   (List.foldl
+      (Struct.Attack.apply_to_characters
+         (toString attack.attacker_index)
+         (toString attack.defender_index)
+      )
+      characters
+      attack.sequence
+   )
 
 movement_decoder : (Json.Decode.Decoder Movement)
 movement_decoder =
@@ -114,6 +163,30 @@ internal_decoder kind =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+apply_to_characters : (
+      Type ->
+      (Dict.Dict Struct.Character.Ref Struct.Character.Type) ->
+      (Dict.Dict Struct.Character.Ref Struct.Character.Type)
+   )
+apply_to_characters turn_result characters =
+   case turn_result of
+      (Moved movement) ->
+         (Dict.update
+            (toString movement.character_index)
+            (apply_movement_to_character movement)
+            characters
+         )
+
+      (SwitchedWeapon weapon_switch) ->
+         (Dict.update
+            (toString weapon_switch.character_index)
+            (apply_weapon_switch_to_character)
+            characters
+         )
+
+      (Attacked attack) ->
+         (apply_attack_to_characters attack characters)
+
 decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.field "t" Json.Decode.string)

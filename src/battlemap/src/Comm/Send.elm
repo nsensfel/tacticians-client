@@ -7,8 +7,9 @@ import Json.Decode
 import Json.Encode
 
 -- Battlemap -------------------------------------------------------------------
-import Comm.SetMap
 import Comm.AddChar
+import Comm.SetMap
+import Comm.SetTimeline
 import Comm.TurnResults
 
 import Struct.Event
@@ -32,6 +33,7 @@ internal_decoder model reply_type =
       "add_char" -> (Comm.AddChar.decode model)
       "set_map" -> (Comm.SetMap.decode model)
       "turn_results" -> (Comm.TurnResults.decode)
+      "set_timeline" -> (Comm.SetTimeline.decode)
       other ->
          (Json.Decode.fail
             (
