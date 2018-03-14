@@ -41,20 +41,12 @@ get_title_html attacker defender =
 
 get_portrait_html : (
       Struct.Character.Type ->
-      Bool ->
       (Html.Html Struct.Event.Type)
    )
-get_portrait_html char float_left =
+get_portrait_html char =
    (Html.div
       [
          (Html.Attributes.class "battlemap-timeline-portrait"),
-         (
-            if (float_left)
-            then
-               (Html.Attributes.class "battlemap-float-left")
-            else
-               (Html.Attributes.class "battlemap-float-right")
-         ),
          (Html.Attributes.class
             (
                "asset-character-portrait-"
@@ -71,9 +63,9 @@ get_effect_text attack =
    (
       (
          case attack.precision of
-            Struct.Attack.Hit -> " hits for "
-            Struct.Attack.Graze -> " grazes for "
-            Struct.Attack.Miss -> " misses."
+            Struct.Attack.Hit -> " hit for "
+            Struct.Attack.Graze -> " grazed for "
+            Struct.Attack.Miss -> " missed."
       )
       ++
       (
@@ -86,7 +78,7 @@ get_effect_text attack =
                ++
                (
                   if (attack.critical)
-                  then " (Critical)."
+                  then " (Critical Hit)."
                   else "."
                )
             )
@@ -113,25 +105,25 @@ get_attack_html attacker defender attack =
                   (Struct.Attack.Counter, True) ->
                      (
                         defender_name
-                        ++ " attempts to strike back, but "
+                        ++ " attempted to strike back, but "
                         ++ attacker_name
-                        ++ " parries, and "
+                        ++ " parried, and "
                         ++ (get_effect_text attack)
                      )
 
                   (Struct.Attack.Counter, _) ->
                      (
                         defender_name
-                        ++ " strikes back, and "
+                        ++ " striked back, and "
                         ++ (get_effect_text attack)
                      )
 
                   (_, True) ->
                      (
                         attacker_name
-                        ++ " attempts a hit, but "
+                        ++ " attempted a hit, but "
                         ++ defender_name
-                        ++ " parries, and "
+                        ++ " parried, and "
                         ++ (get_effect_text attack)
                      )
 
@@ -165,8 +157,8 @@ get_html model attack =
             ]
             (
                [
-                  (get_portrait_html atkchar True),
-                  (get_portrait_html defchar False),
+                  (get_portrait_html atkchar),
+                  (get_portrait_html defchar),
                   (get_title_html atkchar defchar)
                ]
                ++

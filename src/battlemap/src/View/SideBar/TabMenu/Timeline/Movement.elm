@@ -16,6 +16,24 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+get_portrait_html : (
+      Struct.Character.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_portrait_html char =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-timeline-portrait"),
+         (Html.Attributes.class
+            (
+               "asset-character-portrait-"
+               ++ (Struct.Character.get_portrait_id char)
+            )
+         )
+      ]
+      [
+      ]
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -34,6 +52,7 @@ get_html model movement =
                (Html.Attributes.class "battlemap-timeline-movement")
             ]
             [
+               (get_portrait_html char),
                (Html.text
                   (
                      (Struct.Character.get_name char)

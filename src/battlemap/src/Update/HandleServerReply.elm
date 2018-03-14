@@ -75,8 +75,8 @@ add_to_timeline turn_results current_state =
                {model |
                   timeline =
                      (Array.append
-                        model.timeline
                         (Array.fromList turn_results)
+                        model.timeline
                      ),
                   ui =
                      (Struct.UI.set_displayed_tab
