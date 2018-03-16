@@ -91,31 +91,28 @@ get_movement_cost_function : (
       Int
    )
 get_movement_cost_function bmap start_loc char_list loc =
-   if
-      (
-         (Struct.Location.get_ref start_loc)
-         ==
-         (Struct.Location.get_ref loc)
-      )
+   if (has_location bmap loc)
    then
-      0
-   else
-      if (has_location bmap loc)
-      then
-         case
-            (Array.get (location_to_index bmap loc) bmap.content)
-         of
-            (Just tile) ->
-               if
-                  (List.any
-                     (\c -> ((Struct.Character.get_location c) == loc))
-                     char_list
+      case
+         (Array.get (location_to_index bmap loc) bmap.content)
+      of
+         (Just tile) ->
+            if
+               (List.any
+                  (
+                     \c ->
+                        (
+                           ((Struct.Character.get_location c) == loc)
+                           && (loc /= start_loc)
+                        )
                   )
-               then
-                  Constants.Movement.cost_when_occupied_tile
-               else
-                  (Struct.Tile.get_cost tile)
+                  char_list
+               )
+            then
+               Constants.Movement.cost_when_occupied_tile
+            else
+               (Struct.Tile.get_cost tile)
 
-            Nothing -> Constants.Movement.cost_when_out_of_bounds
-      else
-         Constants.Movement.cost_when_out_of_bounds
+         Nothing -> Constants.Movement.cost_when_out_of_bounds
+   else
+      Constants.Movement.cost_when_out_of_bounds
