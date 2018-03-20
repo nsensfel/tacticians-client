@@ -179,10 +179,34 @@ get_statistics_html stats =
       ]
    )
 
-get_weapon_html : (
-      Struct.Weapon.Type ->
-      (Html.Html Struct.Event.Type)
+get_weapon_name_html : Struct.Weapon.Type ->  (Html.Html Struct.Event.Type)
+get_weapon_name_html wp =
+   (Html.text
+      (
+         (Struct.Weapon.get_name wp)
+         ++ " ("
+         ++
+         (case (Struct.Weapon.get_range_modifier wp) of
+            Struct.Weapon.Short -> "Short"
+            Struct.Weapon.Long -> "Long"
+         )
+         ++ " "
+         ++
+         (case (Struct.Weapon.get_damage_modifier wp) of
+            Struct.Weapon.Heavy -> "Heavy"
+            Struct.Weapon.Light -> "Light"
+         )
+         ++ " "
+         ++
+         (case (Struct.Weapon.get_range_type wp) of
+            Struct.Weapon.Ranged -> "Ranged"
+            Struct.Weapon.Melee -> "Melee"
+         )
+         ++ ")"
+      )
    )
+
+get_weapon_html : Struct.Weapon.Type -> (Html.Html Struct.Event.Type)
 get_weapon_html wp =
    (Html.ul
       [
@@ -190,32 +214,7 @@ get_weapon_html wp =
       [
          (Html.li
             []
-            [
-               (Html.text
-                  (
-                     (Struct.Weapon.get_name wp)
-                     ++ " ("
-                     ++
-                     (case (Struct.Weapon.get_range_modifier wp) of
-                        Struct.Weapon.Short -> "Short"
-                        Struct.Weapon.Long -> "Long"
-                     )
-                     ++ " "
-                     ++
-                     (case (Struct.Weapon.get_damage_modifier wp) of
-                        Struct.Weapon.Heavy -> "Heavy"
-                        Struct.Weapon.Light -> "Light"
-                     )
-                     ++ " "
-                     ++
-                     (case (Struct.Weapon.get_range_type wp) of
-                        Struct.Weapon.Ranged -> "Ranged"
-                        Struct.Weapon.Melee -> "Melee"
-                     )
-                     ++ ")"
-                  )
-               )
-            ]
+            [ (get_weapon_name_html wp) ]
          ),
          (Html.li
             []
@@ -341,6 +340,17 @@ get_html model char =
                   [
                      (get_weapon_html
                         (Struct.WeaponSet.get_active_weapon
+                           (Struct.Character.get_weapons char)
+                        )
+                     )
+                  ]
+               ),
+               (Html.dt [] [(Html.text "Secondary Weapon:")]),
+               (Html.dd
+                  []
+                  [
+                     (get_weapon_html
+                        (Struct.WeaponSet.get_secondary_weapon
                            (Struct.Character.get_weapons char)
                         )
                      )
