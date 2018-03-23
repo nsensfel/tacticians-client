@@ -79,6 +79,21 @@
 .battlemap-tabmenu-selector button
 {
    flex: 1;
+
+   text-transform: uppercase;
+   border-radius: 5px;
+   border: 1px solid rgba(0, 0, 0, 0.3);
+   border-bottom-width: 3px;
+}
+
+.battlemap-tabmenu-selector button:hover
+{
+   border-color: rgba(0, 0, 0, 0.6);
+}
+
+.battlemap-tabmenu-selector button:active
+{
+   border-color: rgba(0, 0, 0, 0.9);
 }
 
 .battlemap-tabmenu-content
