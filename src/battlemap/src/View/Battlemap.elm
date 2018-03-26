@@ -83,17 +83,22 @@ get_html model =
       [
          (Html.Attributes.class "battlemap-actual"),
          (Html.Attributes.style
-            [
-               (
-                  "transform",
-                  (
-                     "scale("
-                     ++
-                     (toString (Struct.UI.get_zoom_level model.ui))
-                     ++ ")"
-                  )
-               )
-            ]
+            (
+               if ((Struct.UI.get_zoom_level model.ui) == 1)
+               then []
+               else
+                  [
+                     (
+                        "transform",
+                        (
+                           "scale("
+                           ++
+                           (toString (Struct.UI.get_zoom_level model.ui))
+                           ++ ")"
+                        )
+                     )
+                  ]
+            )
          )
       ]
       (

@@ -25,6 +25,8 @@
 
    overflow: auto;
    width: inherit;
+   /*** Otherwise, it won't display correctly without 'transform: scale' ***/
+   position: relative;
 }
 
 .battlemap-footer
