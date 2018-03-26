@@ -6,6 +6,8 @@ import Html.Attributes
 import Html.Events
 
 -- Battlemap -------------------------------------------------------------------
+import Constants.UI
+
 import Struct.Event
 import Struct.Location
 import Struct.Tile
@@ -35,20 +37,19 @@ get_html tile =
             (Html.Attributes.class "clickable"),
             (Html.Events.onClick
                (Struct.Event.TileSelected (Struct.Location.get_ref tile_loc))
+            ),
+            (Html.Attributes.style
+               [
+                  (
+                     "top",
+                     ((toString (tile_loc.y * Constants.UI.tile_size)) ++ "px")
+                  ),
+                  (
+                     "left",
+                     ((toString (tile_loc.x * Constants.UI.tile_size)) ++ "px")
+                  )
+               ]
             )
---            ),
---            (Html.Attributes.style
---               [
---                  (
---                     "top",
---                     ((toString (tile_loc.y * Constants.UI.tile_size)) ++ "px")
---                  ),
---                  (
---                     "left",
---                     ((toString (tile_loc.x * Constants.UI.tile_size)) ++ "px")
---                  )
---               ]
---            )
          ]
          [
          ]

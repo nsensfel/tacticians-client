@@ -189,11 +189,11 @@
    height: 32px;
    width: 32px;
    /** Fixes odd behavior of table cell being resized. **/
-   min-width: 32px;
-   max-width: 32px;
+   /* min-width: 32px; */
+   /* max-width: 32px; */
 }
 
-.battlemap-tile-icon       {z-index: 0; display: table-cell;}
+.battlemap-tile-icon       {z-index: 0; position: absolute;}
 .battlemap-marker-icon     {z-index: 1;}
 .battlemap-character-icon  {z-index: 2;}
 .battlemap-path-icon       {z-index: 3; color: white;}
@@ -206,12 +206,12 @@
 }
 .battlemap-tiles-layer
 {
-   display: table;
+   /*display: table; */
 }
 
 .battlemap-tiles-layer-row
 {
-   display: table-row;
+  /* display: table-row; */
 }
 
 .battlemap-character-icon
@@ -224,8 +224,9 @@
 .battlemap-marker-icon
 {
    box-sizing: border-box;
-   min-width: 24px;
-   max-width: 24px;
+   width: 24px;
+   /*min-width: 24px;
+   max-width: 24px; */
    margin: 4px 0 0 4px;
    height: 24px;
    border-radius: 4px;
@@ -252,8 +253,9 @@
 .battlemap-can-attack-marker
 {
    background-color:rgba(0,0,0,0.7);
-   min-width: 28px;
-   max-width: 28px;
+   width: 28px;
+   /*min-width: 28px;
+   max-width: 28px;*/
    height: 28px;
    margin: 2px 0 0 2px;
    border-radius: 0;
