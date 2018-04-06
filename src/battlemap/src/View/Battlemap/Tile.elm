@@ -16,6 +16,9 @@ import Struct.Tile
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+noise_function : Int -> Int -> Int -> Int
+noise_function a b c =
+   (round (pi * (radians (toFloat a)) * (radians (toFloat b)) * (toFloat c)))
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -39,9 +42,13 @@ get_html tile =
                   (toString
                      -- I don't like how Elm does random, let's get some noisy
                      -- function instead.
-                     (rem
-                        ((-1 * (tile_loc.x + tile_loc.y))^2)
-                        9
+                     (
+                        (noise_function
+                           tile_loc.x
+                           tile_loc.y
+                           (Struct.Tile.get_cost tile)
+                        )
+                        % 9
                      )
                   )
                )
