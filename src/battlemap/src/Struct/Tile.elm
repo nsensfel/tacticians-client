@@ -48,7 +48,9 @@ get_location : Type -> Struct.Location.Type
 get_location tile = tile.location
 
 get_icon_id : Type -> String
-get_icon_id tile = tile.icon_id
+get_icon_id tile =
+   -- Just to see how it looks with SVG
+   (toString (rem tile.crossing_cost 2))
 
 get_cost : Type -> Int
 get_cost tile = tile.crossing_cost

@@ -7,6 +7,7 @@ import Html.Events
 
 -- Battlemap -------------------------------------------------------------------
 import Constants.UI
+import Constants.IO
 
 import Struct.Event
 import Struct.Location
@@ -32,7 +33,18 @@ get_html tile =
             (Html.Attributes.class "battlemap-tile-icon"),
             (Html.Attributes.class "battlemap-tiled"),
             (Html.Attributes.class
-               ("asset-tile-" ++ (Struct.Tile.get_icon_id tile))
+               (
+                  "battlemap-tile-variant-"
+                  ++
+                  (toString
+                     -- I don't like how Elm does random, let's get some noisy
+                     -- function instead.
+                     (rem
+                        ((-1 * (tile_loc.x + tile_loc.y))^2)
+                        9
+                     )
+                  )
+               )
             ),
             (Html.Attributes.class "clickable"),
             (Html.Events.onClick
@@ -47,6 +59,15 @@ get_html tile =
                   (
                      "left",
                      ((toString (tile_loc.x * Constants.UI.tile_size)) ++ "px")
+                  ),
+                  (
+                     "background-image",
+                     (
+                        "url("
+                        ++ Constants.IO.tile_assets_url
+                        ++ (Struct.Tile.get_icon_id tile)
+                        ++".svg)"
+                     )
                   )
                ]
             )

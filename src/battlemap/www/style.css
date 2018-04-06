@@ -195,7 +195,17 @@
    /* max-width: 32px; */
 }
 
-.battlemap-tile-icon       {z-index: 0; position: absolute;}
+.battlemap-tile-variant-0  {background-position: 0    0;}
+.battlemap-tile-variant-1  {background-position: 32px 0;}
+.battlemap-tile-variant-2  {background-position: 64px 0;}
+.battlemap-tile-variant-3  {background-position: 0    32px;}
+.battlemap-tile-variant-4  {background-position: 32px 32px;}
+.battlemap-tile-variant-5  {background-position: 64px 32px;}
+.battlemap-tile-variant-6  {background-position: 0    64px;}
+.battlemap-tile-variant-7  {background-position: 32px 64px;}
+.battlemap-tile-variant-8  {background-position: 64px 64px;}
+
+.battlemap-tile-icon       {z-index: 0; position: absolute; background-size: 96px 96px;}
 .battlemap-marker-icon     {z-index: 1;}
 .battlemap-character-icon  {z-index: 2;}
 .battlemap-path-icon       {z-index: 3; color: white;}
