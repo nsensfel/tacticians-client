@@ -93,60 +93,57 @@ path_node_get_html : (
          (List (Html.Html Struct.Event.Type))
       )
    )
-path_node_get_html new_dir (curr_loc, prev_dir, curr_nodes) =
-   let
-      new_loc = (Struct.Location.neighbor curr_loc new_dir)
-   in
+path_node_get_html next_dir (curr_loc, curr_dir, curr_nodes) =
+   (
+      (Struct.Location.neighbor curr_loc next_dir),
+      next_dir,
       (
-         new_loc,
-         new_dir,
-         (
-            (Html.div
-               [
-                  (Html.Attributes.class "battlemap-path-icon"),
-                  (Html.Attributes.class "battlemap-tiled"),
-                  (Html.Attributes.class
-                     (
-                        "battlemap-path-icon-"
-                        ++
-                        (Struct.Direction.to_string prev_dir)
-                        ++
-                        (Struct.Direction.to_string new_dir)
-                     )
-                  ),
-                  (Html.Events.onClick
-                     (Struct.Event.TileSelected
-                        (Struct.Location.get_ref new_loc)
-                     )
-                  ),
-                  (Html.Attributes.style
-                     [
-                        (
-                           "top",
-                           (
-                              (toString (new_loc.y * Constants.UI.tile_size))
-                              ++
-                              "px"
-                           )
-                        ),
-                        (
-                           "left",
-                           (
-                              (toString (new_loc.x * Constants.UI.tile_size))
-                              ++
-                              "px"
-                           )
-                        )
-                     ]
+         (Html.div
+            [
+               (Html.Attributes.class "battlemap-path-icon"),
+               (Html.Attributes.class "battlemap-tiled"),
+               (Html.Attributes.class
+                  (
+                     "battlemap-path-icon-"
+                     ++
+                     (Struct.Direction.to_string curr_dir)
+                     ++
+                     (Struct.Direction.to_string next_dir)
                   )
-               ]
-               [
-               ]
-            )
-            ::
-            curr_nodes
+               ),
+               (Html.Events.onClick
+                  (Struct.Event.TileSelected
+                     (Struct.Location.get_ref curr_loc)
+                  )
+               ),
+               (Html.Attributes.style
+                  [
+                     (
+                        "top",
+                        (
+                           (toString (curr_loc.y * Constants.UI.tile_size))
+                           ++
+                           "px"
+                        )
+                     ),
+                     (
+                        "left",
+                        (
+                           (toString (curr_loc.x * Constants.UI.tile_size))
+                           ++
+                           "px"
+                        )
+                     )
+                  ]
+               )
+            ]
+            [
+            ]
          )
+         ::
+         curr_nodes
       )
+   )
 
 mark_the_spot : (
       Struct.Location.Type ->

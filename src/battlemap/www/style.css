@@ -207,8 +207,8 @@
 
 .battlemap-tile-icon       {z-index: 0; position: absolute; background-size: 96px 96px;}
 .battlemap-marker-icon     {z-index: 1;}
-.battlemap-character-icon  {z-index: 2;}
-.battlemap-path-icon       {z-index: 3; color: white;}
+.battlemap-path-icon       {z-index: 2;}
+.battlemap-character-icon  {z-index: 3;}
 
 .battlemap-marker-icon,
 .battlemap-character-icon,
@@ -293,47 +293,87 @@
 }
 
 /**** Path Icons **************************************************************/
-.battlemap-path-icon-NR:before,
-.battlemap-path-icon-LR:before,
-.battlemap-path-icon-RR:before,
-.battlemap-path-icon-UR:before,
-.battlemap-path-icon-DR:before
+.battlemap-path-icon
 {
-   content: "}";
+   background-image: url("/asset/svg/arrows.svg");
+   background-size: 96px 32px;
 }
 
-.battlemap-path-icon-NL:before,
-.battlemap-path-icon-LL:before,
-.battlemap-path-icon-RL:before,
-.battlemap-path-icon-UL:before,
-.battlemap-path-icon-DL:before
+.battlemap-path-icon-UR,
+.battlemap-path-icon-LD,
+.battlemap-path-icon-RD,
+.battlemap-path-icon-UL,
+.battlemap-path-icon-LU,
+.battlemap-path-icon-DR,
+.battlemap-path-icon-DL,
+.battlemap-path-icon-RU
 {
-   content: "{";
+   /*** Default is -^ ***/
+   background-position: 64px 0;
+}
+/*** DL/RU ***/
+
+.battlemap-path-icon-LU,
+.battlemap-path-icon-DR
+{
+   transform: rotate(90deg);
 }
 
-.battlemap-path-icon-NU:before,
-.battlemap-path-icon-LU:before,
-.battlemap-path-icon-RU:before,
-.battlemap-path-icon-UU:before,
-.battlemap-path-icon-DU:before
+.battlemap-path-icon-RD,
+.battlemap-path-icon-UL
 {
-   content: "^";
+   /***  ***/
+   transform: scale(1, -1);
 }
 
-.battlemap-path-icon-ND:before,
-.battlemap-path-icon-LD:before,
-.battlemap-path-icon-RD:before,
-.battlemap-path-icon-UD:before,
-.battlemap-path-icon-DD:before
+.battlemap-path-icon-UR,
+.battlemap-path-icon-LD
 {
-   content: "v";
+   /*** <| ***/
+   transform: rotate(180deg);
 }
 
-.battlemap-path-icon-markN:before,
-.battlemap-path-icon-markL:before,
-.battlemap-path-icon-markU:before,
-.battlemap-path-icon-markD:before,
-.battlemap-path-icon-markR:before
+.battlemap-path-icon-NR,
+.battlemap-path-icon-NL,
+.battlemap-path-icon-RR,
+.battlemap-path-icon-LR,
+.battlemap-path-icon-RL,
+.battlemap-path-icon-LL
 {
-   content: "x";
+   background-position: 0 0;
+}
+
+.battlemap-path-icon-NU,
+.battlemap-path-icon-ND,
+.battlemap-path-icon-UU,
+.battlemap-path-icon-UD,
+.battlemap-path-icon-DU,
+.battlemap-path-icon-DD
+{
+   background-position: 0 0;
+   transform: rotate(90deg);
+}
+
+.battlemap-path-icon-markN,
+.battlemap-path-icon-markR,
+.battlemap-path-icon-markL,
+.battlemap-path-icon-markU,
+.battlemap-path-icon-markD
+{
+   background-position: 32px 0;
+}
+
+.battlemap-path-icon-markL
+{
+   transform: rotate(180deg);
+}
+
+.battlemap-path-icon-markD
+{
+   transform: rotate(90deg);
+}
+
+.battlemap-path-icon-markU
+{
+   transform: rotate(-90deg);
 }
