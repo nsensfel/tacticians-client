@@ -16,9 +16,49 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.1 r15371"
-   sodipodi:docname="arrows.svg">
+   sodipodi:docname="arrows_celtic.svg">
   <defs
-     id="defs2" />
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="DistanceStart"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="DistanceStart"
+       inkscape:isstock="true">
+      <g
+         id="g2300"
+         style="stroke:#000000;stroke-opacity:1;fill:#000000;fill-opacity:1">
+        <path
+           style="fill:#000000;stroke:#000000;stroke-width:1.15;stroke-linecap:square;stroke-opacity:1;fill-opacity:1"
+           d="M 0,0 L 2,0"
+           id="path2306" />
+        <path
+           style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-opacity:1;fill-opacity:1"
+           d="M 0,0 L 13,4 L 9,0 13,-4 L 0,0 z "
+           id="path2302" />
+        <path
+           style="fill:#000000;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-opacity:1;fill-opacity:1"
+           d="M 0,-4 L 0,40"
+           id="path2304" />
+      </g>
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;"
+       inkscape:isstock="true">
+      <path
+         id="path4539"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -26,9 +66,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.6695505"
-     inkscape:cx="278.99124"
-     inkscape:cy="69.239186"
+     inkscape:zoom="4.9303125"
+     inkscape:cx="264.85531"
+     inkscape:cy="56.251765"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -38,7 +78,8 @@
      inkscape:window-height="1377"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
-     inkscape:window-maximized="1">
+     inkscape:window-maximized="1"
+     inkscape:snap-bbox="true">
     <inkscape:grid
        type="xygrid"
        id="grid3688"
@@ -64,26 +105,26 @@
      id="layer1"
      transform="translate(0,-265)">
     <rect
-       style="fill:#2ca089;stroke-width:0.30982023"
+       style="fill:#2ca089;stroke-width:0.27229193"
        id="rect3690"
-       width="58"
-       height="20"
+       width="56"
+       height="16"
        x="3.1789146e-008"
-       y="271" />
+       y="273" />
     <rect
-       style="fill:#2ca089;stroke-width:0.10047562"
+       style="fill:#2ca089;stroke-width:0.10355791"
        id="rect3690-1"
-       width="20"
-       height="6.0999999"
-       x="38"
+       width="16"
+       height="8.1000004"
+       x="40"
        y="265" />
     <rect
-       style="fill:#2ca089;stroke-width:0.05753217"
+       style="fill:#2ca089;stroke-width:0.05145834"
        id="rect3690-5"
        width="2"
-       height="20"
+       height="16"
        x="64"
-       y="271" />
+       y="273" />
     <path
        sodipodi:type="star"
        style="fill:#2ca089;stroke-width:0.26458332"
@@ -100,7 +141,7 @@
        inkscape:randomized="0"
        d="m 75.899997,266.47249 12.133353,7.0052 12.13335,7.00519 -12.13335,7.00519 -12.133353,7.0052 10e-7,-14.01039 z"
        inkscape:transform-center-x="-3.3333327"
-       transform="matrix(0.82417444,0,0,1.1420096,3.3451627,-39.314141)" />
+       transform="matrix(0.82417444,0,0,0.9278828,3.3451627,20.74476)" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -112,13 +153,13 @@
        width="32"
        height="2.5"
        x="0"
-       y="21.5" />
+       y="19.5" />
     <use
        x="0"
        y="0"
        xlink:href="#rect3695"
        id="use3712"
-       transform="translate(0,-13.5)"
+       transform="translate(0,-9.5)"
        width="100%"
        height="100%" />
     <use
@@ -126,7 +167,7 @@
        y="0"
        xlink:href="#rect3695"
        id="use3759"
-       transform="translate(24)"
+       transform="translate(22)"
        width="100%"
        height="100%" />
     <use
@@ -134,7 +175,7 @@
        y="0"
        xlink:href="#use3759"
        id="use3761"
-       transform="translate(-13.5,-13.5)"
+       transform="translate(-9.5,-9.5)"
        width="100%"
        height="100%" />
     <use
@@ -142,7 +183,7 @@
        y="0"
        xlink:href="#use3759"
        id="use3761-1"
-       transform="matrix(0.078125,0,0,3.24,38.125,-69.66)"
+       transform="matrix(0.078125,0,0,4.04,40.28125,-78.78)"
        width="100%"
        height="100%" />
     <use
@@ -150,29 +191,26 @@
        y="0"
        xlink:href="#use3759"
        id="use3761-1-7"
-       transform="matrix(0.078125,0,0,8.64,51.625,-185.76)"
-       width="100%"
-       height="100%" />
-    <rect
-       style="fill:#87decd;stroke-width:0.09232694"
-       id="rect3695-5"
-       width="4"
-       height="2.5"
-       x="64"
-       y="21.5" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#rect3695-5"
-       id="use3827"
-       transform="translate(0,-13.5)"
+       transform="matrix(0.078125,0,0,7.84,49.78125,-152.88)"
        width="100%"
        height="100%" />
     <path
        style="fill:#87decd;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 67.95,7.9999999 82.5,16 67.95,24 V 21.5 L 75,16 67.95,10.5 Z"
-       id="path3829"
+       d="m 64,19.5 c 3.99885,-1.071489 4.414729,-7.430043 8,-9.5 3.754845,1.006108 6.245155,4.993892 10,6 -3.754845,1.006108 -6.245155,4.993892 -10,6 -3.585271,-2.069957 -4.00115,-8.428511 -8,-9.5 V 10 c 3.99885,1.071489 4.414729,7.430043 8,9.5 2.236512,0.599272 4.763488,-2.900728 7,-3.5 -2.236512,-0.599272 -4.763488,-4.099272 -7,-3.5 -3.585271,2.069957 -4.00115,8.428511 -8,9.5 z"
+       id="path4515" />
+    <path
+       style="fill:#2ca089;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 68.329288,14.70779 0.707979,1.315712 0.325792,-0.432305 -0.7581,-1.378364 z"
+       id="path4832"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccc" />
+       sodipodi:nodetypes="ccccc" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path4832"
+       id="use4834"
+       transform="translate(-0.94605928,1.7668127)"
+       width="100%"
+       height="100%" />
   </g>
 </svg>
