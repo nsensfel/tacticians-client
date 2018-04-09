@@ -1,8 +1,7 @@
 module Constants.IO exposing (..)
 
 base_url : String
---base_url = "https://tacticians.online"
-base_url = "http://127.0.0.1"
+base_url = "__CONF_SERVER_URL"
 
 battlemap_handler_url : String
 battlemap_handler_url = (base_url ++ "/handler/battlemap")

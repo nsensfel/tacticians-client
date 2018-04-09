@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <title><SERVER NAME> - Landing Page</title>
+      <title>__CONF_SERVER_NAME - Landing Page</title>
       <meta charset="UTF-8">
       <meta name="description" content="Server for the (yet unnamed) open source turn-based tactics MMO.">
       <meta name="keywords" content="MMO,TBT,TTB,turn based,browser game">
-      <meta name="author" content="<AUTHOR>">
+      <meta name="author" content="__CONF_AUTHOR_NAME">
    </head>
    <body>
-      <h1><SERVER NAME></h1>
+      <h1>__CONF_SERVER_NAME</h1>
       <h3>Currently running: Latest Dev. Build</h3>
       <p>This website lets you play the game even during its development phase. As a result, there is a lot missing.</p>
       <p>

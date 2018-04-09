@@ -1,0 +1,3 @@
+define(`__CONF_SERVER_NAME', `LOCAL SERVER')dnl
+define(`__CONF_SERVER_URL', `http://127.0.0.1')dnl
+define(`__CONF_AUTHOR_NAME', `localuser')dnl
