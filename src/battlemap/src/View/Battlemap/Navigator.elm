@@ -81,6 +81,7 @@ marker_get_html is_interactive (loc_ref, marker) =
    )
 
 path_node_get_html : (
+      Bool ->
       Struct.Direction.Type ->
       (
          Struct.Location.Type,
@@ -93,7 +94,7 @@ path_node_get_html : (
          (List (Html.Html Struct.Event.Type))
       )
    )
-path_node_get_html next_dir (curr_loc, curr_dir, curr_nodes) =
+path_node_get_html is_below_markers next_dir (curr_loc, curr_dir, curr_nodes) =
    (
       (Struct.Location.neighbor curr_loc next_dir),
       next_dir,
@@ -101,6 +102,15 @@ path_node_get_html next_dir (curr_loc, curr_dir, curr_nodes) =
          (Html.div
             [
                (Html.Attributes.class "battlemap-path-icon"),
+               (Html.Attributes.class
+                  (
+                     if (is_below_markers)
+                     then
+                        "battlemap-path-icon-below-markers"
+                     else
+                        "battlemap-path-icon-above-markers"
+                  )
+               ),
                (Html.Attributes.class "battlemap-tiled"),
                (Html.Attributes.class
                   (
@@ -154,6 +164,7 @@ mark_the_spot loc origin_dir =
    (Html.div
       [
          (Html.Attributes.class "battlemap-path-icon"),
+         (Html.Attributes.class "battlemap-path-icon-above-markers"),
          (Html.Attributes.class "battlemap-tiled"),
          (Html.Attributes.class
             (
@@ -200,7 +211,7 @@ get_html nav_summary is_interactive =
             let
                (final_loc, final_dir, path_node_htmls) =
                   (List.foldr
-                     (path_node_get_html)
+                     (path_node_get_html nav_summary.locked_path)
                      (nav_summary.starting_location, Struct.Direction.None, [])
                      nav_summary.path
                   )

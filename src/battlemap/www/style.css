@@ -206,9 +206,10 @@
 .battlemap-tile-variant-8  {background-position: 64px 64px;}
 
 .battlemap-tile-icon       {z-index: 0; position: absolute; background-size: 96px 96px;}
-.battlemap-marker-icon     {z-index: 1;}
-.battlemap-path-icon       {z-index: 2;}
-.battlemap-character-icon  {z-index: 3;}
+.battlemap-path-icon-below-markers {z-index: 1;}
+.battlemap-marker-icon     {z-index: 2;}
+.battlemap-path-icon-above-markers {z-index: 3;}
+.battlemap-character-icon  {z-index: 4;}
 
 .battlemap-marker-icon,
 .battlemap-character-icon,

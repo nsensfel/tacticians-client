@@ -47,7 +47,8 @@ type alias Summary =
    {
       starting_location: Struct.Location.Type,
       path: (List Struct.Direction.Type),
-      markers: (List (Struct.Location.Ref, Struct.Marker.Type))
+      markers: (List (Struct.Location.Ref, Struct.Marker.Type)),
+      locked_path: Bool
    }
 
 --------------------------------------------------------------------------------
@@ -124,7 +125,8 @@ get_summary navigator =
             (Dict.toList
                navigator.range_indicators
             )
-         )
+         ),
+      locked_path = navigator.locked_path
    }
 
 clear_path : Type -> Type
