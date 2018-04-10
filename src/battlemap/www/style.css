@@ -78,24 +78,39 @@
    justify-content: space-between;
 }
 
+.battlemap-tabmenu
+{
+   background-color: #6C5D53;
+   padding: 0.5em;
+   color: #FFEEAA;
+}
+
+.battlemap-tabmenu button
+{
+   background-color: #917C6F;
+   border-radius: 5px;
+   border: 1px solid #502D16;
+   border-bottom-width: 3px;
+   color: #FFEEAA;
+   margin: 0.1em;
+   padding: 0.1em;
+}
+
 .battlemap-tabmenu-selector button
 {
    flex: 1;
 
    text-transform: uppercase;
-   border-radius: 5px;
-   border: 1px solid rgba(0, 0, 0, 0.3);
-   border-bottom-width: 3px;
 }
 
 .battlemap-tabmenu-selector button:hover
 {
-   border-color: rgba(0, 0, 0, 0.6);
+   background-color: #AC9D93;
 }
 
 .battlemap-tabmenu-selector button:active
 {
-   border-color: rgba(0, 0, 0, 0.9);
+   background-color: #C8BEB7;
 }
 
 .battlemap-tabmenu-content
@@ -133,7 +148,8 @@
 .battlemap-tabmenu-characters-tab
 {
    display: flex;
-   flex-direction: row;
+   flex-grow: 1;
+   flex-direction: column;
    flex-wrap: wrap;
 }
 
@@ -151,7 +167,7 @@
 .battlemap-timeline-element,
 .battlemap-characters-element
 {
-   border-radius: 6px;
+   flex: 2;
    padding: 1em;
    margin: 0.5em 0.5em 0 0.5em;
    text-align: center;
@@ -160,13 +176,13 @@
       -1px 0px 2px #888,
       0px 1px 2px #888,
       0px -1px 2px #888;
-   background-color: #EEE;
-}
 
-.battlemap-tabmenu-timeline-tab,
-.battlemap-tabmenu-characters-tab
-{
-   background-color: #AAA;
+   background-color: #917C6f;
+   border-radius: 5px;
+   border: 1px solid #502D16;
+   border-bottom-width: 3px;
+   color: #FFEEAA;
+   padding: 0.05em;
 }
 
 .battlemap-tabmenu-characters-tab .battlemap-character-portrait
