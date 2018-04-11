@@ -3,6 +3,38 @@ html
    min-width: 800px;
    min-height: 600px;
    height: 100%;
+   background-color: #6C5D53;
+   color: #FFEEAA;
+}
+
+* {
+   color: #FFEEAA;
+   text-shadow:
+      1px 0px 1px rgba(80, 45, 22, 0.5),
+      -1px 0px 1px rgba(80, 45, 22, 0.5),
+      0px 1px 1px rgba(80, 45, 22, 0.5),
+      0px -1px 1px rgba(80, 45, 22, 0.5);
+}
+
+* button
+{
+   background-color: #917C6F;
+   border-radius: 5px;
+   border: 1px solid #502D16;
+   border-bottom-width: 3px;
+   color: #FFEEAA;
+   margin: 0.1em;
+   padding: 0.2em;
+}
+
+* button:hover
+{
+   background-color: #AC9D93;
+}
+
+* button:active
+{
+   background-color: #C8BEB7;
 }
 
 html, body, .fullscreen-module
