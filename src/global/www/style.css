@@ -46,11 +46,29 @@ html, body, .fullscreen-module
    left: 0;
    margin: 0;
    padding: 0;
-   display: flex;
+}
+
+.fullscreen-module
+{
+   display:flex;
 }
 
 .clickable
 {
    cursor: pointer;
    touch-action: manipulation;
+}
+
+.popup-message
+{
+   display: inline-block;
+   text-align: justify;
+   padding: 2em 2em 1em 2em;
+   margin: 1em;
+
+   border: 1px solid #502D16;
+   border-left-width: 4px;
+
+   max-width: 80em;
+   min-width: 40em;
 }
