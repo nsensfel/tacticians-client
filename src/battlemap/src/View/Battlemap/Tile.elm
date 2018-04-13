@@ -18,7 +18,9 @@ import Struct.Tile
 --------------------------------------------------------------------------------
 noise_function : Int -> Int -> Int -> Int
 noise_function a b c =
-   (round (pi * (radians (toFloat a)) * (radians (toFloat b)) * (toFloat c)))
+   (round
+         (radians (toFloat ((a + 1) * 2 + (b + 1) * 3 + c)))
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
