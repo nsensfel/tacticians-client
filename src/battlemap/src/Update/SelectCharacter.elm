@@ -92,6 +92,7 @@ can_target_character : (
 can_target_character model target =
    (
       (Struct.CharacterTurn.can_select_target model.char_turn)
+      && (Struct.Character.is_alive target)
       &&
       (
          case
@@ -146,7 +147,7 @@ double_clicked_character model target_char_id =
                         model
                         (Struct.Error.new
                            Struct.Error.IllegalAction
-                           "Has not yet moved or target is out of range."
+                           "Has not yet moved, target is out of range, or dead."
                         )
                      ),
                      Cmd.none

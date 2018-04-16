@@ -14,6 +14,7 @@ module Struct.Character exposing
       get_attributes,
       get_statistics,
       is_enabled,
+      is_alive,
       set_enabled,
       get_weapons,
       set_weapons,
@@ -116,7 +117,7 @@ get_current_health : Type -> Int
 get_current_health c = c.health
 
 set_current_health : Int -> Type -> Type
-set_current_health health c = {c | health = health}
+set_current_health health c = {c | health = (max 0 health)}
 
 get_location : Type -> Struct.Location.Type
 get_location t = t.location
@@ -129,6 +130,9 @@ get_attributes char = char.attributes
 
 get_statistics : Type -> Struct.Statistics.Type
 get_statistics char = char.statistics
+
+is_alive : Type -> Bool
+is_alive char = (char.health > 0)
 
 is_enabled : Type -> Bool
 is_enabled char = char.enabled

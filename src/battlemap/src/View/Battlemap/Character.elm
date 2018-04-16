@@ -8,18 +8,20 @@ import Html.Events
 -- Battlemap  ------------------------------------------------------------------
 import Constants.UI
 
+import Util.Html
+
 import Struct.Character
 import Struct.Event
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
--- EXPORTED --------------------------------------------------------------------
---------------------------------------------------------------------------------
-get_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
-get_html char =
+get_actual_html : (
+      String ->
+      Struct.Character.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_actual_html viewer_id char =
    let
       char_loc = (Struct.Character.get_location char)
    in
@@ -33,6 +35,15 @@ get_html char =
                      "battlemap-character-icon-enabled"
                   else
                      "battlemap-character-icon-disabled"
+               )
+            ),
+            (Html.Attributes.class
+               (
+                  if ((Struct.Character.get_player_id char) == viewer_id)
+                  then
+                     "battlemap-character-ally"
+                  else
+                     "battlemap-character-enemy"
                )
             ),
             (Html.Attributes.class "battlemap-tiled"),
@@ -60,3 +71,13 @@ get_html char =
          ]
       )
 
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
+get_html : String -> Struct.Character.Type -> (Html.Html Struct.Event.Type)
+get_html viewer_id char =
+   if (Struct.Character.is_alive char)
+   then
+      (get_actual_html viewer_id char)
+   else
+      (Util.Html.nothing)

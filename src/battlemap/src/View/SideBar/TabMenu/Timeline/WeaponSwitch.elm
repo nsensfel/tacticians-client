@@ -17,13 +17,23 @@ import Struct.Model
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_portrait_html : (
+      String ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_portrait_html char =
+get_portrait_html viewer_id char =
    (Html.div
       [
          (Html.Attributes.class "battlemap-timeline-portrait"),
+         (Html.Attributes.class
+            (
+               if ((Struct.Character.get_player_id char) == viewer_id)
+               then
+                  "battlemap-character-ally"
+               else
+                  "battlemap-character-enemy"
+            )
+         ),
          (Html.Attributes.class
             (
                "asset-character-portrait-"
@@ -52,7 +62,7 @@ get_html model weapon_switch =
                (Html.Attributes.class "battlemap-timeline-weapon-switch")
             ]
             [
-               (get_portrait_html char),
+               (get_portrait_html model.player_id char),
                (Html.text
                   (
                      (Struct.Character.get_name char)
