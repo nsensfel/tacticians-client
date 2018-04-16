@@ -25,3 +25,4 @@ type Type =
    | DebugTeamSwitchRequest
    | DebugLoadBattlemapRequest
    | WeaponSwitchRequest
+   | AttackWithoutMovingRequest
