@@ -6,6 +6,7 @@ module ElmModule.Update exposing (update)
 import Struct.Event
 import Struct.Model
 
+import Update.AttackWithoutMoving
 import Update.ChangeScale
 import Update.DisplayCharacterInfo
 import Update.EndTurn
@@ -28,6 +29,9 @@ update event model =
       new_model = (Struct.Model.clear_error model)
    in
    case event of
+      Struct.Event.AttackWithoutMovingRequest ->
+         (Update.AttackWithoutMoving.apply_to new_model)
+
       (Struct.Event.DirectionRequested d) ->
          (Update.RequestDirection.apply_to new_model d)
 

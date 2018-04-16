@@ -18,6 +18,13 @@ import Util.Html
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+attack_button : (Html.Html Struct.Event.Type)
+attack_button =
+   (Html.button
+      [ (Html.Events.onClick Struct.Event.AttackWithoutMovingRequest) ]
+      [ (Html.text "Attack Without Moving") ]
+   )
+
 end_turn_button : (Html.Html Struct.Event.Type)
 end_turn_button =
    (Html.button
@@ -74,9 +81,11 @@ get_curr_char_info_htmls model char =
                   ++ char.name
                   ++ ". Move ("
                   ++ (get_navigator_info model char)
-                  ++ ") or "
+                  ++ "), "
                )
             ),
+            (attack_button),
+            (Html.text ", or "),
             (inventory_button)
          ]
 
@@ -86,7 +95,7 @@ get_curr_char_info_htmls model char =
                (
                   "Controlling "
                   ++ char.name
-                  ++ ". Moved. Select targets or "
+                  ++ ". Moved. Select a target, or "
                )
             ),
             (end_turn_button)
@@ -98,10 +107,11 @@ get_curr_char_info_htmls model char =
                (
                   "Controlling "
                   ++ char.name
-                  ++ ". Moved. Chose target(s). Select additional targets or "
+                  ++ ". Moved. Chose a target. Click on "
                )
             ),
-            (end_turn_button)
+            (end_turn_button),
+            (Html.text "to end turn.")
          ]
 
       _ ->
