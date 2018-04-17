@@ -26,29 +26,22 @@ view model =
          (Html.Attributes.class "fullscreen-module")
       ]
       [
+         (View.MainMenu.get_html model),
          (Html.div
             [
-               (Html.Attributes.class "battlemap-left-panel")
+               (Html.Attributes.class "battlemap-main-content")
             ]
             [
+               (View.Controlled.get_html model),
                (Html.div
                   [
                      (Html.Attributes.class "battlemap-container")
                   ]
-                  [
-                     (View.Battlemap.get_html model)
-                  ]
+                  [(View.Battlemap.get_html model)]
                ),
-               (View.Footer.get_html model)
+               (View.SubMenu.get_html model)
             ]
          ),
-         (Html.div
-            [
-               (Html.Attributes.class "battlemap-right-panel")
-            ]
-            [
-               (View.SideBar.get_html model)
-            ]
-         )
+         (View.Help.get_html model)
       ]
    )

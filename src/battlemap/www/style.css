@@ -1,45 +1,57 @@
 /******************************************************************************/
 /** LAYOUT ********************************************************************/
 /******************************************************************************/
-.battlemap-left-panel
+
+.fullscreen-module
 {
-   flex-grow: 1;
-   min-width: 70%;
-   display: flex;
-   flex-direction: column;
+   display: grid;
+
+   grid-template-columns: 1fr;
+   grid-template-rows: 2em calc(100% - 4em) 2em;
 }
 
-.battlemap-right-panel
+.battlemap-main-menu
 {
-   height: inherit;
-   max-width: 30%;
+   grid-row: 1
 
    display: flex;
+
+   flex-direction: row;
+   flex-wrap: wrap;
 }
 
-/** Left Panel ****************************************************************/
+.battlemap-main-content
+{
+   grid-row: 2;
+
+   display: flex;
+   flex-direction: row;
+}
+
+.battlemap-help
+{
+   grid-row: 3
+
+}
+
+/** Main Content **************************************************************/
 .battlemap-container
 {
    flex-grow: 1;
-   min-height: 70%;
 
    overflow: auto;
-   width: inherit;
    /*** Otherwise, it won't display correctly without 'transform: scale' ***/
    position: relative;
 }
 
-.battlemap-footer
+.battlemap-controlled
 {
-   max-height: 30%;
+   width: 15em;
+}
 
-   overflow-y: auto;
-   width: inherit;
-   word-wrap: break-word;
-   border-top: 1px solid #502D16;
-   box-shadow: 0px -1px 2px #502D16;
-   padding: 0.5em;
-   padding-bottom: 1em;
+.battlemap-sub-menu
+{
+   width: 20em;
 }
 
 /*** Main View ****************************************************************/
