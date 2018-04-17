@@ -1,4 +1,4 @@
-module View.SideBar.ManualControls exposing (get_html)
+module View.ManualControls exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html

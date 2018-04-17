@@ -11,16 +11,32 @@ import Struct.UI
 
 import Util.Html
 
+import View.SubMenu.Characters
+import View.SubMenu.Settings
+import View.SubMenu.Status
+import View.SubMenu.Timeline
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_inner_html : (
       Struct.Model.Type ->
       Struct.UI.Tab ->
-      (List (Html.Html Struct.Event.Type))
+      (Html.Html Struct.Event.Type)
    )
 get_inner_html model tab =
-   [(Html.text "Not available")]
+   case tab of
+      Struct.UI.StatusTab ->
+         (View.SubMenu.Status.get_html model)
+
+      Struct.UI.CharactersTab ->
+         (View.SubMenu.Characters.get_html model)
+
+      Struct.UI.SettingsTab ->
+         (View.SubMenu.Settings.get_html model)
+
+      Struct.UI.TimelineTab ->
+         (View.SubMenu.Timeline.get_html model)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -30,10 +46,8 @@ get_html model =
    case (Struct.UI.try_getting_displayed_tab model.ui) of
       (Just tab) ->
          (Html.div
-            [
-               (Html.Attributes.class "battlemap-sub-menu")
-            ]
-            (get_inner_html model tab)
+            [(Html.Attributes.class "battlemap-sub-menu")]
+            [(get_inner_html model tab)]
          )
 
       Nothing ->

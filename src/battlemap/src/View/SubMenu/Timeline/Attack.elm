@@ -1,4 +1,4 @@
-module View.SideBar.TabMenu.Timeline.Attack exposing (get_html)
+module View.SubMenu.Timeline.Attack exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Dict

@@ -1,4 +1,4 @@
-module View.SideBar.TabMenu.Settings exposing (get_html)
+module View.SubMenu.Settings exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html

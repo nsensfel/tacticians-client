@@ -1,4 +1,4 @@
-module View.SideBar.TabMenu.Status exposing (get_html)
+module View.SubMenu.Status exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Dict
@@ -17,7 +17,7 @@ import Struct.Statistics
 import Struct.Tile
 import Struct.UI
 
-import View.SideBar.TabMenu.Status.CharacterInfo
+import View.SubMenu.Status.CharacterInfo
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ get_html model =
             (Just (Struct.UI.SelectedCharacter target_char)) ->
                case (Dict.get target_char model.characters) of
                   (Just char) ->
-                     (View.SideBar.TabMenu.Status.CharacterInfo.get_html
+                     (View.SubMenu.Status.CharacterInfo.get_html
                         model
                         char
                      )

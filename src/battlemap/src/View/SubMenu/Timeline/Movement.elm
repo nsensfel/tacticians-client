@@ -1,4 +1,4 @@
-module View.SideBar.TabMenu.Timeline.WeaponSwitch exposing (get_html)
+module View.SubMenu.Timeline.Movement exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Dict
@@ -50,23 +50,27 @@ get_portrait_html viewer_id char =
 --------------------------------------------------------------------------------
 get_html : (
       Struct.Model.Type ->
-      Struct.TurnResult.WeaponSwitch ->
+      Struct.TurnResult.Movement ->
       (Html.Html Struct.Event.Type)
    )
-get_html model weapon_switch =
-   case (Dict.get (toString weapon_switch.character_index) model.characters) of
+get_html model movement =
+   case (Dict.get (toString movement.character_index) model.characters) of
       (Just char) ->
          (Html.div
             [
                (Html.Attributes.class "battlemap-timeline-element"),
-               (Html.Attributes.class "battlemap-timeline-weapon-switch")
+               (Html.Attributes.class "battlemap-timeline-movement")
             ]
             [
                (get_portrait_html model.player_id char),
                (Html.text
                   (
                      (Struct.Character.get_name char)
-                     ++ " switched weapons."
+                     ++ " moved to ("
+                     ++ (toString movement.destination.x)
+                     ++ ", "
+                     ++ (toString movement.destination.y)
+                     ++ ")."
                   )
                )
             ]
@@ -76,9 +80,9 @@ get_html model weapon_switch =
          (Html.div
             [
                (Html.Attributes.class "battlemap-timeline-element"),
-               (Html.Attributes.class "battlemap-timeline-weapon-switch")
+               (Html.Attributes.class "battlemap-timeline-movement")
             ]
             [
-               (Html.text "Error: Unknown character switched weapons")
+               (Html.text "Error: Moving with unknown character")
             ]
          )

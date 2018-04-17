@@ -1,4 +1,4 @@
-module View.SideBar.TabMenu.Characters exposing (get_html)
+module View.SubMenu.Characters exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Dict

@@ -1,4 +1,4 @@
-module View.SideBar.TabMenu.Timeline exposing (get_html)
+module View.SubMenu.Timeline exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Array
@@ -13,9 +13,9 @@ import Struct.Event
 import Struct.TurnResult
 import Struct.Model
 
-import View.SideBar.TabMenu.Timeline.Attack
-import View.SideBar.TabMenu.Timeline.Movement
-import View.SideBar.TabMenu.Timeline.WeaponSwitch
+import View.SubMenu.Timeline.Attack
+import View.SubMenu.Timeline.Movement
+import View.SubMenu.Timeline.WeaponSwitch
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -28,13 +28,13 @@ get_turn_result_html : (
 get_turn_result_html model turn_result =
    case turn_result of
       (Struct.TurnResult.Moved movement) ->
-         (View.SideBar.TabMenu.Timeline.Movement.get_html model movement)
+         (View.SubMenu.Timeline.Movement.get_html model movement)
 
       (Struct.TurnResult.Attacked attack) ->
-         (View.SideBar.TabMenu.Timeline.Attack.get_html model attack)
+         (View.SubMenu.Timeline.Attack.get_html model attack)
 
       (Struct.TurnResult.SwitchedWeapon weapon_switch) ->
-         (View.SideBar.TabMenu.Timeline.WeaponSwitch.get_html
+         (View.SubMenu.Timeline.WeaponSwitch.get_html
             model
             weapon_switch
          )

@@ -73,7 +73,10 @@ ctrl_or_focus_character model target_char_id target_char =
                      model.char_turn
                   )
                ),
-            ui = (Struct.UI.set_previous_action model.ui Nothing)
+            ui =
+               (Struct.UI.reset_displayed_tab
+                  (Struct.UI.set_previous_action model.ui Nothing)
+               )
          }
    else
       {model |
