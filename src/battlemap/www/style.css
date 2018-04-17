@@ -6,13 +6,13 @@
 {
    display: grid;
 
-   grid-template-columns: 1fr;
+   grid-template-columns: 100%;
    grid-template-rows: 2em calc(100% - 4em) 2em;
 }
 
 .battlemap-main-menu
 {
-   grid-row: 1
+   grid-row: 1;
 
    display: flex;
 
@@ -30,8 +30,7 @@
 
 .battlemap-help
 {
-   grid-row: 3
-
+   grid-row: 3;
 }
 
 /** Main Content **************************************************************/
@@ -90,7 +89,7 @@
 }
 
 /** Tab Menu Specifics ********************************************************/
-.battlemap-tabmenu-selector
+.battlemap-main-menu
 {
    display: flex;
    flex-direction: row;
@@ -98,7 +97,7 @@
    justify-content: space-between;
 }
 
-.battlemap-tabmenu-selector button
+.battlemap-main-menu button
 {
    flex: 1;
 

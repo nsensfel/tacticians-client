@@ -6,18 +6,11 @@ import Html.Attributes
 import Html.Events
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Error
 import Struct.Event
 import Struct.Model
 import Struct.UI
 
 import Util.Html
-
-import View.SubMenu.Characters
-import View.SubMenu.Settings
-import View.SubMenu.Status
-import View.SubMenu.Timeline
-
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -28,13 +21,13 @@ get_menu_button_html : (
    )
 get_menu_button_html selected_tab tab =
    (Html.button
-      (
-         if ((Just tab) == selected_tab)
-         then
-            [ (Html.Attributes.disabled True) ]
-         else
+--      (
+--         if ((Just tab) == selected_tab)
+--         then
+--            [ (Html.Attributes.disabled True) ]
+--         else
             [ (Html.Events.onClick (Struct.Event.TabSelected tab)) ]
-      )
+--      )
       [ (Html.text (Struct.UI.to_string tab)) ]
    )
 

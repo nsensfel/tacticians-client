@@ -1,32 +1,40 @@
-module Update.SelectTab exposing (apply_to)
+module View.SubMenu exposing (get_html)
+
 -- Elm -------------------------------------------------------------------------
+import Html
+import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Model
 import Struct.Event
+import Struct.Model
 import Struct.UI
+
+import Util.Html
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+get_inner_html : (
+      Struct.Model.Type ->
+      Struct.UI.Tab ->
+      (List (Html.Html Struct.Event.Type))
+   )
+get_inner_html model tab =
+   [(Html.text "Not available")]
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : (
-      Struct.Model.Type ->
-      Struct.UI.Tab ->
-      (Struct.Model.Type, (Cmd Struct.Event.Type))
-   )
-apply_to model tab =
-   if ((Struct.UI.try_getting_displayed_tab model.ui) == (Just tab))
-   then
-      (
-         {model | ui = (Struct.UI.reset_displayed_tab model.ui)},
-         Cmd.none
-      )
-   else
-      (
-         {model | ui = (Struct.UI.set_displayed_tab model.ui tab)},
-         Cmd.none
-      )
+get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
+get_html model =
+   case (Struct.UI.try_getting_displayed_tab model.ui) of
+      (Just tab) ->
+         (Html.div
+            [
+               (Html.Attributes.class "battlemap-sub-menu")
+            ]
+            (get_inner_html model tab)
+         )
+
+      Nothing ->
+         (Util.Html.nothing)

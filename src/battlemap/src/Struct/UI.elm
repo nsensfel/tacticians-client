@@ -62,7 +62,7 @@ default =
    {
       zoom_level = 1.0,
       show_manual_controls = True,
-      displayed_tab = (Just StatusTab),
+      displayed_tab = Nothing,
       previous_action = Nothing
    }
 

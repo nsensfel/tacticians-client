@@ -9,8 +9,10 @@ import Struct.Event
 import Struct.Model
 
 import View.Battlemap
-import View.SideBar
-import View.Footer
+import View.Controlled
+import View.Help
+import View.MainMenu
+import View.SubMenu
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
