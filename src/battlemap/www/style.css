@@ -7,7 +7,7 @@
    display: grid;
 
    grid-template-columns: [col] 15em [col] auto [col] 20em;
-   grid-template-rows: [row] 3em [row] calc(100% - 15em) [row] 10em;
+   grid-template-rows: [row] 3em [row] auto [row] 10em;
    grid-gap: 1em;
 }
 
