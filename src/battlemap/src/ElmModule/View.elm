@@ -29,21 +29,14 @@ view model =
       ]
       [
          (View.MainMenu.get_html model),
+         (View.Controlled.get_html model),
          (Html.div
             [
-               (Html.Attributes.class "battlemap-main-content")
+               (Html.Attributes.class "battlemap-container")
             ]
-            [
-               (View.Controlled.get_html model),
-               (Html.div
-                  [
-                     (Html.Attributes.class "battlemap-container")
-                  ]
-                  [(View.Battlemap.get_html model)]
-               ),
-               (View.SubMenu.get_html model)
-            ]
+            [(View.Battlemap.get_html model)]
          ),
+         (View.SubMenu.get_html model),
          (View.Help.get_html model)
       ]
    )

@@ -6,14 +6,15 @@
 {
    display: grid;
 
-   grid-template-columns: 100%;
-   grid-template-rows: 3em calc(100% - 15em) 10em;
+   grid-template-columns: [col] 15em [col] auto [col] 20em;
+   grid-template-rows: [row] 3em [row] calc(100% - 15em) [row] 10em;
    grid-gap: 1em;
 }
 
 .battlemap-main-menu
 {
-   grid-row: 1;
+   grid-column: col 1 / span 3;
+   grid-row: row 1;
 
    display: flex;
 
@@ -35,17 +36,10 @@
    margin: 0 1em 0 1em;
 }
 
-.battlemap-main-content
-{
-   grid-row: 2;
-
-   display: flex;
-   flex-direction: row;
-}
-
 .battlemap-help
 {
-   grid-row: 3;
+   grid-column: col 1 / span 3;
+   grid-row: row 3;
 
    border: 1px solid #502D16;
    border-radius: 15px 15px 0 0;
@@ -69,10 +63,16 @@
 /** Main Content **************************************************************/
 .battlemap-container
 {
+   grid-column: col 2;
+   grid-row: row 2;
 
-   flex-grow: 1;
+   display: flex;
+   margin: 0 1em 0 1em;
+   max-width: 100%;
+   max-height: 100%;
+   overflow: scroll;
 
-   overflow: auto;
+   margin: auto;
 
    border: 1px solid #502D16;
    border-radius: 15px;
@@ -81,22 +81,18 @@
        1px  0px 2px #502D16,
        0px -1px 2px #502D16,
        0px  1px 2px #502D16;
-
-   /*** Otherwise, it won't display correctly without 'transform: scale' ***/
-   position: relative;
-   margin: 0 1em 0 1em;
-   background-color: rgba(145,124,111,1);
 }
 
 .battlemap-controlled
 {
+   grid-column: col 1;
+   grid-row: row 2;
+
    display: flex;
    flex-flow: column;
 
    align-items: center;
    justify-content: center;
-
-   width: 15em;
 
    padding: 0.5em;
 
@@ -113,7 +109,8 @@
 
 .battlemap-sub-menu
 {
-   width: 20em;
+   grid-column: col 3;
+   grid-row: row 2;
 
    padding: 0.5em;
    overflow: auto;
@@ -134,6 +131,10 @@
 {
    display: inline-block;
    transform-origin: top left;
+
+   /*** Otherwise, it won't display correctly without 'transform: scale' ***/
+   position: relative;
+   background-color: rgba(145,124,111,1);
 }
 
 /******************************************************************************/
