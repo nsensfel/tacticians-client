@@ -8,7 +8,7 @@ module Struct.CharacterTurn exposing
       has_switched_weapons,
       get_path,
       get_state,
-      get_target,
+      try_getting_target,
       lock_path,
       new,
       set_active_character,
@@ -130,5 +130,5 @@ set_target target ct =
       target = target
    }
 
-get_target : Type -> (Maybe Struct.Character.Ref)
-get_target ct = ct.target
+try_getting_target : Type -> (Maybe Struct.Character.Ref)
+try_getting_target ct = ct.target

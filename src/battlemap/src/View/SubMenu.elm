@@ -1,15 +1,22 @@
 module View.SubMenu exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
+import Dict
+
 import Html
 import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Character
+import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.UI
+import Struct.WeaponSet
 
 import Util.Html
+
+import View.Controlled.CharacterCard
 
 import View.SubMenu.Characters
 import View.SubMenu.Settings
@@ -51,4 +58,26 @@ get_html model =
          )
 
       Nothing ->
-         (Util.Html.nothing)
+         case (Struct.CharacterTurn.try_getting_target model.char_turn) of
+            (Just char_ref) ->
+               case (Dict.get char_ref model.characters) of
+                  (Just char) ->
+                     (Html.div
+                        [(Html.Attributes.class "battlemap-sub-menu")]
+                        [
+                           (Html.text "Targeting:"),
+                           (View.Controlled.CharacterCard.get_html
+                              model
+                              char
+                              (Struct.WeaponSet.get_active_weapon
+                                 (Struct.Character.get_weapons char)
+                              )
+                           )
+                        ]
+                     )
+
+                  Nothing ->
+                     (Util.Html.nothing)
+
+            Nothing ->
+               (Util.Html.nothing)

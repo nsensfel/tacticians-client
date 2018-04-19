@@ -1,8 +1,6 @@
 module View.Controlled.CharacterCard exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
-
 import Html
 import Html.Attributes
 

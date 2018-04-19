@@ -19,7 +19,6 @@ import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.Navigator
-import Struct.Tile
 import Struct.UI
 
 import Util.Html

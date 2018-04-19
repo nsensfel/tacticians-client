@@ -3,15 +3,12 @@ module View.Help exposing (get_html)
 -- Elm -------------------------------------------------------------------------
 import Html
 import Html.Attributes
-import Html.Events
 
 -- Struct.Battlemap -------------------------------------------------------------------
 import Struct.CharacterTurn
 import Struct.Error
 import Struct.Event
 import Struct.Model
-
-import Util.Html
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------

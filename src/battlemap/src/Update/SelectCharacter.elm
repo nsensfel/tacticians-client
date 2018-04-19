@@ -34,7 +34,9 @@ attack_character model target_char_id target_char =
             model.char_turn
          ),
       ui =
-         (Struct.UI.set_previous_action model.ui Nothing)
+         (Struct.UI.reset_displayed_tab
+            (Struct.UI.set_previous_action model.ui Nothing)
+         )
    }
 
 ctrl_or_focus_character : (
@@ -146,13 +148,7 @@ double_clicked_character model target_char_id =
                   )
                else
                   (
-                     (Struct.Model.invalidate
-                        model
-                        (Struct.Error.new
-                           Struct.Error.IllegalAction
-                           "Has not yet moved, target is out of range, or dead."
-                        )
-                     ),
+                     (ctrl_or_focus_character model target_char_id target_char),
                      Cmd.none
                   )
 

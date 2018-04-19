@@ -151,7 +151,7 @@ get_html model =
                   _ -> (Html.text "Error: Unknown character selected.")
 
             _ ->
-               (Html.text "Double-click on a character to control it.")
+               (Html.text "Nothing is being focused.")
          )
       ]
    )

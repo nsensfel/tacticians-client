@@ -26,3 +26,4 @@ type Type =
    | DebugLoadBattlemapRequest
    | WeaponSwitchRequest
    | AttackWithoutMovingRequest
+   | AbortTurnRequest

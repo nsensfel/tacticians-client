@@ -64,9 +64,12 @@ go_to_tile model navigator loc_ref =
          (
             {model |
                ui =
-                  (Struct.UI.set_previous_action
-                     model.ui
-                     (Just (Struct.UI.SelectedLocation loc_ref))
+                  (Struct.UI.set_displayed_tab
+                     (Struct.UI.set_previous_action
+                        model.ui
+                        (Just (Struct.UI.SelectedLocation loc_ref))
+                     )
+                     Struct.UI.StatusTab
                   )
             },
             Cmd.none
@@ -96,9 +99,12 @@ go_to_tile model navigator loc_ref =
                               model.char_turn
                            ),
                         ui =
-                           (Struct.UI.set_previous_action
-                              model.ui
-                              (Just (Struct.UI.SelectedLocation loc_ref))
+                           (Struct.UI.set_displayed_tab
+                              (Struct.UI.set_previous_action
+                                 model.ui
+                                 (Just (Struct.UI.SelectedLocation loc_ref))
+                              )
+                              Struct.UI.StatusTab
                            )
                      },
                      Cmd.none
@@ -136,9 +142,12 @@ apply_to model loc_ref =
          (
             {model |
                ui =
-                  (Struct.UI.set_previous_action
-                     model.ui
-                     (Just (Struct.UI.SelectedLocation loc_ref))
+                  (Struct.UI.set_displayed_tab
+                     (Struct.UI.set_previous_action
+                        model.ui
+                        (Just (Struct.UI.SelectedLocation loc_ref))
+                     )
+                     Struct.UI.StatusTab
                   )
             },
             Cmd.none

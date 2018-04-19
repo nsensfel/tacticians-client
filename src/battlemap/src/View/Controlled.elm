@@ -10,6 +10,7 @@ import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
+import Struct.Navigator
 import Struct.WeaponSet
 
 import Util.Html
@@ -19,18 +20,40 @@ import View.Controlled.CharacterCard
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-attack_button : (Html.Html Struct.Event.Type)
-attack_button =
+has_a_path : Struct.CharacterTurn.Type -> Bool
+has_a_path char_turn =
+   case (Struct.CharacterTurn.try_getting_navigator char_turn) of
+      (Just nav) -> ((Struct.Navigator.get_path nav) /= [])
+      Nothing -> False
+
+
+attack_button : Struct.CharacterTurn.Type -> (Html.Html Struct.Event.Type)
+attack_button char_turn =
    (Html.button
       [ (Html.Events.onClick Struct.Event.AttackWithoutMovingRequest) ]
-      [ (Html.text "Select Target") ]
+      [
+         (Html.text
+            (
+               if (has_a_path char_turn)
+               then ("Go & Select Target")
+               else ("Select Target")
+            )
+         )
+      ]
    )
 
-end_turn_button : (Html.Html Struct.Event.Type)
-end_turn_button =
+abort_button : (Html.Html Struct.Event.Type)
+abort_button =
+   (Html.button
+      [ (Html.Events.onClick Struct.Event.AbortTurnRequest) ]
+      [ (Html.text "Abort") ]
+   )
+
+end_turn_button : String -> (Html.Html Struct.Event.Type)
+end_turn_button suffix =
    (Html.button
       [ (Html.Events.onClick Struct.Event.TurnEnded) ]
-      [ (Html.text "End Turn") ]
+      [ (Html.text ("End Turn" ++ suffix)) ]
    )
 
 inventory_button : (Html.Html Struct.Event.Type)
@@ -48,18 +71,22 @@ get_available_actions model =
    case (Struct.CharacterTurn.get_state model.char_turn) of
       Struct.CharacterTurn.SelectedCharacter ->
          [
-            (attack_button),
-            (inventory_button)
+            (attack_button model.char_turn),
+            (inventory_button),
+            (end_turn_button " Doing Nothing"),
+            (abort_button)
          ]
 
       Struct.CharacterTurn.MovedCharacter ->
          [
-            (end_turn_button)
+            (end_turn_button " Without Attacking"),
+            (abort_button)
          ]
 
       Struct.CharacterTurn.ChoseTarget ->
          [
-            (end_turn_button)
+            (end_turn_button " By Attacking"),
+            (abort_button)
          ]
 
       _ ->

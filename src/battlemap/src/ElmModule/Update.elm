@@ -6,6 +6,7 @@ module ElmModule.Update exposing (update)
 import Struct.Event
 import Struct.Model
 
+import Update.AbortTurn
 import Update.AttackWithoutMoving
 import Update.ChangeScale
 import Update.DisplayCharacterInfo
@@ -64,3 +65,6 @@ update event model =
 
       Struct.Event.WeaponSwitchRequest ->
          (Update.SwitchWeapon.apply_to new_model)
+
+      Struct.Event.AbortTurnRequest ->
+         (Update.AbortTurn.apply_to new_model)

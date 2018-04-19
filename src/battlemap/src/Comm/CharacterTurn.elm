@@ -63,8 +63,9 @@ encode_weapon_switch model =
 
 encode_attack : Struct.Model.Type -> (Maybe Json.Encode.Value)
 encode_attack model =
-   case (Struct.CharacterTurn.get_target model.char_turn) of
+   case (Struct.CharacterTurn.try_getting_target model.char_turn) of
       Nothing -> Nothing
+
       (Just ix) ->
          (Just
             (Json.Encode.object

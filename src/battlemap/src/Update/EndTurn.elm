@@ -81,13 +81,16 @@ apply_to model =
       ) ->
          (make_it_so model char nav)
 
+      (Struct.CharacterTurn.SelectedCharacter, (Just char), (Just nav)) ->
+         (make_it_so model char nav)
+
       (_, _, _) ->
          (
             (Struct.Model.invalidate
                model
                (Struct.Error.new
-                  Struct.Error.IllegalAction
-                  "This can only be done while moving a character."
+                  Struct.Error.Programming
+                  "Character turn appears to be in an illegal state."
                )
             ),
             Cmd.none
