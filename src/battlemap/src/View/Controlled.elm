@@ -10,10 +10,11 @@ import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
-import Struct.Navigator
-import Struct.Statistics
+import Struct.WeaponSet
 
 import Util.Html
+
+import View.Controlled.CharacterCard
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -39,15 +40,12 @@ inventory_button =
       [ (Html.text "Switch Weapon") ]
    )
 
-get_curr_char_info_htmls : (
+get_available_actions : (
       Struct.Model.Type ->
-      Struct.Character.Type ->
       (List (Html.Html Struct.Event.Type))
    )
-get_curr_char_info_htmls model char =
-   case
-      (Struct.CharacterTurn.get_state model.char_turn)
-   of
+get_available_actions model =
+   case (Struct.CharacterTurn.get_state model.char_turn) of
       Struct.CharacterTurn.SelectedCharacter ->
          [
             (attack_button),
@@ -66,13 +64,6 @@ get_curr_char_info_htmls model char =
 
       _ ->
          [
-            (Html.text
-               (
-                  "Error: CharacterTurn structure in an inconsistent state:"
-                  ++ " Has an active character yet the 'state' is not any of"
-                  ++ " those expected in such cases."
-               )
-            )
          ]
 
 --------------------------------------------------------------------------------
@@ -86,7 +77,19 @@ get_html model =
       (Just char) ->
          (Html.div
             [(Html.Attributes.class "battlemap-controlled")]
-            (get_curr_char_info_htmls model char)
+            [
+               (View.Controlled.CharacterCard.get_html
+                  model
+                  char
+                  (Struct.WeaponSet.get_active_weapon
+                     (Struct.Character.get_weapons char)
+                  )
+               ),
+               (Html.div
+                  [(Html.Attributes.class "battlemap-controlled-actions")]
+                  (get_available_actions model)
+               )
+            ]
          )
 
       Nothing -> (Util.Html.nothing)
