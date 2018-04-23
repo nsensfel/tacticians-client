@@ -1,5 +1,7 @@
 module ElmModule.Init exposing (init)
 
+-- Elm -------------------------------------------------------------------------
+
 -- Battlemap -------------------------------------------------------------------
 import Comm.LoadBattlemap
 
@@ -15,9 +17,7 @@ import Struct.Model
 --------------------------------------------------------------------------------
 init : (Struct.Model.Type, (Cmd Struct.Event.Type))
 init =
-   let
-      model = (Struct.Model.new)
-   in
+   let model = (Struct.Model.new) in
       (
          model,
          (case (Comm.LoadBattlemap.try model) of

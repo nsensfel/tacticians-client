@@ -35,7 +35,7 @@ attack_character model target_char_id target_char =
          ),
       ui =
          (Struct.UI.reset_displayed_tab
-            (Struct.UI.set_previous_action model.ui Nothing)
+            (Struct.UI.set_previous_action Nothing model.ui)
          )
    }
 
@@ -77,15 +77,15 @@ ctrl_or_focus_character model target_char_id target_char =
                ),
             ui =
                (Struct.UI.reset_displayed_tab
-                  (Struct.UI.set_previous_action model.ui Nothing)
+                  (Struct.UI.set_previous_action Nothing model.ui)
                )
          }
    else
       {model |
          ui =
             (Struct.UI.set_previous_action
-               model.ui
                (Just (Struct.UI.SelectedCharacter target_char_id))
+               model.ui
             )
       }
 
@@ -108,10 +108,10 @@ can_target_character model target =
             (Just nav) ->
                case
                   (Struct.Navigator.try_getting_path_to
-                     nav
                      (Struct.Location.get_ref
                         (Struct.Character.get_location target)
                      )
+                     nav
                   )
                of
                   (Just _) -> True
@@ -161,11 +161,11 @@ double_clicked_character model target_char_id =
       Nothing ->
          (
             (Struct.Model.invalidate
-               model
                (Struct.Error.new
                   Struct.Error.Programming
                   "SelectCharacter: Unknown char selected."
                )
+               model
             ),
             Cmd.none
          )
@@ -192,11 +192,11 @@ apply_to model target_char_id =
          {model |
             ui =
                (Struct.UI.set_previous_action
-                  (Struct.UI.set_displayed_tab
-                     model.ui
-                     Struct.UI.StatusTab
-                  )
                   (Just (Struct.UI.SelectedCharacter target_char_id))
+                  (Struct.UI.set_displayed_tab
+                     Struct.UI.StatusTab
+                     model.ui
+                  )
                )
          },
          Cmd.none

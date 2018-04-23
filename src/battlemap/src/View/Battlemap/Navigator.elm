@@ -96,7 +96,7 @@ path_node_get_html : (
    )
 path_node_get_html is_below_markers next_dir (curr_loc, curr_dir, curr_nodes) =
    (
-      (Struct.Location.neighbor curr_loc next_dir),
+      (Struct.Location.neighbor next_dir curr_loc),
       next_dir,
       (
          (Html.div

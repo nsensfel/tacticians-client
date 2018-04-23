@@ -23,7 +23,7 @@ try_autopiloting : (
 try_autopiloting dir maybe_nav =
    case maybe_nav of
       (Just navigator) ->
-         (Struct.Navigator.try_adding_step navigator dir)
+         (Struct.Navigator.try_adding_step dir navigator)
 
       Nothing -> Nothing
 
@@ -65,11 +65,11 @@ go_to_tile model navigator loc_ref =
             {model |
                ui =
                   (Struct.UI.set_displayed_tab
-                     (Struct.UI.set_previous_action
-                        model.ui
-                        (Just (Struct.UI.SelectedLocation loc_ref))
-                     )
                      Struct.UI.StatusTab
+                     (Struct.UI.set_previous_action
+                        (Just (Struct.UI.SelectedLocation loc_ref))
+                        model.ui
+                     )
                   )
             },
             Cmd.none
@@ -78,8 +78,8 @@ go_to_tile model navigator loc_ref =
       -- We have to try getting there.
       case
          (Struct.Navigator.try_getting_path_to
-            navigator
             loc_ref
+            navigator
          )
       of
          (Just path) ->
@@ -100,11 +100,11 @@ go_to_tile model navigator loc_ref =
                            ),
                         ui =
                            (Struct.UI.set_displayed_tab
-                              (Struct.UI.set_previous_action
-                                 model.ui
-                                 (Just (Struct.UI.SelectedLocation loc_ref))
-                              )
                               Struct.UI.StatusTab
+                              (Struct.UI.set_previous_action
+                                 (Just (Struct.UI.SelectedLocation loc_ref))
+                                 model.ui
+                              )
                            )
                      },
                      Cmd.none
@@ -113,17 +113,17 @@ go_to_tile model navigator loc_ref =
                Nothing ->
                   (
                      (Struct.Model.invalidate
-                        model
                         (Struct.Error.new
                            Struct.Error.Programming
                            "SelectTile/Navigator: Could not follow own path."
                         )
+                        model
                      ),
                      Cmd.none
                   )
 
          Nothing -> -- Clicked outside of the range indicator
-            ((Struct.Model.reset model model.characters), Cmd.none)
+            ((Struct.Model.reset model.characters model), Cmd.none)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -143,11 +143,11 @@ apply_to model loc_ref =
             {model |
                ui =
                   (Struct.UI.set_displayed_tab
-                     (Struct.UI.set_previous_action
-                        model.ui
-                        (Just (Struct.UI.SelectedLocation loc_ref))
-                     )
                      Struct.UI.StatusTab
+                     (Struct.UI.set_previous_action
+                        (Just (Struct.UI.SelectedLocation loc_ref))
+                        model.ui
+                     )
                   )
             },
             Cmd.none

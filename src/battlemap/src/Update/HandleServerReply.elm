@@ -80,8 +80,8 @@ add_to_timeline turn_results current_state =
                      ),
                   ui =
                      (Struct.UI.set_displayed_tab
-                        model.ui
                         Struct.UI.TimelineTab
+                        model.ui
                      ),
                   characters = updated_characters
                },
@@ -137,8 +137,8 @@ apply_to model query_result =
       (Result.Err error) ->
          (
             (Struct.Model.invalidate
-               model
                (Struct.Error.new Struct.Error.Networking (toString error))
+               model
             ),
             Cmd.none
          )
@@ -148,7 +148,7 @@ apply_to model query_result =
             (
                case (List.foldl (apply_command) (model, Nothing) commands) of
                   (updated_model, Nothing) -> updated_model
-                  (_, (Just error)) -> (Struct.Model.invalidate model error)
+                  (_, (Just error)) -> (Struct.Model.invalidate error model)
             ),
             Cmd.none
          )

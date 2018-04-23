@@ -21,7 +21,7 @@ make_it_so : (
       Struct.Model.Type
    )
 make_it_so model navigator dir =
-   case (Struct.Navigator.try_adding_step navigator dir) of
+   case (Struct.Navigator.try_adding_step dir navigator) of
       (Just new_navigator) ->
          {model |
             char_turn =
@@ -31,18 +31,18 @@ make_it_so model navigator dir =
                ),
             ui =
                (Struct.UI.set_previous_action
-                  model.ui
                   (Just Struct.UI.UsedManualControls)
+                  model.ui
                )
          }
 
       Nothing ->
          (Struct.Model.invalidate
-            model
             (Struct.Error.new
                Struct.Error.IllegalAction
                "Unreachable/occupied tile."
             )
+            model
          )
 
 --------------------------------------------------------------------------------
@@ -66,11 +66,11 @@ apply_to model dir =
       _ ->
          (
             (Struct.Model.invalidate
-               model
                (Struct.Error.new
                   Struct.Error.IllegalAction
                   "This can only be done while moving a character."
                )
+               model
             ),
             Cmd.none
          )

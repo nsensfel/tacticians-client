@@ -23,4 +23,4 @@ apply_to model mod =
    then
       ({model | ui = (Struct.UI.reset_zoom_level model.ui)}, Cmd.none)
    else
-      ({model | ui = (Struct.UI.mod_zoom_level model.ui mod)}, Cmd.none)
+      ({model | ui = (Struct.UI.mod_zoom_level mod model.ui)}, Cmd.none)

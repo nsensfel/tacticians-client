@@ -33,12 +33,12 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-location_to_index : Type -> Struct.Location.Type -> Int
-location_to_index bmap loc =
+location_to_index : Struct.Location.Type -> Type -> Int
+location_to_index loc bmap =
    ((loc.y * bmap.width) + loc.x)
 
-has_location : Type -> Struct.Location.Type -> Bool
-has_location bmap loc =
+has_location : Struct.Location.Type -> Type -> Bool
+has_location loc bmap =
    (
       (loc.x >= 0)
       && (loc.y >= 0)
@@ -76,12 +76,12 @@ new width height tiles =
    }
 
 try_getting_tile_at : (
-      Type ->
       Struct.Location.Type ->
+      Type ->
       (Maybe Struct.Tile.Type)
    )
-try_getting_tile_at bmap loc =
-   (Array.get (location_to_index bmap loc) bmap.content)
+try_getting_tile_at loc bmap =
+   (Array.get (location_to_index loc bmap) bmap.content)
 
 get_movement_cost_function : (
       Type ->
@@ -91,11 +91,9 @@ get_movement_cost_function : (
       Int
    )
 get_movement_cost_function bmap start_loc char_list loc =
-   if (has_location bmap loc)
+   if (has_location loc bmap)
    then
-      case
-         (Array.get (location_to_index bmap loc) bmap.content)
-      of
+      case (Array.get (location_to_index loc bmap) bmap.content) of
          (Just tile) ->
             if
                (List.any

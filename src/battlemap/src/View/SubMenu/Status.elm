@@ -74,7 +74,7 @@ get_tile_info_html : (
       (Html.Html Struct.Event.Type)
    )
 get_tile_info_html model loc =
-   case (Struct.Battlemap.try_getting_tile_at model.battlemap loc) of
+   case (Struct.Battlemap.try_getting_tile_at loc model.battlemap) of
       (Just tile) ->
          (Html.div
             [

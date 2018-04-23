@@ -73,15 +73,15 @@ get_zoom_level ui = ui.zoom_level
 reset_zoom_level : Type -> Type
 reset_zoom_level ui = {ui | zoom_level = 1.0}
 
-mod_zoom_level : Type -> Float -> Type
-mod_zoom_level ui mod = {ui | zoom_level = (mod * ui.zoom_level)}
+mod_zoom_level : Float -> Type -> Type
+mod_zoom_level mod ui = {ui | zoom_level = (mod * ui.zoom_level)}
 
 -- Tab -------------------------------------------------------------------------
 try_getting_displayed_tab : Type -> (Maybe Tab)
 try_getting_displayed_tab ui = ui.displayed_tab
 
-set_displayed_tab : Type -> Tab -> Type
-set_displayed_tab ui tab = {ui | displayed_tab = (Just tab)}
+set_displayed_tab : Tab -> Type -> Type
+set_displayed_tab tab ui = {ui | displayed_tab = (Just tab)}
 
 reset_displayed_tab : Type -> Type
 reset_displayed_tab ui = {ui | displayed_tab = Nothing}
@@ -110,15 +110,15 @@ toggle_manual_controls ui =
    else
       {ui | show_manual_controls = True}
 
-set_enable_manual_controls : Type -> Bool -> Type
-set_enable_manual_controls ui val = {ui | show_manual_controls = val}
+set_enable_manual_controls : Bool -> Type -> Type
+set_enable_manual_controls val ui = {ui | show_manual_controls = val}
 
 -- Previous Action -------------------------------------------------------------
 has_focus : Type -> Bool
 has_focus ui = True
 
-set_previous_action : Type -> (Maybe Action) -> Type
-set_previous_action ui act = {ui | previous_action = act}
+set_previous_action : (Maybe Action) -> Type -> Type
+set_previous_action act ui = {ui | previous_action = act}
 
 get_previous_action : Type -> (Maybe Action)
 get_previous_action ui = ui.previous_action

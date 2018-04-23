@@ -94,9 +94,7 @@ encode_actions model =
 
 try_encoding : Struct.Model.Type -> (Maybe Json.Encode.Value)
 try_encoding model =
-   case
-      (Struct.CharacterTurn.try_getting_active_character model.char_turn)
-   of
+   case (Struct.CharacterTurn.try_getting_active_character model.char_turn) of
       (Just char) ->
          (Just
             (Json.Encode.object

@@ -79,7 +79,7 @@ handle_neighbors : (
    )
 handle_neighbors src_indicator src_loc dist range results cost_fun dir rem =
    let
-      neighbor_loc = (Struct.Location.neighbor src_loc dir)
+      neighbor_loc = (Struct.Location.neighbor dir src_loc)
    in
       case (Dict.get (Struct.Location.get_ref neighbor_loc) results) of
          (Just _) -> rem

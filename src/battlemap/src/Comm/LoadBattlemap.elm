@@ -4,9 +4,9 @@ module Comm.LoadBattlemap exposing (try)
 import Json.Encode
 
 -- Battlemap -------------------------------------------------------------------
-import Constants.IO
-
 import Comm.Send
+
+import Constants.IO
 
 import Struct.Event
 import Struct.Model

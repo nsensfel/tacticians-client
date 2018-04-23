@@ -113,6 +113,7 @@ try_backtracking_to path dir location =
             )
          else
             Nothing
+
       (_, _) ->
          Nothing
 
@@ -151,8 +152,8 @@ try_following_direction cost_fun maybe_path dir =
          let
             next_location =
                (Struct.Location.neighbor
-                  path.current_location
                   dir
+                  path.current_location
                )
             next_location_cost = (cost_fun next_location)
          in
@@ -170,4 +171,5 @@ try_following_direction cost_fun maybe_path dir =
                   )
             else
                Nothing
+
       Nothing -> Nothing

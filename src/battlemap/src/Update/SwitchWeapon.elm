@@ -62,7 +62,6 @@ make_it_so model =
 
       _ ->
          (Struct.Model.invalidate
-            model
             (Struct.Error.new
                Struct.Error.Programming
                (
@@ -70,6 +69,7 @@ make_it_so model =
                   ++ " without character being selected."
                )
             )
+            model
          )
 
 --------------------------------------------------------------------------------
@@ -87,7 +87,6 @@ apply_to model =
       _ ->
          (
             (Struct.Model.invalidate
-               model
                (Struct.Error.new
                   Struct.Error.Programming
                   (
@@ -95,6 +94,7 @@ apply_to model =
                      ++ " without character being selected."
                   )
                )
+               model
             ),
             Cmd.none
          )

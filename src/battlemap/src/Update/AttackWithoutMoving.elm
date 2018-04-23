@@ -32,7 +32,6 @@ apply_to model =
       _ ->
          (
             (Struct.Model.invalidate
-               model
                (Struct.Error.new
                   Struct.Error.Programming
                   (
@@ -40,6 +39,7 @@ apply_to model =
                      ++ "character being selected."
                   )
                )
+               model
             ),
             Cmd.none
          )

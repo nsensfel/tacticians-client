@@ -69,20 +69,20 @@ add_character char model =
          )
    }
 
-reset : Type -> (Dict.Dict Struct.Character.Ref Struct.Character.Type) -> Type
-reset model characters =
+reset : (Dict.Dict Struct.Character.Ref Struct.Character.Type) -> Type -> Type
+reset characters model =
    {model |
       characters = characters,
       error = Nothing,
-      ui = (Struct.UI.set_previous_action model.ui Nothing),
+      ui = (Struct.UI.set_previous_action Nothing model.ui),
       char_turn = (Struct.CharacterTurn.new)
    }
 
-invalidate : Type -> Struct.Error.Type -> Type
-invalidate model err =
+invalidate : Struct.Error.Type -> Type -> Type
+invalidate err model =
    {model |
       error = (Just err),
-      ui = (Struct.UI.set_displayed_tab model.ui Struct.UI.StatusTab)
+      ui = (Struct.UI.set_displayed_tab Struct.UI.StatusTab model.ui)
    }
 
 clear_error : Type -> Type

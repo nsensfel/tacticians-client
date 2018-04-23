@@ -25,8 +25,8 @@ type alias Ref = (Int, Int)
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-neighbor : Type -> Struct.Direction.Type -> Type
-neighbor loc dir =
+neighbor : Struct.Direction.Type -> Type -> Type
+neighbor dir loc =
    case dir of
       Struct.Direction.Right -> {loc | x = (loc.x + 1)}
       Struct.Direction.Left -> {loc | x = (loc.x - 1)}

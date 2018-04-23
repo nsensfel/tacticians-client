@@ -14,6 +14,7 @@ module Struct.Navigator exposing
       try_adding_step,
       try_getting_path_to
    )
+
 -- Elm -------------------------------------------------------------------------
 import Dict
 
@@ -158,11 +159,11 @@ lock_path navigator =
    }
 
 try_adding_step : (
-      Type ->
       Struct.Direction.Type ->
+      Type ->
       (Maybe Type)
    )
-try_adding_step navigator dir =
+try_adding_step dir navigator =
    if (navigator.locked_path)
    then
       Nothing
@@ -178,11 +179,11 @@ try_adding_step navigator dir =
          Nothing -> Nothing
 
 try_getting_path_to : (
-      Type ->
       Struct.Location.Ref ->
+      Type ->
       (Maybe (List Struct.Direction.Type))
    )
-try_getting_path_to navigator loc_ref =
+try_getting_path_to loc_ref navigator =
    case (Dict.get loc_ref navigator.range_indicators) of
       (Just target) ->
          (Just (Struct.RangeIndicator.get_path target))

@@ -27,7 +27,6 @@ make_it_so model char nav =
       (Just cmd) ->
          (
             (Struct.Model.reset
-               model
                (Dict.update
                   (Struct.Character.get_ref char)
                   (\maybe_char ->
@@ -46,6 +45,7 @@ make_it_so model char nav =
                   )
                   model.characters
                )
+               model
             ),
             cmd
          )
@@ -87,11 +87,11 @@ apply_to model =
       (_, _, _) ->
          (
             (Struct.Model.invalidate
-               model
                (Struct.Error.new
                   Struct.Error.Programming
                   "Character turn appears to be in an illegal state."
                )
+               model
             ),
             Cmd.none
          )

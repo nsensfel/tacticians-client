@@ -26,7 +26,7 @@
 
    padding: 0.5em;
 
-   background-color: rgba(145,124,111,1);
+   background-color: #917C6F;
 
    margin: 0 1em 0 1em;
 }
@@ -43,7 +43,7 @@
    padding: 0.5em;
    margin: 0 1em 0 1em;
 
-   background-color: rgba(145,124,111,1);
+   background-color: #917C6F;
 }
 
 
@@ -80,7 +80,7 @@
    border-radius: 0 15px 15px 0;
    border-left: none;
 
-   background-color: rgba(145,124,111,1);
+   background-color: #917C6F;
 }
 
 .battlemap-sub-menu
@@ -95,7 +95,7 @@
    border-radius: 15px 0 0 15px;
    border-right: none;
 
-   background-color: rgba(145,124,111,1);
+   background-color: #917C6F;
 }
 
 /******************************************************************************/
@@ -103,7 +103,7 @@
 /******************************************************************************/
 .battlemap-error
 {
-   background-color: rgba(85,0,0,1);
+   background-color: #550000;
 }
 
 .battlemap-manual-controls
@@ -261,7 +261,7 @@
 
    /*** Otherwise, it won't display correctly without 'transform: scale' ***/
    position: relative;
-   background-color: rgba(145,124,111,1);
+   background-color: #917C6F;
 }
 
 .battlemap-tiled
@@ -421,8 +421,6 @@
    transform: rotate(180deg);
 }
 
-.battlemap-path-icon-NR,
-.battlemap-path-icon-NL,
 .battlemap-path-icon-RR,
 .battlemap-path-icon-LR,
 .battlemap-path-icon-RL,
@@ -431,8 +429,15 @@
    background-position: 0 0;
 }
 
+.battlemap-path-icon-markN,
 .battlemap-path-icon-NU,
 .battlemap-path-icon-ND,
+.battlemap-path-icon-NL,
+.battlemap-path-icon-NR
+{
+   display: none;
+}
+
 .battlemap-path-icon-UU,
 .battlemap-path-icon-UD,
 .battlemap-path-icon-DU,
@@ -442,7 +447,6 @@
    transform: rotate(90deg);
 }
 
-.battlemap-path-icon-markN,
 .battlemap-path-icon-markR,
 .battlemap-path-icon-markL,
 .battlemap-path-icon-markU,

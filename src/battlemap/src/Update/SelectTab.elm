@@ -27,6 +27,6 @@ apply_to model tab =
       )
    else
       (
-         {model | ui = (Struct.UI.set_displayed_tab model.ui tab)},
+         {model | ui = (Struct.UI.set_displayed_tab tab model.ui)},
          Cmd.none
       )
