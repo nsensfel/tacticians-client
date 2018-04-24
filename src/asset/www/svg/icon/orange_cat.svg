@@ -25,11 +25,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.2627417"
-     inkscape:cx="106.7749"
-     inkscape:cy="142.96429"
+     inkscape:zoom="4.5254834"
+     inkscape:cx="119.69711"
+     inkscape:cy="66.448043"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer6"
      showgrid="false"
      inkscape:window-width="1678"
      inkscape:window-height="1029"
@@ -67,11 +67,10 @@
   <g
      inkscape:groupmode="layer"
      id="layer6"
-     inkscape:label="armor"
-     sodipodi:insensitive="true">
+     inkscape:label="armor">
     <path
        style="fill:#808080;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 2.3787326,62.961806 C 5.7054127,53.439388 6.988252,35.524457 37.183872,28.803945 c 8.416214,4.958181 25.137095,13.158668 24.914991,34.440578 z"
+       d="M 2.3787326,63.25 C 5.7054127,53.727582 6.988252,35.524457 37.183872,28.803945 45.600086,33.762126 62.320967,41.96809 62.098863,63.25 Z"
        id="path3716"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc" />

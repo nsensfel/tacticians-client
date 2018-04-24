@@ -15,10 +15,11 @@ import Struct.Weapon
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_portrait : (
+      Struct.Model.Type ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_portrait char =
+get_portrait model char =
    (Html.div
       [
          (Html.Attributes.class
@@ -26,6 +27,13 @@ get_portrait char =
                "asset-character-portrait-"
                ++ (Struct.Character.get_portrait_id char)
             )
+         ),
+         (
+            if (model.player_id == (Struct.Character.get_player_id char))
+            then
+               (Html.Attributes.class "")
+            else
+               (Html.Attributes.class "battlemap-character-enemy")
          ),
          (Html.Attributes.class "battlemap-character-portrait"),
          (Html.Attributes.class "battlemap-character-card-portrait")
@@ -212,7 +220,7 @@ get_html model char weapon =
                (Html.Attributes.class "battlemap-character-card-top")
             ]
             [
-               (get_portrait char),
+               (get_portrait model char),
                (get_name char),
                (get_health_bar char)
             ]

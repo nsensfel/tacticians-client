@@ -43,28 +43,15 @@ $(error\
 )
 endif
 
-ifeq ($(wildcard $(CHAR_STYLE_TEMPLATE)),)
-$(error\
-	"Could not find template for character styles (CHAR_STYLE_TEMPLATE="\
-	"$(CHAR_STYLE_TEMPLATE))."\
-)
-endif
-
 ################################################################################
 ## TARGET RULES ################################################################
 ################################################################################
-build: $(CHAR_STYLE_CSS)
+build:
 
 clean:
-	rm -f $(CHAR_STYLE_CSS)
 
-reset: clean
+reset:
 
 ################################################################################
 ## INTERNAL RULES ##############################################################
 ################################################################################
-$(CHAR_STYLE_CSS): $(SENSITIVITY_LIST) $(CHAR_STYLE_TEMPLATE)
-	$(GENERATE_N_COLORS_SCRIPT) $(TOTAL_NUMBER_OF_COLORS) \
-		0 | \
-		$(GENERATE_N_ENTITIES) $(NUMBER_OF_CHAR_TYPES) $(CHAR_STYLE_TEMPLATE) > \
-		$(CHAR_STYLE_CSS)

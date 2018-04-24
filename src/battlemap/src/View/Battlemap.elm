@@ -104,7 +104,7 @@ get_html model =
          (Html.Lazy.lazy (get_tiles_html) model.battlemap)
          ::
          (List.map
-            (View.Battlemap.Character.get_html model.player_id)
+            (View.Battlemap.Character.get_html model)
             (Dict.values model.characters)
          )
          ++
