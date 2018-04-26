@@ -81,6 +81,34 @@ get_focus_class model char =
       else
          (Html.Attributes.class "")
 
+get_body_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
+get_body_html char =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-character-icon-body"),
+         (Html.Attributes.class
+            (
+               "asset-character-team-body-"
+               ++ (Struct.Character.get_player_id char)
+            )
+         )
+      ]
+      [
+      ]
+   )
+
+get_head_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
+get_head_html char =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-character-icon-head"),
+         (Html.Attributes.class
+            ("asset-character-icon-" ++ (Struct.Character.get_icon_id char))
+         )
+      ]
+      [
+      ]
+   )
 
 get_actual_html : (
       Struct.Model.Type ->
@@ -96,15 +124,14 @@ get_actual_html model char =
             (get_alliance_class model char),
             (get_position_style char),
             (get_focus_class model char),
-            (Html.Attributes.class
-               ("asset-character-icon-" ++ (Struct.Character.get_icon_id char))
-            ),
             (Html.Attributes.class "clickable"),
             (Html.Events.onClick
                (Struct.Event.CharacterSelected (Struct.Character.get_ref char))
             )
          ]
          [
+            (get_body_html char),
+            (get_head_html char)
          ]
       )
 
