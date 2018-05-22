@@ -17,15 +17,23 @@ import Struct.Location
 --------------------------------------------------------------------------------
 -- FIXME: Scrolling so that the focused element is in the middle, not in the top
 -- left corner, would be much better.
+tile_to_px : Struct.UI.Type -> Int -> Float
+tile_to_px ui t =
+   (
+      (toFloat t)
+      * (Struct.UI.get_zoom_level ui)
+      * (toFloat Constants.UI.tile_size)
+   )
 
 scroll_to_x : Int -> Struct.UI.Type -> (Task.Task Dom.Error ())
 scroll_to_x x ui =
    (Dom.Scroll.toX
       Constants.UI.viewer_html_id
       (
-         (toFloat x)
-         * (Struct.UI.get_zoom_level ui)
-         * (toFloat Constants.UI.tile_size)
+         (tile_to_px ui x)
+         - Constants.UI.half_viewer_min_width
+         -- center on that tile, not its top left corner
+         + ((tile_to_px ui 1) / 2.0)
       )
    )
 
@@ -34,9 +42,10 @@ scroll_to_y y ui =
    (Dom.Scroll.toY
       Constants.UI.viewer_html_id
       (
-         (toFloat y)
-         * (Struct.UI.get_zoom_level ui)
-         * (toFloat Constants.UI.tile_size)
+         (tile_to_px ui y)
+         - Constants.UI.half_viewer_min_height
+         -- center on that tile, not its top left corner
+         + ((tile_to_px ui 1) / 2.0)
       )
    )
 
