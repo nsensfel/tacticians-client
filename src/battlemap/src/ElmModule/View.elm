@@ -5,6 +5,8 @@ import Html
 import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
+import Constants.UI
+
 import Struct.Event
 import Struct.Model
 
@@ -32,7 +34,8 @@ view model =
          (View.Controlled.get_html model),
          (Html.div
             [
-               (Html.Attributes.class "battlemap-container")
+               (Html.Attributes.class "battlemap-container"),
+               (Html.Attributes.id Constants.UI.viewer_html_id)
             ]
             [(View.Battlemap.get_html model)]
          ),

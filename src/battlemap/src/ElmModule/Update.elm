@@ -38,6 +38,14 @@ update event model =
       new_model = (Struct.Model.clear_error model)
    in
    case event of
+      Struct.Event.None -> (model, Cmd.none)
+
+      (Struct.Event.Failed err) ->
+         (
+            (Struct.Model.invalidate err new_model),
+            Cmd.none
+         )
+
       Struct.Event.AttackWithoutMovingRequest ->
          (Update.AttackWithoutMoving.apply_to new_model)
 

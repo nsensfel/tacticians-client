@@ -3,7 +3,11 @@ module Update.SelectCharacter exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Dict
 
+import Task
+
 -- Battlemap -------------------------------------------------------------------
+import Action.Scroll
+
 import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
@@ -149,13 +153,25 @@ double_clicked_character model target_char_id =
                else
                   (
                      (ctrl_or_focus_character model target_char_id target_char),
-                     Cmd.none
+                     (Task.attempt
+                        (Struct.Event.attempted)
+                        (Action.Scroll.to
+                           (Struct.Character.get_location target_char)
+                           model.ui
+                        )
+                     )
                   )
 
             _ ->
                (
                   (ctrl_or_focus_character model target_char_id target_char),
-                  Cmd.none
+                  (Task.attempt
+                     (Struct.Event.attempted)
+                     (Action.Scroll.to
+                        (Struct.Character.get_location target_char)
+                        model.ui
+                     )
+                  )
                )
 
       Nothing ->

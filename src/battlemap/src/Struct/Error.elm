@@ -8,6 +8,7 @@ type Mode =
    | Programming
    | Unimplemented
    | Networking
+   | Failure
 
 type alias Type =
    {
@@ -33,6 +34,7 @@ to_string : Type -> String
 to_string e =
    (
       (case e.mode of
+         Failure -> "The action failed: "
          IllegalAction -> "Request discarded: "
          Programming -> "Error in the program (please report): "
          Unimplemented -> "Update discarded due to unimplemented feature: "
