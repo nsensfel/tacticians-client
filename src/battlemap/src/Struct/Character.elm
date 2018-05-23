@@ -7,6 +7,8 @@ module Struct.Character exposing
       get_name,
       get_icon_id,
       get_portrait_id,
+      get_armor,
+      get_armor_variation,
       get_current_health,
       set_current_health,
       get_location,
@@ -26,6 +28,7 @@ import Json.Decode
 import Json.Decode.Pipeline
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Armor
 import Struct.Attributes
 import Struct.Location
 import Struct.Statistics
@@ -62,7 +65,8 @@ type alias Type =
       enabled : Bool,
       attributes : Struct.Attributes.Type,
       statistics : Struct.Statistics.Type,
-      weapons : Struct.WeaponSet.Type
+      weapons : Struct.WeaponSet.Type,
+      armor : Struct.Armor.Type
    }
 
 type alias Ref = String
@@ -92,7 +96,8 @@ finish_decoding get_weapon add_char =
          statistics = (Struct.Statistics.new add_char.att weapon_set),
          player_id = add_char.pla,
          enabled = add_char.ena,
-         weapons = weapon_set
+         weapons = weapon_set,
+         armor = (Struct.Armor.new (add_char.ix % 2))
       }
 
 --------------------------------------------------------------------------------
@@ -142,6 +147,17 @@ set_enabled enabled char = {char | enabled = enabled}
 
 get_weapons : Type -> Struct.WeaponSet.Type
 get_weapons char = char.weapons
+
+get_armor : Type -> Struct.Armor.Type
+get_armor char = char.armor
+
+get_armor_variation : Type -> String
+get_armor_variation char =
+   case char.portrait of
+      -- Currently hardcoded to match crows from characters.css
+      "11" -> "1"
+      "4" -> "1"
+      _ -> "0"
 
 set_weapons : Struct.WeaponSet.Type -> Type -> Type
 set_weapons weapons char =
