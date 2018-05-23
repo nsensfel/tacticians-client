@@ -14,6 +14,8 @@ import Struct.TurnResult
 import Struct.Character
 import Struct.Model
 
+import View.Character
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -36,35 +38,6 @@ get_title_html attacker defender =
                ++ "!"
             )
          )
-      ]
-   )
-
-get_portrait_html : (
-      String ->
-      Struct.Character.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_portrait_html viewer_id char =
-   (Html.div
-      [
-         (Html.Attributes.class "battlemap-timeline-portrait"),
-         (Html.Attributes.class
-            (
-               if ((Struct.Character.get_player_id char) == viewer_id)
-               then
-                  "battlemap-character-ally"
-               else
-                  "battlemap-character-enemy"
-            )
-         ),
-        (Html.Attributes.class
-            (
-               "asset-character-portrait-"
-               ++ (Struct.Character.get_portrait_id char)
-            )
-         )
-      ]
-      [
       ]
    )
 
@@ -167,8 +140,8 @@ get_html model attack =
             ]
             (
                [
-                  (get_portrait_html model.player_id atkchar),
-                  (get_portrait_html model.player_id defchar),
+                  (View.Character.get_portrait_html model.player_id atkchar),
+                  (View.Character.get_portrait_html model.player_id defchar),
                   (get_title_html atkchar defchar)
                ]
                ++

@@ -12,38 +12,11 @@ import Struct.Character
 import Struct.Event
 import Struct.Model
 
+import View.Character
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_character_portrait_html : (
-      String ->
-      Struct.Character.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_character_portrait_html viewer_id char =
-   (Html.div
-      [
-         (Html.Attributes.class
-            (
-               "asset-character-portrait-"
-               ++ (Struct.Character.get_portrait_id char)
-            )
-         ),
-         (Html.Attributes.class
-            (
-               if ((Struct.Character.get_player_id char) == viewer_id)
-               then
-                  "battlemap-character-ally"
-               else
-                  "battlemap-character-enemy"
-            )
-         ),
-         (Html.Attributes.class "battlemap-character-portrait")
-      ]
-      [
-      ]
-   )
-
 get_character_element_html : (
       String ->
       Struct.Character.Type ->
@@ -61,7 +34,7 @@ get_character_element_html viewer_id char =
          )
       ]
       [
-         (get_character_portrait_html viewer_id char),
+         (View.Character.get_portrait_html viewer_id char),
          (Html.text
             (
                (Struct.Character.get_name char)

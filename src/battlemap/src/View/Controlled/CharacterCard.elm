@@ -11,37 +11,11 @@ import Struct.Model
 import Struct.Statistics
 import Struct.Weapon
 
+import View.Character
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_portrait : (
-      Struct.Model.Type ->
-      Struct.Character.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_portrait model char =
-   (Html.div
-      [
-         (Html.Attributes.class
-            (
-               "asset-character-portrait-"
-               ++ (Struct.Character.get_portrait_id char)
-            )
-         ),
-         (
-            if (model.player_id == (Struct.Character.get_player_id char))
-            then
-               (Html.Attributes.class "")
-            else
-               (Html.Attributes.class "battlemap-character-enemy")
-         ),
-         (Html.Attributes.class "battlemap-character-portrait"),
-         (Html.Attributes.class "battlemap-character-card-portrait")
-      ]
-      [
-      ]
-   )
-
 get_name : (
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
@@ -220,7 +194,7 @@ get_html model char weapon =
                (Html.Attributes.class "battlemap-character-card-top")
             ]
             [
-               (get_portrait model char),
+               (View.Character.get_portrait_html model.player_id char),
                (get_name char),
                (get_health_bar char)
             ]

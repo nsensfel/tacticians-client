@@ -145,7 +145,7 @@
    justify-content: left;
 }
 
-.battlemap-character-card-portrait
+.battlemap-character-card .battlemap-character-portrait
 {
    grid-column: col 1;
    grid-row: row 1 / span 3;
@@ -214,8 +214,7 @@
    flex-wrap: wrap;
 }
 
-.battlemap-character-portrait,
-.battlemap-timeline-portrait
+.battlemap-character-portrait
 {
    margin: 0.5em;
    box-sizing: border-box;
@@ -244,7 +243,7 @@
    float: left;
 }
 
-.battlemap-timeline-portrait
+.battlemap-timeline-element .battlemap-character-portrait
 {
    display: inline-block;
    vertical-align: middle;
