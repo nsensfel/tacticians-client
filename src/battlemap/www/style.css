@@ -214,6 +214,11 @@
    flex-wrap: wrap;
 }
 
+.battlemap-character-portrait:hover
+{
+   cursor: pointer;
+}
+
 .battlemap-character-portrait
 {
    margin: 0.5em;

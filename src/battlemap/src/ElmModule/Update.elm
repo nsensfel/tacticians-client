@@ -12,6 +12,7 @@ import Update.ChangeScale
 import Update.DisplayCharacterInfo
 import Update.EndTurn
 import Update.HandleServerReply
+import Update.LookForCharacter
 import Update.RequestDirection
 import Update.SelectCharacter
 import Update.SelectTab
@@ -60,6 +61,9 @@ update event model =
 
       (Struct.Event.CharacterInfoRequested char_id) ->
          (Update.DisplayCharacterInfo.apply_to new_model char_id)
+
+      (Struct.Event.LookingForCharacter char_id) ->
+         (Update.LookForCharacter.apply_to new_model char_id)
 
       Struct.Event.TurnEnded ->
          (Update.EndTurn.apply_to new_model)

@@ -163,11 +163,7 @@ set_weapons : Struct.WeaponSet.Type -> Type -> Type
 set_weapons weapons char =
    {char |
       weapons = weapons,
-      statistics =
-         (Struct.Statistics.new
-            char.attributes
-            weapons
-         )
+      statistics = (Struct.Statistics.new char.attributes weapons)
    }
 
 decoder : (
