@@ -17,15 +17,10 @@ import View.Character
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_character_element_html : (
-      String ->
-      Struct.Character.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_character_element_html viewer_id char =
+get_character_text_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
+get_character_text_html char =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-characters-element"),
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
             (Struct.Event.CharacterInfoRequested
@@ -34,7 +29,6 @@ get_character_element_html viewer_id char =
          )
       ]
       [
-         (View.Character.get_portrait_html viewer_id char),
          (Html.text
             (
                (Struct.Character.get_name char)
@@ -54,6 +48,29 @@ get_character_element_html viewer_id char =
                ++ ")."
             )
          )
+      ]
+   )
+
+get_character_element_html : (
+      String ->
+      Struct.Character.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_character_element_html viewer_id char =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-characters-element"),
+         (
+            if (Struct.Character.is_enabled char)
+            then
+               (Html.Attributes.class "battlemap-characters-element-active")
+            else
+               (Html.Attributes.class "battlemap-characters-element-inactive")
+         )
+      ]
+      [
+         (View.Character.get_portrait_html viewer_id char),
+         (get_character_text_html char)
       ]
    )
 
