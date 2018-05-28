@@ -217,7 +217,7 @@
 .battlemap-characters-element-active
 {
    animation-name: brown-alarm-bg;
-   animation-duration: 2s;
+   animation-duration: 5s;
    animation-iteration-count: infinite;
 }
 
@@ -425,25 +425,28 @@
 
 @keyframes red-alarm-bg {
     0% {background-color: rgba(255,0,0,0.25);}
-    75% {background-color: rgba(255,0,0,1);}
+    50% {background-color: rgba(255,0,0,1);}
+    50% {background-color: rgba(255,0,0,1);}
     100% {background-color: rgba(255,0,0,0.25);}
 }
 
 @keyframes brown-alarm-bg {
     0% {background-color: #917C6F;}
-    75% {background-color: #AC9D93}
+    25% {background-color: #AC9D93}
+    50% {background-color: #AC9D93}
     100% {background-color: #917C6F;}
 }
 
 @keyframes blue-alarm-bg {
-    0% {background-color: rgba(0,0,255,0.25);}
-    75% {background-color: rgba(0,0,255,1);}
-    100% {background-color: rgba(0,0,255,0.25);}
+    0% {background-color: rgba(0,0,255,0.2);}
+    25% {background-color: rgba(0,0,255,0.7);}
+    50% {background-color: rgba(0,0,255,0.7);}
+    100% {background-color: rgba(0,0,255,0.2);}
 }
 
 @keyframes blue-alarm-bd {
     0% {border-color: rgba(0,0,255,0.25);}
-    75% {border-color: rgba(0,0,255,1);}
+    25% {border-color: rgba(0,0,255,1);}
     100% {border-color: rgba(0,0,255,0.25);}
 }
 
@@ -451,7 +454,7 @@
 {
    background-color: rgba(255,0,0,0.7);
    animation-name: red-alarm-bg;
-   animation-duration: 2s;
+   animation-duration: 5s;
    animation-iteration-count: infinite;
 }
 
@@ -459,7 +462,7 @@
 {
    background-color: rgba(0,0,255,0.7);
    animation-name: blue-alarm-bg;
-   animation-duration: 2s;
+   animation-duration: 5s;
    animation-iteration-count: infinite;
 }
 
