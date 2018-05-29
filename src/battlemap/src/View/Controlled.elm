@@ -16,6 +16,7 @@ import Struct.WeaponSet
 import Util.Html
 
 import View.Controlled.CharacterCard
+import View.Controlled.ManualControls
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -112,6 +113,7 @@ get_html model =
                      (Struct.Character.get_weapons char)
                   )
                ),
+               (View.Controlled.ManualControls.get_html),
                (Html.div
                   [(Html.Attributes.class "battlemap-controlled-actions")]
                   (get_available_actions model)

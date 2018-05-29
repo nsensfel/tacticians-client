@@ -108,13 +108,45 @@
 
 .battlemap-manual-controls
 {
-   max-height: 30%;
-   width: inherit;
-   flex: initial;
+   width: 96px;
+   height: 96px;
+   display: grid;
+   grid-template:
+      '.    top .'
+      'left .   right'
+      '.   bottom .';
+   margin: auto;
+}
 
-   display: flex;
-   flex-direction: row;
-   flex-wrap: wrap;
+.battlemap-manual-controls > *
+{
+   background-image: url(/asset/svg/arrowhead.svg);
+   background-size: 100%;
+   width: 32px;
+   height: 32px;
+}
+
+.battlemap-manual-controls-up
+{
+   transform: rotate(-90deg);
+   grid-area: top;
+}
+
+.battlemap-manual-controls-down
+{
+   transform: rotate(90deg);
+   grid-area: bottom;
+}
+
+.battlemap-manual-controls-left
+{
+   transform: rotate(180deg);
+   grid-area: left;
+}
+
+.battlemap-manual-controls-right
+{
+   grid-area: right;
 }
 
 /******************************************************************************/

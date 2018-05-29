@@ -1,4 +1,4 @@
-module View.ManualControls exposing (get_html)
+module View.Controlled.ManualControls exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html
@@ -18,13 +18,15 @@ direction_button : (
       (Html.Html Struct.Event.Type)
    )
 direction_button dir label =
-   (Html.button
+   (Html.div
       [
+         (Html.Attributes.class ("battlemap-manual-controls-" ++ label)),
+         (Html.Attributes.class "clickable"),
          (Html.Events.onClick
             (Struct.Event.DirectionRequested dir)
          )
       ]
-      [ (Html.text label) ]
+      []
    )
 
 --------------------------------------------------------------------------------
@@ -37,9 +39,9 @@ get_html =
          (Html.Attributes.class "battlemap-manual-controls")
       ]
       [
-         (direction_button Struct.Direction.Left "Left"),
-         (direction_button Struct.Direction.Down "Down"),
-         (direction_button Struct.Direction.Up "Up"),
-         (direction_button Struct.Direction.Right "Right")
+         (direction_button Struct.Direction.Left "left"),
+         (direction_button Struct.Direction.Down "down"),
+         (direction_button Struct.Direction.Up "up"),
+         (direction_button Struct.Direction.Right "right")
       ]
    )
