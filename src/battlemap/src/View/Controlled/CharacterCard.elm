@@ -12,6 +12,7 @@ import Struct.Statistics
 import Struct.Weapon
 
 import View.Character
+import View.Gauge
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -42,53 +43,32 @@ get_health_bar char =
             (Struct.Character.get_statistics char)
          )
    in
-      (Html.div
-         [
-            (Html.Attributes.class "battlemap-character-card-percent-bar"),
-            (Html.Attributes.class "battlemap-character-card-health")
-         ]
-         [
-            (Html.div
-               [
-                  (Html.Attributes.class
-                     "battlemap-character-card-percent-bar-text"
-                  )
-               ]
-               [
-                  (Html.text
-                     (
-                        "HP: "
-                        ++ (toString current)
-                        ++ "/"
-                        ++ (toString max)
-                     )
-                  )
-               ]
-            ),
-            (Html.div
-               [
-                  (Html.Attributes.style
-                     [
-                        (
-                           "width",
-                           (
-                              (toString
-                                 (100.0 * ((toFloat current)/(toFloat max)))
-                              )
-                              ++ "%"
-                           )
-                        )
-                     ]
-                  ),
-                  (Html.Attributes.class
-                     "battlemap-character-card-percent-bar-bar"
-                  ),
-                  (Html.Attributes.class "battlemap-character-card-health-bar")
-               ]
-               [
-               ]
-            )
-         ]
+      (View.Gauge.get_html
+         ("HP: " ++ (toString current) ++ "/" ++ (toString max))
+         (100.0 * ((toFloat current)/(toFloat max)))
+         [(Html.Attributes.class "battlemap-character-card-health")]
+         []
+         []
+      )
+
+get_movement_bar : (
+      Struct.Character.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_movement_bar char =
+   let
+      current = (Struct.Character.get_current_health char)
+      max =
+         (Struct.Statistics.get_max_health
+            (Struct.Character.get_statistics char)
+         )
+   in
+      (View.Gauge.get_html
+         ("MP: " ++ (toString current) ++ "/" ++ (toString max))
+         (100.0 * ((toFloat current)/(toFloat max)))
+         [(Html.Attributes.class "battlemap-character-card-movement")]
+         []
+         []
       )
 
 get_weapon_details : (
@@ -231,7 +211,8 @@ get_html model char weapon =
             ]
             [
                (View.Character.get_portrait_html model.player_id char),
-               (get_health_bar char)
+               (get_health_bar char),
+               (get_movement_bar char)
             ]
          ),
          (get_weapon_details
