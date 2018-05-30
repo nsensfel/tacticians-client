@@ -113,17 +113,33 @@
    display: grid;
    grid-template:
       '.    top .'
-      'left .   right'
+      'left  go  right'
       '.   bottom .';
    margin: auto;
 }
 
-.battlemap-manual-controls > *
+.battlemap-manual-controls > div
 {
-   background-image: url(/asset/svg/arrowhead.svg);
-   background-size: 100%;
    width: 32px;
    height: 32px;
+   background-image: url(/asset/svg/arrowhead.svg);
+   background-size: 100%;
+   transition: opacity 0.3s ease-out;
+   opacity: 0.5;
+}
+
+.battlemap-manual-controls > div:hover
+{
+   opacity: 1;
+}
+
+.battlemap-manual-controls-go
+{
+   margin: auto;
+   width: 28px;
+   height: 28px;
+   border-radius: 100em;
+   grid-area: go;
 }
 
 .battlemap-manual-controls-up
@@ -473,6 +489,7 @@
 {
    background-color: #FFF;
    opacity: 0.3;
+   transition: opacity 0.3s ease-out;
 }
 
 .battlemap-can-go-to-marker:hover

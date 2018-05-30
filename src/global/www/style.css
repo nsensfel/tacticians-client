@@ -25,10 +25,12 @@ html
    color: #FFEEAA;
    margin: 0.1em;
    padding: 0.2em;
+   transition: background-color 0.3s ease-out;
 }
 
 * button:hover
 {
+   cursor: pointer;
    background-color: #AC9D93;
 }
 

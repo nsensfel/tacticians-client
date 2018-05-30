@@ -6,8 +6,10 @@ import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Character
+import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
+import Struct.Navigator
 import Struct.Statistics
 import Struct.Weapon
 
@@ -51,17 +53,24 @@ get_health_bar char =
          []
       )
 
-get_movement_bar : (
+get_active_movement_bar : (
+      (Maybe Struct.Navigator.Type) ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_movement_bar char =
+get_active_movement_bar maybe_navigator char =
    let
-      current = (Struct.Character.get_current_health char)
       max =
-         (Struct.Statistics.get_max_health
+         (Struct.Statistics.get_movement_points
             (Struct.Character.get_statistics char)
          )
+      current =
+         case maybe_navigator of
+            (Just navigator) ->
+               (Struct.Navigator.get_remaining_points navigator)
+
+            Nothing ->
+               max
    in
       (View.Gauge.get_html
          ("MP: " ++ (toString current) ++ "/" ++ (toString max))
@@ -70,6 +79,58 @@ get_movement_bar char =
          []
          []
       )
+
+get_inactive_movement_bar : (
+      Struct.Character.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_inactive_movement_bar char =
+   let
+      max =
+         (Struct.Statistics.get_movement_points
+            (Struct.Character.get_statistics char)
+         )
+   in
+      (View.Gauge.get_html
+         (
+            "MP: "
+            ++
+            (toString
+               (Struct.Statistics.get_movement_points
+                  (Struct.Character.get_statistics char)
+               )
+            )
+         )
+         100.0
+         [(Html.Attributes.class "battlemap-character-card-movement")]
+         []
+         []
+      )
+
+get_movement_bar : (
+      Struct.Model.Type ->
+      Struct.Character.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_movement_bar model char =
+   case (Struct.CharacterTurn.try_getting_active_character model.char_turn) of
+      (Just active_char) ->
+         if
+         (
+            (Struct.Character.get_ref active_char)
+            ==
+            (Struct.Character.get_ref char)
+         )
+         then
+            (get_active_movement_bar
+               (Struct.CharacterTurn.try_getting_navigator model.char_turn)
+               active_char
+            )
+         else
+            (get_inactive_movement_bar char)
+
+      Nothing ->
+         (get_inactive_movement_bar char)
 
 get_weapon_details : (
       Struct.Model.Type ->
@@ -212,7 +273,7 @@ get_html model char weapon =
             [
                (View.Character.get_portrait_html model.player_id char),
                (get_health_bar char),
-               (get_movement_bar char)
+               (get_movement_bar model char)
             ]
          ),
          (get_weapon_details

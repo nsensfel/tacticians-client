@@ -29,6 +29,18 @@ direction_button dir label =
       []
    )
 
+go_button : (Html.Html Struct.Event.Type)
+go_button =
+   (Html.button
+      [
+         (Html.Attributes.class "battlemap-manual-controls-go"),
+         (Html.Events.onClick Struct.Event.AttackWithoutMovingRequest)
+      ]
+      [
+         (Html.text "Go")
+      ]
+   )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -42,6 +54,7 @@ get_html =
          (direction_button Struct.Direction.Left "left"),
          (direction_button Struct.Direction.Down "down"),
          (direction_button Struct.Direction.Up "up"),
-         (direction_button Struct.Direction.Right "right")
+         (direction_button Struct.Direction.Right "right"),
+         (go_button)
       ]
    )

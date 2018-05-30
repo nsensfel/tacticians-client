@@ -113,7 +113,18 @@ get_html model =
                      (Struct.Character.get_weapons char)
                   )
                ),
-               (View.Controlled.ManualControls.get_html),
+               (
+                  if
+                  (
+                     (Struct.CharacterTurn.get_state model.char_turn)
+                     ==
+                     Struct.CharacterTurn.SelectedCharacter
+                  )
+                  then
+                     (View.Controlled.ManualControls.get_html)
+                  else
+                     (Util.Html.nothing)
+               ),
                (Html.div
                   [(Html.Attributes.class "battlemap-controlled-actions")]
                   (get_available_actions model)
