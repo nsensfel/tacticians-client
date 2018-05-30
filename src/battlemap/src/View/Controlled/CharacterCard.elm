@@ -35,26 +35,61 @@ get_health_bar : (
       (Html.Html Struct.Event.Type)
    )
 get_health_bar char =
-   (Html.div
-      [
-         (Html.Attributes.class "battlemap-character-card-health")
-      ]
-      [
-         (Html.text
-            (
-               "HP: "
-               ++ (toString (Struct.Character.get_current_health char))
-               ++ "/"
-               ++
-               (toString
-                  (Struct.Statistics.get_max_health
-                     (Struct.Character.get_statistics char)
-                  )
-               )
-            )
+   let
+      current = (Struct.Character.get_current_health char)
+      max =
+         (Struct.Statistics.get_max_health
+            (Struct.Character.get_statistics char)
          )
-      ]
-   )
+   in
+      (Html.div
+         [
+            (Html.Attributes.class "battlemap-character-card-percent-bar"),
+            (Html.Attributes.class "battlemap-character-card-health")
+         ]
+         [
+            (Html.div
+               [
+                  (Html.Attributes.class
+                     "battlemap-character-card-percent-bar-text"
+                  )
+               ]
+               [
+                  (Html.text
+                     (
+                        "HP: "
+                        ++ (toString current)
+                        ++ "/"
+                        ++ (toString max)
+                     )
+                  )
+               ]
+            ),
+            (Html.div
+               [
+                  (Html.Attributes.style
+                     [
+                        (
+                           "width",
+                           (
+                              (toString
+                                 (100.0 * ((toFloat current)/(toFloat max)))
+                              )
+                              ++ "%"
+                           )
+                        )
+                     ]
+                  ),
+                  (Html.Attributes.class
+                     "battlemap-character-card-percent-bar-bar"
+                  ),
+                  (Html.Attributes.class "battlemap-character-card-health-bar")
+               ]
+               [
+               ]
+            )
+         ]
+      )
 
 get_weapon_details : (
       Struct.Model.Type ->
@@ -189,13 +224,13 @@ get_html model char weapon =
          (Html.Attributes.class "battlemap-character-card")
       ]
       [
+         (get_name char),
          (Html.div
             [
                (Html.Attributes.class "battlemap-character-card-top")
             ]
             [
                (View.Character.get_portrait_html model.player_id char),
-               (get_name char),
                (get_health_bar char)
             ]
          ),

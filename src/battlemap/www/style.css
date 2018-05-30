@@ -189,10 +189,54 @@
    grid-row: row 1;
 }
 
+.battlemap-character-card-percent-bar
+{
+   border-radius: 5px;
+   height: 24px;
+   width: 100px;
+   border: 2px solid #6C5D53;
+   text-align: center;
+}
+
+.battlemap-character-card-percent-bar-text
+{
+   line-height: 24px;
+   position: relative;
+   height: inherit;
+   z-index: 1;
+   width: 100px;
+}
+
+.battlemap-character-card-percent-bar-bar
+{
+   position: relative;
+   height: inherit;
+   border-radius: 5px;
+   z-index: 0;
+   top: -100%;
+   max-width: 100px;
+}
+
 .battlemap-character-card-health
 {
    grid-column: col 2;
    grid-row: row 2;
+}
+
+.battlemap-character-card-health-bar
+{
+   background-color: darkred;
+}
+
+.battlemap-character-card-movement
+{
+   grid-column: col 2;
+   grid-row: row 2;
+}
+
+.battlemap-character-card-movement-bar
+{
+   background-color: orange;
 }
 
 .battlemap-character-card-weapon
