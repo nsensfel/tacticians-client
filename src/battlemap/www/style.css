@@ -237,6 +237,7 @@
    border-radius: 5px;
    z-index: 0;
    top: -100%;
+   transition: width 0.3s ease-out;
 }
 
 .battlemap-character-card-health
