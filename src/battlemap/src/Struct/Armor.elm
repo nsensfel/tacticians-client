@@ -69,43 +69,45 @@ get_resistance_to dmg_type ar =
       (
          ar.coef
          *
-         (
-            case (dmg_type, ar.category) of
-               (Struct.Weapon.Slash, Kinetic) -> 0.0
-               (Struct.Weapon.Slash, Leather) -> 0.5
-               (Struct.Weapon.Slash, Chain) -> 1.0
-               (Struct.Weapon.Slash, Plate) -> 1.0
-               (Struct.Weapon.Blunt, Kinetic) -> 1.0
-               (Struct.Weapon.Blunt, Leather) -> 0.5
-               (Struct.Weapon.Blunt, Chain) -> 0.5
-               (Struct.Weapon.Blunt, Plate) -> 0.5
-               (Struct.Weapon.Pierce, Kinetic) -> 0.5
-               (Struct.Weapon.Pierce, Leather) -> 0.5
-               (Struct.Weapon.Pierce, Chain) -> 0.5
-               (Struct.Weapon.Pierce, Plate) -> 1.0
+         (toFloat
+            (
+               case (dmg_type, ar.category) of
+                  (Struct.Weapon.Slash, Kinetic) -> 0
+                  (Struct.Weapon.Slash, Leather) -> 5
+                  (Struct.Weapon.Slash, Chain) -> 10
+                  (Struct.Weapon.Slash, Plate) -> 10
+                  (Struct.Weapon.Blunt, Kinetic) -> 10
+                  (Struct.Weapon.Blunt, Leather) -> 5
+                  (Struct.Weapon.Blunt, Chain) -> 5
+                  (Struct.Weapon.Blunt, Plate) -> 5
+                  (Struct.Weapon.Pierce, Kinetic) -> 5
+                  (Struct.Weapon.Pierce, Leather) -> 5
+                  (Struct.Weapon.Pierce, Chain) -> 5
+                  (Struct.Weapon.Pierce, Plate) -> 10
+            )
          )
       )
    )
 
 apply_to_attributes : Type -> Struct.Attributes.Type -> Struct.Attributes.Type
 apply_to_attributes ar atts =
-   case ar.category of
-      Kinetic -> atts
-      Leather -> atts
-      Chain ->
-         (Struct.Attributes.mod_dexterity
-            -10
-            (Struct.Attributes.mod_speed -10 atts)
-         )
+   let
+      impact = (ceiling (-20.0 * ar.coef))
+   in
+      case ar.category of
+         Kinetic -> (Struct.Attributes.mod_mind impact atts)
+         Leather -> (Struct.Attributes.mod_dexterity impact atts)
+         Chain ->
+            (Struct.Attributes.mod_dexterity
+               impact
+               (Struct.Attributes.mod_speed impact atts)
+            )
 
-      Plate ->
-         (Struct.Attributes.mod_dexterity
-            -10
-            (Struct.Attributes.mod_speed
-               -10
-               (Struct.Attributes.mod_strength
-                  -10
-                  atts
+         Plate ->
+            (Struct.Attributes.mod_dexterity
+               impact
+               (Struct.Attributes.mod_speed
+                  impact
+                  (Struct.Attributes.mod_strength impact atts)
                )
             )
-         )

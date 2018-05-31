@@ -18,6 +18,7 @@ dataset =
          (Struct.Weapon.new
             0
             "None"
+            1.0
             Struct.Weapon.Melee
             Struct.Weapon.Short
             Struct.Weapon.Blunt
@@ -29,6 +30,7 @@ dataset =
          (Struct.Weapon.new
             1
             "Dagger"
+            1.0
             Struct.Weapon.Melee
             Struct.Weapon.Short
             Struct.Weapon.Slash
@@ -40,6 +42,7 @@ dataset =
          (Struct.Weapon.new
             2
             "Sword"
+            1.0
             Struct.Weapon.Melee
             Struct.Weapon.Short
             Struct.Weapon.Slash
@@ -51,6 +54,7 @@ dataset =
          (Struct.Weapon.new
             3
             "Claymore"
+            1.0
             Struct.Weapon.Melee
             Struct.Weapon.Long
             Struct.Weapon.Slash
@@ -62,6 +66,7 @@ dataset =
          (Struct.Weapon.new
             4
             "Bardiche"
+            1.0
             Struct.Weapon.Melee
             Struct.Weapon.Long
             Struct.Weapon.Slash
@@ -73,6 +78,7 @@ dataset =
          (Struct.Weapon.new
             5
             "Stiletto"
+            1.0
             Struct.Weapon.Melee
             Struct.Weapon.Short
             Struct.Weapon.Pierce
@@ -84,6 +90,7 @@ dataset =
          (Struct.Weapon.new
             6
             "Pickaxe"
+            1.0
             Struct.Weapon.Melee
             Struct.Weapon.Short
             Struct.Weapon.Pierce
@@ -95,6 +102,7 @@ dataset =
          (Struct.Weapon.new
             7
             "Rapier"
+            1.0
             Struct.Weapon.Melee
             Struct.Weapon.Long
             Struct.Weapon.Pierce
@@ -106,6 +114,7 @@ dataset =
          (Struct.Weapon.new
             8
             "Pike"
+            1.0
             Struct.Weapon.Melee
             Struct.Weapon.Long
             Struct.Weapon.Pierce
@@ -117,6 +126,7 @@ dataset =
          (Struct.Weapon.new
             9
             "Club"
+            1.0
             Struct.Weapon.Melee
             Struct.Weapon.Short
             Struct.Weapon.Blunt
@@ -128,6 +138,7 @@ dataset =
          (Struct.Weapon.new
             10
             "Mace"
+            1.0
             Struct.Weapon.Melee
             Struct.Weapon.Short
             Struct.Weapon.Blunt
@@ -139,6 +150,7 @@ dataset =
          (Struct.Weapon.new
             11
             "Staff"
+            1.0
             Struct.Weapon.Melee
             Struct.Weapon.Long
             Struct.Weapon.Blunt
@@ -150,6 +162,7 @@ dataset =
          (Struct.Weapon.new
             12
             "War Hammer"
+            1.0
             Struct.Weapon.Melee
             Struct.Weapon.Long
             Struct.Weapon.Blunt
@@ -161,6 +174,7 @@ dataset =
          (Struct.Weapon.new
             13
             "Short Bow (Broadhead)"
+            1.0
             Struct.Weapon.Ranged
             Struct.Weapon.Short
             Struct.Weapon.Slash
@@ -172,6 +186,7 @@ dataset =
          (Struct.Weapon.new
             14
             "Short Bow (Blunt)"
+            1.0
             Struct.Weapon.Ranged
             Struct.Weapon.Short
             Struct.Weapon.Blunt
@@ -183,6 +198,7 @@ dataset =
          (Struct.Weapon.new
             15
             "Short Bow (Bodkin Point)"
+            1.0
             Struct.Weapon.Ranged
             Struct.Weapon.Short
             Struct.Weapon.Pierce
@@ -194,6 +210,7 @@ dataset =
          (Struct.Weapon.new
             16
             "Long Bow (Broadhead)"
+            1.0
             Struct.Weapon.Ranged
             Struct.Weapon.Long
             Struct.Weapon.Slash
@@ -205,6 +222,7 @@ dataset =
          (Struct.Weapon.new
             17
             "Long Bow (Blunt)"
+            1.0
             Struct.Weapon.Ranged
             Struct.Weapon.Long
             Struct.Weapon.Blunt
@@ -216,6 +234,7 @@ dataset =
          (Struct.Weapon.new
             18
             "Long Bow (Bodkin Point)"
+            1.0
             Struct.Weapon.Ranged
             Struct.Weapon.Long
             Struct.Weapon.Pierce
@@ -227,6 +246,7 @@ dataset =
          (Struct.Weapon.new
             19
             "Crossbow (Broadhead)"
+            1.0
             Struct.Weapon.Ranged
             Struct.Weapon.Short
             Struct.Weapon.Slash
@@ -238,6 +258,7 @@ dataset =
          (Struct.Weapon.new
             20
             "Crossbow (Blunt)"
+            1.0
             Struct.Weapon.Ranged
             Struct.Weapon.Short
             Struct.Weapon.Blunt
@@ -249,6 +270,7 @@ dataset =
          (Struct.Weapon.new
             21
             "Crossbow (Bodkin Point)"
+            1.0
             Struct.Weapon.Ranged
             Struct.Weapon.Short
             Struct.Weapon.Pierce
@@ -260,6 +282,7 @@ dataset =
          (Struct.Weapon.new
             22
             "Arbalest (Broadhead)"
+            1.0
             Struct.Weapon.Ranged
             Struct.Weapon.Long
             Struct.Weapon.Slash
@@ -271,6 +294,7 @@ dataset =
          (Struct.Weapon.new
             23
             "Arbalest (Blunt)"
+            1.0
             Struct.Weapon.Ranged
             Struct.Weapon.Long
             Struct.Weapon.Blunt
@@ -282,6 +306,7 @@ dataset =
          (Struct.Weapon.new
             24
             "Arbalest (Bodkin Point)"
+            1.0
             Struct.Weapon.Ranged
             Struct.Weapon.Long
             Struct.Weapon.Pierce
@@ -302,6 +327,7 @@ none =
    (Struct.Weapon.new
       0
       "None"
+      1.0
       Struct.Weapon.Melee
       Struct.Weapon.Short
       Struct.Weapon.Blunt

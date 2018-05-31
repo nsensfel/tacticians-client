@@ -29,6 +29,7 @@ type alias Type =
    {
       id : Int,
       name : String,
+      coef : Float,
       range_type : RangeType,
       range_mod : RangeModifier,
       dmg_type : DamageType,
@@ -65,13 +66,13 @@ get_ranges rt rm =
       (Melee, Long) -> (0, 2)
       (Melee, Short) -> (0, 1)
 
-get_damages : RangeType -> DamageModifier -> (Int, Int)
-get_damages rt dm =
+get_damages : Float -> RangeType -> DamageModifier -> (Int, Int)
+get_damages coef rt dm =
    case (rt, dm) of
-      (Ranged, Heavy) -> (10, 25)
-      (Ranged, Light) -> (5, 20)
-      (Melee, Heavy) -> (20, 35)
-      (Melee, Light) -> (15, 30)
+      (Ranged, Heavy) -> ((ceiling (10.0 * coef)), (ceiling (25.0 * coef)))
+      (Ranged, Light) -> ((ceiling (5.0 * coef)), (ceiling (20.0 * coef)))
+      (Melee, Heavy) -> ((ceiling (20.0 * coef)), (ceiling (35.0 * coef)))
+      (Melee, Light) -> ((ceiling (15.0 * coef)), (ceiling (30.0 * coef)))
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -79,6 +80,7 @@ get_damages rt dm =
 new : (
       Int ->
       String ->
+      Float ->
       RangeType ->
       RangeModifier ->
       DamageType ->
@@ -86,17 +88,18 @@ new : (
       Type
    )
 new
-   id name
+   id name coef
    range_type range_mod
    dmg_type dmg_mod
    =
    let
       (def_range, atk_range) = (get_ranges range_type range_mod)
-      (dmg_min, dmg_max) = (get_damages range_type dmg_mod)
+      (dmg_min, dmg_max) = (get_damages coef range_type dmg_mod)
    in
    {
       id = id,
       name = name,
+      coef = coef,
       range_type = range_type,
       range_mod = range_mod,
       dmg_type = dmg_type,
@@ -136,15 +139,32 @@ get_min_damage wp = wp.dmg_min
 
 apply_to_attributes : Type -> Struct.Attributes.Type -> Struct.Attributes.Type
 apply_to_attributes wp atts =
-   case (wp.range_mod, wp.dmg_mod) of
-      (Long, Heavy) ->
-         (Struct.Attributes.mod_dexterity
-            -20
-            (Struct.Attributes.mod_speed -20 atts)
-         )
+   let
+      impact = (-20.0 * wp.coef)
+      full_impact = (ceiling impact)
+      quarter_impact = (ceiling (impact / 4.0))
+   in
+      case (wp.range_mod, wp.dmg_mod) of
+         (Long, Heavy) ->
+            (Struct.Attributes.mod_dexterity
+               full_impact
+               (Struct.Attributes.mod_speed full_impact atts)
+            )
 
-      (Long, Light) ->  (Struct.Attributes.mod_dexterity -20 atts)
+         (Long, Light) ->
+            (Struct.Attributes.mod_dexterity
+               full_impact
+               (Struct.Attributes.mod_speed quarter_impact atts)
+            )
 
-      (Short, Heavy) -> (Struct.Attributes.mod_speed -20 atts)
+         (Short, Heavy) ->
+            (Struct.Attributes.mod_dexterity
+               quarter_impact
+               (Struct.Attributes.mod_speed full_impact atts)
+            )
 
-      (Short, Light) -> atts
+         (Short, Light) ->
+            (Struct.Attributes.mod_dexterity
+               quarter_impact
+               (Struct.Attributes.mod_speed quarter_impact atts)
+            )
