@@ -26,36 +26,36 @@ dataset =
          1,
          (Struct.Armor.new
             1
-            "Morrigan's Pity"
-            Struct.Armor.Kinetic
-            5.0
+            "Last Meal's Pelts"
+            Struct.Armor.Leather
+            0.5
          )
       ),
       (
          2,
          (Struct.Armor.new
-            1
-            "Last Night's Hunt"
-            Struct.Armor.Leather
-            5.0
+            2
+            "Bits from a Wall"
+            Struct.Armor.Plate
+            0.5
          )
       ),
       (
          3,
          (Struct.Armor.new
-            1
-            "Garden Fence"
+            3
+            "Some Garden Fence"
             Struct.Armor.Chain
-            5.0
+            0.5
          )
       ),
       (
          4,
          (Struct.Armor.new
-            1
-            "Bits of Wall"
-            Struct.Armor.Plate
-            5.0
+            4
+            "Morrigan's Pity"
+            Struct.Armor.Kinetic
+            0.5
          )
       )
    ]

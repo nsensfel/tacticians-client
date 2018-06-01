@@ -69,22 +69,20 @@ get_resistance_to dmg_type ar =
       (
          ar.coef
          *
-         (toFloat
-            (
-               case (dmg_type, ar.category) of
-                  (Struct.Weapon.Slash, Kinetic) -> 0
-                  (Struct.Weapon.Slash, Leather) -> 5
-                  (Struct.Weapon.Slash, Chain) -> 10
-                  (Struct.Weapon.Slash, Plate) -> 10
-                  (Struct.Weapon.Blunt, Kinetic) -> 10
-                  (Struct.Weapon.Blunt, Leather) -> 5
-                  (Struct.Weapon.Blunt, Chain) -> 5
-                  (Struct.Weapon.Blunt, Plate) -> 5
-                  (Struct.Weapon.Pierce, Kinetic) -> 5
-                  (Struct.Weapon.Pierce, Leather) -> 5
-                  (Struct.Weapon.Pierce, Chain) -> 5
-                  (Struct.Weapon.Pierce, Plate) -> 10
-            )
+         (
+            case (dmg_type, ar.category) of
+               (Struct.Weapon.Slash, Kinetic) -> 0.0
+               (Struct.Weapon.Slash, Leather) -> 5.0
+               (Struct.Weapon.Slash, Chain) -> 10.0
+               (Struct.Weapon.Slash, Plate) -> 10.0
+               (Struct.Weapon.Blunt, Kinetic) -> 10.0
+               (Struct.Weapon.Blunt, Leather) -> 5.0
+               (Struct.Weapon.Blunt, Chain) -> 5.0
+               (Struct.Weapon.Blunt, Plate) -> 5.0
+               (Struct.Weapon.Pierce, Kinetic) -> 5.0
+               (Struct.Weapon.Pierce, Leather) -> 5.0
+               (Struct.Weapon.Pierce, Chain) -> 5.0
+               (Struct.Weapon.Pierce, Plate) -> 10.0
          )
       )
    )

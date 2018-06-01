@@ -78,10 +78,11 @@ type alias Ref = String
 --------------------------------------------------------------------------------
 finish_decoding : (
       (Struct.Weapon.Ref -> Struct.Weapon.Type) ->
+      (Struct.Armor.Ref -> Struct.Armor.Type) ->
       PartiallyDecoded ->
       Type
    )
-finish_decoding get_weapon add_char =
+finish_decoding get_weapon get_armor add_char =
    let
       active_weapon = (get_weapon add_char.awp)
       secondary_weapon = (get_weapon add_char.swp)
@@ -99,7 +100,7 @@ finish_decoding get_weapon add_char =
          player_id = add_char.pla,
          enabled = add_char.ena,
          weapons = weapon_set,
-         armor = (Data.Armors.none)
+         armor = (get_armor (add_char.ix % 4))
       }
 
 --------------------------------------------------------------------------------
@@ -170,11 +171,12 @@ set_weapons weapons char =
 
 decoder : (
       (Struct.Weapon.Ref -> Struct.Weapon.Type) ->
+      (Struct.Armor.Ref -> Struct.Armor.Type) ->
       (Json.Decode.Decoder Type)
    )
-decoder get_weapon =
+decoder get_weapon get_armor =
    (Json.Decode.map
-      (finish_decoding get_weapon)
+      (finish_decoding get_weapon get_armor)
       (Json.Decode.Pipeline.decode
          PartiallyDecoded
          |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)

@@ -13,8 +13,10 @@ import Dict
 import Array
 
 -- Battlemap -------------------------------------------------------------------
+import Data.Armors
 import Data.Weapons
 
+import Struct.Armor
 import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
@@ -31,6 +33,7 @@ type alias Type =
       battlemap: Struct.Battlemap.Type,
       characters: (Dict.Dict Struct.Character.Ref Struct.Character.Type),
       weapons: (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type),
+      armors: (Dict.Dict Struct.Armor.Ref Struct.Armor.Type),
       error: (Maybe Struct.Error.Type),
       player_id: String,
       ui: Struct.UI.Type,
@@ -51,6 +54,7 @@ new =
       battlemap = (Struct.Battlemap.empty),
       characters = (Dict.empty),
       weapons = (Data.Weapons.generate_dict),
+      armors = (Data.Armors.generate_dict),
       error = Nothing,
       player_id = "0",
       ui = (Struct.UI.default),

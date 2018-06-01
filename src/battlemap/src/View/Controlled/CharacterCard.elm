@@ -5,6 +5,7 @@ import Html
 import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Armor
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
@@ -182,6 +183,49 @@ get_weapon_details model stats weapon =
       ]
    )
 
+get_armor_details : (
+      Struct.Armor.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_armor_details armor =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-character-card-armor")
+      ]
+      [
+         (Html.div
+            [
+               (Html.Attributes.class "battlemap-character-card-armor-name")
+            ]
+            [
+               (Html.text (Struct.Armor.get_name armor))
+            ]
+         ),
+         (Html.div
+            [
+               (Html.Attributes.class "battlemap-character-card-armor-stats")
+            ]
+            [
+               (stat_name "Slash"),
+               (stat_val
+                  (Struct.Armor.get_resistance_to Struct.Weapon.Slash armor)
+                  False
+               ),
+               (stat_name "Pierc."),
+               (stat_val
+                  (Struct.Armor.get_resistance_to Struct.Weapon.Pierce armor)
+                  False
+               ),
+               (stat_name "Blund."),
+               (stat_val
+                  (Struct.Armor.get_resistance_to Struct.Weapon.Blunt armor)
+                  False
+               )
+            ]
+         )
+      ]
+   )
+
 stat_name  : String -> (Html.Html Struct.Event.Type)
 stat_name name =
    (Html.div
@@ -281,6 +325,7 @@ get_html model char weapon =
             (Struct.Character.get_statistics char)
             weapon
          ),
+         (get_armor_details (Struct.Character.get_armor char)),
          (get_relevant_stats model char weapon)
       ]
    )

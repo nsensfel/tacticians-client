@@ -165,9 +165,7 @@ get_portrait_armor_html char =
             (
                "asset-armor-"
                ++
-               (toString
-                  (Struct.Armor.get_id (Struct.Character.get_armor char))
-               )
+               (Struct.Armor.get_image_id (Struct.Character.get_armor char))
             )
          ),
          (Html.Attributes.class
