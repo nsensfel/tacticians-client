@@ -28,8 +28,6 @@ import Json.Decode
 import Json.Decode.Pipeline
 
 -- Battlemap -------------------------------------------------------------------
-import Data.Armors
-
 import Struct.Armor
 import Struct.Attributes
 import Struct.Location
@@ -87,6 +85,8 @@ finish_decoding get_weapon get_armor add_char =
       active_weapon = (get_weapon add_char.awp)
       secondary_weapon = (get_weapon add_char.swp)
       weapon_set = (Struct.WeaponSet.new active_weapon secondary_weapon)
+      armor = (get_armor (add_char.ix % 4))
+      act_atts = (Struct.Armor.apply_to_attributes armor add_char.att)
    in
       {
          id = (toString add_char.ix),
@@ -95,12 +95,12 @@ finish_decoding get_weapon get_armor add_char =
          portrait = add_char.prt,
          location = add_char.lc,
          health = add_char.hea,
-         attributes = add_char.att,
-         statistics = (Struct.Statistics.new add_char.att weapon_set),
+         attributes = act_atts,
+         statistics = (Struct.Statistics.new act_atts weapon_set),
          player_id = add_char.pla,
          enabled = add_char.ena,
          weapons = weapon_set,
-         armor = (get_armor (add_char.ix % 4))
+         armor = armor
       }
 
 --------------------------------------------------------------------------------
