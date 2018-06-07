@@ -6,6 +6,7 @@ import Array
 import Http
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Armor
 import Struct.Battlemap
 import Struct.Character
 import Struct.Error
@@ -14,6 +15,7 @@ import Struct.Model
 import Struct.ServerReply
 import Struct.TurnResult
 import Struct.UI
+import Struct.Weapon
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -22,6 +24,26 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+add_armor : (
+      Struct.Armor.Type ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type))
+   )
+add_armor ar current_state =
+   case current_state of
+      (_, (Just _)) -> current_state
+      (model, _) -> ((Struct.Model.add_armor ar model), Nothing)
+
+add_weapon : (
+      Struct.Weapon.Type ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type))
+   )
+add_weapon wp current_state =
+   case current_state of
+      (_, (Just _)) -> current_state
+      (model, _) -> ((Struct.Model.add_weapon wp model), Nothing)
+
 add_character : (
       Struct.Character.Type ->
       (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
@@ -30,14 +52,7 @@ add_character : (
 add_character char current_state =
    case current_state of
       (_, (Just _)) -> current_state
-      (model, _) ->
-         (
-            (Struct.Model.add_character
-               char
-               model
-            ),
-            Nothing
-         )
+      (model, _) -> ((Struct.Model.add_character char model), Nothing)
 
 set_map : (
       Struct.Battlemap.Type ->
@@ -110,6 +125,12 @@ apply_command : (
    )
 apply_command command current_state =
    case command of
+      (Struct.ServerReply.AddWeapon wp) ->
+         (add_weapon wp current_state)
+
+      (Struct.ServerReply.AddArmor ar) ->
+         (add_armor ar current_state)
+
       (Struct.ServerReply.AddCharacter char) ->
          (add_character char current_state)
 

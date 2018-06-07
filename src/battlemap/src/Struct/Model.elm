@@ -3,6 +3,8 @@ module Struct.Model exposing
       Type,
       new,
       add_character,
+      add_weapon,
+      add_armor,
       invalidate,
       reset,
       clear_error
@@ -13,9 +15,6 @@ import Dict
 import Array
 
 -- Battlemap -------------------------------------------------------------------
-import Data.Armors
-import Data.Weapons
-
 import Struct.Armor
 import Struct.Battlemap
 import Struct.Character
@@ -53,8 +52,8 @@ new =
    {
       battlemap = (Struct.Battlemap.empty),
       characters = (Dict.empty),
-      weapons = (Data.Weapons.generate_dict),
-      armors = (Data.Armors.generate_dict),
+      weapons = (Dict.empty),
+      armors = (Dict.empty),
       error = Nothing,
       player_id = "0",
       ui = (Struct.UI.default),
@@ -62,7 +61,7 @@ new =
       timeline = (Array.empty)
    }
 
-add_character :  Struct.Character.Type -> Type -> Type
+add_character : Struct.Character.Type -> Type -> Type
 add_character char model =
    {model |
       characters =
@@ -70,6 +69,28 @@ add_character char model =
             (Struct.Character.get_ref char)
             char
             model.characters
+         )
+   }
+
+add_weapon : Struct.Weapon.Type -> Type -> Type
+add_weapon wp model =
+   {model |
+      weapons =
+         (Dict.insert
+            (Struct.Weapon.get_id wp)
+            wp
+            model.weapons
+         )
+   }
+
+add_armor : Struct.Armor.Type -> Type -> Type
+add_armor ar model =
+   {model |
+      armors =
+         (Dict.insert
+            (Struct.Armor.get_id ar)
+            ar
+            model.armors
          )
    }
 

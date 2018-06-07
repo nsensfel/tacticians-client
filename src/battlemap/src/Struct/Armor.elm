@@ -9,8 +9,14 @@ module Struct.Armor exposing
       get_category,
       get_resistance_to,
       get_image_id,
+      decoder,
+      none,
       apply_to_attributes
    )
+
+-- Elm -------------------------------------------------------------------------
+import Json.Decode
+import Json.Decode.Pipeline
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Attributes
@@ -19,6 +25,14 @@ import Struct.Weapon
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+type alias PartiallyDecoded =
+   {
+      id : Int,
+      nam : String,
+      ct : String,
+      cf : Float
+   }
+
 type alias Type =
    {
       id : Int,
@@ -109,3 +123,41 @@ apply_to_attributes ar atts =
                   (Struct.Attributes.mod_strength impact atts)
                )
             )
+
+finish_decoding : PartiallyDecoded -> Type
+finish_decoding add_armor =
+   {
+      id = add_armor.id,
+      name = add_armor.nam,
+      category =
+         (
+            case add_armor.ct of
+               "k" -> Kinetic
+               "c" -> Chain
+               "p" -> Plate
+               _   -> Leather
+         ),
+      coef = add_armor.cf
+   }
+
+decoder : (Json.Decode.Decoder Type)
+decoder =
+   (Json.Decode.map
+      (finish_decoding)
+      (Json.Decode.Pipeline.decode
+         PartiallyDecoded
+         |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "ct" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "coef" Json.Decode.float)
+      )
+   )
+
+none : Type
+none =
+   (new
+      0
+      "None"
+      Leather
+      0.0
+   )

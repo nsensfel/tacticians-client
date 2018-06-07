@@ -50,7 +50,8 @@ type alias PartiallyDecoded =
       ena : Bool,
       att : Struct.Attributes.Type,
       awp : Int,
-      swp : Int
+      swp : Int,
+      ar : Int
    }
 
 type alias Type =
@@ -85,7 +86,7 @@ finish_decoding get_weapon get_armor add_char =
       active_weapon = (get_weapon add_char.awp)
       secondary_weapon = (get_weapon add_char.swp)
       weapon_set = (Struct.WeaponSet.new active_weapon secondary_weapon)
-      armor = (get_armor (add_char.ix % 4))
+      armor = (get_armor add_char.ar)
       act_atts = (Struct.Armor.apply_to_attributes armor add_char.att)
    in
       {
@@ -190,5 +191,6 @@ decoder get_weapon get_armor =
          |> (Json.Decode.Pipeline.required "att" (Struct.Attributes.decoder))
          |> (Json.Decode.Pipeline.required "awp" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "swp" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "ar" Json.Decode.int)
       )
    )

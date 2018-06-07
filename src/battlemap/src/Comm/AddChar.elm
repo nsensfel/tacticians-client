@@ -6,9 +6,6 @@ import Dict
 import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
-import Data.Armors
-import Data.Weapons
-
 import Struct.Armor
 import Struct.Character
 import Struct.Model
@@ -26,13 +23,13 @@ weapon_getter : Struct.Model.Type -> Struct.Weapon.Ref -> Struct.Weapon.Type
 weapon_getter model ref =
    case (Dict.get ref model.weapons) of
       (Just w) -> w
-      Nothing -> Data.Weapons.none
+      Nothing -> Struct.Weapon.none
 
 armor_getter : Struct.Model.Type -> Struct.Armor.Ref -> Struct.Armor.Type
 armor_getter model ref =
    case (Dict.get ref model.armors) of
       (Just w) -> w
-      Nothing -> Data.Armors.none
+      Nothing -> Struct.Armor.none
 
 internal_decoder : Struct.Character.Type -> Struct.ServerReply.Type
 internal_decoder char = (Struct.ServerReply.AddCharacter char)

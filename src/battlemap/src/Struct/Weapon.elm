@@ -7,6 +7,7 @@ module Struct.Weapon exposing
       DamageType(..),
       DamageModifier(..),
       new,
+      get_id,
       get_name,
       get_range_type,
       get_range_modifier,
@@ -16,8 +17,14 @@ module Struct.Weapon exposing
       get_defense_range,
       get_max_damage,
       get_min_damage,
+      decoder,
+      none,
       apply_to_attributes
    )
+
+-- Elm -------------------------------------------------------------------------
+import Json.Decode
+import Json.Decode.Pipeline
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Attributes
@@ -25,6 +32,17 @@ import Struct.Attributes
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+type alias PartiallyDecoded =
+   {
+      id : Int,
+      nam : String,
+      rt : String,
+      rm : String,
+      dt : String,
+      dm : String,
+      cf : Float
+   }
+
 type alias Type =
    {
       id : Int,
@@ -110,6 +128,9 @@ new
       dmg_max = dmg_max
    }
 
+get_id : Type -> Int
+get_id wp = wp.id
+
 get_name : Type -> String
 get_name wp = wp.name
 
@@ -168,3 +189,60 @@ apply_to_attributes wp atts =
                quarter_impact
                (Struct.Attributes.mod_speed quarter_impact atts)
             )
+
+finish_decoding : PartiallyDecoded -> Type
+finish_decoding add_weapon =
+   (new
+      add_weapon.id
+      add_weapon.nam
+      add_weapon.cf
+      (
+         case add_weapon.rt of
+            "m" -> Melee
+            _ -> Ranged
+      )
+      (
+         case add_weapon.rm of
+            "l" -> Long
+            _ -> Short
+      )
+      (
+         case add_weapon.dt of
+            "s" -> Slash
+            "p" -> Pierce
+            _ -> Blunt
+      )
+      (
+         case add_weapon.dm of
+            "l" -> Light
+            _ -> Heavy
+      )
+   )
+
+decoder : (Json.Decode.Decoder Type)
+decoder =
+   (Json.Decode.map
+      (finish_decoding)
+      (Json.Decode.Pipeline.decode
+         PartiallyDecoded
+         |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "rt" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "rm" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "dt" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "dm" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "coef" Json.Decode.float)
+      )
+   )
+
+none : Type
+none =
+   (new
+      0
+      "None"
+      0.0
+      Melee
+      Short
+      Blunt
+      Light
+   )
