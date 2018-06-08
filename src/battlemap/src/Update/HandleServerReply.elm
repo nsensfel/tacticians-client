@@ -3,7 +3,11 @@ module Update.HandleServerReply exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Array
 
+import Dict
+
 import Http
+
+import Debug
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Armor
@@ -24,6 +28,20 @@ import Struct.Weapon
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+weapon_getter : Struct.Model.Type -> Struct.Weapon.Ref -> Struct.Weapon.Type
+weapon_getter model ref =
+   case (Dict.get ref model.weapons) of
+      (Just w) -> w
+      Nothing -> Struct.Weapon.none
+
+armor_getter : Struct.Model.Type -> Struct.Armor.Ref -> Struct.Armor.Type
+armor_getter model ref =
+   case (Dict.get ref model.armors) of
+      (Just w) -> w
+      Nothing -> Struct.Armor.none
+
+-----------
+
 add_armor : (
       Struct.Armor.Type ->
       (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
@@ -45,14 +63,27 @@ add_weapon wp current_state =
       (model, _) -> ((Struct.Model.add_weapon wp model), Nothing)
 
 add_character : (
-      Struct.Character.Type ->
+      (Struct.Character.Type, Int, Int, Int) ->
       (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
       (Struct.Model.Type, (Maybe Struct.Error.Type))
    )
-add_character char current_state =
+add_character char_and_refs current_state =
    case current_state of
       (_, (Just _)) -> current_state
-      (model, _) -> ((Struct.Model.add_character char model), Nothing)
+      (model, _) ->
+         let
+            (char, awp_ref, swp_ref, ar_ref) = char_and_refs
+            awp = (weapon_getter model awp_ref)
+            swp = (weapon_getter model swp_ref)
+            ar = (armor_getter model ar_ref)
+         in
+            (
+               (Struct.Model.add_character
+                  (Struct.Character.fill_missing_equipment awp swp ar char)
+                  model
+               ),
+               Nothing
+            )
 
 set_map : (
       Struct.Battlemap.Type ->
@@ -126,22 +157,22 @@ apply_command : (
 apply_command command current_state =
    case command of
       (Struct.ServerReply.AddWeapon wp) ->
-         (add_weapon wp current_state)
+         (Debug.log "add_weapon" (add_weapon wp current_state))
 
       (Struct.ServerReply.AddArmor ar) ->
-         (add_armor ar current_state)
+         (Debug.log "add_armor" (add_armor ar current_state))
 
       (Struct.ServerReply.AddCharacter char) ->
-         (add_character char current_state)
+         (Debug.log "add_char" (add_character char current_state))
 
       (Struct.ServerReply.SetMap map) ->
-         (set_map map current_state)
+         (Debug.log "set_map" (set_map map current_state))
 
       (Struct.ServerReply.TurnResults results) ->
-         (add_to_timeline results current_state)
+         (Debug.log "add_to_tl" (add_to_timeline results current_state))
 
       (Struct.ServerReply.SetTimeline timeline) ->
-         (set_timeline timeline current_state)
+         (Debug.log "set_tl" (set_timeline timeline current_state))
 
       Struct.ServerReply.Okay -> current_state
 

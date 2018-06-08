@@ -231,7 +231,7 @@ decoder =
          |> (Json.Decode.Pipeline.required "rm" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "dt" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "dm" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required "coef" Json.Decode.float)
+         |> (Json.Decode.Pipeline.required "cf" Json.Decode.float)
       )
    )
 

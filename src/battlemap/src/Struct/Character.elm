@@ -20,7 +20,8 @@ module Struct.Character exposing
       set_enabled,
       get_weapons,
       set_weapons,
-      decoder
+      decoder,
+      fill_missing_equipment
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -75,34 +76,27 @@ type alias Ref = String
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-finish_decoding : (
-      (Struct.Weapon.Ref -> Struct.Weapon.Type) ->
-      (Struct.Armor.Ref -> Struct.Armor.Type) ->
-      PartiallyDecoded ->
-      Type
-   )
-finish_decoding get_weapon get_armor add_char =
+finish_decoding : PartiallyDecoded -> (Type, Int, Int, Int)
+finish_decoding add_char =
    let
-      active_weapon = (get_weapon add_char.awp)
-      secondary_weapon = (get_weapon add_char.swp)
-      weapon_set = (Struct.WeaponSet.new active_weapon secondary_weapon)
-      armor = (get_armor add_char.ar)
-      act_atts = (Struct.Armor.apply_to_attributes armor add_char.att)
+      weapon_set = (Struct.WeaponSet.new Struct.Weapon.none Struct.Weapon.none)
+      almost_char =
+         {
+            id = (toString add_char.ix),
+            name = add_char.nam,
+            icon = add_char.ico,
+            portrait = add_char.prt,
+            location = add_char.lc,
+            health = add_char.hea,
+            attributes = add_char.att,
+            statistics = (Struct.Statistics.new add_char.att weapon_set),
+            player_id = add_char.pla,
+            enabled = add_char.ena,
+            weapons = weapon_set,
+            armor = Struct.Armor.none
+         }
    in
-      {
-         id = (toString add_char.ix),
-         name = add_char.nam,
-         icon = add_char.ico,
-         portrait = add_char.prt,
-         location = add_char.lc,
-         health = add_char.hea,
-         attributes = act_atts,
-         statistics = (Struct.Statistics.new act_atts weapon_set),
-         player_id = add_char.pla,
-         enabled = add_char.ena,
-         weapons = weapon_set,
-         armor = armor
-      }
+      (almost_char, add_char.awp, add_char.swp, add_char.ar)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -170,14 +164,10 @@ set_weapons weapons char =
       statistics = (Struct.Statistics.new char.attributes weapons)
    }
 
-decoder : (
-      (Struct.Weapon.Ref -> Struct.Weapon.Type) ->
-      (Struct.Armor.Ref -> Struct.Armor.Type) ->
-      (Json.Decode.Decoder Type)
-   )
-decoder get_weapon get_armor =
+decoder : (Json.Decode.Decoder (Type, Int, Int, Int))
+decoder =
    (Json.Decode.map
-      (finish_decoding get_weapon get_armor)
+      (finish_decoding)
       (Json.Decode.Pipeline.decode
          PartiallyDecoded
          |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
@@ -194,3 +184,21 @@ decoder get_weapon get_armor =
          |> (Json.Decode.Pipeline.required "ar" Json.Decode.int)
       )
    )
+
+fill_missing_equipment : (
+      Struct.Weapon.Type ->
+      Struct.Weapon.Type ->
+      Struct.Armor.Type ->
+      Type ->
+      Type
+   )
+fill_missing_equipment awp swp ar char =
+   let
+      weapon_set = (Struct.WeaponSet.new awp swp)
+      post_armor_atts = (Struct.Armor.apply_to_attributes ar char.attributes)
+   in
+      {char |
+         statistics = (Struct.Statistics.new post_armor_atts weapon_set),
+         weapons = weapon_set,
+         armor = ar
+      }

@@ -15,7 +15,7 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-internal_decoder : Struct.Armor.Type -> Struct.ServerReply.Type
+internal_decoder : Struct.Weapon.Type -> Struct.ServerReply.Type
 internal_decoder wp = (Struct.ServerReply.AddWeapon wp)
 
 --------------------------------------------------------------------------------

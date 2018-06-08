@@ -149,7 +149,7 @@ decoder =
          |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "ct" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required "coef" Json.Decode.float)
+         |> (Json.Decode.Pipeline.required "cf" Json.Decode.float)
       )
    )
 

@@ -17,7 +17,7 @@ type Type =
    Okay
    | AddArmor Struct.Armor.Type
    | AddWeapon Struct.Weapon.Type
-   | AddCharacter Struct.Character.Type
+   | AddCharacter (Struct.Character.Type, Int, Int, Int)
    | SetMap Struct.Battlemap.Type
    | TurnResults (List Struct.TurnResult.Type)
    | SetTimeline (List Struct.TurnResult.Type)
