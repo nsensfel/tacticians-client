@@ -208,19 +208,19 @@
       0px -1px 2px #333;
 }
 
-.battlemap-character-portrait-team-0 { background-color: #396AB1; }
-.battlemap-character-portrait-team-1 { background-color: #CC2529; }
-.battlemap-character-portrait-team-2 { background-color: #3E9651; }
-.battlemap-character-portrait-team-3 { background-color: #DA7C30; }
-.battlemap-character-portrait-team-4 { background-color: #535154; }
-.battlemap-character-portrait-team-5 { background-color: #6B4C9A; }
-.battlemap-character-portrait-team-6 { background-color: #7FA7A9; }
-.battlemap-character-portrait-team-7 { background-color: #E7A7A9; }
+.battlemap-character-portrait-team-0 { background-color: rgba(57, 106, 177, 0.3); }
+.battlemap-character-portrait-team-1 { background-color: rgba(204, 37, 41, 0.3); }
+.battlemap-character-portrait-team-2 { background-color: rgba(62, 150, 81, 0.3); }
+.battlemap-character-portrait-team-3 { background-color: rgba(218, 124, 48, 0.3); }
+.battlemap-character-portrait-team-4 { background-color: rgba(83, 81, 84, 0.3); }
+.battlemap-character-portrait-team-5 { background-color: rgba(107, 76, 154, 0.3); }
+.battlemap-character-portrait-team-6 { background-color: rgba(127, 167, 169, 0.3); }
+.battlemap-character-portrait-team-7 { background-color: rgba(231, 167, 169, 0.3); }
 
 .battlemap-character-card-name
 {
    text-align: center;
-   border-radius: 5px;
+ k  border-radius: 5px;
    background-color: #6C5D53;
    width: 100%;
 }
@@ -496,6 +496,13 @@
    height: inherit;
 }
 
+.battlemap-character-icon-enabled
+{
+   animation-name: flickering-opacity;
+   animation-duration: 2s;
+   animation-iteration-count: infinite;
+}
+
 .battlemap-character-icon-head { z-index: 1; }
 .battlemap-character-icon-body { z-index: 0; }
 
@@ -568,9 +575,15 @@
 
 @keyframes red-alarm-bg {
     0% {background-color: rgba(255,0,0,0.25);}
-    50% {background-color: rgba(255,0,0,1);}
+    25% {background-color: rgba(255,0,0,1);}
     50% {background-color: rgba(255,0,0,1);}
     100% {background-color: rgba(255,0,0,0.25);}
+}
+
+@keyframes flickering-opacity {
+    0% { opacity: 1.0;}
+    50% { opacity: 0.7; }
+    100% { opacity: 1.0; }
 }
 
 @keyframes brown-alarm-bg {
@@ -582,8 +595,8 @@
 
 @keyframes blue-alarm-bg {
     0% {background-color: rgba(0,0,255,0.2);}
-    25% {background-color: rgba(0,0,255,0.7);}
-    50% {background-color: rgba(0,0,255,0.7);}
+    25% {background-color: rgba(0,0,255,0.8);}
+    50% {background-color: rgba(0,0,255,0.8);}
     100% {background-color: rgba(0,0,255,0.2);}
 }
 
@@ -618,6 +631,7 @@
    animation-duration: 2s;
    animation-iteration-count: infinite;
 }
+
 
 /**** Path Icons **************************************************************/
 .battlemap-path-icon
