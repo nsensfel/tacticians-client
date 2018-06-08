@@ -10,6 +10,7 @@ import Html
 import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Attributes
 import Struct.Armor
 import Struct.Character
 import Struct.CharacterTurn
@@ -307,13 +308,44 @@ stat_val val perc =
       ]
    )
 
+att_dual_val : Int -> Int -> (Html.Html Struct.Event.Type)
+att_dual_val base active =
+   let
+      diff = (active - base)
+   in
+      (Html.div
+         [
+            (Html.Attributes.class "battlemap-character-card-att-dual-val")
+         ]
+         [
+            (Html.text
+               (
+                  (toString base)
+                  ++ " ("
+                  ++
+                  (
+                     if (diff > 0)
+                     then
+                        ("+" ++ (toString diff))
+                     else
+                        if (diff == 0)
+                        then
+                           "~"
+                        else
+                           (toString diff)
+                  )
+                  ++ ")"
+               )
+            )
+         ]
+      )
+
 get_relevant_stats : (
-      Struct.Model.Type ->
       Struct.Character.Type ->
       Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_relevant_stats model char weapon =
+get_relevant_stats char weapon =
    let
       stats = (Struct.Character.get_statistics char)
    in
@@ -338,6 +370,59 @@ get_relevant_stats model char weapon =
             (stat_val (Struct.Statistics.get_double_hits stats) True),
             (stat_name "Crit."),
             (stat_val (Struct.Statistics.get_critical_hits stats) True)
+         ]
+      )
+
+get_attributes : (
+      Struct.Character.Type ->
+      Struct.Weapon.Type ->
+      Struct.Armor.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_attributes char weapon armor =
+   let
+      base_atts = (Struct.Character.get_attributes char)
+      active_atts =
+         (Struct.Armor.apply_to_attributes
+            armor
+            (Struct.Weapon.apply_to_attributes weapon base_atts)
+         )
+   in
+      (Html.div
+         [
+            (Html.Attributes.class "battlemap-character-card-stats")
+         ]
+         [
+            (stat_name "Con"),
+            (att_dual_val
+               (Struct.Attributes.get_constitution base_atts)
+               (Struct.Attributes.get_constitution active_atts)
+            ),
+            (stat_name "Dex"),
+            (att_dual_val
+               (Struct.Attributes.get_dexterity base_atts)
+               (Struct.Attributes.get_dexterity active_atts)
+            ),
+            (stat_name "Int"),
+            (att_dual_val
+               (Struct.Attributes.get_intelligence base_atts)
+               (Struct.Attributes.get_intelligence active_atts)
+            ),
+            (stat_name "Min"),
+            (att_dual_val
+               (Struct.Attributes.get_mind base_atts)
+               (Struct.Attributes.get_mind active_atts)
+            ),
+            (stat_name "Spe"),
+            (att_dual_val
+               (Struct.Attributes.get_speed base_atts)
+               (Struct.Attributes.get_speed active_atts)
+            ),
+            (stat_name "Str"),
+            (att_dual_val
+               (Struct.Attributes.get_strength base_atts)
+               (Struct.Attributes.get_strength active_atts)
+            )
          ]
       )
 
@@ -400,7 +485,7 @@ get_summary_html model char =
             ),
             (get_weapon_details char_statistics main_weapon),
             (get_armor_details (Struct.Character.get_armor char)),
-            (get_relevant_stats model char main_weapon),
+            (get_relevant_stats char main_weapon),
             (get_weapon_summary secondary_weapon)
          ]
       )
@@ -408,28 +493,36 @@ get_summary_html model char =
 get_full_html : (
       Struct.Model.Type ->
       Struct.Character.Type ->
-      Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_full_html model char weapon =
-   (Html.div
-      [
-         (Html.Attributes.class "battlemap-character-card")
-      ]
-      [
-         (get_name char),
-         (Html.div
-            [
-               (Html.Attributes.class "battlemap-character-card-top")
-            ]
-            [
-               (View.Character.get_portrait_html model.player_id char),
-               (get_health_bar char),
-               (get_movement_bar model char)
-            ]
-         ),
-         (get_weapon_details (Struct.Character.get_statistics char) weapon),
-         (get_armor_details (Struct.Character.get_armor char)),
-         (get_relevant_stats model char weapon)
-      ]
-   )
+get_full_html model char =
+   let
+      weapon_set = (Struct.Character.get_weapons char)
+      main_weapon = (Struct.WeaponSet.get_active_weapon weapon_set)
+      char_statistics = (Struct.Character.get_statistics char)
+      secondary_weapon = (Struct.WeaponSet.get_secondary_weapon weapon_set)
+      armor = (Struct.Character.get_armor char)
+   in
+      (Html.div
+         [
+            (Html.Attributes.class "battlemap-character-card")
+         ]
+         [
+            (get_name char),
+            (Html.div
+               [
+                  (Html.Attributes.class "battlemap-character-card-top")
+               ]
+               [
+                  (View.Character.get_portrait_html model.player_id char),
+                  (get_health_bar char),
+                  (get_movement_bar model char)
+               ]
+            ),
+            (get_weapon_details char_statistics main_weapon),
+            (get_armor_details armor),
+            (get_relevant_stats char main_weapon),
+            (get_weapon_summary secondary_weapon),
+            (get_attributes char main_weapon armor)
+         ]
+      )
