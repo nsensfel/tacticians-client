@@ -80,6 +80,7 @@ finish_decoding : PartiallyDecoded -> (Type, Int, Int, Int)
 finish_decoding add_char =
    let
       weapon_set = (Struct.WeaponSet.new Struct.Weapon.none Struct.Weapon.none)
+      armor = Struct.Armor.none
       almost_char =
          {
             id = (toString add_char.ix),
@@ -89,11 +90,11 @@ finish_decoding add_char =
             location = add_char.lc,
             health = add_char.hea,
             attributes = add_char.att,
-            statistics = (Struct.Statistics.new add_char.att weapon_set),
+            statistics = (Struct.Statistics.new add_char.att weapon_set armor),
             player_id = add_char.pla,
             enabled = add_char.ena,
             weapons = weapon_set,
-            armor = Struct.Armor.none
+            armor = armor
          }
    in
       (almost_char, add_char.awp, add_char.swp, add_char.ar)
@@ -161,7 +162,7 @@ set_weapons : Struct.WeaponSet.Type -> Type -> Type
 set_weapons weapons char =
    {char |
       weapons = weapons,
-      statistics = (Struct.Statistics.new char.attributes weapons)
+      statistics = (Struct.Statistics.new char.attributes weapons char.armor)
    }
 
 decoder : (Json.Decode.Decoder (Type, Int, Int, Int))
@@ -195,10 +196,9 @@ fill_missing_equipment : (
 fill_missing_equipment awp swp ar char =
    let
       weapon_set = (Struct.WeaponSet.new awp swp)
-      post_armor_atts = (Struct.Armor.apply_to_attributes ar char.attributes)
    in
       {char |
-         statistics = (Struct.Statistics.new post_armor_atts weapon_set),
+         statistics = (Struct.Statistics.new char.attributes weapon_set ar),
          weapons = weapon_set,
          armor = ar
       }

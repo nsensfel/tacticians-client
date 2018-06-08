@@ -7,8 +7,6 @@ import Dict
 
 import Http
 
-import Debug
-
 -- Battlemap -------------------------------------------------------------------
 import Struct.Armor
 import Struct.Battlemap
@@ -157,22 +155,22 @@ apply_command : (
 apply_command command current_state =
    case command of
       (Struct.ServerReply.AddWeapon wp) ->
-         (Debug.log "add_weapon" (add_weapon wp current_state))
+         (add_weapon wp current_state)
 
       (Struct.ServerReply.AddArmor ar) ->
-         (Debug.log "add_armor" (add_armor ar current_state))
+         (add_armor ar current_state)
 
       (Struct.ServerReply.AddCharacter char) ->
-         (Debug.log "add_char" (add_character char current_state))
+         (add_character char current_state)
 
       (Struct.ServerReply.SetMap map) ->
-         (Debug.log "set_map" (set_map map current_state))
+         (set_map map current_state)
 
       (Struct.ServerReply.TurnResults results) ->
-         (Debug.log "add_to_tl" (add_to_timeline results current_state))
+         (add_to_timeline results current_state)
 
       (Struct.ServerReply.SetTimeline timeline) ->
-         (Debug.log "set_tl" (set_timeline timeline current_state))
+         (set_timeline timeline current_state)
 
       Struct.ServerReply.Okay -> current_state
 

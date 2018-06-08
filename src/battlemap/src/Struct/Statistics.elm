@@ -18,6 +18,7 @@ import List
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Attributes
+import Struct.Armor
 import Struct.Weapon
 import Struct.WeaponSet
 
@@ -111,12 +112,17 @@ get_critical_hits t = t.critical_hits
 new : (
       Struct.Attributes.Type ->
       Struct.WeaponSet.Type ->
+      Struct.Armor.Type ->
       Type
    )
-new att wp_set =
+new att wp_set ar =
    let
       active_weapon = (Struct.WeaponSet.get_active_weapon wp_set)
-      actual_att = (Struct.Weapon.apply_to_attributes active_weapon att)
+      actual_att =
+         (Struct.Armor.apply_to_attributes
+            ar
+            (Struct.Weapon.apply_to_attributes active_weapon att)
+         )
       constitution = (Struct.Attributes.get_constitution actual_att)
       dexterity = (Struct.Attributes.get_dexterity actual_att)
       intelligence = (Struct.Attributes.get_intelligence actual_att)
