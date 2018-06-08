@@ -7,12 +7,10 @@ import Html
 import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.UI
-import Struct.WeaponSet
 
 import Util.Html
 
@@ -69,9 +67,6 @@ get_html model =
                            (View.Controlled.CharacterCard.get_summary_html
                               model
                               char
-                              (Struct.WeaponSet.get_active_weapon
-                                 (Struct.Character.get_weapons char)
-                              )
                            )
                         ]
                      )

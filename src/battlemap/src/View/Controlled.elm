@@ -6,12 +6,10 @@ import Html.Attributes
 import Html.Events
 
 -- Struct.Battlemap -------------------------------------------------------------------
-import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.Navigator
-import Struct.WeaponSet
 
 import Util.Html
 
@@ -106,13 +104,7 @@ get_html model =
          (Html.div
             [(Html.Attributes.class "battlemap-controlled")]
             [
-               (View.Controlled.CharacterCard.get_summary_html
-                  model
-                  char
-                  (Struct.WeaponSet.get_active_weapon
-                     (Struct.Character.get_weapons char)
-                  )
-               ),
+               (View.Controlled.CharacterCard.get_summary_html model char),
                (
                   if
                   (

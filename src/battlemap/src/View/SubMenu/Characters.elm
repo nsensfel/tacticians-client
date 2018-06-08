@@ -26,7 +26,13 @@ get_character_element_html model char =
    (Html.div
       [
          (Html.Attributes.class "battlemap-characters-element"),
-         (Html.Attributes.class "clickable"),
+         (
+            if (Struct.Character.is_alive char)
+            then
+               (Html.Attributes.class "clickable")
+            else
+               (Html.Attributes.class "")
+         ),
          (Html.Events.onClick
             (Struct.Event.LookingForCharacter (Struct.Character.get_ref char))
          ),

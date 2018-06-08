@@ -18,6 +18,7 @@ import Struct.Model
 import Struct.Navigator
 import Struct.Statistics
 import Struct.Weapon
+import Struct.WeaponSet
 
 import View.Character
 import View.Gauge
@@ -139,12 +140,11 @@ get_movement_bar model char =
          (get_inactive_movement_bar char)
 
 get_weapon_details : (
-      Struct.Model.Type ->
       Struct.Statistics.Type ->
       Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_details model stats weapon =
+get_weapon_details stats weapon =
    (Html.div
       [
          (Html.Attributes.class "battlemap-character-card-weapon")
@@ -175,6 +175,48 @@ get_weapon_details model stats weapon =
                         Struct.Weapon.Slash -> "slashing "
                         Struct.Weapon.Pierce -> "piercing "
                         Struct.Weapon.Blunt -> "bludgeoning "
+                     )
+                     ++
+                     (case (Struct.Weapon.get_range_type weapon) of
+                        Struct.Weapon.Ranged -> "ranged"
+                        Struct.Weapon.Melee -> "melee"
+                     )
+                  )
+               )
+            ]
+         )
+      ]
+   )
+
+get_weapon_summary : (
+      Struct.Weapon.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_weapon_summary weapon =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-character-card-weapon-summary")
+      ]
+      [
+         (Html.div
+            [
+               (Html.Attributes.class "battlemap-character-card-weapon-name")
+            ]
+            [
+               (Html.text (Struct.Weapon.get_name weapon))
+            ]
+         ),
+         (Html.div
+            [
+               (Html.Attributes.class "battlemap-character-card-weapon-name")
+            ]
+            [
+               (Html.text
+                  (
+                     (case (Struct.Weapon.get_damage_type weapon) of
+                        Struct.Weapon.Slash -> "Slashing "
+                        Struct.Weapon.Pierce -> "Piercing "
+                        Struct.Weapon.Blunt -> "Bludgeoning "
                      )
                      ++
                      (case (Struct.Weapon.get_range_type weapon) of
@@ -331,35 +373,37 @@ get_minimal_html model char =
 get_summary_html : (
       Struct.Model.Type ->
       Struct.Character.Type ->
-      Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_summary_html model char weapon =
-   (Html.div
-      [
-         (Html.Attributes.class "battlemap-character-card")
-      ]
-      [
-         (get_name char),
-         (Html.div
-            [
-               (Html.Attributes.class "battlemap-character-card-top")
-            ]
-            [
-               (View.Character.get_portrait_html model.player_id char),
-               (get_health_bar char),
-               (get_movement_bar model char)
-            ]
-         ),
-         (get_weapon_details
-            model
-            (Struct.Character.get_statistics char)
-            weapon
-         ),
-         (get_armor_details (Struct.Character.get_armor char)),
-         (get_relevant_stats model char weapon)
-      ]
-   )
+get_summary_html model char =
+   let
+      weapon_set = (Struct.Character.get_weapons char)
+      main_weapon = (Struct.WeaponSet.get_active_weapon weapon_set)
+      char_statistics = (Struct.Character.get_statistics char)
+      secondary_weapon = (Struct.WeaponSet.get_secondary_weapon weapon_set)
+   in
+      (Html.div
+         [
+            (Html.Attributes.class "battlemap-character-card")
+         ]
+         [
+            (get_name char),
+            (Html.div
+               [
+                  (Html.Attributes.class "battlemap-character-card-top")
+               ]
+               [
+                  (View.Character.get_portrait_html model.player_id char),
+                  (get_health_bar char),
+                  (get_movement_bar model char)
+               ]
+            ),
+            (get_weapon_details char_statistics main_weapon),
+            (get_armor_details (Struct.Character.get_armor char)),
+            (get_relevant_stats model char main_weapon),
+            (get_weapon_summary secondary_weapon)
+         ]
+      )
 
 get_full_html : (
       Struct.Model.Type ->
@@ -384,11 +428,7 @@ get_full_html model char weapon =
                (get_movement_bar model char)
             ]
          ),
-         (get_weapon_details
-            model
-            (Struct.Character.get_statistics char)
-            weapon
-         ),
+         (get_weapon_details (Struct.Character.get_statistics char) weapon),
          (get_armor_details (Struct.Character.get_armor char)),
          (get_relevant_stats model char weapon)
       ]

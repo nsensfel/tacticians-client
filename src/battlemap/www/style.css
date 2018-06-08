@@ -192,6 +192,7 @@
 
    align-items: center;
    justify-content: left;
+   margin-top: 0.3em;
 }
 
 .battlemap-character-card .battlemap-character-portrait
@@ -278,14 +279,25 @@
    background-color: darkgrey;
 }
 
-.battlemap-character-card-weapon
+.battlemap-character-card-weapon,
+.battlemap-character-card-weapon-summary
 {
    display: grid;
 
    border-radius: 5px;
-   background-color: #6C5D53;
 
    padding: 0.3em;
+   margin-top: 0.3em;
+}
+
+.battlemap-character-card-weapon
+{
+   background-color: #6C5D53;
+}
+
+.battlemap-character-card-weapon-summary
+{
+   background-color: #393939;
 }
 
 .battlemap-character-card-armor
