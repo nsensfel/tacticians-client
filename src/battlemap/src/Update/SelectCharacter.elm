@@ -135,11 +135,33 @@ double_clicked_character model target_char_id =
    case (Dict.get target_char_id model.characters) of
       (Just target_char) ->
          case
-            (Struct.CharacterTurn.try_getting_active_character
-               model.char_turn
+            (
+               (Struct.CharacterTurn.try_getting_active_character
+                  model.char_turn
+               ),
+               (Struct.CharacterTurn.try_getting_target model.char_turn)
             )
          of
-            (Just _) ->
+            ((Just _), (Just char_turn_target_id)) ->
+               if (char_turn_target_id == target_char_id)
+               then
+                  (
+                     model,
+                     Cmd.none
+                  )
+               else
+                  (
+                     (ctrl_or_focus_character model target_char_id target_char),
+                     (Task.attempt
+                        (Struct.Event.attempted)
+                        (Action.Scroll.to
+                           (Struct.Character.get_location target_char)
+                           model.ui
+                        )
+                     )
+                  )
+
+            ((Just _), Nothing) ->
                if (can_target_character model target_char)
                then
                   (
@@ -162,7 +184,7 @@ double_clicked_character model target_char_id =
                      )
                   )
 
-            _ ->
+            (_, _) ->
                (
                   (ctrl_or_focus_character model target_char_id target_char),
                   (Task.attempt
@@ -204,16 +226,25 @@ apply_to model target_char_id =
    then
       (double_clicked_character model target_char_id)
    else
+      if
       (
-         {model |
-            ui =
-               (Struct.UI.set_previous_action
-                  (Just (Struct.UI.SelectedCharacter target_char_id))
-                  (Struct.UI.set_displayed_tab
-                     Struct.UI.StatusTab
-                     model.ui
-                  )
-               )
-         },
-         Cmd.none
+         (Struct.CharacterTurn.try_getting_target model.char_turn)
+         ==
+         (Just target_char_id)
       )
+      then
+         (model, Cmd.none)
+      else
+         (
+            {model |
+               ui =
+                  (Struct.UI.set_previous_action
+                     (Just (Struct.UI.SelectedCharacter target_char_id))
+                     (Struct.UI.set_displayed_tab
+                        Struct.UI.StatusTab
+                        model.ui
+                     )
+                  )
+            },
+            Cmd.none
+         )

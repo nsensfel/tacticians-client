@@ -538,9 +538,9 @@
       );
 }
 
-.battlemap-character-icon-disabled
+.battlemap-character-ally.battlemap-character-icon-disabled
 {
-   opacity: 0.4;
+   filter: contrast(35%);
 }
 
 @keyframes red-alarm-bg {
