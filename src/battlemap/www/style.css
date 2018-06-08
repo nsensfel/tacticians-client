@@ -181,8 +181,6 @@
 {
    display: flex;
    flex-flow: column;
-   margin-left: 0.2em;
-   margin-right: 0.2em;
 }
 
 .battlemap-character-card-top
@@ -190,6 +188,7 @@
    display: grid;
    grid-template-columns: [col] auto [col] 1fr;
    grid-template-rows: [row] 1em [row] 1fr [row] 1em [row] 1fr [row] 1em;
+   grid-column-gap: 0.5em;
 
    align-items: center;
    justify-content: left;
@@ -200,7 +199,22 @@
    grid-column: col 1;
    grid-row: row 1 / span 6;
    margin: 0;
+   box-sizing: border-box;
+   box-shadow:
+      1px 0px 2px #333,
+      -1px 0px 2px #333,
+      0px 1px 2px #333,
+      0px -1px 2px #333;
 }
+
+.battlemap-character-portrait-team-0 { background-color: #396AB1; }
+.battlemap-character-portrait-team-1 { background-color: #CC2529; }
+.battlemap-character-portrait-team-2 { background-color: #3E9651; }
+.battlemap-character-portrait-team-3 { background-color: #DA7C30; }
+.battlemap-character-portrait-team-4 { background-color: #535154; }
+.battlemap-character-portrait-team-5 { background-color: #6B4C9A; }
+.battlemap-character-portrait-team-6 { background-color: #7FA7A9; }
+.battlemap-character-portrait-team-7 { background-color: #E7A7A9; }
 
 .battlemap-character-card-name
 {
@@ -244,7 +258,6 @@
 {
    grid-column: col 2;
    grid-row: row 2;
-   width: 100%;
    height: 100%;
 }
 
@@ -257,7 +270,6 @@
 {
    grid-column: col 2;
    grid-row: row 4;
-   width: 100%;
    height: 100%;
 }
 
@@ -347,7 +359,6 @@
 
 .battlemap-character-portrait
 {
-   margin: 0.5em;
    box-sizing: border-box;
    border-radius: 5px;
    background-size: 100% 100%;
@@ -385,7 +396,7 @@
    border-radius: 5px;
    border: 1px solid #502D16;
    border-bottom-width: 2px;
-   padding: 0.05em;
+   padding: 0.5em;
 }
 
 .battlemap-tabmenu-characters-tab .battlemap-character-portrait

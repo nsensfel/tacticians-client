@@ -66,7 +66,7 @@ get_html model =
                         [(Html.Attributes.class "battlemap-sub-menu")]
                         [
                            (Html.text "Targeting:"),
-                           (View.Controlled.CharacterCard.get_html
+                           (View.Controlled.CharacterCard.get_summary_html
                               model
                               char
                               (Struct.WeaponSet.get_active_weapon

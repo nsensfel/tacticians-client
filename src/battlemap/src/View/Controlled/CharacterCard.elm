@@ -1,4 +1,9 @@
-module View.Controlled.CharacterCard exposing (get_html)
+module View.Controlled.CharacterCard exposing
+   (
+      get_minimal_html,
+      get_summary_html,
+      get_full_html
+   )
 
 -- Elm -------------------------------------------------------------------------
 import Html
@@ -297,13 +302,72 @@ get_relevant_stats model char weapon =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : (
+get_minimal_html : (
+      Struct.Model.Type ->
+      Struct.Character.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_minimal_html model char =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-character-card"),
+         (Html.Attributes.class "battlemap-character-card-minimal")
+      ]
+      [
+         (get_name char),
+         (Html.div
+            [
+               (Html.Attributes.class "battlemap-character-card-top")
+            ]
+            [
+               (View.Character.get_portrait_html model.player_id char),
+               (get_health_bar char),
+               (get_movement_bar model char)
+            ]
+         )
+      ]
+   )
+
+get_summary_html : (
       Struct.Model.Type ->
       Struct.Character.Type ->
       Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_html model char weapon =
+get_summary_html model char weapon =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-character-card")
+      ]
+      [
+         (get_name char),
+         (Html.div
+            [
+               (Html.Attributes.class "battlemap-character-card-top")
+            ]
+            [
+               (View.Character.get_portrait_html model.player_id char),
+               (get_health_bar char),
+               (get_movement_bar model char)
+            ]
+         ),
+         (get_weapon_details
+            model
+            (Struct.Character.get_statistics char)
+            weapon
+         ),
+         (get_armor_details (Struct.Character.get_armor char)),
+         (get_relevant_stats model char weapon)
+      ]
+   )
+
+get_full_html : (
+      Struct.Model.Type ->
+      Struct.Character.Type ->
+      Struct.Weapon.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_full_html model char weapon =
    (Html.div
       [
          (Html.Attributes.class "battlemap-character-card")

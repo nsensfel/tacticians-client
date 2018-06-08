@@ -12,54 +12,24 @@ import Struct.Character
 import Struct.Event
 import Struct.Model
 
-import View.Character
+import View.Controlled.CharacterCard
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_character_text_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
-get_character_text_html char =
-   (Html.div
-      [
-         (Html.Attributes.class "clickable"),
-         (Html.Events.onClick
-            (Struct.Event.CharacterInfoRequested
-               (Struct.Character.get_ref char)
-            )
-         )
-      ]
-      [
-         (Html.text
-            (
-               (Struct.Character.get_name char)
-               ++ ": "
-               ++ (toString (Struct.Character.get_current_health char))
-               ++ " HP, "
-               ++
-               (
-                  if (Struct.Character.is_enabled char)
-                  then
-                     "active"
-                  else
-                     "inactive"
-               )
-               ++ " (Player "
-               ++ (Struct.Character.get_player_id char)
-               ++ ")."
-            )
-         )
-      ]
-   )
-
 get_character_element_html : (
-      String ->
+      Struct.Model.Type ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_character_element_html viewer_id char =
+get_character_element_html model char =
    (Html.div
       [
          (Html.Attributes.class "battlemap-characters-element"),
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (Struct.Event.LookingForCharacter (Struct.Character.get_ref char))
+         ),
          (
             if (Struct.Character.is_enabled char)
             then
@@ -69,8 +39,7 @@ get_character_element_html viewer_id char =
          )
       ]
       [
-         (View.Character.get_portrait_html viewer_id char),
-         (get_character_text_html char)
+         (View.Controlled.CharacterCard.get_minimal_html model char)
       ]
    )
 
@@ -85,7 +54,7 @@ get_html model =
          (Html.Attributes.class "battlemap-tabmenu-characters-tab")
       ]
       (List.map
-         (get_character_element_html model.player_id)
+         (get_character_element_html model)
          (Dict.values model.characters)
       )
    )

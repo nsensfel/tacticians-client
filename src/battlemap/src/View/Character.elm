@@ -200,6 +200,13 @@ get_portrait_html viewer_id char =
             )
          ),
          (Html.Attributes.class "battlemap-character-portrait"),
+         (Html.Attributes.class
+            (
+               "battlemap-character-portrait-team-"
+               ++
+               (Struct.Character.get_player_id char)
+            )
+         ),
          (Html.Events.onClick
             (Struct.Event.LookingForCharacter (Struct.Character.get_ref char))
          )
