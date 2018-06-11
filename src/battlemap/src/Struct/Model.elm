@@ -99,7 +99,10 @@ reset characters model =
    {model |
       characters = characters,
       error = Nothing,
-      ui = (Struct.UI.set_previous_action Nothing model.ui),
+      ui =
+         (Struct.UI.reset_displayed_nav
+            (Struct.UI.set_previous_action Nothing model.ui)
+         ),
       char_turn = (Struct.CharacterTurn.new)
    }
 
