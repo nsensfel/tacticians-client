@@ -14,6 +14,10 @@ module Struct.UI exposing
       reset_displayed_tab,
       to_string,
       get_all_tabs,
+      -- Navigator
+      try_getting_displayed_nav,
+      set_displayed_nav,
+      reset_displayed_nav,
       -- Manual Controls
       has_manual_controls_enabled,
       -- Previous Action
@@ -23,9 +27,9 @@ module Struct.UI exposing
    )
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Location
-
 import Struct.Character
+import Struct.Location
+import Struct.Navigator
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -47,7 +51,8 @@ type alias Type =
       zoom_level : Float,
       show_manual_controls : Bool,
       displayed_tab : (Maybe Tab),
-      previous_action : (Maybe Action)
+      previous_action : (Maybe Action),
+      displayed_nav : (Maybe Struct.Navigator.Type)
    }
 
 --------------------------------------------------------------------------------
@@ -63,7 +68,8 @@ default =
       zoom_level = 1.0,
       show_manual_controls = True,
       displayed_tab = Nothing,
-      previous_action = Nothing
+      previous_action = Nothing,
+      displayed_nav = Nothing
    }
 
 -- Zoom ------------------------------------------------------------------------
@@ -97,6 +103,16 @@ to_string tab =
 get_all_tabs : (List Tab)
 get_all_tabs =
    [StatusTab, CharactersTab, SettingsTab, TimelineTab]
+
+-- Navigator -------------------------------------------------------------------
+try_getting_displayed_nav : Type -> (Maybe Struct.Navigator.Type)
+try_getting_displayed_nav ui = ui.displayed_nav
+
+set_displayed_nav : Struct.Navigator.Type -> Type -> Type
+set_displayed_nav nav ui = {ui | displayed_nav = (Just nav)}
+
+reset_displayed_nav : Type -> Type
+reset_displayed_nav ui = {ui | displayed_nav = Nothing}
 
 -- ManualControls --------------------------------------------------------------
 has_manual_controls_enabled : Type -> Bool

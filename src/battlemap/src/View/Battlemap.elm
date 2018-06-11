@@ -108,11 +108,23 @@ get_html model =
             (Dict.values model.characters)
          )
          ++
-         case (Struct.CharacterTurn.try_getting_navigator model.char_turn) of
+         (
+            case (Struct.CharacterTurn.try_getting_navigator model.char_turn) of
+               (Just navigator) ->
+                  (View.Battlemap.Navigator.get_html
+                     (Struct.Navigator.get_summary navigator)
+                     True
+                  )
+
+               Nothing ->
+                  [(Util.Html.nothing)]
+         )
+         ++
+         case (Struct.UI.try_getting_displayed_nav model.ui) of
             (Just navigator) ->
                (View.Battlemap.Navigator.get_html
                   (Struct.Navigator.get_summary navigator)
-                  True
+                  False
                )
 
             Nothing ->
