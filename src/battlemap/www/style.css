@@ -463,6 +463,7 @@
 .battlemap-marker-icon     {z-index: 2;}
 .battlemap-path-icon-above-markers {z-index: 3;}
 .battlemap-character-icon  {z-index: 4;}
+.battlemap-marker-icon.battlemap-navigator-non-interactive     {z-index: 5;}
 
 .battlemap-marker-icon,
 .battlemap-character-icon,
@@ -515,7 +516,16 @@
    transform: scale(-1, 1);
 }
 
-.battlemap-marker-icon
+.battlemap-marker-icon.battlemap-navigator-non-interactive
+{
+   box-sizing: border-box;
+   width: 16px;
+   height: 16px;
+   background-size: 100%;
+   opacity: 0.7;
+}
+
+.battlemap-marker-icon.battlemap-navigator-interactive
 {
    box-sizing: border-box;
    width: 24px;
@@ -532,20 +542,20 @@
       0px -1px 2px #333;
 }
 
-.battlemap-can-go-to-marker
+.battlemap-can-go-to-marker.battlemap-navigator-interactive
 {
    background-color: #FFF;
    opacity: 0.3;
    transition: opacity 0.3s ease-out;
 }
 
-.battlemap-can-go-to-marker:hover
+.battlemap-can-go-to-marker.battlemap-navigator-interactive:hover
 {
    background-color: rgba(255, 255, 255, 0.9);
    opacity: 1;
 }
 
-.battlemap-can-attack-marker
+.battlemap-can-attack-marker.battlemap-navigator-interactive
 {
    background-color:rgba(0,0,0,0.7);
    width: 28px;
@@ -554,6 +564,16 @@
    height: 28px;
    margin: 2px 0 0 2px;
    border-radius: 0;
+}
+
+.battlemap-can-attack-marker.battlemap-navigator-non-interactive
+{
+   background-image: url(/asset/svg/marker/blade.svg);
+}
+
+.battlemap-can-go-to-marker.battlemap-navigator-non-interactive
+{
+   background-image: url(/asset/svg/marker/pawprint.svg);
 }
 
 .battlemap-cant-defend-marker

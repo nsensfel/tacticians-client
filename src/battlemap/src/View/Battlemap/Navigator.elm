@@ -64,16 +64,25 @@ marker_get_html is_interactive (loc_ref, marker) =
          ]
          ++
          (
-            if (is_interactive && (marker == Struct.Marker.CanGoTo))
+            if (is_interactive)
             then
-               [
-                  (Html.Attributes.class "clickable"),
-                  (Html.Events.onClick
-                     (Struct.Event.TileSelected loc_ref)
-                  )
-               ]
+               if (marker == Struct.Marker.CanGoTo)
+               then
+                  [
+                     (Html.Attributes.class "battlemap-navigator-interactive"),
+                     (Html.Attributes.class "clickable"),
+                     (Html.Events.onClick
+                        (Struct.Event.TileSelected loc_ref)
+                     )
+                  ]
+               else
+                  [
+                     (Html.Attributes.class "battlemap-navigator-interactive")
+                  ]
             else
-               []
+               [
+                  (Html.Attributes.class "battlemap-navigator-non-interactive")
+               ]
          )
       )
       [
