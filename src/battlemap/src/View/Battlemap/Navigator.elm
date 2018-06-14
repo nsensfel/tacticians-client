@@ -71,9 +71,7 @@ marker_get_html is_interactive (loc_ref, marker) =
                   [
                      (Html.Attributes.class "battlemap-navigator-interactive"),
                      (Html.Attributes.class "clickable"),
-                     (Html.Events.onClick
-                        (Struct.Event.TileSelected loc_ref)
-                     )
+                     (Html.Events.onClick (Struct.Event.TileSelected loc_ref))
                   ]
                else
                   [
@@ -81,7 +79,8 @@ marker_get_html is_interactive (loc_ref, marker) =
                   ]
             else
                [
-                  (Html.Attributes.class "battlemap-navigator-non-interactive")
+                  (Html.Attributes.class "battlemap-navigator-non-interactive"),
+                  (Html.Events.onClick (Struct.Event.TileSelected loc_ref))
                ]
          )
       )
