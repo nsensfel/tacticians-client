@@ -6,6 +6,8 @@ module Struct.RangeIndicator exposing
       get_path
    )
 
+-- FIXME: This module is still too much of a mess...
+
 -- Elm -------------------------------------------------------------------------
 import Dict
 import List
@@ -23,7 +25,8 @@ import Constants.Movement
 type alias Type =
    {
       distance: Int,
-      range: Int,
+      true_range: Int,
+      atk_range: Int,
       path: (List Struct.Direction.Type),
       marker: Struct.Marker.Type
    }
@@ -46,7 +49,7 @@ get_closest dist ref indicator (prev_ref, prev_indicator) =
       (
          (indicator.distance > dist)
          && (prev_indicator.distance > dist)
-         && (indicator.range < prev_indicator.range)
+         && (indicator.atk_range < prev_indicator.atk_range)
       )
    )
    then
@@ -61,7 +64,7 @@ is_closer new_dist new_range neighbor =
       ||
       (
          (neighbor.distance > new_dist)
-         && (new_range < neighbor.range)
+         && (new_range < neighbor.atk_range)
       )
    )
 
@@ -71,13 +74,18 @@ handle_neighbors : (
       Struct.Location.Type ->
       Int ->
       Int ->
+      Int ->
       (Dict.Dict Struct.Location.Ref Type) ->
       (Struct.Location.Type -> Int) ->
       Struct.Direction.Type ->
       (Dict.Dict Struct.Location.Ref Type) ->
       (Dict.Dict Struct.Location.Ref Type)
    )
-handle_neighbors src_indicator src_loc dist range results cost_fun dir rem =
+handle_neighbors
+   src_indicator src_loc
+   dist
+   atk_range def_range
+   results cost_fun dir rem =
    let
       neighbor_loc = (Struct.Location.neighbor dir src_loc)
    in
@@ -88,7 +96,9 @@ handle_neighbors src_indicator src_loc dist range results cost_fun dir rem =
             let
                node_cost = (cost_fun neighbor_loc)
                new_dist = (src_indicator.distance + node_cost)
-               new_range = (src_indicator.range + 1)
+               new_atk_range = (src_indicator.atk_range + 1)
+               new_true_range = (src_indicator.true_range + 1)
+               can_defend = (new_true_range >= def_range)
             in
                if
                   (
@@ -100,7 +110,7 @@ handle_neighbors src_indicator src_loc dist range results cost_fun dir rem =
                            )
                         of
                            (Just neighbor) ->
-                              (is_closer new_dist new_range neighbor)
+                              (is_closer new_dist new_atk_range neighbor)
 
                            Nothing ->
                               True
@@ -111,7 +121,7 @@ handle_neighbors src_indicator src_loc dist range results cost_fun dir rem =
                      (
                         (new_dist <= dist)
                         ||
-                        (new_range <= range)
+                        (new_atk_range <= atk_range)
                      )
                   )
                then
@@ -122,16 +132,28 @@ handle_neighbors src_indicator src_loc dist range results cost_fun dir rem =
                         then
                            {
                               distance = (dist + 1),
-                              range = new_range,
+                              atk_range = new_atk_range,
+                              true_range = new_true_range,
                               path = (dir :: src_indicator.path),
-                              marker = Struct.Marker.CanAttack
+                              marker =
+                                 if (can_defend)
+                                 then
+                                    Struct.Marker.CanAttackCanDefend
+                                 else
+                                    Struct.Marker.CanAttackCantDefend
                            }
                         else
                            {
                               distance = new_dist,
-                              range = 0,
+                              atk_range = 0,
+                              true_range = new_true_range,
                               path = (dir :: src_indicator.path),
-                              marker = Struct.Marker.CanGoTo
+                              marker =
+                                 if (can_defend)
+                                 then
+                                    Struct.Marker.CanGoToCanDefend
+                                 else
+                                    Struct.Marker.CanGoToCantDefend
                            }
                      )
                      rem
@@ -162,8 +184,9 @@ search result remaining dist atk_range def_range cost_fun =
                   {
                      distance = Constants.Movement.cost_when_out_of_bounds,
                      path = [],
-                     range = Constants.Movement.cost_when_out_of_bounds,
-                     marker = Struct.Marker.CanAttack
+                     atk_range = Constants.Movement.cost_when_out_of_bounds,
+                     true_range = Constants.Movement.cost_when_out_of_bounds,
+                     marker = Struct.Marker.CanAttackCanDefend
                   }
                )
                remaining
@@ -174,17 +197,13 @@ search result remaining dist atk_range def_range cost_fun =
                min_loc_ref
                {min |
                   marker =
-                     (
-                        if (min.range > 0)
-                        then
-                           if (min.range <= def_range)
-                           then
-                              Struct.Marker.CantDefend
-                           else
-                              Struct.Marker.CanAttack
-                        else
-                           Struct.Marker.CanGoTo
-                     )
+                     case
+                        ((min.atk_range > 0), (min.true_range <= def_range))
+                     of
+                        (True, True) -> Struct.Marker.CanAttackCantDefend
+                        (True, False) -> Struct.Marker.CanAttackCanDefend
+                        (False, True) -> Struct.Marker.CanGoToCantDefend
+                        (False, False) -> Struct.Marker.CanGoToCanDefend
                }
                result
             )
@@ -194,6 +213,7 @@ search result remaining dist atk_range def_range cost_fun =
                   (Struct.Location.from_ref min_loc_ref)
                   dist
                   atk_range
+                  def_range
                   result
                   (cost_fun)
                )
@@ -230,8 +250,14 @@ generate location dist atk_range def_range cost_fun =
          {
             distance = 0,
             path = [],
-            range = 0,
-            marker = Struct.Marker.CanGoTo
+            atk_range = 0,
+            true_range = 0,
+            marker =
+               if (def_range == 0)
+               then
+                  Struct.Marker.CanGoToCanDefend
+               else
+                  Struct.Marker.CanGoToCantDefend
          }
          Dict.empty
       )

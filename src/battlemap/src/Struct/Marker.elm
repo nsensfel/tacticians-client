@@ -4,6 +4,7 @@ module Struct.Marker exposing (Type(..))
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type Type =
-   CanAttack
-   | CanGoTo
-   | CantDefend
+   CanAttackCanDefend
+   | CanGoToCanDefend
+   | CanAttackCantDefend
+   | CanGoToCantDefend

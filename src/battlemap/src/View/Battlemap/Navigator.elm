@@ -36,9 +36,15 @@ marker_get_html is_interactive (loc_ref, marker) =
                   ++
                   (
                      case marker of
-                        Struct.Marker.CanGoTo -> "can-go-to"
-                        Struct.Marker.CanAttack -> "can-attack"
-                        Struct.Marker.CantDefend -> "cant-defend"
+                        Struct.Marker.CanGoToCanDefend -> "can-go-to-can-defend"
+                        Struct.Marker.CanGoToCantDefend ->
+                           "can-go-to-cant-defend"
+
+                        Struct.Marker.CanAttackCanDefend ->
+                           "can-attack-can-defend"
+
+                        Struct.Marker.CanAttackCantDefend ->
+                           "can-attack-cant-defend"
                   )
                   ++
                   "-marker"
@@ -66,7 +72,11 @@ marker_get_html is_interactive (loc_ref, marker) =
          (
             if (is_interactive)
             then
-               if (marker == Struct.Marker.CanGoTo)
+               if
+               (
+                  (marker == Struct.Marker.CanGoToCanDefend)
+                  || (marker == Struct.Marker.CanGoToCantDefend)
+               )
                then
                   [
                      (Html.Attributes.class "battlemap-navigator-interactive"),

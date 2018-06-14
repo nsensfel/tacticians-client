@@ -543,20 +543,33 @@
       0px -1px 2px #333;
 }
 
-.battlemap-can-go-to-marker.battlemap-navigator-interactive
+.battlemap-can-go-to-can-defend-marker.battlemap-navigator-interactive
 {
    background-color: #FFF;
    opacity: 0.3;
    transition: opacity 0.3s ease-out;
 }
+.battlemap-can-go-to-cant-defend-marker.battlemap-navigator-interactive
+{
+   background:
+      repeating-linear-gradient(
+        -55deg,
+        rgba(255,255,255,0.3),
+        rgba(255,255,255,0.3) 3px,
+        rgba(0,0,0,0.3) 3px,
+        rgba(0,0,0,0.3) 7px
+      );
+   opacity: 0.3;
+   transition: opacity 0.3s ease-out;
+}
 
-.battlemap-can-go-to-marker.battlemap-navigator-interactive:hover
+.battlemap-can-go-to-can-defend-marker.battlemap-navigator-interactive:hover
 {
    background-color: rgba(255, 255, 255, 0.9);
    opacity: 1;
 }
 
-.battlemap-can-attack-marker.battlemap-navigator-interactive
+.battlemap-can-attack-can-defend-marker.battlemap-navigator-interactive
 {
    background-color:rgba(0,0,0,0.7);
    width: 28px;
@@ -567,12 +580,12 @@
    border-radius: 0;
 }
 
-.battlemap-can-attack-marker.battlemap-navigator-non-interactive
+.battlemap-can-attack-can-defend-marker.battlemap-navigator-non-interactive
 {
    background-image: url(/asset/svg/marker/blade.svg);
 }
 
-.battlemap-can-go-to-marker.battlemap-navigator-non-interactive
+.battlemap-can-go-to-can-defend-marker.battlemap-navigator-non-interactive
 {
    background-image: url(/asset/svg/marker/pawprint.svg);
    z-index: 3;
