@@ -59,7 +59,12 @@ get_help_message model =
       _ ->
          [
             (Html.text
-               "Double click on an active character to play their turn."
+               (
+                  "Click once on a character to focus them. This will show you"
+                  ++ " their stats, equipment, and other infos. If they are in"
+                  ++ " your team and active (the pulsating characters),"
+                  ++ " clicking on them again will let you take control."
+               )
             )
          ]
 
