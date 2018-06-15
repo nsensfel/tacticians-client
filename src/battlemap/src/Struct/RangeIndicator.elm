@@ -88,7 +88,7 @@ generate_neighbor search_params neighbor_loc dir src_indicator =
    let
       node_cost = (search_params.cost_function neighbor_loc)
       new_dist =
-         if (node_cost == Constants.Movement.cost_when_out_of_bounds)
+         if (node_cost == Constants.Movement.cost_when_occupied_tile)
          then
             (search_params.maximum_distance + 1)
          else
@@ -134,9 +134,12 @@ generate_neighbor search_params neighbor_loc dir src_indicator =
 candidate_is_acceptable : (SearchParameters -> Int -> Type -> Bool)
 candidate_is_acceptable search_params cost candidate =
    (
-      (candidate.distance <= search_params.maximum_distance)
-      ||
-      (candidate.atk_range <= search_params.maximum_attack_range)
+      (cost /= Constants.Movement.cost_when_out_of_bounds)
+      &&
+      (
+         (candidate.distance <= search_params.maximum_distance)
+         || (candidate.atk_range <= search_params.maximum_attack_range)
+      )
    )
 
 candidate_is_an_improvement : (

@@ -14,4 +14,4 @@ get_cost i =
       0 -> 6
       1 -> 12
       2 -> 24
-      _ -> Constants.Movement.cost_when_out_of_bounds
+      _ -> Constants.Movement.cost_when_occupied_tile
