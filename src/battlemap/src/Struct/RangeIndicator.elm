@@ -87,7 +87,12 @@ generate_neighbor : (
 generate_neighbor search_params neighbor_loc dir src_indicator =
    let
       node_cost = (search_params.cost_function neighbor_loc)
-      new_dist = (src_indicator.distance + node_cost)
+      new_dist =
+         if (node_cost == Constants.Movement.cost_when_out_of_bounds)
+         then
+            (search_params.maximum_distance + 1)
+         else
+            (src_indicator.distance + node_cost)
       new_atk_range = (src_indicator.atk_range + 1)
       new_true_range = (src_indicator.true_range + 1)
       can_defend = (new_true_range > search_params.minimum_defense_range)
@@ -128,8 +133,6 @@ generate_neighbor search_params neighbor_loc dir src_indicator =
 
 candidate_is_acceptable : (SearchParameters -> Int -> Type -> Bool)
 candidate_is_acceptable search_params cost candidate =
-   (cost /= Constants.Movement.cost_when_out_of_bounds)
-   &&
    (
       (candidate.distance <= search_params.maximum_distance)
       ||
