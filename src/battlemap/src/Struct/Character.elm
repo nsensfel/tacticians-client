@@ -1,8 +1,7 @@
 module Struct.Character exposing
    (
       Type,
-      Ref,
-      get_ref,
+      get_index,
       get_player_id,
       get_name,
       get_icon_id,
@@ -57,7 +56,7 @@ type alias PartiallyDecoded =
 
 type alias Type =
    {
-      id : String,
+      ix : Int,
       name : String,
       icon : String,
       portrait : String,
@@ -71,8 +70,6 @@ type alias Type =
       armor : Struct.Armor.Type
    }
 
-type alias Ref = String
-
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -83,7 +80,7 @@ finish_decoding add_char =
       armor = Struct.Armor.none
       almost_char =
          {
-            id = (toString add_char.ix),
+            ix = add_char.ix,
             name = add_char.nam,
             icon = add_char.ico,
             portrait = add_char.prt,
@@ -102,8 +99,8 @@ finish_decoding add_char =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_ref : Type -> Ref
-get_ref c = c.id
+get_index : Type -> Int
+get_index c = c.ix
 
 get_name : Type -> String
 get_name c = c.name

@@ -1,7 +1,7 @@
 module View.SubMenu.Timeline.Movement exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
+import Array 
 
 import Html
 import Html.Attributes
@@ -23,12 +23,13 @@ import View.Character
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
-      Struct.Model.Type ->
+      (Array.Array Struct.Character.Type) ->
+      String ->
       Struct.TurnResult.Movement ->
       (Html.Html Struct.Event.Type)
    )
-get_html model movement =
-   case (Dict.get (toString movement.character_index) model.characters) of
+get_html characters player_id movement =
+   case (Array.get movement.character_index characters) of
       (Just char) ->
          (Html.div
             [
@@ -36,7 +37,7 @@ get_html model movement =
                (Html.Attributes.class "battlemap-timeline-movement")
             ]
             [
-               (View.Character.get_portrait_html model.player_id char),
+               (View.Character.get_portrait_html player_id char),
                (Html.text
                   (
                      (Struct.Character.get_name char)

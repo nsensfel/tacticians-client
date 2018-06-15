@@ -1,10 +1,11 @@
 module View.SubMenu exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
+import Array
 
 import Html
 import Html.Attributes
+import Html.Lazy
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.CharacterTurn
@@ -35,7 +36,7 @@ get_inner_html model tab =
          (View.SubMenu.Status.get_html model)
 
       Struct.UI.CharactersTab ->
-         (View.SubMenu.Characters.get_html model)
+         (View.SubMenu.Characters.get_html model.characters model.player_id)
 
       Struct.UI.SettingsTab ->
          (View.SubMenu.Settings.get_html model)
@@ -58,14 +59,16 @@ get_html model =
       Nothing ->
          case (Struct.CharacterTurn.try_getting_target model.char_turn) of
             (Just char_ref) ->
-               case (Dict.get char_ref model.characters) of
+               case (Array.get char_ref model.characters) of
                   (Just char) ->
                      (Html.div
                         [(Html.Attributes.class "battlemap-sub-menu")]
                         [
                            (Html.text "Targeting:"),
-                           (View.Controlled.CharacterCard.get_summary_html
-                              model
+                           (Html.Lazy.lazy3
+                              (View.Controlled.CharacterCard.get_summary_html)
+                              model.char_turn
+                              model.player_id
                               char
                            )
                         ]

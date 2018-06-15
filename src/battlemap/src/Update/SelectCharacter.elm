@@ -1,7 +1,7 @@
 module Update.SelectCharacter exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
+import Array
 
 import Task
 
@@ -46,13 +46,13 @@ get_character_navigator model char =
          (Struct.Battlemap.get_movement_cost_function
             model.battlemap
             (Struct.Character.get_location char)
-            (Dict.values model.characters)
+            (Array.toList model.characters)
          )
       )
 
 attack_character : (
       Struct.Model.Type ->
-      Struct.Character.Ref ->
+      Int ->
       Struct.Character.Type ->
       Struct.Model.Type
    )
@@ -73,7 +73,7 @@ attack_character model target_char_id target_char =
 
 ctrl_or_focus_character : (
       Struct.Model.Type ->
-      Struct.Character.Ref ->
+      Int ->
       Struct.Character.Type ->
       Struct.Model.Type
    )
@@ -151,11 +151,11 @@ can_target_character model target =
 
 second_click_on : (
       Struct.Model.Type ->
-      Struct.Character.Ref ->
+      Int ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 second_click_on model target_char_id =
-   case (Dict.get target_char_id model.characters) of
+   case (Array.get target_char_id model.characters) of
       (Just target_char) ->
          case
             (
@@ -233,7 +233,7 @@ second_click_on model target_char_id =
 
 first_click_on : (
       Struct.Model.Type ->
-      Struct.Character.Ref ->
+      Int ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 first_click_on model target_char_id =
@@ -246,7 +246,7 @@ first_click_on model target_char_id =
    then
       (model, Cmd.none)
    else
-      case (Dict.get target_char_id model.characters) of
+      case (Array.get target_char_id model.characters) of
          (Just target_char) ->
             (
                {model |
@@ -282,7 +282,7 @@ first_click_on model target_char_id =
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Struct.Character.Ref ->
+      Int ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model target_char_id =

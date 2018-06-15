@@ -71,7 +71,7 @@ encode_attack model =
             (Json.Encode.object
                [
                   ("t", (Json.Encode.string "atk")),
-                  ("tix", (Json.Encode.string ix))
+                  ("tix", (Json.Encode.int ix))
                ]
             )
          )
@@ -104,7 +104,7 @@ try_encoding model =
                   ("bid", (Json.Encode.string "0")),
                   (
                      "cix",
-                     (Json.Encode.string (Struct.Character.get_ref char))
+                     (Json.Encode.int (Struct.Character.get_index char))
                   ),
                   (
                      "act",

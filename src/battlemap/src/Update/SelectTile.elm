@@ -125,7 +125,7 @@ go_to_tile model navigator loc_ref =
                   )
 
          Nothing -> -- Clicked outside of the range indicator
-            ((Struct.Model.reset model.characters model), Cmd.none)
+            ((Struct.Model.reset model), Cmd.none)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

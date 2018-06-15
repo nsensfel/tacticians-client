@@ -1,6 +1,7 @@
 module View.SubMenu.Timeline exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
+import Debug
 import Array
 
 import Html
@@ -9,6 +10,7 @@ import Html.Attributes
 import Html.Lazy
 
 -- Battlemap -------------------------------------------------------------------
+import Struct.Character
 import Struct.Event
 import Struct.TurnResult
 import Struct.Model
@@ -21,38 +23,52 @@ import View.SubMenu.Timeline.WeaponSwitch
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_turn_result_html : (
-      Struct.Model.Type ->
+      (Array.Array Struct.Character.Type) ->
+      String ->
       Struct.TurnResult.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_turn_result_html model turn_result =
+get_turn_result_html characters player_id turn_result =
    case turn_result of
       (Struct.TurnResult.Moved movement) ->
-         (View.SubMenu.Timeline.Movement.get_html model movement)
+         (View.SubMenu.Timeline.Movement.get_html
+            characters
+            player_id
+            movement
+         )
 
       (Struct.TurnResult.Attacked attack) ->
-         (View.SubMenu.Timeline.Attack.get_html model attack)
+         (View.SubMenu.Timeline.Attack.get_html
+            characters
+            player_id
+            attack
+         )
 
       (Struct.TurnResult.SwitchedWeapon weapon_switch) ->
          (View.SubMenu.Timeline.WeaponSwitch.get_html
-            model
+            characters
+            player_id
             weapon_switch
          )
 
 true_get_html : (
-      Struct.Model.Type ->
+      (Array.Array Struct.Character.Type) ->
+      String ->
       (Array.Array Struct.TurnResult.Type) ->
       (Html.Html Struct.Event.Type)
    )
-true_get_html model turn_results =
+true_get_html characters player_id turn_results =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-tabmenu-content"),
+         (Debug.log
+            "Drawing timeline"
+            (Html.Attributes.class "battlemap-tabmenu-content")
+         ),
          (Html.Attributes.class "battlemap-tabmenu-timeline-tab")
       ]
       (Array.toList
          (Array.map
-            (get_turn_result_html model)
+            (get_turn_result_html characters player_id)
             turn_results
          )
       )
@@ -63,4 +79,9 @@ true_get_html model turn_results =
 --------------------------------------------------------------------------------
 get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
-   (Html.Lazy.lazy (true_get_html model) model.timeline)
+   (Html.Lazy.lazy3
+      (true_get_html)
+      model.characters
+      model.player_id
+      model.timeline
+   )

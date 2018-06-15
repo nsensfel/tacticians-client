@@ -70,7 +70,7 @@ get_focus_class model char =
    (
       (Struct.UI.get_previous_action model.ui)
       ==
-      (Just (Struct.UI.SelectedCharacter (Struct.Character.get_ref char)))
+      (Just (Struct.UI.SelectedCharacter (Struct.Character.get_index char)))
    )
    then
       (Html.Attributes.class "battlemap-character-selected")
@@ -79,7 +79,7 @@ get_focus_class model char =
       (
          (Struct.CharacterTurn.try_getting_target model.char_turn)
          ==
-         (Just (Struct.Character.get_ref char))
+         (Just (Struct.Character.get_index char))
       )
       then
          (Html.Attributes.class "battlemap-character-targeted")
@@ -131,7 +131,7 @@ get_icon_actual_html model char =
             (get_focus_class model char),
             (Html.Attributes.class "clickable"),
             (Html.Events.onClick
-               (Struct.Event.CharacterSelected (Struct.Character.get_ref char))
+               (Struct.Event.CharacterSelected (Struct.Character.get_index char))
             )
          ]
          [
@@ -208,7 +208,7 @@ get_portrait_html viewer_id char =
             )
          ),
          (Html.Events.onClick
-            (Struct.Event.LookingForCharacter (Struct.Character.get_ref char))
+            (Struct.Event.LookingForCharacter (Struct.Character.get_index char))
          )
       ]
       [

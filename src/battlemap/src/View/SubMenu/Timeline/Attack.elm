@@ -1,7 +1,7 @@
 module View.SubMenu.Timeline.Attack exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
+import Array
 
 import Html
 import Html.Attributes
@@ -121,15 +121,16 @@ get_attack_html attacker defender attack =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
-      Struct.Model.Type ->
+      (Array.Array Struct.Character.Type) ->
+      String ->
       Struct.TurnResult.Attack ->
       (Html.Html Struct.Event.Type)
    )
-get_html model attack =
+get_html characters player_id attack =
    case
       (
-         (Dict.get (toString attack.attacker_index) model.characters),
-         (Dict.get (toString attack.defender_index) model.characters)
+         (Array.get attack.attacker_index characters),
+         (Array.get attack.defender_index characters)
       )
    of
       ((Just atkchar), (Just defchar)) ->
@@ -140,8 +141,8 @@ get_html model attack =
             ]
             (
                [
-                  (View.Character.get_portrait_html model.player_id atkchar),
-                  (View.Character.get_portrait_html model.player_id defchar),
+                  (View.Character.get_portrait_html player_id atkchar),
+                  (View.Character.get_portrait_html player_id defchar),
                   (get_title_html atkchar defchar)
                ]
                ++

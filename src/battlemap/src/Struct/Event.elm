@@ -4,7 +4,6 @@ module Struct.Event exposing (Type(..), attempted)
 import Http
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Character
 import Struct.Direction
 import Struct.Error
 import Struct.Location
@@ -17,13 +16,13 @@ import Struct.UI
 type Type =
    AbortTurnRequest
    | AttackWithoutMovingRequest
-   | CharacterInfoRequested Struct.Character.Ref
-   | CharacterSelected Struct.Character.Ref
+   | CharacterInfoRequested Int
+   | CharacterSelected Int
    | DebugLoadBattlemapRequest
    | DebugTeamSwitchRequest
    | DirectionRequested Struct.Direction.Type
    | Failed Struct.Error.Type
-   | LookingForCharacter Struct.Character.Ref
+   | LookingForCharacter Int
    | None
    | ScaleChangeRequested Float
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))

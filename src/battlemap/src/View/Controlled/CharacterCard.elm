@@ -116,22 +116,22 @@ get_inactive_movement_bar char =
       )
 
 get_movement_bar : (
-      Struct.Model.Type ->
+      Struct.CharacterTurn.Type ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_movement_bar model char =
-   case (Struct.CharacterTurn.try_getting_active_character model.char_turn) of
+get_movement_bar char_turn char =
+   case (Struct.CharacterTurn.try_getting_active_character char_turn) of
       (Just active_char) ->
          if
          (
-            (Struct.Character.get_ref active_char)
+            (Struct.Character.get_index active_char)
             ==
-            (Struct.Character.get_ref char)
+            (Struct.Character.get_index char)
          )
          then
             (get_active_movement_bar
-               (Struct.CharacterTurn.try_getting_navigator model.char_turn)
+               (Struct.CharacterTurn.try_getting_navigator char_turn)
                active_char
             )
          else
@@ -430,11 +430,11 @@ get_attributes char weapon armor =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_minimal_html : (
-      Struct.Model.Type ->
+      String ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_minimal_html model char =
+get_minimal_html player_id char =
    (Html.div
       [
          (Html.Attributes.class "battlemap-character-card"),
@@ -447,20 +447,21 @@ get_minimal_html model char =
                (Html.Attributes.class "battlemap-character-card-top")
             ]
             [
-               (View.Character.get_portrait_html model.player_id char),
+               (View.Character.get_portrait_html player_id char),
                (get_health_bar char),
-               (get_movement_bar model char)
+               (get_inactive_movement_bar char)
             ]
          )
       ]
    )
 
 get_summary_html : (
-      Struct.Model.Type ->
+      Struct.CharacterTurn.Type ->
+      String ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_summary_html model char =
+get_summary_html char_turn player_id char =
    let
       weapon_set = (Struct.Character.get_weapons char)
       main_weapon = (Struct.WeaponSet.get_active_weapon weapon_set)
@@ -478,9 +479,9 @@ get_summary_html model char =
                   (Html.Attributes.class "battlemap-character-card-top")
                ]
                [
-                  (View.Character.get_portrait_html model.player_id char),
+                  (View.Character.get_portrait_html player_id char),
                   (get_health_bar char),
-                  (get_movement_bar model char)
+                  (get_movement_bar char_turn char)
                ]
             ),
             (get_weapon_details char_statistics main_weapon),
@@ -491,11 +492,11 @@ get_summary_html model char =
       )
 
 get_full_html : (
-      Struct.Model.Type ->
+      String ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_full_html model char =
+get_full_html player_id char =
    let
       weapon_set = (Struct.Character.get_weapons char)
       main_weapon = (Struct.WeaponSet.get_active_weapon weapon_set)
@@ -514,9 +515,9 @@ get_full_html model char =
                   (Html.Attributes.class "battlemap-character-card-top")
                ]
                [
-                  (View.Character.get_portrait_html model.player_id char),
+                  (View.Character.get_portrait_html player_id char),
                   (get_health_bar char),
-                  (get_movement_bar model char)
+                  (get_inactive_movement_bar char)
                ]
             ),
             (get_weapon_details char_statistics main_weapon),

@@ -1,10 +1,11 @@
 module View.SubMenu.Status exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
+import Array
 
 import Html
 import Html.Attributes
+import Html.Lazy
 
 -- Struct.Battlemap -------------------------------------------------------------------
 import Struct.Event
@@ -37,10 +38,11 @@ get_html model =
                )
 
             (Just (Struct.UI.SelectedCharacter target_char)) ->
-               case (Dict.get target_char model.characters) of
+               case (Array.get target_char model.characters) of
                   (Just char) ->
-                     (View.SubMenu.Status.CharacterInfo.get_html
-                        model
+                     (Html.Lazy.lazy2
+                        (View.SubMenu.Status.CharacterInfo.get_html)
+                        model.player_id
                         char
                      )
 

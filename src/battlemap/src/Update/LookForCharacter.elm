@@ -1,6 +1,6 @@
 module Update.LookForCharacter exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
-import Dict
+import Array
 import Task
 
 -- Battlemap -------------------------------------------------------------------
@@ -16,11 +16,11 @@ import Struct.UI
 --------------------------------------------------------------------------------
 scroll_to_char : (
       Struct.Model.Type ->
-      Struct.Character.Ref ->
+      Int ->
       (Cmd Struct.Event.Type)
    )
-scroll_to_char model char_ref =
-   case (Dict.get char_ref model.characters) of
+scroll_to_char model char_ix =
+   case (Array.get char_ix model.characters) of
       (Just char) ->
          (Task.attempt
             (Struct.Event.attempted)
@@ -38,17 +38,17 @@ scroll_to_char model char_ref =
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Struct.Character.Ref ->
+      Int ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model target_ref =
+apply_to model target_ix =
    (
       {model |
          ui =
             (Struct.UI.set_previous_action
-               (Just (Struct.UI.SelectedCharacter target_ref))
+               (Just (Struct.UI.SelectedCharacter target_ix))
                model.ui
             )
       },
-      (scroll_to_char model target_ref)
+      (scroll_to_char model target_ix)
    )

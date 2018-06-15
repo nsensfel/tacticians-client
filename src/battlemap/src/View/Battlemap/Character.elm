@@ -1,9 +1,12 @@
 module View.Battlemap.Character exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
+import Debug
+
 import Html
 import Html.Attributes
 import Html.Events
+import Html.Lazy
 
 -- Battlemap  ------------------------------------------------------------------
 import Constants.UI
@@ -65,7 +68,7 @@ get_focus_class model char =
    (
       (Struct.UI.get_previous_action model.ui)
       ==
-      (Just (Struct.UI.SelectedCharacter (Struct.Character.get_ref char)))
+      (Just (Struct.UI.SelectedCharacter (Struct.Character.get_index char)))
    )
    then
       (Html.Attributes.class "battlemap-character-selected")
@@ -74,7 +77,7 @@ get_focus_class model char =
       (
          (Struct.CharacterTurn.try_getting_target model.char_turn)
          ==
-         (Just (Struct.Character.get_ref char))
+         (Just (Struct.Character.get_index char))
       )
       then
          (Html.Attributes.class "battlemap-character-targeted")
@@ -118,7 +121,10 @@ get_actual_html : (
 get_actual_html model char =
       (Html.div
          [
-            (Html.Attributes.class "battlemap-tiled"),
+            (Debug.log
+               ("Drawing char" ++ toString (Struct.Character.get_index char))
+               (Html.Attributes.class "battlemap-tiled")
+            ),
             (Html.Attributes.class "battlemap-character-icon"),
             (get_activation_level_class char),
             (get_alliance_class model char),
@@ -126,7 +132,9 @@ get_actual_html model char =
             (get_focus_class model char),
             (Html.Attributes.class "clickable"),
             (Html.Events.onClick
-               (Struct.Event.CharacterSelected (Struct.Character.get_ref char))
+               (Struct.Event.CharacterSelected
+                  (Struct.Character.get_index char)
+               )
             )
          ]
          [
@@ -146,6 +154,6 @@ get_html : (
 get_html model char =
    if (Struct.Character.is_alive char)
    then
-      (get_actual_html model char)
+      (Html.Lazy.lazy (get_actual_html model) char)
    else
       (Util.Html.nothing)

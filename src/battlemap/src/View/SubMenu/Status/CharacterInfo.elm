@@ -1,13 +1,14 @@
 module View.SubMenu.Status.CharacterInfo exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
+import Debug
+
 import Html
 import Html.Attributes
 
 -- Struct.Battlemap -------------------------------------------------------------------
 import Struct.Character
 import Struct.Event
-import Struct.Model
 
 import View.Controlled.CharacterCard
 
@@ -19,17 +20,17 @@ import View.Controlled.CharacterCard
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html: (
-      Struct.Model.Type ->
+      String ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_html model char =
+get_html player_id char =
    (Html.div
       [
-            (Html.Attributes.class "battlemap-tabmenu-character-info")
+         (Debug.log "Drawing char info" (Html.Attributes.class "battlemap-tabmenu-character-info"))
       ]
       [
          (Html.text ("Focusing:")),
-         (View.Controlled.CharacterCard.get_full_html model char)
+         (View.Controlled.CharacterCard.get_full_html player_id char)
       ]
    )

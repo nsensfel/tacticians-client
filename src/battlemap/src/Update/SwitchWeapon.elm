@@ -1,6 +1,6 @@
 module Update.SwitchWeapon exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
-import Dict
+import Array
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Battlemap
@@ -48,7 +48,7 @@ make_it_so model =
                            (Struct.Battlemap.get_movement_cost_function
                               model.battlemap
                               (Struct.Character.get_location new_char)
-                              (Dict.values model.characters)
+                              (Array.toList model.characters)
                            )
                         )
                         (Struct.CharacterTurn.set_active_character

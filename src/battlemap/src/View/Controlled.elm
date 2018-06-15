@@ -63,14 +63,14 @@ inventory_button =
    )
 
 get_available_actions : (
-      Struct.Model.Type ->
+      Struct.CharacterTurn.Type ->
       (List (Html.Html Struct.Event.Type))
    )
-get_available_actions model =
-   case (Struct.CharacterTurn.get_state model.char_turn) of
+get_available_actions char_turn =
+   case (Struct.CharacterTurn.get_state char_turn) of
       Struct.CharacterTurn.SelectedCharacter ->
          [
-            (attack_button model.char_turn),
+            (attack_button char_turn),
             (inventory_button),
             (end_turn_button " Doing Nothing"),
             (abort_button)
@@ -95,20 +95,24 @@ get_available_actions model =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
-get_html model =
+get_html : Struct.CharacterTurn.Type -> String -> (Html.Html Struct.Event.Type)
+get_html char_turn player_id =
    case
-      (Struct.CharacterTurn.try_getting_active_character model.char_turn)
+      (Struct.CharacterTurn.try_getting_active_character char_turn)
    of
       (Just char) ->
          (Html.div
             [(Html.Attributes.class "battlemap-controlled")]
             [
-               (View.Controlled.CharacterCard.get_summary_html model char),
+               (View.Controlled.CharacterCard.get_summary_html
+                  char_turn
+                  player_id
+                  char
+               ),
                (
                   if
                   (
-                     (Struct.CharacterTurn.get_state model.char_turn)
+                     (Struct.CharacterTurn.get_state char_turn)
                      ==
                      Struct.CharacterTurn.SelectedCharacter
                   )
@@ -119,7 +123,7 @@ get_html model =
                ),
                (Html.div
                   [(Html.Attributes.class "battlemap-controlled-actions")]
-                  (get_available_actions model)
+                  (get_available_actions char_turn)
                )
             ]
          )

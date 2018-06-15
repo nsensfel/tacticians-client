@@ -27,25 +27,17 @@ make_it_so model char nav =
       (Just cmd) ->
          (
             (Struct.Model.reset
-               (Dict.update
-                  (Struct.Character.get_ref char)
-                  (\maybe_char ->
-                     case maybe_char of
-                        (Just char) ->
-                           (Just
-                              (Struct.Character.set_enabled
-                                 False
-                                 (Struct.Character.set_location
-                                    (Struct.Navigator.get_current_location nav)
-                                    char
-                                 )
-                              )
-                           )
-                        Nothing -> Nothing
+               (Struct.Model.update_character
+                  (Struct.Character.get_index char)
+                  (Struct.Character.set_enabled
+                     False
+                     (Struct.Character.set_location
+                        (Struct.Navigator.get_current_location nav)
+                        char
+                     )
                   )
-                  model.characters
+                  model
                )
-               model
             ),
             cmd
          )

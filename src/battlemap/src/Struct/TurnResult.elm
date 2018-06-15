@@ -9,7 +9,7 @@ module Struct.TurnResult exposing
    )
 
 -- Elm -------------------------------------------------------------------------
-import Dict
+import Array
 
 import Json.Decode
 
@@ -52,44 +52,34 @@ type Type =
 --------------------------------------------------------------------------------
 apply_movement_to_character : (
       Movement ->
-      (Maybe Struct.Character.Type) ->
-      (Maybe Struct.Character.Type)
+      Struct.Character.Type ->
+      Struct.Character.Type
    )
-apply_movement_to_character movement maybe_char =
-   case maybe_char of
-      Nothing -> Nothing
-
-      (Just char) ->
-         (Just (Struct.Character.set_location movement.destination char))
+apply_movement_to_character movement char =
+   (Struct.Character.set_location movement.destination char)
 
 apply_weapon_switch_to_character : (
-      (Maybe Struct.Character.Type) ->
-      (Maybe Struct.Character.Type)
+      Struct.Character.Type ->
+      Struct.Character.Type
    )
-apply_weapon_switch_to_character maybe_char =
-   case maybe_char of
-      Nothing -> Nothing
-
-      (Just char) ->
-         (Just
-            (Struct.Character.set_weapons
-               (Struct.WeaponSet.switch_weapons
-                  (Struct.Character.get_weapons char)
-               )
-               char
-            )
-         )
+apply_weapon_switch_to_character char =
+   (Struct.Character.set_weapons
+      (Struct.WeaponSet.switch_weapons
+         (Struct.Character.get_weapons char)
+      )
+      char
+   )
 
 apply_attack_to_characters : (
       Attack ->
-      (Dict.Dict Struct.Character.Ref Struct.Character.Type) ->
-      (Dict.Dict Struct.Character.Ref Struct.Character.Type)
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Character.Type)
    )
 apply_attack_to_characters attack characters =
    (List.foldl
       (Struct.Attack.apply_to_characters
-         (toString attack.attacker_index)
-         (toString attack.defender_index)
+         attack.attacker_index
+         attack.defender_index
       )
       characters
       attack.sequence
@@ -165,24 +155,34 @@ internal_decoder kind =
 --------------------------------------------------------------------------------
 apply_to_characters : (
       Type ->
-      (Dict.Dict Struct.Character.Ref Struct.Character.Type) ->
-      (Dict.Dict Struct.Character.Ref Struct.Character.Type)
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Character.Type)
    )
 apply_to_characters turn_result characters =
    case turn_result of
       (Moved movement) ->
-         (Dict.update
-            (toString movement.character_index)
-            (apply_movement_to_character movement)
-            characters
-         )
+         case (Array.get movement.character_index characters) of
+            (Just char) ->
+               (Array.set
+                  movement.character_index
+                  (apply_movement_to_character movement char)
+                  characters
+               )
+
+            Nothing ->
+               characters
 
       (SwitchedWeapon weapon_switch) ->
-         (Dict.update
-            (toString weapon_switch.character_index)
-            (apply_weapon_switch_to_character)
-            characters
-         )
+         case (Array.get weapon_switch.character_index characters) of
+            (Just char) ->
+               (Array.set
+                  weapon_switch.character_index
+                  (apply_weapon_switch_to_character char)
+                  characters
+               )
+
+            Nothing ->
+               characters
 
       (Attacked attack) ->
          (apply_attack_to_characters attack characters)

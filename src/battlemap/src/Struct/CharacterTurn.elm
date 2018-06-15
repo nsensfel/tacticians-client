@@ -38,7 +38,7 @@ type alias Type =
       state : State,
       active_character : (Maybe Struct.Character.Type),
       path : (List Struct.Direction.Type),
-      target : (Maybe Struct.Character.Ref),
+      target : (Maybe Int),
       navigator : (Maybe Struct.Navigator.Type),
       has_switched_weapons : Bool
    }
@@ -123,12 +123,12 @@ set_has_switched_weapons v ct =
 has_switched_weapons : Type -> Bool
 has_switched_weapons ct = ct.has_switched_weapons
 
-set_target : (Maybe Struct.Character.Ref) -> Type -> Type
+set_target : (Maybe Int) -> Type -> Type
 set_target target ct =
    {ct |
       state = ChoseTarget,
       target = target
    }
 
-try_getting_target : Type -> (Maybe Struct.Character.Ref)
+try_getting_target : Type -> (Maybe Int)
 try_getting_target ct = ct.target

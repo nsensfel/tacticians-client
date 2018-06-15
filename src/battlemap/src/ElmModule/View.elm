@@ -2,6 +2,7 @@ module ElmModule.View exposing (view)
 
 -- Elm -------------------------------------------------------------------------
 import Html
+import Html.Lazy
 import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
@@ -31,7 +32,11 @@ view model =
       ]
       [
          (View.MainMenu.get_html model),
-         (View.Controlled.get_html model),
+         (Html.Lazy.lazy2
+            (View.Controlled.get_html)
+            model.char_turn
+            model.player_id
+         ),
          (Html.div
             [
                (Html.Attributes.class "battlemap-container"),

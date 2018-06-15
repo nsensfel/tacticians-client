@@ -1,6 +1,6 @@
 module Update.DisplayCharacterInfo exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
-import Dict
+import Array
 import Task
 
 -- Battlemap -------------------------------------------------------------------
@@ -14,13 +14,9 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-scroll_to_char : (
-      Struct.Model.Type ->
-      Struct.Character.Ref ->
-      (Cmd Struct.Event.Type)
-   )
-scroll_to_char model char_ref =
-   case (Dict.get char_ref model.characters) of
+scroll_to_char : Struct.Model.Type -> Int -> (Cmd Struct.Event.Type)
+scroll_to_char model char_ix =
+   case (Array.get char_ix model.characters) of
       (Just char) ->
          (Task.attempt
             (Struct.Event.attempted)
@@ -38,7 +34,7 @@ scroll_to_char model char_ref =
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Struct.Character.Ref ->
+      Int ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model target_ref =

@@ -1,7 +1,7 @@
 module View.SubMenu.Characters exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
+import Array 
 
 import Html
 import Html.Attributes
@@ -18,11 +18,11 @@ import View.Controlled.CharacterCard
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_character_element_html : (
-      Struct.Model.Type ->
+      String ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_character_element_html model char =
+get_character_element_html player_id char =
    (Html.div
       [
          (Html.Attributes.class "battlemap-characters-element"),
@@ -34,7 +34,7 @@ get_character_element_html model char =
                (Html.Attributes.class "")
          ),
          (Html.Events.onClick
-            (Struct.Event.LookingForCharacter (Struct.Character.get_ref char))
+            (Struct.Event.LookingForCharacter (Struct.Character.get_index char))
          ),
          (
             if (Struct.Character.is_enabled char)
@@ -45,22 +45,26 @@ get_character_element_html model char =
          )
       ]
       [
-         (View.Controlled.CharacterCard.get_minimal_html model char)
+         (View.Controlled.CharacterCard.get_minimal_html player_id char)
       ]
    )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
-get_html model =
+get_html : (
+      (Array.Array Struct.Character.Type) ->
+      String ->
+      (Html.Html Struct.Event.Type)
+   )
+get_html characters player_id =
    (Html.div
       [
          (Html.Attributes.class "battlemap-tabmenu-content"),
          (Html.Attributes.class "battlemap-tabmenu-characters-tab")
       ]
       (List.map
-         (get_character_element_html model)
-         (Dict.values model.characters)
+         (get_character_element_html player_id)
+         (Array.toList characters)
       )
    )

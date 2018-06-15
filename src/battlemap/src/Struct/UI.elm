@@ -43,8 +43,8 @@ type Tab =
 type Action =
    UsedManualControls
    | SelectedLocation Struct.Location.Ref
-   | SelectedCharacter Struct.Character.Ref
-   | AttackedCharacter Struct.Character.Ref
+   | SelectedCharacter Int
+   | AttackedCharacter Int
 
 type alias Type =
    {

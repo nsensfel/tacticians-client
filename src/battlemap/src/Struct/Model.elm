@@ -3,6 +3,7 @@ module Struct.Model exposing
       Type,
       new,
       add_character,
+      update_character,
       add_weapon,
       add_armor,
       invalidate,
@@ -30,7 +31,7 @@ import Struct.Weapon
 type alias Type =
    {
       battlemap: Struct.Battlemap.Type,
-      characters: (Dict.Dict Struct.Character.Ref Struct.Character.Type),
+      characters: (Array.Array Struct.Character.Type),
       weapons: (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type),
       armors: (Dict.Dict Struct.Armor.Ref Struct.Armor.Type),
       error: (Maybe Struct.Error.Type),
@@ -51,7 +52,7 @@ new : Type
 new =
    {
       battlemap = (Struct.Battlemap.empty),
-      characters = (Dict.empty),
+      characters = (Array.empty),
       weapons = (Dict.empty),
       armors = (Dict.empty),
       error = Nothing,
@@ -65,8 +66,7 @@ add_character : Struct.Character.Type -> Type -> Type
 add_character char model =
    {model |
       characters =
-         (Dict.insert
-            (Struct.Character.get_ref char)
+         (Array.push
             char
             model.characters
          )
@@ -94,16 +94,21 @@ add_armor ar model =
          )
    }
 
-reset : (Dict.Dict Struct.Character.Ref Struct.Character.Type) -> Type -> Type
-reset characters model =
+reset : Type -> Type
+reset model =
    {model |
-      characters = characters,
       error = Nothing,
       ui =
          (Struct.UI.reset_displayed_nav
             (Struct.UI.set_previous_action Nothing model.ui)
          ),
       char_turn = (Struct.CharacterTurn.new)
+   }
+
+update_character : Int -> Struct.Character.Type -> Type -> Type
+update_character ix new_val model =
+   {model |
+      characters = (Array.set ix new_val model.characters)
    }
 
 invalidate : Struct.Error.Type -> Type -> Type

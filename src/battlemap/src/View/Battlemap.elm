@@ -3,8 +3,6 @@ module View.Battlemap exposing (get_html)
 -- Elm -------------------------------------------------------------------------
 import Array
 
-import Dict
-
 import Html
 import Html.Attributes
 import Html.Lazy
@@ -15,6 +13,7 @@ import List
 import Constants.UI
 
 import Struct.Battlemap
+import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
@@ -70,6 +69,51 @@ get_tiles_html battlemap =
       )
    )
 
+maybe_print_navigator : (
+      Bool ->
+      (Maybe Struct.Navigator.Type) ->
+      (Html.Html Struct.Event.Type)
+   )
+maybe_print_navigator interactive maybe_nav =
+   let
+      name_suffix =
+         if (interactive)
+         then
+            "interactive"
+         else
+            "non-interactive"
+   in
+      case maybe_nav of
+         (Just nav) ->
+            (Html.div
+               [
+                  (Html.Attributes.class ("battlemap-navigator" ++ name_suffix))
+               ]
+               (View.Battlemap.Navigator.get_html
+                  (Struct.Navigator.get_summary nav)
+                  interactive
+               )
+            )
+
+         Nothing ->
+            (Util.Html.nothing)
+
+get_characters_html : (
+      Struct.Model.Type ->
+      (Array.Array Struct.Character.Type) ->
+      (Html.Html Struct.Event.Type)
+   )
+get_characters_html model characters =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-characters")
+      ]
+      (List.map
+         (View.Battlemap.Character.get_html model)
+         (Array.toList model.characters)
+      )
+   )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -100,34 +144,20 @@ get_html model =
             )
          )
       ]
-      (
-         (Html.Lazy.lazy (get_tiles_html) model.battlemap)
-         ::
-         (List.map
-            (View.Battlemap.Character.get_html model)
-            (Dict.values model.characters)
+      [
+         (Html.Lazy.lazy (get_tiles_html) model.battlemap),
+         -- Not in lazy mode, because I can't easily get rid of that 'model'
+         -- parameter.
+         (get_characters_html model model.characters),
+         (Html.Lazy.lazy2
+            (maybe_print_navigator)
+            True
+            model.char_turn.navigator
+         ),
+         (Html.Lazy.lazy2
+            (maybe_print_navigator)
+            False
+            (Struct.UI.try_getting_displayed_nav model.ui)
          )
-         ++
-         (
-            case (Struct.CharacterTurn.try_getting_navigator model.char_turn) of
-               (Just navigator) ->
-                  (View.Battlemap.Navigator.get_html
-                     (Struct.Navigator.get_summary navigator)
-                     True
-                  )
-
-               Nothing ->
-                  [(Util.Html.nothing)]
-         )
-         ++
-         case (Struct.UI.try_getting_displayed_nav model.ui) of
-            (Just navigator) ->
-               (View.Battlemap.Navigator.get_html
-                  (Struct.Navigator.get_summary navigator)
-                  False
-               )
-
-            Nothing ->
-               [(Util.Html.nothing)]
-      )
+      ]
    )

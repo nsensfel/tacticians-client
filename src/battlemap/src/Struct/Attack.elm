@@ -8,7 +8,7 @@ module Struct.Attack exposing
    )
 
 -- Elm -------------------------------------------------------------------------
-import Dict
+import Array
 
 import Json.Decode
 
@@ -74,42 +74,44 @@ decoder =
 
 apply_damage_to_character : (
       Int ->
-      (Maybe Struct.Character.Type) ->
-      (Maybe Struct.Character.Type)
+      Struct.Character.Type ->
+      Struct.Character.Type
    )
-apply_damage_to_character damage maybe_character =
-   case maybe_character of
-      Nothing -> Nothing
-
-      (Just char) ->
-         (Just
-            (Struct.Character.set_current_health
-               ((Struct.Character.get_current_health char) - damage)
-               char
-            )
-         )
+apply_damage_to_character damage char =
+   (Struct.Character.set_current_health
+      ((Struct.Character.get_current_health char) - damage)
+      char
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to_characters : (
-      Struct.Character.Ref ->
-      Struct.Character.Ref ->
+      Int ->
+      Int ->
       Type ->
-      (Dict.Dict Struct.Character.Ref Struct.Character.Type) ->
-      (Dict.Dict Struct.Character.Ref Struct.Character.Type)
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Character.Type)
    )
-apply_to_characters attacker_ref defender_ref attack characters =
+apply_to_characters attacker_ix defender_ix attack characters =
    if ((attack.order == Counter) == attack.parried)
    then
-      (Dict.update
-         defender_ref
-         (apply_damage_to_character attack.damage)
-         characters
-      )
+      case (Array.get defender_ix characters) of
+         (Just char) ->
+            (Array.set
+               defender_ix
+               (apply_damage_to_character attack.damage char)
+               characters
+            )
+
+         Nothing -> characters
    else
-      (Dict.update
-         attacker_ref
-         (apply_damage_to_character attack.damage)
-         characters
-      )
+      case (Array.get attacker_ix characters) of
+         (Just char) ->
+            (Array.set
+               attacker_ix
+               (apply_damage_to_character attack.damage char)
+               characters
+            )
+
+         Nothing -> characters
