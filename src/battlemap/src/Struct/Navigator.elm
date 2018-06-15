@@ -80,7 +80,7 @@ new start_loc mov_dist atk_dist def_dist cost_fun =
             start_loc
             mov_dist
             atk_dist
-            0
+            def_dist
             (cost_fun)
          ),
       cost_fun = cost_fun
