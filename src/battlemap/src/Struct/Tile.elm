@@ -5,7 +5,8 @@ module Struct.Tile exposing
       error_tile,
       get_location,
       get_icon_id,
-      get_cost
+      get_cost,
+      get_variant_id
    )
 
 -- Battlemap -------------------------------------------------------------------
@@ -24,6 +25,11 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+noise_function : Int -> Int -> Int -> Int
+noise_function a b c =
+   (round
+         (radians (toFloat ((a + 1) * 2 + (b + 1) * 3 + c)))
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -54,3 +60,7 @@ get_icon_id tile = tile.icon_id
 
 get_cost : Type -> Int
 get_cost tile = tile.crossing_cost
+
+get_variant_id : Type -> Int
+get_variant_id tile =
+   ((noise_function tile.location.x tile.location.y tile.crossing_cost) % 9)

@@ -16,11 +16,6 @@ import Struct.Tile
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-noise_function : Int -> Int -> Int -> Int
-noise_function a b c =
-   (round
-         (radians (toFloat ((a + 1) * 2 + (b + 1) * 3 + c)))
-   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -40,19 +35,7 @@ get_html tile =
             (Html.Attributes.class
                (
                   "battlemap-tile-variant-"
-                  ++
-                  (toString
-                     -- I don't like how Elm does random, let's get some noisy
-                     -- function instead.
-                     (
-                        (noise_function
-                           tile_loc.x
-                           tile_loc.y
-                           (Struct.Tile.get_cost tile)
-                        )
-                        % 9
-                     )
-                  )
+                  ++ (toString (Struct.Tile.get_variant_id tile))
                )
             ),
             (Html.Attributes.class "clickable"),

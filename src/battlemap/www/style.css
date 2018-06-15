@@ -177,13 +177,15 @@
    justify-content: center;
 }
 
-.battlemap-character-card
+.battlemap-character-card,
+.battlemap-tile-card
 {
    display: flex;
    flex-flow: column;
 }
 
-.battlemap-character-card-top
+.battlemap-character-card-top,
+.battlemap-tile-card-top
 {
    display: grid;
    grid-template-columns: [col] auto [col] 1fr;
@@ -195,7 +197,8 @@
    margin-top: 0.3em;
 }
 
-.battlemap-character-card .battlemap-character-portrait
+.battlemap-character-card .battlemap-character-portrait,
+.battlemap-tile-card-icon
 {
    grid-column: col 1;
    grid-row: row 1 / span 6;
@@ -217,10 +220,20 @@
 .battlemap-character-portrait-team-6 { background-color: rgba(127, 167, 169, 0.3); }
 .battlemap-character-portrait-team-7 { background-color: rgba(231, 167, 169, 0.3); }
 
-.battlemap-character-card-name
+.battlemap-tile-card-top
 {
-   text-align: center;
- k  border-radius: 5px;
+   margin:0.3em;
+}
+
+.battlemap-character-card-name,
+.battlemap-tile-card-name,
+.battlemap-tile-card-cost,
+.battlemap-tile-card-location
+{
+   display:flex;
+   justify-content:center;
+   align-items:center;
+   border-radius: 5px;
    background-color: #6C5D53;
    width: 100%;
 }
@@ -255,7 +268,8 @@
    transition: width 0.3s ease-out;
 }
 
-.battlemap-character-card-health
+.battlemap-character-card-health,
+.battlemap-tile-card-cost
 {
    grid-column: col 2;
    grid-row: row 2;
@@ -267,7 +281,8 @@
    background-color: darkred;
 }
 
-.battlemap-character-card-movement
+.battlemap-character-card-movement,
+.battlemap-tile-card-location
 {
    grid-column: col 2;
    grid-row: row 4;
@@ -378,6 +393,15 @@
    height: 100px;
 }
 
+.battlemap-tile-card-icon
+{
+   box-sizing: border-box;
+   border-radius: 5px;
+   background-size: 300% 300%;
+   width: 80px;
+   height: 80px;
+}
+
 .battlemap-character-portrait *
 {
    box-sizing: border-box;
@@ -449,16 +473,16 @@
 }
 
 .battlemap-tile-variant-0  {background-position: 0    0;}
-.battlemap-tile-variant-1  {background-position: 32px 0;}
-.battlemap-tile-variant-2  {background-position: 64px 0;}
-.battlemap-tile-variant-3  {background-position: 0    32px;}
-.battlemap-tile-variant-4  {background-position: 32px 32px;}
-.battlemap-tile-variant-5  {background-position: 64px 32px;}
-.battlemap-tile-variant-6  {background-position: 0    64px;}
-.battlemap-tile-variant-7  {background-position: 32px 64px;}
-.battlemap-tile-variant-8  {background-position: 64px 64px;}
+.battlemap-tile-variant-1  {background-position: 100% 0;}
+.battlemap-tile-variant-2  {background-position: 200% 0;}
+.battlemap-tile-variant-3  {background-position: 0    100%;}
+.battlemap-tile-variant-4  {background-position: 100% 100%;}
+.battlemap-tile-variant-5  {background-position: 200% 100%;}
+.battlemap-tile-variant-6  {background-position: 0    200%;}
+.battlemap-tile-variant-7  {background-position: 100% 200%;}
+.battlemap-tile-variant-8  {background-position: 200% 200%;}
 
-.battlemap-tile-icon       {z-index: 0; position: absolute; background-size: 96px 96px;}
+.battlemap-tile-icon       {z-index: 0; position: absolute; background-size: 300%;}
 .battlemap-path-icon-below-markers {z-index: 1;}
 .battlemap-marker-icon     {z-index: 2;}
 .battlemap-path-icon-above-markers {z-index: 3;}
