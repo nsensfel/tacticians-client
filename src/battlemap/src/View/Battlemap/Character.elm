@@ -1,8 +1,6 @@
 module View.Battlemap.Character exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
-import Debug
-
 import Html
 import Html.Attributes
 import Html.Events
@@ -121,10 +119,7 @@ get_actual_html : (
 get_actual_html model char =
       (Html.div
          [
-            (Debug.log
-               ("Drawing char" ++ toString (Struct.Character.get_index char))
-               (Html.Attributes.class "battlemap-tiled")
-            ),
+            (Html.Attributes.class "battlemap-tiled"),
             (Html.Attributes.class "battlemap-character-icon"),
             (get_activation_level_class char),
             (get_alliance_class model char),

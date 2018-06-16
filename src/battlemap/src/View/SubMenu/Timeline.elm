@@ -1,7 +1,6 @@
 module View.SubMenu.Timeline exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
-import Debug
 import Array
 
 import Html
@@ -60,10 +59,7 @@ true_get_html : (
 true_get_html characters player_id turn_results =
    (Html.div
       [
-         (Debug.log
-            "Drawing timeline"
-            (Html.Attributes.class "battlemap-tabmenu-content")
-         ),
+         (Html.Attributes.class "battlemap-tabmenu-content"),
          (Html.Attributes.class "battlemap-tabmenu-timeline-tab")
       ]
       (Array.toList
