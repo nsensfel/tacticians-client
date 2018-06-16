@@ -36,7 +36,11 @@ get_inner_html model tab =
          (View.SubMenu.Status.get_html model)
 
       Struct.UI.CharactersTab ->
-         (View.SubMenu.Characters.get_html model.characters model.player_id)
+         (Html.Lazy.lazy2
+            (View.SubMenu.Characters.get_html)
+            model.characters
+            model.player_id
+         )
 
       Struct.UI.SettingsTab ->
          (View.SubMenu.Settings.get_html model)

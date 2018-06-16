@@ -31,7 +31,7 @@ view model =
          (Html.Attributes.class "fullscreen-module")
       ]
       [
-         (View.MainMenu.get_html model),
+         (View.MainMenu.get_html),
          (Html.Lazy.lazy2
             (View.Controlled.get_html)
             model.char_turn
