@@ -6,7 +6,8 @@ module Struct.Tile exposing
       get_location,
       get_icon_id,
       get_cost,
-      get_variant_id
+      get_variant_id,
+      decoder
    )
 
 -- Battlemap -------------------------------------------------------------------

@@ -6,8 +6,10 @@ module Struct.Model exposing
       update_character,
       add_weapon,
       add_armor,
+      add_tile,
       invalidate,
       reset,
+      full_debug_reset,
       clear_error
    )
 
@@ -34,6 +36,7 @@ type alias Type =
       characters: (Array.Array Struct.Character.Type),
       weapons: (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type),
       armors: (Dict.Dict Struct.Armor.Ref Struct.Armor.Type),
+      tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
       error: (Maybe Struct.Error.Type),
       player_id: String,
       ui: Struct.UI.Type,
@@ -55,6 +58,7 @@ new =
       characters = (Array.empty),
       weapons = (Dict.empty),
       armors = (Dict.empty),
+      tiles = (Dict.empty),
       error = Nothing,
       player_id = "0",
       ui = (Struct.UI.default),
@@ -94,6 +98,17 @@ add_armor ar model =
          )
    }
 
+add_tile : Struct.Tile.Type -> Type -> Type
+add_tile tl model =
+   {model |
+      tiles =
+         (Dict.insert
+            (Struct.Tile.get_id tl)
+            tl
+            model.tiles
+         )
+   }
+
 reset : Type -> Type
 reset model =
    {model |
@@ -103,6 +118,21 @@ reset model =
             (Struct.UI.set_previous_action Nothing model.ui)
          ),
       char_turn = (Struct.CharacterTurn.new)
+   }
+
+full_debug_reset : Type -> Type
+full_debug_reset model =
+   {model |
+      battlemap = (Struct.Battlemap.empty),
+      characters = (Array.empty),
+      weapons = (Dict.empty),
+      armors = (Dict.empty),
+      tiles = (Dict.empty),
+      error = Nothing,
+      -- player_id remains
+      ui = (Struct.UI.default),
+      char_turn = (Struct.CharacterTurn.new),
+      timeline = (Array.empty)
    }
 
 update_character : Int -> Struct.Character.Type -> Type -> Type

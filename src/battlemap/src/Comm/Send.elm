@@ -9,6 +9,7 @@ import Json.Encode
 -- Battlemap -------------------------------------------------------------------
 import Comm.AddArmor
 import Comm.AddChar
+import Comm.AddTile
 import Comm.AddWeapon
 import Comm.SetMap
 import Comm.SetTimeline
@@ -32,6 +33,7 @@ internal_decoder : (
    )
 internal_decoder model reply_type =
    case reply_type of
+      "add_tile" -> (Comm.AddTile.decode model)
       "add_armor" -> (Comm.AddArmor.decode model)
       "add_char" -> (Comm.AddChar.decode model)
       "add_weapon" -> (Comm.AddWeapon.decode model)

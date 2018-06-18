@@ -50,6 +50,16 @@ add_armor ar current_state =
       (_, (Just _)) -> current_state
       (model, _) -> ((Struct.Model.add_armor ar model), Nothing)
 
+add_tile : (
+      Struct.Tile.Type ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type))
+   )
+add_tile tl current_state =
+   case current_state of
+      (_, (Just _)) -> current_state
+      (model, _) -> ((Struct.Model.add_tile tl model), Nothing)
+
 add_weapon : (
       Struct.Weapon.Type ->
       (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
@@ -159,6 +169,9 @@ apply_command command current_state =
 
       (Struct.ServerReply.AddArmor ar) ->
          (add_armor ar current_state)
+
+      (Struct.ServerReply.AddTile tl) ->
+         (add_tile tl current_state)
 
       (Struct.ServerReply.AddCharacter char) ->
          (add_character char current_state)
