@@ -1,7 +1,6 @@
 module Update.EndTurn exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
 
 -- Struct.Battlemap -------------------------------------------------------------------
 import Comm.CharacterTurn

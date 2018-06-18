@@ -21,7 +21,7 @@ import Struct.Tile
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
-      Struct.Tile.Type ->
+      Struct.Tile.Instance ->
       (Html.Html Struct.Event.Type)
    )
 get_html tile =

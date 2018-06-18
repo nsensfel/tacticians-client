@@ -17,7 +17,7 @@ import Struct.Tile
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_icon : (Struct.Tile.Type -> (Html.Html Struct.Event.Type))
+get_icon : (Struct.Tile.Instance -> (Html.Html Struct.Event.Type))
 get_icon tile =
    (Html.div
       [
@@ -46,7 +46,7 @@ get_icon tile =
       ]
    )
 
-get_name : (Struct.Tile.Type -> (Html.Html Struct.Event.Type))
+get_name : (Struct.Tile.Instance -> (Html.Html Struct.Event.Type))
 get_name tile =
    (Html.div
       [
@@ -55,17 +55,17 @@ get_name tile =
       [
          (Html.text
             (
-               "Tile Type "
+               "Tile.Instance "
                ++ (Struct.Tile.get_icon_id tile)
             )
          )
       ]
    )
 
-get_cost : (Struct.Tile.Type -> (Html.Html Struct.Event.Type))
+get_cost : (Struct.Tile.Instance -> (Html.Html Struct.Event.Type))
 get_cost tile =
    let
-      cost = (Struct.Tile.get_cost tile)
+      cost = (Struct.Tile.get_instance_cost tile)
       text =
          if (cost > Constants.Movement.max_points)
          then
@@ -82,7 +82,7 @@ get_cost tile =
          ]
       )
 
-get_location : (Struct.Tile.Type -> (Html.Html Struct.Event.Type))
+get_location : (Struct.Tile.Instance -> (Html.Html Struct.Event.Type))
 get_location tile =
    let
       tile_location = (Struct.Tile.get_location tile)

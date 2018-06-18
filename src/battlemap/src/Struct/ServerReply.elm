@@ -6,6 +6,7 @@ module Struct.ServerReply exposing (Type(..))
 import Struct.Armor
 import Struct.Battlemap
 import Struct.Character
+import Struct.Tile
 import Struct.TurnResult
 import Struct.Weapon
 

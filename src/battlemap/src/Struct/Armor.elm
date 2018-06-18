@@ -52,6 +52,21 @@ type Category =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+finish_decoding : PartiallyDecoded -> Type
+finish_decoding add_armor =
+   {
+      id = add_armor.id,
+      name = add_armor.nam,
+      category =
+         (
+            case add_armor.ct of
+               "k" -> Kinetic
+               "c" -> Chain
+               "p" -> Plate
+               _   -> Leather
+         ),
+      coef = add_armor.cf
+   }
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -123,22 +138,6 @@ apply_to_attributes ar atts =
                   (Struct.Attributes.mod_strength impact atts)
                )
             )
-
-finish_decoding : PartiallyDecoded -> Type
-finish_decoding add_armor =
-   {
-      id = add_armor.id,
-      name = add_armor.nam,
-      category =
-         (
-            case add_armor.ct of
-               "k" -> Kinetic
-               "c" -> Chain
-               "p" -> Plate
-               _   -> Leather
-         ),
-      coef = add_armor.cf
-   }
 
 decoder : (Json.Decode.Decoder Type)
 decoder =

@@ -7,7 +7,6 @@ import Html.Events
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Event
-import Struct.Model
 import Struct.UI
 
 --------------------------------------------------------------------------------

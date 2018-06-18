@@ -14,7 +14,6 @@ import Constants.UI
 
 import Struct.Battlemap
 import Struct.Character
-import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.Navigator

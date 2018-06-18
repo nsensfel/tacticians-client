@@ -15,7 +15,6 @@ import Struct.Armor
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
-import Struct.Model
 import Struct.Navigator
 import Struct.Statistics
 import Struct.Weapon

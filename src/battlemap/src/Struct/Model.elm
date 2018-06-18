@@ -22,8 +22,9 @@ import Struct.Armor
 import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
-import Struct.TurnResult
 import Struct.Error
+import Struct.Tile
+import Struct.TurnResult
 import Struct.UI
 import Struct.Weapon
 

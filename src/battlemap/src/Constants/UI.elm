@@ -3,6 +3,9 @@ module Constants.UI exposing (..)
 tile_size : Int
 tile_size = 32
 
+variants_per_tile : Int
+variants_per_tile = 9
+
 viewer_html_id : String
 viewer_html_id = "battlemap_viewer"
 

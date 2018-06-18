@@ -11,7 +11,6 @@ import Html.Attributes
 import Struct.Event
 import Struct.TurnResult
 import Struct.Character
-import Struct.Model
 
 import View.Character
 

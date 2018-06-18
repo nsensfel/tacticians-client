@@ -7,11 +7,14 @@ module Struct.Battlemap exposing
       get_height,
       get_tiles,
       get_movement_cost_function,
+      solve_tiles,
       try_getting_tile_at
    )
 
 -- Elm -------------------------------------------------------------------------
 import Array
+
+import Dict
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Character
@@ -27,7 +30,7 @@ type alias Type =
    {
       width: Int,
       height: Int,
-      content: (Array.Array Struct.Tile.Type)
+      content: (Array.Array Struct.Tile.Instance)
    }
 
 --------------------------------------------------------------------------------
@@ -46,7 +49,6 @@ has_location loc bmap =
       && (loc.y < bmap.height)
    )
 
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -56,7 +58,7 @@ get_width bmap = bmap.width
 get_height : Type -> Int
 get_height bmap = bmap.height
 
-get_tiles : Type -> (Array.Array Struct.Tile.Type)
+get_tiles : Type -> (Array.Array Struct.Tile.Instance)
 get_tiles bmap = bmap.content
 
 empty : Type
@@ -67,7 +69,7 @@ empty =
       content = (Array.empty)
    }
 
-new : Int -> Int -> (List Struct.Tile.Type) -> Type
+new : Int -> Int -> (List Struct.Tile.Instance) -> Type
 new width height tiles =
    {
       width = width,
@@ -78,7 +80,7 @@ new width height tiles =
 try_getting_tile_at : (
       Struct.Location.Type ->
       Type ->
-      (Maybe Struct.Tile.Type)
+      (Maybe Struct.Tile.Instance)
    )
 try_getting_tile_at loc bmap =
    (Array.get (location_to_index loc bmap) bmap.content)
@@ -109,8 +111,15 @@ get_movement_cost_function bmap start_loc char_list loc =
             then
                Constants.Movement.cost_when_occupied_tile
             else
-               (Struct.Tile.get_cost tile)
+               (Struct.Tile.get_instance_cost tile)
 
          Nothing -> Constants.Movement.cost_when_out_of_bounds
    else
       Constants.Movement.cost_when_out_of_bounds
+
+solve_tiles : (Dict.Dict Struct.Tile.Ref Struct.Tile.Type) -> Type -> Type
+solve_tiles tiles bmap =
+   {bmap |
+      content =
+         (Array.map (Struct.Tile.solve_tile_instance tiles) bmap.content)
+   }

@@ -15,6 +15,7 @@ import Struct.Error
 import Struct.Event
 import Struct.Model
 import Struct.ServerReply
+import Struct.Tile
 import Struct.TurnResult
 import Struct.UI
 import Struct.Weapon
@@ -103,7 +104,9 @@ set_map map current_state =
       (_, (Just _)) -> current_state
       (model, _) ->
          (
-            {model | battlemap = map},
+            {model |
+               battlemap = (Struct.Battlemap.solve_tiles model.tiles map)
+            },
             Nothing
          )
 

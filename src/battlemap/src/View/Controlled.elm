@@ -8,7 +8,6 @@ import Html.Events
 -- Struct.Battlemap -------------------------------------------------------------------
 import Struct.CharacterTurn
 import Struct.Event
-import Struct.Model
 import Struct.Navigator
 
 import Util.Html

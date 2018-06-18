@@ -10,7 +10,6 @@ import Html.Events
 -- Battlemap -------------------------------------------------------------------
 import Struct.Character
 import Struct.Event
-import Struct.Model
 
 import View.Controlled.CharacterCard
 
