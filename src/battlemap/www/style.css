@@ -626,11 +626,13 @@
 
 .battlemap-can-attack-can-defend-marker.battlemap-navigator-non-interactive
 {
+   z-index: 5;
    background-image: url(/asset/svg/marker/blade.svg);
 }
 
 .battlemap-can-attack-cant-defend-marker.battlemap-navigator-non-interactive
 {
+   z-index: 5;
    background-image:
       url(/asset/svg/marker/blade.svg),
       url(/asset/svg/marker/brokenshield.svg);
