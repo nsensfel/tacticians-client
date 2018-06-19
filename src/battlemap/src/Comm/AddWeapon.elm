@@ -5,7 +5,6 @@ import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Weapon
-import Struct.Model
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------
@@ -21,6 +20,5 @@ internal_decoder wp = (Struct.ServerReply.AddWeapon wp)
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : (Struct.Model.Type -> (Json.Decode.Decoder Struct.ServerReply.Type))
-decode model =
-   (Json.Decode.map (internal_decoder) (Struct.Weapon.decoder))
+decode : (Json.Decode.Decoder Struct.ServerReply.Type)
+decode = (Json.Decode.map (internal_decoder) (Struct.Weapon.decoder))

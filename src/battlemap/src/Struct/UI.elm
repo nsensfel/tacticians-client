@@ -27,7 +27,6 @@ module Struct.UI exposing
    )
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Character
 import Struct.Location
 import Struct.Navigator
 

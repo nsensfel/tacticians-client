@@ -5,7 +5,6 @@ import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Tile
-import Struct.Model
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------
@@ -21,5 +20,5 @@ internal_decoder wp = (Struct.ServerReply.AddTile wp)
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : (Struct.Model.Type -> (Json.Decode.Decoder Struct.ServerReply.Type))
-decode model = (Json.Decode.map (internal_decoder) (Struct.Tile.decoder))
+decode : (Json.Decode.Decoder Struct.ServerReply.Type)
+decode = (Json.Decode.map (internal_decoder) (Struct.Tile.decoder))

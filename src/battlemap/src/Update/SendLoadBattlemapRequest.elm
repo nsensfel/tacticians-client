@@ -20,7 +20,7 @@ apply_to : (
    )
 apply_to model =
    (
-      model,
+      (Struct.Model.full_debug_reset model),
       (case (Comm.LoadBattlemap.try model) of
          (Just cmd) -> cmd
          Nothing -> Cmd.none

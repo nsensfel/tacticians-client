@@ -5,7 +5,6 @@ import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Battlemap
-import Struct.Model
 import Struct.ServerReply
 import Struct.Tile
 
@@ -27,7 +26,7 @@ deserialize_tile_instance map_width index id =
    (Struct.Tile.new_instance
       (index % map_width)
       (index // map_width)
-      (toString id)
+      id
       -1
       -1
    )
@@ -48,8 +47,8 @@ internal_decoder map_data =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : (Struct.Model.Type -> (Json.Decode.Decoder Struct.ServerReply.Type))
-decode model =
+decode : (Json.Decode.Decoder Struct.ServerReply.Type)
+decode =
    (Json.Decode.map
       internal_decoder
       (Json.Decode.map3 MapData

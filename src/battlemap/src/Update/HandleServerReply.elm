@@ -105,7 +105,8 @@ set_map map current_state =
       (model, _) ->
          (
             {model |
-               battlemap = (Struct.Battlemap.solve_tiles model.tiles map)
+               battlemap =
+                  (Struct.Battlemap.solve_tiles (Dict.values model.tiles) map)
             },
             Nothing
          )

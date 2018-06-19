@@ -5,7 +5,6 @@ import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Character
-import Struct.Model
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------
@@ -25,9 +24,5 @@ internal_decoder char_and_refs = (Struct.ServerReply.AddCharacter char_and_refs)
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : (Struct.Model.Type -> (Json.Decode.Decoder Struct.ServerReply.Type))
-decode model =
-   (Json.Decode.map
-      (internal_decoder)
-      (Struct.Character.decoder)
-   )
+decode : (Json.Decode.Decoder Struct.ServerReply.Type)
+decode = (Json.Decode.map (internal_decoder) (Struct.Character.decoder))

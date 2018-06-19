@@ -20,7 +20,8 @@ module Struct.Tile exposing
    )
 
 -- Elm -------------------------------------------------------------------------
-import Dict
+import Debug
+import List
 
 import Json.Decode
 import Json.Decode.Pipeline
@@ -57,7 +58,7 @@ type alias Type =
 type alias Instance =
    {
       location : Struct.Location.Type,
-      icon_id : String,
+      icon_id : Int,
       crossing_cost : Int,
       type_id : Int
    }
@@ -79,6 +80,25 @@ finish_decoding add_tile =
       range_maximum = add_tile.rma
    }
 
+seek_tile_instance_type : Instance -> Type -> (Maybe Type) -> (Maybe Type)
+seek_tile_instance_type instance candidate current_sol =
+   if (current_sol == Nothing)
+   then
+      let
+         icon_id = instance.icon_id
+      in
+         if
+         (
+            (icon_id >= candidate.range_minimum)
+            && (icon_id <= candidate.range_maximum)
+         )
+         then
+            (Just candidate)
+         else
+            current_sol
+   else
+      current_sol
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -92,7 +112,7 @@ new id name crossing_cost range_minimum range_maximum =
       range_maximum = range_maximum
    }
 
-new_instance : Int -> Int -> String -> Int -> Int -> Instance
+new_instance : Int -> Int -> Int -> Int -> Int -> Instance
 new_instance x y icon_id crossing_cost type_id =
    {
       location = {x = x, y = y},
@@ -105,7 +125,7 @@ error_tile_instance : Int -> Int -> Instance
 error_tile_instance x y =
    {
       location = {x = x, y = y},
-      icon_id = "error",
+      icon_id = -1,
       type_id = -1,
       crossing_cost = Constants.Movement.cost_when_out_of_bounds
    }
@@ -133,7 +153,7 @@ get_location : Instance -> Struct.Location.Type
 get_location tile_inst = tile_inst.location
 
 get_icon_id : Instance -> String
-get_icon_id tile_inst = tile_inst.icon_id
+get_icon_id tile_inst = (toString tile_inst.icon_id)
 
 get_variant_id : Instance -> Int
 get_variant_id tile_inst =
@@ -146,20 +166,33 @@ get_variant_id tile_inst =
       % Constants.UI.variants_per_tile
    )
 
-solve_tile_instance : (Dict.Dict Ref Type) -> Instance -> Instance
+solve_tile_instance : (List Type) -> Instance -> Instance
 solve_tile_instance tiles tile_instance =
-   case (Dict.get tile_instance.type_id tiles) of
-      (Just tile) ->
-         {tile_instance |
-            type_id = tile.id,
-            crossing_cost = tile.crossing_cost
-         }
+   let
+      maybe_type =
+         (List.foldr (seek_tile_instance_type tile_instance) Nothing tiles)
+   in
+      case maybe_type of
+         (Just tile) ->
+            {tile_instance |
+               type_id = tile.id,
+               crossing_cost = tile.crossing_cost
+            }
 
-      Nothing ->
-         (error_tile_instance
-            tile_instance.location.x
-            tile_instance.location.y
-         )
+         Nothing ->
+            (Debug.log
+               (
+                  "Couldn't find tile type matching "
+                  ++ (toString tile_instance.icon_id)
+                  ++ " among "
+                  ++ (toString (List.length tiles))
+                  ++ " candidates."
+               )
+               (error_tile_instance
+                  tile_instance.location.x
+                  tile_instance.location.y
+               )
+            )
 
 decoder : (Json.Decode.Decoder Type)
 decoder =

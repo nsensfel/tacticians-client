@@ -26,18 +26,14 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-internal_decoder : (
-      Struct.Model.Type ->
-      String ->
-      (Json.Decode.Decoder Struct.ServerReply.Type)
-   )
-internal_decoder model reply_type =
+internal_decoder : String -> (Json.Decode.Decoder Struct.ServerReply.Type)
+internal_decoder reply_type =
    case reply_type of
-      "add_tile" -> (Comm.AddTile.decode model)
-      "add_armor" -> (Comm.AddArmor.decode model)
-      "add_char" -> (Comm.AddChar.decode model)
-      "add_weapon" -> (Comm.AddWeapon.decode model)
-      "set_map" -> (Comm.SetMap.decode model)
+      "add_tile" -> (Comm.AddTile.decode)
+      "add_armor" -> (Comm.AddArmor.decode)
+      "add_char" -> (Comm.AddChar.decode)
+      "add_weapon" -> (Comm.AddWeapon.decode)
+      "set_map" -> (Comm.SetMap.decode)
       "turn_results" -> (Comm.TurnResults.decode)
       "set_timeline" -> (Comm.SetTimeline.decode)
       other ->
@@ -49,10 +45,10 @@ internal_decoder model reply_type =
             )
          )
 
-decode : Struct.Model.Type -> (Json.Decode.Decoder Struct.ServerReply.Type)
-decode model =
+decode : (Json.Decode.Decoder Struct.ServerReply.Type)
+decode =
    (Json.Decode.field "msg" Json.Decode.string)
-   |> (Json.Decode.andThen (internal_decoder model))
+   |> (Json.Decode.andThen (internal_decoder))
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -72,7 +68,7 @@ try_sending model recipient try_encoding_fun =
                (Http.post
                   recipient
                   (Http.jsonBody serial)
-                  (Json.Decode.list (decode model))
+                  (Json.Decode.list (decode))
                )
             )
          )
