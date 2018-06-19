@@ -20,7 +20,6 @@ module Struct.Tile exposing
    )
 
 -- Elm -------------------------------------------------------------------------
-import Debug
 import List
 
 import Json.Decode
@@ -180,18 +179,9 @@ solve_tile_instance tiles tile_instance =
             }
 
          Nothing ->
-            (Debug.log
-               (
-                  "Couldn't find tile type matching "
-                  ++ (toString tile_instance.icon_id)
-                  ++ " among "
-                  ++ (toString (List.length tiles))
-                  ++ " candidates."
-               )
-               (error_tile_instance
-                  tile_instance.location.x
-                  tile_instance.location.y
-               )
+            (error_tile_instance
+               tile_instance.location.x
+               tile_instance.location.y
             )
 
 decoder : (Json.Decode.Decoder Type)
