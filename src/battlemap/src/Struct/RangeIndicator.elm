@@ -34,7 +34,8 @@ type alias SearchParameters =
       maximum_distance: Int,
       maximum_attack_range: Int,
       minimum_defense_range: Int,
-      cost_function: (Struct.Location.Type -> Int)
+      cost_function: (Struct.Location.Type -> Int),
+      true_range_fun: (Struct.Location.Type -> Int)
    }
 
 type alias LocatedIndicator =
@@ -94,7 +95,7 @@ generate_neighbor search_params neighbor_loc dir src_indicator =
          else
             (src_indicator.distance + node_cost)
       new_atk_range = (src_indicator.atk_range + 1)
-      new_true_range = (src_indicator.true_range + 1)
+      new_true_range = (search_params.true_range_fun neighbor_loc)
       can_defend = (new_true_range > search_params.minimum_defense_range)
    in
       if (new_dist > search_params.maximum_distance)
@@ -331,7 +332,8 @@ generate location max_dist atk_range def_range cost_fun =
          maximum_distance = max_dist,
          maximum_attack_range = atk_range,
          minimum_defense_range = def_range,
-         cost_function = (cost_fun)
+         cost_function = (cost_fun),
+         true_range_fun = (Struct.Location.dist location)
       }
    )
 
