@@ -4,6 +4,7 @@ module Struct.Model exposing
       new,
       add_character,
       update_character,
+      update_character_fun,
       add_weapon,
       add_armor,
       add_tile,
@@ -27,6 +28,8 @@ import Struct.Tile
 import Struct.TurnResult
 import Struct.UI
 import Struct.Weapon
+
+import Util.Array
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -140,6 +143,17 @@ update_character : Int -> Struct.Character.Type -> Type -> Type
 update_character ix new_val model =
    {model |
       characters = (Array.set ix new_val model.characters)
+   }
+
+update_character_fun : (
+      Int ->
+      ((Maybe Struct.Character.Type) -> (Maybe Struct.Character.Type)) ->
+      Type ->
+      Type
+   )
+update_character_fun ix fun model =
+   {model |
+      characters = (Util.Array.update ix (fun) model.characters)
    }
 
 invalidate : Struct.Error.Type -> Type -> Type

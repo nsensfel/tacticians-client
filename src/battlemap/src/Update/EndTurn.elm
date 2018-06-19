@@ -15,6 +15,15 @@ import Struct.Navigator
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+maybe_disable_char : (
+      (Maybe Struct.Character.Type) ->
+      (Maybe Struct.Character.Type)
+   )
+maybe_disable_char maybe_char =
+   case maybe_char of
+      (Just char) -> (Just (Struct.Character.set_enabled False char))
+      Nothing -> Nothing
+
 make_it_so : (
       Struct.Model.Type ->
       Struct.Character.Type ->
@@ -26,15 +35,9 @@ make_it_so model char nav =
       (Just cmd) ->
          (
             (Struct.Model.reset
-               (Struct.Model.update_character
+               (Struct.Model.update_character_fun
                   (Struct.Character.get_index char)
-                  (Struct.Character.set_enabled
-                     False
-                     (Struct.Character.set_location
-                        (Struct.Navigator.get_current_location nav)
-                        char
-                     )
-                  )
+                  (maybe_disable_char)
                   model
                )
             ),
