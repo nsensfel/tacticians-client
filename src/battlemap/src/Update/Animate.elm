@@ -1,4 +1,4 @@
-module ElmModule.Subscriptions exposing (..)
+module Update.Animate exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
 import Animation
@@ -7,6 +7,7 @@ import Animation
 import Struct.Model
 import Struct.Event
 
+type alias AnimationType = (Animation.State)
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -14,10 +15,22 @@ import Struct.Event
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-subscriptions : Struct.Model.Type -> (Sub Struct.Event.Type)
-subscriptions model =
-   case model.animation of
-      (Just animation) ->
-         (Animation.subscription Struct.Event.Animate [animation])
+apply_to : (
+      Struct.Model.Type ->
+      Animation.Msg ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
+apply_to model anim_msg =
+   (
+      (
+         case model.animation of
+            (Just curr_anim) ->
+               {model |
+                  animation = (Just (Animation.update anim_msg curr_anim))
+               }
 
-      Nothing -> Sub.none
+            Nothing ->
+               model
+      ),
+      Cmd.none
+   )

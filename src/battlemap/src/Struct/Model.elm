@@ -15,8 +15,11 @@ module Struct.Model exposing
    )
 
 -- Elm -------------------------------------------------------------------------
-import Dict
+import Animation
+
 import Array
+
+import Dict
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Armor
@@ -24,6 +27,7 @@ import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error
+import Struct.Event
 import Struct.Tile
 import Struct.TurnResult
 import Struct.UI
@@ -36,6 +40,7 @@ import Util.Array
 --------------------------------------------------------------------------------
 type alias Type =
    {
+      animation: (Maybe Animation.State),
       battlemap: Struct.Battlemap.Type,
       characters: (Array.Array Struct.Character.Type),
       weapons: (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type),
@@ -58,6 +63,7 @@ type alias Type =
 new : Type
 new =
    {
+      animation = Nothing,
       battlemap = (Struct.Battlemap.empty),
       characters = (Array.empty),
       weapons = (Dict.empty),
@@ -116,6 +122,7 @@ add_tile tl model =
 reset : Type -> Type
 reset model =
    {model |
+      animation = Nothing,
       error = Nothing,
       ui =
          (Struct.UI.reset_displayed_nav
@@ -127,6 +134,7 @@ reset model =
 full_debug_reset : Type -> Type
 full_debug_reset model =
    {model |
+      animation = Nothing,
       battlemap = (Struct.Battlemap.empty),
       characters = (Array.empty),
       weapons = (Dict.empty),

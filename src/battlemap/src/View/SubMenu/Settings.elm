@@ -48,6 +48,12 @@ get_html model =
                (Html.Events.onClick Struct.Event.DebugLoadBattlemapRequest)
             ]
             [ (Html.text "[DEBUG] Load battlemap") ]
+         ),
+         (Html.button
+            [
+               (Html.Events.onClick Struct.Event.DebugTestAnimation)
+            ]
+            [ (Html.text "[DEBUG] Test animations") ]
          )
       ]
    )
