@@ -7,7 +7,6 @@ import Struct.Event
 import Struct.Model
 
 import Update.AbortTurn
-import Update.Animate
 import Update.AttackWithoutMoving
 import Update.ChangeScale
 import Update.DisplayCharacterInfo
@@ -90,9 +89,6 @@ update event model =
 
       Struct.Event.WeaponSwitchRequest ->
          (Update.SwitchWeapon.apply_to new_model)
-
-      (Struct.Event.Animate anim_msg) ->
-         (Update.Animate.apply_to model anim_msg)
 
       Struct.Event.AbortTurnRequest ->
          (Update.AbortTurn.apply_to new_model)

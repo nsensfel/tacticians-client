@@ -1,8 +1,6 @@
 module View.Battlemap.Character exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
-import Animation
-
 import Html
 import Html.Attributes
 import Html.Events
@@ -120,38 +118,20 @@ get_actual_html : (
    )
 get_actual_html model char =
       (Html.div
-         (
-            [
-               (Html.Attributes.class "battlemap-tiled"),
-               (Html.Attributes.class "battlemap-character-icon"),
-               (get_activation_level_class char),
-               (get_alliance_class model char),
-               (get_position_style char),
-               (get_focus_class model char),
-               (Html.Attributes.class "clickable"),
-               (Html.Events.onClick
-                  (Struct.Event.CharacterSelected
-                     (Struct.Character.get_index char)
-                  )
+         [
+            (Html.Attributes.class "battlemap-tiled"),
+            (Html.Attributes.class "battlemap-character-icon"),
+            (get_activation_level_class char),
+            (get_alliance_class model char),
+            (get_position_style char),
+            (get_focus_class model char),
+            (Html.Attributes.class "clickable"),
+            (Html.Events.onClick
+               (Struct.Event.CharacterSelected
+                  (Struct.Character.get_index char)
                )
-            ]
-            ++
-            (
-               if
-               (
-                  (Struct.UI.get_previous_action model.ui)
-                  ==
-                  (Just (Struct.UI.SelectedCharacter (Struct.Character.get_index char)))
-               )
-               then
-                  (case model.animation of
-                     (Just animation) -> (Animation.render animation)
-                     Nothing -> []
-                  )
-               else
-                  []
             )
-         )
+         ]
          [
             (get_body_html char),
             (get_head_html char)

@@ -1,8 +1,6 @@
 module Struct.Event exposing (Type(..), attempted)
 
 -- Elm -------------------------------------------------------------------------
-import Animation
-
 import Http
 
 -- Battlemap -------------------------------------------------------------------
@@ -32,7 +30,6 @@ type Type =
    | TabSelected Struct.UI.Tab
    | TileSelected Struct.Location.Ref
    | TurnEnded
-   | Animate Animation.Msg
    | WeaponSwitchRequest
 
 attempted : (Result.Result err val) -> Type
