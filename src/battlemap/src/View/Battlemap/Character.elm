@@ -13,13 +13,44 @@ import Util.Html
 
 import Struct.Character
 import Struct.CharacterTurn
+import Struct.Direction
 import Struct.Event
 import Struct.Model
+import Struct.TurnResult
+import Struct.TurnResultAnimator
 import Struct.UI
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+get_animation_class : (
+      Struct.Model.Type ->
+      Struct.Character.Type ->
+      (Html.Attribute Struct.Event.Type)
+   )
+get_animation_class model char =
+   case model.animator of
+      Nothing -> (Html.Attributes.class "")
+      (Just animator) ->
+         let
+            current_action =
+               (Struct.TurnResultAnimator.get_current_action animator)
+         in
+            if
+            (
+               (Struct.TurnResult.get_actor_index current_action)
+               /=
+               (Struct.Character.get_index char)
+            )
+            then
+               (Html.Attributes.class "")
+            else
+               case current_action of
+                  (Struct.TurnResult.Moved _) ->
+                     (Html.Attributes.class "battlemap-animated-character-icon")
+
+                  _ -> (Html.Attributes.class "")
+
 get_activation_level_class : (
       Struct.Character.Type ->
       (Html.Attribute Struct.Event.Type)
@@ -121,6 +152,7 @@ get_actual_html model char =
          [
             (Html.Attributes.class "battlemap-tiled"),
             (Html.Attributes.class "battlemap-character-icon"),
+            (get_animation_class model char),
             (get_activation_level_class char),
             (get_alliance_class model char),
             (get_position_style char),
@@ -149,6 +181,6 @@ get_html : (
 get_html model char =
    if (Struct.Character.is_alive char)
    then
-      (Html.Lazy.lazy (get_actual_html model) char)
+      (get_actual_html model char)
    else
       (Util.Html.nothing)

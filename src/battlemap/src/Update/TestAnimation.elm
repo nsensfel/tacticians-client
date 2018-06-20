@@ -1,6 +1,9 @@
 module Update.TestAnimation exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
+import Delay
+
+import Time
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Model
@@ -17,4 +20,8 @@ apply_to : (
       Struct.Model.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model = (model, Cmd.none)
+apply_to model =
+   (
+      (Struct.Model.initialize_animator model),
+      (Delay.after 1 Time.millisecond Struct.Event.AnimationEnded)
+   )

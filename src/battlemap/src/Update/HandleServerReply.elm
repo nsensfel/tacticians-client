@@ -3,9 +3,13 @@ module Update.HandleServerReply exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Array
 
+import Delay
+
 import Dict
 
 import Http
+
+import Time
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Armor
@@ -17,6 +21,7 @@ import Struct.Model
 import Struct.ServerReply
 import Struct.Tile
 import Struct.TurnResult
+import Struct.TurnResultAnimator
 import Struct.UI
 import Struct.Weapon
 
@@ -121,30 +126,25 @@ add_to_timeline turn_results current_state =
       (_, (Just _)) -> current_state
 
       (model, _) ->
-         let
-            updated_characters =
-               (List.foldl
-                  (Struct.TurnResult.apply_to_characters)
-                  model.characters
-                  turn_results
-               )
-         in
-            (
-               {model |
-                  timeline =
-                     (Array.append
-                        (Array.fromList turn_results)
-                        model.timeline
-                     ),
-                  ui =
-                     (Struct.UI.set_displayed_tab
-                        Struct.UI.TimelineTab
-                        model.ui
-                     ),
-                  characters = updated_characters
-               },
-               Nothing
-            )
+         (
+            {model |
+               animator =
+                  (Struct.TurnResultAnimator.maybe_new
+                     (List.reverse turn_results)
+                  ),
+               timeline =
+                  (Array.append
+                     (Array.fromList turn_results)
+                     model.timeline
+                  ),
+               ui =
+                  (Struct.UI.set_displayed_tab
+                     Struct.UI.TimelineTab
+                     model.ui
+                  )
+            },
+            Nothing
+         )
 
 set_timeline : (
       (List Struct.TurnResult.Type) ->
@@ -211,11 +211,19 @@ apply_to model query_result =
          )
 
       (Result.Ok commands) ->
-         (
+         let
+            new_model =
+               (
+                  case (List.foldl (apply_command) (model, Nothing) commands) of
+                     (updated_model, Nothing) -> updated_model
+                     (_, (Just error)) -> (Struct.Model.invalidate error model)
+               )
+         in
             (
-               case (List.foldl (apply_command) (model, Nothing) commands) of
-                  (updated_model, Nothing) -> updated_model
-                  (_, (Just error)) -> (Struct.Model.invalidate error model)
-            ),
-            Cmd.none
-         )
+               new_model,
+               if (new_model.animator == Nothing)
+               then
+                  Cmd.none
+               else
+                  (Delay.after 1 Time.millisecond Struct.Event.AnimationEnded)
+            )

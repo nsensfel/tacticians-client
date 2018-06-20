@@ -691,6 +691,47 @@
    filter: contrast(35%);
 }
 
+.battlemap-animated-character-icon
+{
+   transition: top linear 0.3s, left linear 0.3s;
+}
+
+.battlemap-animation-move-1
+.battlemap-animation-move-R,
+.battlemap-animation-move-L,
+.battlemap-animation-move-U,
+.battlemap-animation-move-D
+{
+   animation-duration: 0.3s;
+   animation-iteration-count: 1;
+   animation-fill-mode: forwards;
+}
+
+.battlemap-animation-move-R { animation-name: move-right; }
+.battlemap-animation-move-L { animation-name: move-left; }
+.battlemap-animation-move-U { animation-name: move-up; }
+.battlemap-animation-move-D { animation-name: move-down; }
+
+@keyframes move-right {
+    from { transform: translate(0, 0);}
+    to   { transform: translate(100%, 0);}
+}
+
+@keyframes move-left {
+    from { transform: translate(0, 0);}
+    to   { transform: translate(-100%, 0);}
+}
+
+@keyframes move-up {
+    from { transform: translate(0, 0);}
+    to   { transform: translate(0, -100%);}
+}
+
+@keyframes move-down {
+    from { transform: translate(0, 0);}
+    to   { transform: translate(0, 100%);}
+}
+
 @keyframes red-alarm-bg {
     0% {background-color: rgba(255,0,0,0.25);}
     25% {background-color: rgba(255,0,0,1);}

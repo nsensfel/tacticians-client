@@ -1,6 +1,9 @@
 module Update.HandleAnimationEnded exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
+import Delay
+
+import Time
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Event
@@ -19,5 +22,9 @@ apply_to : (
    )
 apply_to model =
    case model.animator of
-      Nothing -> ((Struct.Model.initialize_animator model), Cmd.none)
-      (Just _) -> ((Struct.Model.apply_animator_step model), Cmd.none)
+      Nothing -> (model, Cmd.none)
+      (Just _) ->
+         (
+            (Struct.Model.apply_animator_step model),
+            (Delay.after 0.3 Time.second Struct.Event.AnimationEnded)
+         )

@@ -4,6 +4,8 @@ module Struct.TurnResult exposing
       Attack,
       Movement,
       WeaponSwitch,
+      get_next_movement_dir,
+      get_actor_index,
       apply_to_characters,
       apply_inverse_to_characters,
       apply_step_to_characters,
@@ -356,3 +358,16 @@ maybe_remove_step turn_result =
       (Moved movement) -> (maybe_remove_movement_step movement)
       (SwitchedWeapon _) -> Nothing
       (Attacked attack) -> (maybe_remove_attack_step attack)
+
+get_next_movement_dir : Movement -> Struct.Direction.Type
+get_next_movement_dir movement =
+   case (List.head movement.path) of
+      (Just dir) -> dir
+      Nothing -> Struct.Direction.None
+
+get_actor_index : Type -> Int
+get_actor_index turn_result =
+   case turn_result of
+      (Moved movement) -> movement.character_index
+      (SwitchedWeapon weapon_switch) -> weapon_switch.character_index
+      (Attacked attack) -> attack.attacker_index
