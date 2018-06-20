@@ -507,8 +507,8 @@
 
 .battlemap-character-icon
 {
-   box-sizing: border-box;
-   border-radius: 5px;
+   height: 38px;
+   margin-top: -6px;
 }
 
 .battlemap-character-icon *
