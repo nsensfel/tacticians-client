@@ -17,4 +17,7 @@ apply_to : (
       Struct.Model.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model = (model, Cmd.none)
+apply_to model =
+   case model.animator of
+      Nothing -> ((Struct.Model.initialize_animator model), Cmd.none)
+      (Just _) -> ((Struct.Model.apply_animator_step model), Cmd.none)

@@ -51,7 +51,7 @@ get_html model =
          ),
          (Html.button
             [
-               (Html.Events.onClick Struct.Event.DebugTestAnimation)
+               (Html.Events.onClick Struct.Event.AnimationEnded)
             ]
             [ (Html.text "[DEBUG] Test animations") ]
          )

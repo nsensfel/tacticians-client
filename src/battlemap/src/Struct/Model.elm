@@ -9,6 +9,8 @@ module Struct.Model exposing
       add_armor,
       add_tile,
       invalidate,
+      initialize_animator,
+      apply_animator_step,
       reset,
       full_debug_reset,
       clear_error
@@ -27,6 +29,7 @@ import Struct.CharacterTurn
 import Struct.Error
 import Struct.Tile
 import Struct.TurnResult
+import Struct.TurnResultAnimator
 import Struct.UI
 import Struct.Weapon
 
@@ -37,6 +40,7 @@ import Util.Array
 --------------------------------------------------------------------------------
 type alias Type =
    {
+      animator: (Maybe Struct.TurnResultAnimator.Type),
       battlemap: Struct.Battlemap.Type,
       characters: (Array.Array Struct.Character.Type),
       weapons: (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type),
@@ -59,6 +63,7 @@ type alias Type =
 new : Type
 new =
    {
+      animator = Nothing,
       battlemap = (Struct.Battlemap.empty),
       characters = (Array.empty),
       weapons = (Dict.empty),
@@ -128,6 +133,7 @@ reset model =
 full_debug_reset : Type -> Type
 full_debug_reset model =
    {model |
+      animator = Nothing,
       battlemap = (Struct.Battlemap.empty),
       characters = (Array.empty),
       weapons = (Dict.empty),
@@ -139,6 +145,37 @@ full_debug_reset model =
       char_turn = (Struct.CharacterTurn.new),
       timeline = (Array.empty)
    }
+
+initialize_animator : Type -> Type
+initialize_animator model =
+   let
+      timeline_list = (Array.toList model.timeline)
+   in
+      {model |
+         animator =
+            (Struct.TurnResultAnimator.maybe_new (List.reverse timeline_list)),
+         characters =
+            (List.foldr
+               (Struct.TurnResult.apply_inverse_to_characters)
+               model.characters
+               timeline_list
+            )
+      }
+
+apply_animator_step : Type -> Type
+apply_animator_step model =
+   case model.animator of
+      Nothing -> model
+      (Just animator) ->
+         {model |
+            animator =
+               (Struct.TurnResultAnimator.maybe_trigger_next_step animator),
+            characters =
+               (Struct.TurnResult.apply_step_to_characters
+                  (Struct.TurnResultAnimator.get_current_action animator)
+                  model.characters
+               )
+         }
 
 update_character : Int -> Struct.Character.Type -> Type -> Type
 update_character ix new_val model =
