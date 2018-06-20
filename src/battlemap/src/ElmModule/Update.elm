@@ -11,6 +11,7 @@ import Update.AttackWithoutMoving
 import Update.ChangeScale
 import Update.DisplayCharacterInfo
 import Update.EndTurn
+import Update.HandleAnimationEnded
 import Update.HandleServerReply
 import Update.LookForCharacter
 import Update.RequestDirection
@@ -50,6 +51,9 @@ update event model =
 
       Struct.Event.AttackWithoutMovingRequest ->
          (Update.AttackWithoutMoving.apply_to new_model)
+
+      Struct.Event.AnimationEnded ->
+         (Update.HandleAnimationEnded.apply_to model)
 
       (Struct.Event.DirectionRequested d) ->
          (Update.RequestDirection.apply_to new_model d)

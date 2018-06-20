@@ -15,6 +15,7 @@ import Struct.UI
 --------------------------------------------------------------------------------
 type Type =
    AbortTurnRequest
+   | AnimationEnded
    | AttackWithoutMovingRequest
    | CharacterInfoRequested Int
    | CharacterSelected Int

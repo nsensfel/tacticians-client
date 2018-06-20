@@ -4,6 +4,7 @@ module Struct.Attack exposing
       Order(..),
       Precision(..),
       apply_to_characters,
+      apply_inverse_to_characters,
       decoder
    )
 
@@ -111,6 +112,36 @@ apply_to_characters attacker_ix defender_ix attack characters =
             (Array.set
                attacker_ix
                (apply_damage_to_character attack.damage char)
+               characters
+            )
+
+         Nothing -> characters
+
+apply_inverse_to_characters : (
+      Int ->
+      Int ->
+      Type ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Character.Type)
+   )
+apply_inverse_to_characters attacker_ix defender_ix attack characters =
+   if ((attack.order == Counter) == attack.parried)
+   then
+      case (Array.get defender_ix characters) of
+         (Just char) ->
+            (Array.set
+               defender_ix
+               (apply_damage_to_character (-1 * attack.damage) char)
+               characters
+            )
+
+         Nothing -> characters
+   else
+      case (Array.get attacker_ix characters) of
+         (Just char) ->
+            (Array.set
+               attacker_ix
+               (apply_damage_to_character (-1 * attack.damage) char)
                characters
             )
 

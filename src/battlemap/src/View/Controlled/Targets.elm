@@ -41,7 +41,7 @@ get_target_info_html model char_ref =
                ++ " movement points; "
                ++ "???"
                ++ " attack range. Health: "
-               ++ (toString (Struct.Character.get_current_health char))
+               ++ (toString (Struct.Character.get_sane_current_health char))
                ++ "/"
                ++
                (toString

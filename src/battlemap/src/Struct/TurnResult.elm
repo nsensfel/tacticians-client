@@ -5,6 +5,9 @@ module Struct.TurnResult exposing
       Movement,
       WeaponSwitch,
       apply_to_characters,
+      apply_inverse_to_characters,
+      apply_step_to_characters,
+      maybe_remove_step,
       decoder
    )
 
@@ -58,6 +61,36 @@ apply_movement_to_character : (
 apply_movement_to_character movement char =
    (Struct.Character.set_location movement.destination char)
 
+apply_movement_step_to_character : (
+      Movement ->
+      Struct.Character.Type ->
+      Struct.Character.Type
+   )
+apply_movement_step_to_character movement char =
+   case (List.head movement.path) of
+      (Just dir) ->
+         (Struct.Character.set_location
+            (Struct.Location.neighbor dir (Struct.Character.get_location char))
+            char
+         )
+
+      Nothing -> char
+
+apply_inverse_movement_to_character : (
+      Movement ->
+      Struct.Character.Type ->
+      Struct.Character.Type
+   )
+apply_inverse_movement_to_character movement char =
+   (Struct.Character.set_location
+      (List.foldr
+         (Struct.Location.neighbor)
+         (movement.destination)
+         (List.map (Struct.Direction.opposite_of) movement.path)
+      )
+      char
+   )
+
 apply_weapon_switch_to_character : (
       Struct.Character.Type ->
       Struct.Character.Type
@@ -78,6 +111,38 @@ apply_attack_to_characters : (
 apply_attack_to_characters attack characters =
    (List.foldl
       (Struct.Attack.apply_to_characters
+         attack.attacker_index
+         attack.defender_index
+      )
+      characters
+      attack.sequence
+   )
+
+apply_attack_step_to_characters : (
+      Attack ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Character.Type)
+   )
+apply_attack_step_to_characters attack characters =
+   case (List.head attack.sequence) of
+      (Just attack_step) ->
+         (Struct.Attack.apply_to_characters
+            attack.attacker_index
+            attack.defender_index
+            attack_step
+            characters
+         )
+
+      Nothing -> characters
+
+apply_inverse_attack_to_characters : (
+      Attack ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Character.Type)
+   )
+apply_inverse_attack_to_characters attack characters =
+   (List.foldr
+      (Struct.Attack.apply_inverse_to_characters
          attack.attacker_index
          attack.defender_index
       )
@@ -119,7 +184,6 @@ weapon_switch_decoder =
       (Json.Decode.field "ix" Json.Decode.int)
    )
 
-
 internal_decoder : String -> (Json.Decode.Decoder Type)
 internal_decoder kind =
    case kind of
@@ -147,6 +211,32 @@ internal_decoder kind =
                "Unknown kind of turn result: \""
                ++ other
                ++ "\"."
+            )
+         )
+
+maybe_remove_movement_step : Movement -> (Maybe Type)
+maybe_remove_movement_step movement =
+   case (List.tail movement.path) of
+      Nothing -> Nothing
+      (Just path_tail) ->
+         (Just
+            (Moved
+               {movement |
+                  path = path_tail
+               }
+            )
+         )
+
+maybe_remove_attack_step : Attack -> (Maybe Type)
+maybe_remove_attack_step attack =
+   case (List.tail attack.sequence) of
+      Nothing -> Nothing
+      (Just sequence_tail) ->
+         (Just
+            (Attacked
+               {attack |
+                  sequence = sequence_tail
+               }
             )
          )
 
@@ -187,7 +277,82 @@ apply_to_characters turn_result characters =
       (Attacked attack) ->
          (apply_attack_to_characters attack characters)
 
+apply_step_to_characters : (
+      Type ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Character.Type)
+   )
+apply_step_to_characters turn_result characters =
+   case turn_result of
+      (Moved movement) ->
+         case (Array.get movement.character_index characters) of
+            (Just char) ->
+               (Array.set
+                  movement.character_index
+                  (apply_movement_step_to_character movement char)
+                  characters
+               )
+
+            Nothing ->
+               characters
+
+      (SwitchedWeapon weapon_switch) ->
+         case (Array.get weapon_switch.character_index characters) of
+            (Just char) ->
+               (Array.set
+                  weapon_switch.character_index
+                  (apply_weapon_switch_to_character char)
+                  characters
+               )
+
+            Nothing ->
+               characters
+
+      (Attacked attack) ->
+         (apply_attack_step_to_characters attack characters)
+
+apply_inverse_to_characters : (
+      Type ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Character.Type)
+   )
+apply_inverse_to_characters turn_result characters =
+   case turn_result of
+      (Moved movement) ->
+         case (Array.get movement.character_index characters) of
+            (Just char) ->
+               (Array.set
+                  movement.character_index
+                  (apply_inverse_movement_to_character movement char)
+                  characters
+               )
+
+            Nothing ->
+               characters
+
+      (SwitchedWeapon weapon_switch) ->
+         case (Array.get weapon_switch.character_index characters) of
+            (Just char) ->
+               (Array.set
+                  weapon_switch.character_index
+                  (apply_weapon_switch_to_character char)
+                  characters
+               )
+
+            Nothing ->
+               characters
+
+      (Attacked attack) ->
+         (apply_inverse_attack_to_characters attack characters)
+
 decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.field "t" Json.Decode.string)
    |> (Json.Decode.andThen internal_decoder)
+
+maybe_remove_step : Type -> (Maybe Type)
+maybe_remove_step turn_result =
+   case turn_result of
+      (Moved movement) -> (maybe_remove_movement_step movement)
+      (SwitchedWeapon _) -> Nothing
+      (Attacked attack) -> (maybe_remove_attack_step attack)

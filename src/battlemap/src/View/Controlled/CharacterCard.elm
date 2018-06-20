@@ -46,7 +46,7 @@ get_health_bar : (
    )
 get_health_bar char =
    let
-      current = (Struct.Character.get_current_health char)
+      current = (Struct.Character.get_sane_current_health char)
       max =
          (Struct.Statistics.get_max_health
             (Struct.Character.get_statistics char)
