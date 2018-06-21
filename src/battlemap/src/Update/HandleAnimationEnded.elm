@@ -15,6 +15,7 @@ import Action.Scroll
 import Struct.Character
 import Struct.Event
 import Struct.Model
+import Struct.TurnResult
 import Struct.TurnResultAnimator
 import Struct.UI
 
@@ -86,6 +87,26 @@ prepare_next_animation model animator =
    case (Struct.TurnResultAnimator.get_current_animation animator) of
       (Struct.TurnResultAnimator.Focus char_index) ->
          (handle_char_focus model animator char_index)
+
+      (Struct.TurnResultAnimator.AttackSetup _) ->
+         (
+            model,
+            (Delay.after 1.0 Time.second Struct.Event.AnimationEnded)
+         )
+
+      (Struct.TurnResultAnimator.TurnResult turn_result) ->
+         case turn_result of
+            (Struct.TurnResult.Attacked _) ->
+               (
+                  model,
+                  (Delay.after 3.0 Time.second Struct.Event.AnimationEnded)
+               )
+
+            _ ->
+               (
+                  model,
+                  (Delay.after 0.1 Time.second Struct.Event.AnimationEnded)
+               )
 
       _ ->
          (

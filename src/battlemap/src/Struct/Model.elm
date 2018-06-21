@@ -157,6 +157,7 @@ initialize_animator model =
                (List.reverse timeline_list)
                True
             ),
+         ui = (Struct.UI.default),
          characters =
             (List.foldr
                (Struct.TurnResult.apply_inverse_to_characters)

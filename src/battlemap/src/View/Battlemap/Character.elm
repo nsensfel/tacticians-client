@@ -4,7 +4,6 @@ module View.Battlemap.Character exposing (get_html)
 import Html
 import Html.Attributes
 import Html.Events
-import Html.Lazy
 
 -- Battlemap  ------------------------------------------------------------------
 import Constants.UI
@@ -13,7 +12,6 @@ import Util.Html
 
 import Struct.Character
 import Struct.CharacterTurn
-import Struct.Direction
 import Struct.Event
 import Struct.Model
 import Struct.TurnResult

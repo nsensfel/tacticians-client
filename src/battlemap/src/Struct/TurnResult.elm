@@ -7,6 +7,7 @@ module Struct.TurnResult exposing
       get_next_movement_dir,
       get_actor_index,
       get_attack_defender_index,
+      maybe_get_attack_next_step,
       apply_to_characters,
       apply_inverse_to_characters,
       apply_step_to_characters,
@@ -368,6 +369,9 @@ get_next_movement_dir movement =
 
 get_attack_defender_index : Attack -> Int
 get_attack_defender_index attack = attack.defender_index
+
+maybe_get_attack_next_step : Attack -> (Maybe Struct.Attack.Type)
+maybe_get_attack_next_step attack = (List.head attack.sequence)
 
 get_actor_index : Type -> Int
 get_actor_index turn_result =

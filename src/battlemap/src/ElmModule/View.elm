@@ -13,7 +13,7 @@ import Struct.Model
 
 import View.Battlemap
 import View.Controlled
-import View.Help
+import View.MessageBoard
 import View.MainMenu
 import View.SubMenu
 
@@ -45,6 +45,6 @@ view model =
             [(View.Battlemap.get_html model)]
          ),
          (View.SubMenu.get_html model),
-         (View.Help.get_html model)
+         (View.MessageBoard.get_html model)
       ]
    )
