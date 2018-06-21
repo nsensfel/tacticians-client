@@ -126,6 +126,6 @@ apply_to model =
       new_model = (Struct.Model.apply_animator_step model)
    in
       case new_model.animator of
-         Nothing -> (model, Cmd.none)
+         Nothing -> (new_model, Cmd.none)
          (Just animator) ->
             (prepare_next_animation new_model animator)
