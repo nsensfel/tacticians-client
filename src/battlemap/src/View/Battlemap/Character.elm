@@ -32,24 +32,25 @@ get_animation_class model char =
    case model.animator of
       Nothing -> (Html.Attributes.class "")
       (Just animator) ->
-         let
-            current_action =
-               (Struct.TurnResultAnimator.get_current_action animator)
-         in
-            if
-            (
-               (Struct.TurnResult.get_actor_index current_action)
-               /=
-               (Struct.Character.get_index char)
-            )
-            then
-               (Html.Attributes.class "")
-            else
-               case current_action of
-                  (Struct.TurnResult.Moved _) ->
-                     (Html.Attributes.class "battlemap-animated-character-icon")
+         case (Struct.TurnResultAnimator.get_current_animation animator) of
+            (Struct.TurnResultAnimator.TurnResult current_action) ->
+               if
+               (
+                  (Struct.TurnResult.get_actor_index current_action)
+                  /=
+                  (Struct.Character.get_index char)
+               )
+               then
+                  (Html.Attributes.class "")
+               else
+                  case current_action of
+                     (Struct.TurnResult.Moved _) ->
+                        (Html.Attributes.class
+                           "battlemap-animated-character-icon"
+                        )
 
-                  _ -> (Html.Attributes.class "")
+                     _ -> (Html.Attributes.class "")
+            _ -> (Html.Attributes.class "")
 
 get_activation_level_class : (
       Struct.Character.Type ->

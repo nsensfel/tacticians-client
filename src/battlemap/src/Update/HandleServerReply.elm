@@ -131,6 +131,7 @@ add_to_timeline turn_results current_state =
                animator =
                   (Struct.TurnResultAnimator.maybe_new
                      (List.reverse turn_results)
+                     False
                   ),
                timeline =
                   (Array.append

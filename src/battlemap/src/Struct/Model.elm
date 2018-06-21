@@ -153,7 +153,10 @@ initialize_animator model =
    in
       {model |
          animator =
-            (Struct.TurnResultAnimator.maybe_new (List.reverse timeline_list)),
+            (Struct.TurnResultAnimator.maybe_new
+               (List.reverse timeline_list)
+               True
+            ),
          characters =
             (List.foldr
                (Struct.TurnResult.apply_inverse_to_characters)
@@ -171,10 +174,16 @@ apply_animator_step model =
             animator =
                (Struct.TurnResultAnimator.maybe_trigger_next_step animator),
             characters =
-               (Struct.TurnResult.apply_step_to_characters
-                  (Struct.TurnResultAnimator.get_current_action animator)
-                  model.characters
-               )
+               case
+                  (Struct.TurnResultAnimator.get_current_animation animator)
+               of
+                  (Struct.TurnResultAnimator.TurnResult turn_result) ->
+                     (Struct.TurnResult.apply_step_to_characters
+                        turn_result
+                        model.characters
+                     )
+
+                  _ -> model.characters
          }
 
 update_character : Int -> Struct.Character.Type -> Type -> Type

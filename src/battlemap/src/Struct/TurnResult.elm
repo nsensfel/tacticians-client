@@ -6,6 +6,7 @@ module Struct.TurnResult exposing
       WeaponSwitch,
       get_next_movement_dir,
       get_actor_index,
+      get_attack_defender_index,
       apply_to_characters,
       apply_inverse_to_characters,
       apply_step_to_characters,
@@ -364,6 +365,9 @@ get_next_movement_dir movement =
    case (List.head movement.path) of
       (Just dir) -> dir
       Nothing -> Struct.Direction.None
+
+get_attack_defender_index : Attack -> Int
+get_attack_defender_index attack = attack.defender_index
 
 get_actor_index : Type -> Int
 get_actor_index turn_result =
