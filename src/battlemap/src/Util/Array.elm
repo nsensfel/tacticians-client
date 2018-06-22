@@ -1,4 +1,9 @@
-module Util.Array exposing (update, update_unsafe)
+module Util.Array exposing
+   (
+      update,
+      update_unsafe,
+      filter_first
+   )
 
 import Array
 
@@ -23,3 +28,7 @@ update_unsafe index fun array =
    case (Array.get index array) of
       Nothing -> array
       (Just e) -> (Array.set index (fun e) array)
+
+filter_first : (t -> Bool) -> (Array.Array t) -> (Maybe t)
+filter_first fun array =
+   (Array.get 0 (Array.filter fun array))

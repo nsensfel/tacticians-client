@@ -81,7 +81,9 @@ marker_get_html is_interactive (loc_ref, marker) =
                   [
                      (Html.Attributes.class "battlemap-navigator-interactive"),
                      (Html.Attributes.class "clickable"),
-                     (Html.Events.onClick (Struct.Event.TileSelected loc_ref))
+                     (Html.Events.onClick
+                        (Struct.Event.CharacterOrTileSelected loc_ref)
+                     )
                   ]
                else
                   [
@@ -90,7 +92,9 @@ marker_get_html is_interactive (loc_ref, marker) =
             else
                [
                   (Html.Attributes.class "battlemap-navigator-non-interactive"),
-                  (Html.Events.onClick (Struct.Event.TileSelected loc_ref))
+                  (Html.Events.onClick
+                     (Struct.Event.CharacterOrTileSelected loc_ref)
+                  )
                ]
          )
       )
@@ -140,7 +144,7 @@ path_node_get_html is_below_markers next_dir (curr_loc, curr_dir, curr_nodes) =
                   )
                ),
                (Html.Events.onClick
-                  (Struct.Event.TileSelected
+                  (Struct.Event.CharacterOrTileSelected
                      (Struct.Location.get_ref curr_loc)
                   )
                ),
@@ -192,7 +196,7 @@ mark_the_spot loc origin_dir =
             )
          ),
          (Html.Events.onClick
-            (Struct.Event.TileSelected (Struct.Location.get_ref loc))
+            (Struct.Event.CharacterOrTileSelected (Struct.Location.get_ref loc))
          ),
          (Html.Attributes.style
             [

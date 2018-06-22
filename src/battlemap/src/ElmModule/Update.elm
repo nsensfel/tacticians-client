@@ -16,6 +16,7 @@ import Update.HandleServerReply
 import Update.LookForCharacter
 import Update.RequestDirection
 import Update.SelectCharacter
+import Update.SelectCharacterOrTile
 import Update.SelectTab
 import Update.SelectTile
 import Update.SendLoadBattlemapRequest
@@ -60,6 +61,9 @@ update event model =
 
       (Struct.Event.TileSelected loc) ->
          (Update.SelectTile.apply_to new_model loc)
+
+      (Struct.Event.CharacterOrTileSelected loc) ->
+         (Update.SelectCharacterOrTile.apply_to new_model loc)
 
       (Struct.Event.CharacterSelected char_id) ->
          (Update.SelectCharacter.apply_to new_model char_id)

@@ -2,7 +2,6 @@ module View.MessageBoard exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html
-import Html.Attributes
 
 -- Struct.Battlemap -------------------------------------------------------------------
 import Struct.Event

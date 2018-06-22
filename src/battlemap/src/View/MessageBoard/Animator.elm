@@ -2,7 +2,6 @@ module View.MessageBoard.Animator exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html
-import Html.Attributes
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Event

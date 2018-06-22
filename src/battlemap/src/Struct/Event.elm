@@ -30,6 +30,7 @@ type Type =
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
    | TabSelected Struct.UI.Tab
    | TileSelected Struct.Location.Ref
+   | CharacterOrTileSelected Struct.Location.Ref
    | TurnEnded
    | WeaponSwitchRequest
 
