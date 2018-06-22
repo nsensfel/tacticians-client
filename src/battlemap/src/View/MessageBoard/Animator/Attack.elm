@@ -94,6 +94,138 @@ get_attack_html attacker defender attack =
       ]
    )
 
+get_attack_animation_class : (
+      Struct.Attack.Type ->
+      Struct.Character.Type ->
+      String
+   )
+get_attack_animation_class attack char =
+   if (attack.critical)
+   then
+      "battlemap-animated-portrait-attack-critical"
+   else
+      "battlemap-animated-portrait-attacks"
+
+get_defense_animation_class : (
+      Struct.Attack.Type ->
+      Struct.Character.Type ->
+      String
+   )
+get_defense_animation_class attack char =
+   if (attack.damage == 0)
+   then
+      if (attack.precision == Struct.Attack.Miss)
+      then
+         "battlemap-animated-portrait-dodges"
+      else
+         "battlemap-animated-portrait-undamaged"
+   else if ((Struct.Character.get_current_health char) > 0)
+   then
+      if (attack.precision == Struct.Attack.Graze)
+      then
+         "battlemap-animated-portrait-grazed-damage"
+      else
+         "battlemap-animated-portrait-damaged"
+   else
+      if (attack.precision == Struct.Attack.Graze)
+      then
+         "battlemap-animated-portrait-grazed-death"
+      else
+         "battlemap-animated-portrait-dies"
+
+get_attacker_card : (
+      (Maybe Struct.Attack.Type) ->
+      Struct.Character.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_attacker_card maybe_attack char =
+   (Html.div
+      (case maybe_attack of
+         Nothing ->
+            if ((Struct.Character.get_current_health char) > 0)
+            then
+               [
+                  (Html.Attributes.class "battlemap-animated-portrait")
+               ]
+            else
+               [
+                  (Html.Attributes.class "battlemap-animated-portrait-absent"),
+                     (Html.Attributes.class "battlemap-animated-portrait")
+               ]
+
+         (Just attack) ->
+            [
+               (Html.Attributes.class
+                  (case (attack.order, attack.parried) of
+                     (Struct.Attack.Counter, True) ->
+                        (get_attack_animation_class attack char)
+
+                     (Struct.Attack.Counter, _) ->
+                        (get_defense_animation_class attack char)
+
+                     (_, True) ->
+                        (get_defense_animation_class attack char)
+
+                     (_, _) ->
+                        (get_attack_animation_class attack char)
+                  )
+               ),
+               (Html.Attributes.class "battlemap-animated-portrait")
+            ]
+      )
+      [
+         (View.Controlled.CharacterCard.get_minimal_html
+            (Struct.Character.get_player_id char)
+            char
+         )
+      ]
+   )
+
+get_defender_card : (
+      (Maybe Struct.Attack.Type) ->
+      Struct.Character.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_defender_card maybe_attack char =
+   (Html.div
+      (case maybe_attack of
+         Nothing ->
+            if ((Struct.Character.get_current_health char) > 0)
+            then
+               [
+                  (Html.Attributes.class "battlemap-animated-portrait")
+               ]
+            else
+               [
+                  (Html.Attributes.class "battlemap-animated-portrait-absent"),
+                  (Html.Attributes.class "battlemap-animated-portrait")
+               ]
+
+         (Just attack) ->
+            [
+               (Html.Attributes.class
+                  (case (attack.order, attack.parried) of
+                     (Struct.Attack.Counter, True) ->
+                        (get_defense_animation_class attack char)
+
+                     (Struct.Attack.Counter, _) ->
+                        (get_attack_animation_class attack char)
+
+                     (_, True) ->
+                        (get_attack_animation_class attack char)
+
+                     (_, _) ->
+                        (get_defense_animation_class attack char)
+                  )
+               ),
+               (Html.Attributes.class "battlemap-animated-portrait")
+            ]
+      )
+      [
+         (View.Controlled.CharacterCard.get_minimal_html "" char)
+      ]
+   )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -118,10 +250,7 @@ get_placeholder_html characters attacker_ix defender_ix maybe_attack =
             ]
             (
                [
-                  (View.Controlled.CharacterCard.get_minimal_html
-                     (Struct.Character.get_player_id atkchar)
-                     atkchar
-                  ),
+                  (get_attacker_card maybe_attack atkchar),
                   (
                      case maybe_attack of
                         (Just attack) ->
@@ -130,7 +259,7 @@ get_placeholder_html characters attacker_ix defender_ix maybe_attack =
                         Nothing ->
                            (Util.Html.nothing)
                   ),
-                  (View.Controlled.CharacterCard.get_minimal_html "" defchar)
+                  (get_defender_card maybe_attack defchar)
                ]
             )
          )
