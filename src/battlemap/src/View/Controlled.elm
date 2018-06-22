@@ -50,7 +50,10 @@ abort_button =
 end_turn_button : String -> (Html.Html Struct.Event.Type)
 end_turn_button suffix =
    (Html.button
-      [ (Html.Events.onClick Struct.Event.TurnEnded) ]
+      [
+         (Html.Events.onClick Struct.Event.TurnEnded),
+         (Html.Attributes.class "battlemap-end-turn-button")
+      ]
       [ (Html.text ("End Turn" ++ suffix)) ]
    )
 

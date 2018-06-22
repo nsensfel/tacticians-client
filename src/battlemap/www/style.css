@@ -47,9 +47,13 @@
 
    display: flex;
    flex-flow: row;
-   justify-content: space-evenly;
+   justify-content: space-between;
 }
 
+.battlemap-help .battlemap-character-card
+{
+   width: 30%;
+}
 
 .battlemap-container
 {
@@ -270,7 +274,7 @@
    border-radius: 5px;
    z-index: 0;
    top: -100%;
-   transition: width 0.3s ease-out;
+   transition: width 1s ease-out;
 }
 
 .battlemap-character-card-health,
@@ -381,6 +385,13 @@
 {
    animation-name: brown-alarm-bg;
    animation-duration: 5s;
+   animation-iteration-count: infinite;
+}
+
+.battlemap-end-turn-button
+{
+   animation-name: reverse-brown-alarm-bg;
+   animation-duration: 2s;
    animation-iteration-count: infinite;
 }
 
@@ -768,6 +779,12 @@
     0% {background-color: #917C6F;}
     25% {background-color: #AC9D93}
     50% {background-color: #AC9D93}
+    100% {background-color: #917C6F;}
+}
+
+@keyframes reverse-brown-alarm-bg {
+    0% {background-color: #917C6F;}
+    50% {background-color: #502D16;}
     100% {background-color: #917C6F;}
 }
 

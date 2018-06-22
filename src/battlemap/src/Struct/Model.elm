@@ -11,6 +11,7 @@ module Struct.Model exposing
       invalidate,
       initialize_animator,
       apply_animator_step,
+      move_animator_to_next_step,
       reset,
       full_debug_reset,
       clear_error
@@ -166,14 +167,22 @@ initialize_animator model =
             )
       }
 
+move_animator_to_next_step : Type -> Type
+move_animator_to_next_step model =
+   case model.animator of
+      Nothing -> model
+      (Just animator) ->
+         {model |
+            animator =
+               (Struct.TurnResultAnimator.maybe_trigger_next_step animator)
+         }
+
 apply_animator_step : Type -> Type
 apply_animator_step model =
    case model.animator of
       Nothing -> model
       (Just animator) ->
          {model |
-            animator =
-               (Struct.TurnResultAnimator.maybe_trigger_next_step animator),
             characters =
                case
                   (Struct.TurnResultAnimator.get_current_animation animator)

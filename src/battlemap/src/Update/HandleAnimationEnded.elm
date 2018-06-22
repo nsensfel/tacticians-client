@@ -17,7 +17,6 @@ import Struct.Event
 import Struct.Model
 import Struct.TurnResult
 import Struct.TurnResultAnimator
-import Struct.UI
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -34,13 +33,7 @@ handle_char_focus model animator char_index =
          if (Struct.TurnResultAnimator.waits_for_focus animator)
          then
             (
-               {model |
-                  ui =
-                     (Struct.UI.set_previous_action
-                        (Just (Struct.UI.SelectedCharacter char_index))
-                        model.ui
-                     )
-               },
+               model,
                (Cmd.batch
                   [
                      (Task.attempt
@@ -123,7 +116,10 @@ apply_to : (
    )
 apply_to model =
    let
-      new_model = (Struct.Model.apply_animator_step model)
+      new_model =
+         (Struct.Model.apply_animator_step
+            (Struct.Model.move_animator_to_next_step model)
+         )
    in
       case new_model.animator of
          Nothing -> (new_model, Cmd.none)

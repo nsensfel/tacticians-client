@@ -31,6 +31,13 @@ get_animation_class model char =
       Nothing -> (Html.Attributes.class "")
       (Just animator) ->
          case (Struct.TurnResultAnimator.get_current_animation animator) of
+            (Struct.TurnResultAnimator.Focus char_index) ->
+               if ((Struct.Character.get_index char) /= char_index)
+               then
+                  (Html.Attributes.class "")
+               else
+                  (Html.Attributes.class "battlemap-character-selected")
+
             (Struct.TurnResultAnimator.TurnResult current_action) ->
                if
                (
