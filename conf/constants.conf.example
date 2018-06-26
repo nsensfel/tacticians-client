@@ -1,3 +1,7 @@
 m4_define(`__CONF_SERVER_NAME', `LOCAL SERVER')m4_dnl
 m4_define(`__CONF_SERVER_URL', `http://127.0.0.1')m4_dnl
 m4_define(`__CONF_AUTHOR_NAME', `localuser')m4_dnl
+m4_define(`__CONF_VERSION', `Latest Dev. Build (m4_esyscmd(date -R -u))')m4_dnl
+m4_define(NEWLINE,`
+')m4_dnl
+m4_define(`__CONF_VERSION',m4_translit(__CONF_VERSION, NEWLINE))m4_dnl

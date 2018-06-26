@@ -11,7 +11,7 @@
    <body>
       <div style="margin: 1em;">
          <h1>__CONF_SERVER_NAME</h1>
-         <h3>Currently running: Latest Dev. Build</h3>
+         <h3>Currently running: __CONF_VERSION</h3>
       </div>
       <div class="popup-message">
          <p>This website lets you play the game, even during its development phase. As a result, there is a lot missing.</p>
