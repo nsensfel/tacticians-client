@@ -172,7 +172,7 @@
    overflow: hidden;
 }
 
-.battlemap-character-portrait:hover
+.battlemap-character-portrait
 {
    cursor: pointer;
 }
@@ -250,31 +250,39 @@
 
 .battlemap-gauge
 {
+   position: relative;
    border-radius: 5px;
    border: 2px solid #6C5D53;
    text-align: center;
+   height: 1.5em;
 }
 
 .battlemap-gauge-text
 {
+   position: absolute;
+   top: 0;
+   left: 0;
+   height: 100%;
+   width: 100%;
+   z-index: 1;
+
    display: flex;
    flex-direction: column;
    align-items: center;
    justify-content: center;
-   line-height: 24px;
-   position: relative;
-   height: inherit;
-   z-index: 1;
-   width: inherit;
 }
 
 .battlemap-gauge-bar
 {
-   position: relative;
-   height: inherit;
+   position: absolute;
+   top: 0;
+   left: 0;
+   height: 100%;
+   width: 100%;
+   z-index: 0;
+
    border-radius: 5px;
    z-index: 0;
-   top: -100%;
    transition: width 3s ease-in-out;
 }
 
@@ -283,7 +291,6 @@
 {
    grid-column: col 2;
    grid-row: row 2;
-   height: 100%;
 }
 
 .battlemap-character-card-health > .battlemap-gauge-bar
