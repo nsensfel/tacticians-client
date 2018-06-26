@@ -102,6 +102,7 @@ get_movement_cost_function bmap start_loc char_list loc =
                         (
                            ((Struct.Character.get_location c) == loc)
                            && (loc /= start_loc)
+                           && (Struct.Character.is_alive c)
                         )
                   )
                   char_list
