@@ -7,6 +7,12 @@ html
    color: #FFEEAA;
 }
 
+html, body, .fullscreen-module
+{
+   min-width: 800px;
+   min-height: 600px;
+}
+
 * {
    color: #FFEEAA;
    text-shadow:

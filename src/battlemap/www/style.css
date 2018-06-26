@@ -31,7 +31,7 @@
    margin: 0 1em 0 1em;
 }
 
-.battlemap-help
+.battlemap-message-board
 {
    grid-column: col 1 / span 3;
    grid-row: row 3;
@@ -48,11 +48,6 @@
    display: flex;
    flex-flow: row;
    justify-content: space-between;
-}
-
-.battlemap-help .battlemap-character-card
-{
-   width: 30%;
 }
 
 .battlemap-container
@@ -108,70 +103,23 @@
 }
 
 /******************************************************************************/
-/** HELP PANEL ****************************************************************/
+/** MESSAGE BOARD *************************************************************/
 /******************************************************************************/
 .battlemap-error
 {
    background-color: #550000;
 }
 
-.battlemap-manual-controls
+.battlemap-message-board .battlemap-character-card
 {
-   width: 96px;
-   height: 96px;
-   display: grid;
-   grid-template:
-      '.    top .'
-      'left  go  right'
-      '.   bottom .';
-   margin: auto;
+   width: 16em;
 }
 
-.battlemap-manual-controls > div
+.battlemap-message-attack-text
 {
-   width: 32px;
-   height: 32px;
-   background-image: url(/asset/svg/arrowhead.svg);
-   background-size: 100%;
-   transition: opacity 0.3s ease-out;
-   opacity: 0.5;
-}
-
-.battlemap-manual-controls > div:hover
-{
-   opacity: 1;
-}
-
-.battlemap-manual-controls-go
-{
-   margin: auto;
-   width: 28px;
-   height: 28px;
-   border-radius: 100em;
-   grid-area: go;
-}
-
-.battlemap-manual-controls-up
-{
-   transform: rotate(-90deg);
-   grid-area: top;
-}
-
-.battlemap-manual-controls-down
-{
-   transform: rotate(90deg);
-   grid-area: bottom;
-}
-
-.battlemap-manual-controls-left
-{
-   transform: rotate(180deg);
-   grid-area: left;
-}
-
-.battlemap-manual-controls-right
-{
-   grid-area: right;
+   width: 100%;
+   text-align: center;
+   font-size: 1.2em;
 }
 
 /******************************************************************************/
@@ -186,6 +134,14 @@
    justify-content: center;
 }
 
+.battlemap-end-turn-button
+{
+   animation-name: reverse-brown-alarm-bg;
+   animation-duration: 2s;
+   animation-iteration-count: infinite;
+}
+
+/** Character Card ************************************************************/
 .battlemap-character-card,
 .battlemap-tile-card
 {
@@ -204,6 +160,51 @@
    align-items: center;
    justify-content: left;
    margin-top: 0.3em;
+}
+
+.battlemap-character-portrait
+{
+   box-sizing: border-box;
+   border-radius: 5px;
+   background-size: 100% 100%;
+   width: 100px;
+   height: 100px;
+   overflow: hidden;
+}
+
+.battlemap-character-portrait:hover
+{
+   cursor: pointer;
+}
+
+.battlemap-tile-card-icon
+{
+   box-sizing: border-box;
+   border-radius: 5px;
+   background-size: 300% 300%;
+   width: 80px;
+   height: 80px;
+}
+
+.battlemap-character-portrait *
+{
+   box-sizing: border-box;
+   background-size: 100% 100%;
+   width: inherit;
+   height: inherit;
+}
+
+.battlemap-character-portrait-body
+{
+   z-index: 1;
+}
+
+.battlemap-character-portrait-armor
+{
+   position: relative;
+   z-index: 1;
+   top: -100%;
+   background-size: 200% 100%;
 }
 
 .battlemap-character-card .battlemap-character-portrait,
@@ -274,7 +275,7 @@
    border-radius: 5px;
    z-index: 0;
    top: -100%;
-   transition: width 1s ease-out;
+   transition: width 3s ease-in-out;
 }
 
 .battlemap-character-card-health,
@@ -352,6 +353,66 @@
    margin-top: 0.3em;
 }
 
+/** Manual Controls ***********************************************************/
+.battlemap-manual-controls
+{
+   width: 96px;
+   height: 96px;
+   display: grid;
+   grid-template:
+      '.    top .'
+      'left  go  right'
+      '.   bottom .';
+   margin: auto;
+}
+
+.battlemap-manual-controls > div
+{
+   width: 32px;
+   height: 32px;
+   background-image: url(/asset/svg/arrowhead.svg);
+   background-size: 100%;
+   transition: opacity 0.3s ease-out;
+   opacity: 0.5;
+}
+
+.battlemap-manual-controls > div:hover
+{
+   opacity: 1;
+}
+
+.battlemap-manual-controls-go
+{
+   margin: auto;
+   width: 28px;
+   height: 28px;
+   border-radius: 100em;
+   grid-area: go;
+}
+
+.battlemap-manual-controls-up
+{
+   transform: rotate(-90deg);
+   grid-area: top;
+}
+
+.battlemap-manual-controls-down
+{
+   transform: rotate(90deg);
+   grid-area: bottom;
+}
+
+.battlemap-manual-controls-left
+{
+   transform: rotate(180deg);
+   grid-area: left;
+}
+
+.battlemap-manual-controls-right
+{
+   grid-area: right;
+}
+
 /******************************************************************************/
 /** MAIN MENU *****************************************************************/
 /******************************************************************************/
@@ -388,56 +449,7 @@
    animation-iteration-count: infinite;
 }
 
-.battlemap-end-turn-button
-{
-   animation-name: reverse-brown-alarm-bg;
-   animation-duration: 2s;
-   animation-iteration-count: infinite;
-}
 
-.battlemap-character-portrait:hover
-{
-   cursor: pointer;
-}
-
-.battlemap-character-portrait
-{
-   box-sizing: border-box;
-   border-radius: 5px;
-   background-size: 100% 100%;
-   width: 100px;
-   height: 100px;
-}
-
-.battlemap-tile-card-icon
-{
-   box-sizing: border-box;
-   border-radius: 5px;
-   background-size: 300% 300%;
-   width: 80px;
-   height: 80px;
-}
-
-.battlemap-character-portrait *
-{
-   box-sizing: border-box;
-   background-size: 100% 100%;
-   width: inherit;
-   height: inherit;
-}
-
-.battlemap-character-portrait-body
-{
-   z-index: 1;
-}
-
-.battlemap-character-portrait-armor
-{
-   position: relative;
-   z-index: 1;
-   top: -100%;
-   background-size: 200% 100%;
-}
 
 .battlemap-timeline-element,
 .battlemap-characters-element
@@ -557,6 +569,7 @@
    transform: scale(-1, 1);
 }
 
+/** Navigator Markers *********************************************************/
 .battlemap-marker-icon.battlemap-navigator-non-interactive
 {
    box-sizing: border-box;
@@ -679,7 +692,7 @@
 }
 
 .battlemap-can-attack-can-defend-marker.battlemap-navigator-non-interactive,
-.battlemap-can-attack-cant-defend-marker..battlemap-navigator-non-interactive
+.battlemap-can-attack-cant-defend-marker.battlemap-navigator-non-interactive
 {
    z-index: 5;
 }
@@ -707,182 +720,8 @@
    filter: contrast(35%);
 }
 
-.battlemap-animated-character-icon
-{
-   transition: top linear 0.3s, left linear 0.3s;
-}
 
-.battlemap-animated-portrait-damaged .battlemap-character-portrait > *
-{
-   animation: blinking 0.2s steps(2, start) 8;
-}
-
-.battlemap-animated-portrait-absent .battlemap-character-portrait > *
-{
-   visibility: hidden;
-}
-
-.battlemap-animated-portrait-dodges .battlemap-character-portrait,
-.battlemap-animated-portrait-dies .battlemap-character-portrait,
-.battlemap-animated-portrait-parries .battlemap-character-portrait,
-.battlemap-animated-portrait-attacks .battlemap-character-portrait
-{
-   overflow: hidden;
-}
-
-.battlemap-animated-portrait
-{
-   width: 100%;
-   height: 100%;
-}
-
-.battlemap-animated-portrait-dodges .battlemap-character-portrait > *
-{
-   animation-name: dodges;
-   animation-duration: 1s;
-   animation-iteration-count: 1;
-}
-
-.battlemap-animated-portrait-attacks .battlemap-character-portrait > *
-{
-   animation-name: attacks;
-   animation-duration: 1s;
-   animation-iteration-count: 1;
-}
-
-.battlemap-animated-portrait-dies .battlemap-character-portrait > *
-{
-   animation-name: blinking, dies;
-   animation-duration: 1s, 2s;
-   animation-delay: 0s, 1s;
-   animation-iteration-count: 1, 1;
-   animation-fill: default, forwards;
-}
-
-.battlemap-animated-portrait-parries .battlemap-character-portrait > *
-{
-   animation-name: parries;
-   animation-duration: 1s;
-   animation-iteration-count: 1;
-}
-
-.battlemap-animation-move-1
-.battlemap-animation-move-R,
-.battlemap-animation-move-L,
-.battlemap-animation-move-U,
-.battlemap-animation-move-D
-{
-   animation-duration: 0.3s;
-   animation-iteration-count: 1;
-   animation-fill-mode: forwards;
-}
-
-.battlemap-animation-move-R { animation-name: move-right; }
-.battlemap-animation-move-L { animation-name: move-left; }
-.battlemap-animation-move-U { animation-name: move-up; }
-.battlemap-animation-move-D { animation-name: move-down; }
-
-@keyframes move-right {
-    from { transform: translate(0, 0);}
-    to   { transform: translate(100%, 0);}
-}
-
-@keyframes move-left {
-    from { transform: translate(0, 0);}
-    to   { transform: translate(-100%, 0);}
-}
-
-@keyframes move-up {
-    from { transform: translate(0, 0);}
-    to   { transform: translate(0, -100%);}
-}
-
-@keyframes move-down {
-    from { transform: translate(0, 0);}
-    to   { transform: translate(0, 100%);}
-}
-
-@keyframes red-alarm-bg {
-    0% {background-color: rgba(255,0,0,0.25);}
-    25% {background-color: rgba(255,0,0,1);}
-    50% {background-color: rgba(255,0,0,1);}
-    100% {background-color: rgba(255,0,0,0.25);}
-}
-
-@keyframes flickering-opacity {
-    0% { opacity: 1.0;}
-    50% { opacity: 0.7; }
-    100% { opacity: 1.0; }
-}
-
-@keyframes pulsating {
-    0% { opacity: 1.0; transform: scale(1);}
-    25% { opacity: 1.0; transform: scale(1);}
-    30% { opacity: 0.8; transform: scale(1.1);}
-    50% { opacity: 1.0; transform: scale(1);}
-    100% { opacity: 1.0; transform: scale(1);}
-}
-
-@keyframes strongly-pulsating {
-    0% { opacity: 1.0; transform: scale(1);}
-    50% { opacity: 0.8; transform: scale(1.5);}
-    100% { opacity: 1.0; transform: scale(1);}
-}
-
-@keyframes brown-alarm-bg {
-    0% {background-color: #917C6F;}
-    25% {background-color: #AC9D93}
-    50% {background-color: #AC9D93}
-    100% {background-color: #917C6F;}
-}
-
-@keyframes reverse-brown-alarm-bg {
-    0% {background-color: #917C6F;}
-    50% {background-color: #502D16;}
-    100% {background-color: #917C6F;}
-}
-
-@keyframes blue-alarm-bg {
-    0% {background-color: rgba(0,0,255,0.2);}
-    25% {background-color: rgba(0,0,255,0.8);}
-    50% {background-color: rgba(0,0,255,0.8);}
-    100% {background-color: rgba(0,0,255,0.2);}
-}
-
-@keyframes blinking {
-   to { visibility: hidden; }
-}
-
-@keyframes dodges {
-   0% { transform: translate(0, 0); }
-   50% { transform: translate(-75%, 0); }
-   100% { transform: translate(0, 0); }
-}
-
-@keyframes attacks {
-   0% { transform: translate(0, 0); }
-   25% { transform: translate(25%, 0); }
-   100% { transform: translate(0, 0); }
-}
-
-@keyframes parries {
-   0% { transform: translate(0, 0); }
-   25% { transform: translate(-25%, 0); }
-   50% { transform: translate(50%, 20%); }
-   100% { transform: translate(0, 0); }
-}
-
-@keyframes dies {
-   from { transform: translate(0, 0); }
-   to { transform: translate(0, 100%); }
-}
-
-@keyframes blue-alarm-bd {
-    0% {border-color: rgba(0,0,255,0.25);}
-    25% {border-color: rgba(0,0,255,1);}
-    100% {border-color: rgba(0,0,255,0.25);}
-}
-
+/**** Selection Classes *******************************************************/
 .battlemap-character-targeted
 {
    background-color: rgba(255,0,0,0.7);
@@ -897,17 +736,6 @@
    animation-duration: 1.5s;
    animation-iteration-count: infinite;
 }
-
-.battlemap-tile-selected
-{
-   box-sizing: border-box;
-   border-size: 2px solid;
-   border-color: rgba(0,0,255,0.7);
-   animation-name: blue-alarm-bg;
-   animation-duration: 2s;
-   animation-iteration-count: infinite;
-}
-
 
 /**** Path Icons **************************************************************/
 .battlemap-path-icon
@@ -997,4 +825,148 @@
 .battlemap-path-icon-markU
 {
    transform: rotate(-90deg);
+}
+
+/******************************************************************************/
+/** Animations ****************************************************************/
+/******************************************************************************/
+@keyframes red-alarm-bg {
+    0% {background-color: rgba(255,0,0,0.25);}
+    25% {background-color: rgba(255,0,0,1);}
+    50% {background-color: rgba(255,0,0,1);}
+    100% {background-color: rgba(255,0,0,0.25);}
+}
+
+@keyframes pulsating {
+    0% { opacity: 1.0; transform: scale(1);}
+    25% { opacity: 1.0; transform: scale(1);}
+    30% { opacity: 0.8; transform: scale(1.1);}
+    50% { opacity: 1.0; transform: scale(1);}
+    100% { opacity: 1.0; transform: scale(1);}
+}
+
+@keyframes strongly-pulsating {
+    0% { opacity: 1.0; transform: scale(1);}
+    50% { opacity: 0.8; transform: scale(1.5);}
+    100% { opacity: 1.0; transform: scale(1);}
+}
+
+@keyframes brown-alarm-bg {
+    0% {background-color: #917C6F;}
+    25% {background-color: #AC9D93}
+    50% {background-color: #AC9D93}
+    100% {background-color: #917C6F;}
+}
+
+@keyframes reverse-brown-alarm-bg {
+    0% {background-color: #917C6F;}
+    50% {background-color: #502D16;}
+    100% {background-color: #917C6F;}
+}
+
+@keyframes blue-alarm-bg {
+    0% {background-color: rgba(0,0,255,0.2);}
+    25% {background-color: rgba(0,0,255,0.8);}
+    50% {background-color: rgba(0,0,255,0.8);}
+    100% {background-color: rgba(0,0,255,0.2);}
+}
+
+@keyframes blinking {
+   to { visibility: hidden; }
+}
+
+@keyframes blinking2 {
+   from { opacity: 1; }
+   to { opacity: 0; }
+}
+
+@keyframes dodges {
+   0% { transform: translate(0, 0); }
+   50% { transform: translate(-75%, 0); }
+   100% { transform: translate(0, 0); }
+}
+
+@keyframes attacks {
+   0% { transform: translate(0, 0); }
+   25% { transform: translate(25%, 0); }
+   100% { transform: translate(0, 0); }
+}
+
+@keyframes parries {
+   0% { transform: translate(0, 0); }
+   25% { transform: translate(-25%, 0); }
+   50% { transform: translate(50%, 20%); }
+   100% { transform: translate(0, 0); }
+}
+
+@keyframes dies {
+   from { transform: translate(0, 0) rotate(0); }
+   to { transform: translate(0, 100%) rotate(25deg); }
+}
+
+@keyframes blue-alarm-bd {
+    0% {border-color: rgba(0,0,255,0.25);}
+    25% {border-color: rgba(0,0,255,1);}
+    100% {border-color: rgba(0,0,255,0.25);}
+}
+
+/******************************************************************************/
+/** Timeline Animations *******************************************************/
+/******************************************************************************/
+/**** Character Icon Animations ***********************************************/
+.battlemap-animated-character-icon
+{
+   transition: top linear 0.3s, left linear 0.3s;
+}
+
+/**** Character Portrait Animations *******************************************/
+.battlemap-animated-portrait-damaged .battlemap-character-portrait > *
+{
+   animation: blinking 0.2s steps(2, start) 8;
+}
+
+.battlemap-animated-portrait-absent .battlemap-character-portrait > *
+{
+   visibility: hidden;
+}
+
+.battlemap-animated-portrait-dodges .battlemap-character-portrait,
+.battlemap-animated-portrait-dies .battlemap-character-portrait,
+.battlemap-animated-portrait-parries .battlemap-character-portrait,
+.battlemap-animated-portrait-attacks .battlemap-character-portrait
+{
+   overflow: hidden;
+}
+
+.battlemap-animated-portrait
+{
+}
+
+.battlemap-animated-portrait-dodges .battlemap-character-portrait > *
+{
+   animation-name: dodges;
+   animation-duration: 1s;
+   animation-iteration-count: 1;
+}
+
+.battlemap-animated-portrait-attacks .battlemap-character-portrait > *
+{
+   animation-name: attacks;
+   animation-duration: 1s;
+   animation-iteration-count: 1;
+}
+
+.battlemap-animated-portrait-dies .battlemap-character-portrait > *
+{
+   animation-name: blinking2, dies;
+   animation-duration: 0.15s, 2s;
+   animation-delay: 0s, 1s;
+   animation-iteration-count: 8, 1;
+}
+
+.battlemap-animated-portrait-parries .battlemap-character-portrait > *
+{
+   animation-name: parries;
+   animation-duration: 1s;
+   animation-iteration-count: 1;
 }

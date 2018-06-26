@@ -66,7 +66,7 @@ get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-help")
+         (Html.Attributes.class "battlemap-message-board")
       ]
       (get_help_message model)
    )

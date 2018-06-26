@@ -24,7 +24,7 @@ get_html : (
 get_html model error =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-help"),
+         (Html.Attributes.class "battlemap-message-board"),
          (Html.Attributes.class "battlemap-error")
       ]
       [

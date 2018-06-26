@@ -12,8 +12,6 @@ import Struct.Character
 import Struct.Event
 import Struct.Model
 
-import Util.Html
-
 import View.Controlled.CharacterCard
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -45,6 +43,15 @@ get_effect_text attack =
       )
    )
 
+get_empty_attack_html : (Html.Html Struct.Event.Type)
+get_empty_attack_html =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-message-attack-text")
+      ]
+      []
+   )
+
 get_attack_html : (
       Struct.Character.Type ->
       Struct.Character.Type ->
@@ -56,43 +63,45 @@ get_attack_html attacker defender attack =
       attacker_name = (Struct.Character.get_name attacker)
       defender_name = (Struct.Character.get_name defender)
    in
-   (Html.div
-      []
-      [
-         (Html.text
-            (
-               case (attack.order, attack.parried) of
-                  (Struct.Attack.Counter, True) ->
-                     (
-                        defender_name
-                        ++ " attempted to strike back, but "
-                        ++ attacker_name
-                        ++ " parried, and "
-                        ++ (get_effect_text attack)
-                     )
+      (Html.div
+         [
+            (Html.Attributes.class "battlemap-message-attack-text")
+         ]
+         [
+            (Html.text
+               (
+                  case (attack.order, attack.parried) of
+                     (Struct.Attack.Counter, True) ->
+                        (
+                           defender_name
+                           ++ " attempted to strike back, but "
+                           ++ attacker_name
+                           ++ " parried, and "
+                           ++ (get_effect_text attack)
+                        )
 
-                  (Struct.Attack.Counter, _) ->
-                     (
-                        defender_name
-                        ++ " striked back, and "
-                        ++ (get_effect_text attack)
-                     )
+                     (Struct.Attack.Counter, _) ->
+                        (
+                           defender_name
+                           ++ " striked back, and "
+                           ++ (get_effect_text attack)
+                        )
 
-                  (_, True) ->
-                     (
-                        attacker_name
-                        ++ " attempted a hit, but "
-                        ++ defender_name
-                        ++ " parried, and "
-                        ++ (get_effect_text attack)
-                     )
+                     (_, True) ->
+                        (
+                           attacker_name
+                           ++ " attempted a hit, but "
+                           ++ defender_name
+                           ++ " parried, and "
+                           ++ (get_effect_text attack)
+                        )
 
-                  (_, _) ->
-                     (attacker_name ++ " " ++ (get_effect_text attack))
+                     (_, _) ->
+                        (attacker_name ++ " " ++ (get_effect_text attack))
+               )
             )
-         )
-      ]
-   )
+         ]
+      )
 
 get_attack_animation_class : (
       Struct.Attack.Type ->
@@ -150,7 +159,7 @@ get_attacker_card maybe_attack char =
             else
                [
                   (Html.Attributes.class "battlemap-animated-portrait-absent"),
-                     (Html.Attributes.class "battlemap-animated-portrait")
+                  (Html.Attributes.class "battlemap-animated-portrait")
                ]
 
          (Just attack) ->
@@ -246,7 +255,8 @@ get_placeholder_html characters attacker_ix defender_ix maybe_attack =
       ((Just atkchar), (Just defchar)) ->
          (Html.div
             [
-               (Html.Attributes.class "battlemap-help")
+               (Html.Attributes.class "battlemap-message-board"),
+               (Html.Attributes.class "battlemap-message-attack")
             ]
             (
                [
@@ -257,7 +267,7 @@ get_placeholder_html characters attacker_ix defender_ix maybe_attack =
                            (get_attack_html atkchar defchar attack)
 
                         Nothing ->
-                           (Util.Html.nothing)
+                           (get_empty_attack_html)
                   ),
                   (get_defender_card maybe_attack defchar)
                ]
