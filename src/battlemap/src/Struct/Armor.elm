@@ -101,17 +101,17 @@ get_resistance_to dmg_type ar =
          (
             case (dmg_type, ar.category) of
                (Struct.Weapon.Slash, Kinetic) -> 0.0
-               (Struct.Weapon.Slash, Leather) -> 15.0
-               (Struct.Weapon.Slash, Chain) -> 20.0
-               (Struct.Weapon.Slash, Plate) -> 20.0
-               (Struct.Weapon.Blunt, Kinetic) -> 20.0
-               (Struct.Weapon.Blunt, Leather) -> 15.0
-               (Struct.Weapon.Blunt, Chain) -> 15.0
-               (Struct.Weapon.Blunt, Plate) -> 15.0
-               (Struct.Weapon.Pierce, Kinetic) -> 15.0
-               (Struct.Weapon.Pierce, Leather) -> 15.0
-               (Struct.Weapon.Pierce, Chain) -> 15.0
-               (Struct.Weapon.Pierce, Plate) -> 20.0
+               (Struct.Weapon.Slash, Leather) -> 20.0
+               (Struct.Weapon.Slash, Chain) -> 30.0
+               (Struct.Weapon.Slash, Plate) -> 30.0
+               (Struct.Weapon.Blunt, Kinetic) -> 30.0
+               (Struct.Weapon.Blunt, Leather) -> 20.0
+               (Struct.Weapon.Blunt, Chain) -> 20.0
+               (Struct.Weapon.Blunt, Plate) -> 20.0
+               (Struct.Weapon.Pierce, Kinetic) -> 20.0
+               (Struct.Weapon.Pierce, Leather) -> 20.0
+               (Struct.Weapon.Pierce, Chain) -> 20.0
+               (Struct.Weapon.Pierce, Plate) -> 30.0
          )
       )
    )
