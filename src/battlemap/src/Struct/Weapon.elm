@@ -87,8 +87,8 @@ get_ranges rt rm =
 get_damages : Float -> RangeType -> DamageModifier -> (Int, Int)
 get_damages coef rt dm =
    case (rt, dm) of
-      (Ranged, Heavy) -> ((ceiling (10.0 * coef)), (ceiling (25.0 * coef)))
-      (Ranged, Light) -> ((ceiling (5.0 * coef)), (ceiling (20.0 * coef)))
+      (Ranged, Heavy) -> ((ceiling (15.0 * coef)), (ceiling (30.0 * coef)))
+      (Ranged, Light) -> ((ceiling (10.0 * coef)), (ceiling (25.0 * coef)))
       (Melee, Heavy) -> ((ceiling (20.0 * coef)), (ceiling (35.0 * coef)))
       (Melee, Light) -> ((ceiling (15.0 * coef)), (ceiling (30.0 * coef)))
 
