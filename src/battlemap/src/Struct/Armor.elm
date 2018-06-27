@@ -120,22 +120,37 @@ apply_to_attributes : Type -> Struct.Attributes.Type -> Struct.Attributes.Type
 apply_to_attributes ar atts =
    let
       impact = (ceiling (-20.0 * ar.coef))
+      half_impact = (ceiling (-10.0 * ar.coef))
    in
       case ar.category of
          Kinetic -> (Struct.Attributes.mod_mind impact atts)
-         Leather -> (Struct.Attributes.mod_dexterity impact atts)
+         Leather ->
+            (Struct.Attributes.mod_constitution
+               half_impact
+               (Struct.Attributes.mod_dexterity
+                  half_impact
+                  atts
+               )
+            )
+
          Chain ->
-            (Struct.Attributes.mod_dexterity
-               impact
-               (Struct.Attributes.mod_speed impact atts)
+            (Struct.Attributes.mod_constitution
+               half_impact
+               (Struct.Attributes.mod_dexterity
+                  half_impact
+                  (Struct.Attributes.mod_speed impact atts)
+               )
             )
 
          Plate ->
-            (Struct.Attributes.mod_dexterity
-               impact
-               (Struct.Attributes.mod_speed
-                  impact
-                  (Struct.Attributes.mod_strength impact atts)
+            (Struct.Attributes.mod_constitution
+               half_impact
+               (Struct.Attributes.mod_dexterity
+                  half_impact
+                  (Struct.Attributes.mod_speed
+                     impact
+                     (Struct.Attributes.mod_strength impact atts)
+                  )
                )
             )
 

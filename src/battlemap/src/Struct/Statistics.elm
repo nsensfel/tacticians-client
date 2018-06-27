@@ -136,7 +136,10 @@ new att wp_set ar =
             (gentle_squared_growth_f
                (average [mind, constitution, constitution, speed, speed, speed])
             ),
-         max_health = (gentle_squared_growth constitution),
+         max_health =
+            (gentle_squared_growth_f
+               (average [constitution, constitution, constitution, mind])
+            ),
          dodges =
             (clamp
                0
