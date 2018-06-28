@@ -39,10 +39,17 @@ view model =
          ),
          (Html.div
             [
-               (Html.Attributes.class "battlemap-container"),
-               (Html.Attributes.id Constants.UI.viewer_html_id)
+               (Html.Attributes.class "battlemap-container-centerer")
             ]
-            [(View.Battlemap.get_html model)]
+            [
+               (Html.div
+                  [
+                     (Html.Attributes.class "battlemap-container"),
+                     (Html.Attributes.id Constants.UI.viewer_html_id)
+                  ]
+                  [(View.Battlemap.get_html model)]
+               )
+            ]
          ),
          (View.SubMenu.get_html model),
          (View.MessageBoard.get_html model)
