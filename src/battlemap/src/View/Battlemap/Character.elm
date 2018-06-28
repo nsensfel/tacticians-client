@@ -148,6 +148,21 @@ get_head_html char =
       ]
    )
 
+get_banner_html: Struct.Character.Type -> (Html.Html Struct.Event.Type)
+get_banner_html char =
+   if ((Struct.Character.get_index char) % 8 == 0)
+   then
+      (Html.div
+         [
+            (Html.Attributes.class "battlemap-character-icon-banner"),
+            (Html.Attributes.class "asset-character-icon-commander-banner")
+         ]
+         [
+         ]
+      )
+   else
+      (Util.Html.nothing)
+
 get_actual_html : (
       Struct.Model.Type ->
       Struct.Character.Type ->
@@ -172,7 +187,8 @@ get_actual_html model char =
          ]
          [
             (get_body_html char),
-            (get_head_html char)
+            (get_head_html char),
+            (get_banner_html char)
          ]
       )
 
