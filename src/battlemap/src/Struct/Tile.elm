@@ -14,6 +14,7 @@ module Struct.Tile exposing
       get_instance_cost,
       get_location,
       get_icon_id,
+      get_type_id,
       get_variant_id,
       solve_tile_instance,
       decoder
@@ -153,6 +154,9 @@ get_location tile_inst = tile_inst.location
 
 get_icon_id : Instance -> String
 get_icon_id tile_inst = (toString tile_inst.icon_id)
+
+get_type_id: Instance -> Int
+get_type_id tile_inst = tile_inst.type_id
 
 get_variant_id : Instance -> Int
 get_variant_id tile_inst =

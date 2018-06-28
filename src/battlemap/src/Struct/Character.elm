@@ -1,9 +1,11 @@
 module Struct.Character exposing
    (
       Type,
+      Rank(..),
       get_index,
       get_player_id,
       get_name,
+      get_rank,
       get_icon_id,
       get_portrait_id,
       get_armor,
@@ -43,6 +45,7 @@ type alias PartiallyDecoded =
    {
       ix : Int,
       nam : String,
+      rnk : String,
       ico : String,
       prt : String,
       lc : Struct.Location.Type,
@@ -55,10 +58,16 @@ type alias PartiallyDecoded =
       ar : Int
    }
 
+type Rank =
+   Optional
+   | Target
+   | Commander
+
 type alias Type =
    {
       ix : Int,
       name : String,
+      rank : Rank,
       icon : String,
       portrait : String,
       location : Struct.Location.Type,
@@ -74,6 +83,13 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+str_to_rank : String -> Rank
+str_to_rank str =
+   case str of
+      "t" -> Target
+      "c" -> Commander
+      _ -> Optional
+
 finish_decoding : PartiallyDecoded -> (Type, Int, Int, Int)
 finish_decoding add_char =
    let
@@ -83,6 +99,7 @@ finish_decoding add_char =
          {
             ix = add_char.ix,
             name = add_char.nam,
+            rank = (str_to_rank add_char.rnk),
             icon = add_char.ico,
             portrait = add_char.prt,
             location = add_char.lc,
@@ -105,6 +122,9 @@ get_index c = c.ix
 
 get_name : Type -> String
 get_name c = c.name
+
+get_rank : Type -> Rank
+get_rank c = c.rank
 
 get_player_id : Type -> String
 get_player_id c = c.player_id
@@ -174,6 +194,7 @@ decoder =
          PartiallyDecoded
          |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "rnk" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "ico" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "prt" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "lc" (Struct.Location.decoder))

@@ -17,6 +17,9 @@ import Struct.Model
 import View.SubMenu.Timeline.Attack
 import View.SubMenu.Timeline.Movement
 import View.SubMenu.Timeline.WeaponSwitch
+import View.SubMenu.Timeline.PlayerVictory
+import View.SubMenu.Timeline.PlayerDefeat
+import View.SubMenu.Timeline.PlayerTurnStart
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -49,6 +52,15 @@ get_turn_result_html characters player_id turn_result =
             player_id
             weapon_switch
          )
+
+      (Struct.TurnResult.PlayerWon pvict) ->
+         (View.SubMenu.Timeline.PlayerVictory.get_html pvict)
+
+      (Struct.TurnResult.PlayerLost pdefeat) ->
+         (View.SubMenu.Timeline.PlayerDefeat.get_html pdefeat)
+
+      (Struct.TurnResult.PlayerTurnStarted pturns) ->
+         (View.SubMenu.Timeline.PlayerTurnStart.get_html pturns)
 
 true_get_html : (
       (Array.Array Struct.Character.Type) ->

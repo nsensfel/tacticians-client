@@ -1,6 +1,8 @@
 module View.SubMenu.Status.TileInfo exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
+import Dict
+
 import Html
 import Html.Attributes
 
@@ -14,6 +16,7 @@ import Struct.Location
 import Struct.Model
 import Struct.Tile
 
+import Util.Html
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -46,21 +49,23 @@ get_icon tile =
       ]
    )
 
-get_name : (Struct.Tile.Instance -> (Html.Html Struct.Event.Type))
-get_name tile =
-   (Html.div
-      [
-         (Html.Attributes.class "battlemap-tile-card-name")
-      ]
-      [
-         (Html.text
-            (
-               "Tile.Instance "
-               ++ (Struct.Tile.get_icon_id tile)
-            )
-         )
-      ]
+get_name : (
+      Struct.Model.Type ->
+      Struct.Tile.Instance ->
+      (Html.Html Struct.Event.Type)
    )
+get_name model tile =
+   case (Dict.get (Struct.Tile.get_type_id tile) model.tiles) of
+      Nothing -> (Util.Html.nothing)
+      (Just tile_type) ->
+         (Html.div
+            [
+               (Html.Attributes.class "battlemap-tile-card-name")
+            ]
+            [
+               (Html.text (Struct.Tile.get_name tile_type))
+            ]
+         )
 
 get_cost : (Struct.Tile.Instance -> (Html.Html Struct.Event.Type))
 get_cost tile =
@@ -120,7 +125,7 @@ get_html model loc =
                (Html.Attributes.class "battlemap-tile-card")
             ]
             [
-               (get_name tile),
+               (get_name model tile),
                (Html.div
                   [
                      (Html.Attributes.class "battlemap-tile-card-top")
