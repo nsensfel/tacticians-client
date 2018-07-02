@@ -97,8 +97,8 @@ get_available_actions char_turn =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : Struct.CharacterTurn.Type -> String -> (Html.Html Struct.Event.Type)
-get_html char_turn player_id =
+get_html : Struct.CharacterTurn.Type -> Int -> (Html.Html Struct.Event.Type)
+get_html char_turn player_ix =
    case
       (Struct.CharacterTurn.try_getting_active_character char_turn)
    of
@@ -108,7 +108,7 @@ get_html char_turn player_id =
             [
                (View.Controlled.CharacterCard.get_summary_html
                   char_turn
-                  player_id
+                  player_ix
                   char
                ),
                (

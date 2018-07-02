@@ -26,30 +26,30 @@ import View.SubMenu.Timeline.PlayerTurnStart
 --------------------------------------------------------------------------------
 get_turn_result_html : (
       (Array.Array Struct.Character.Type) ->
-      String ->
+      Int ->
       Struct.TurnResult.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_turn_result_html characters player_id turn_result =
+get_turn_result_html characters player_ix turn_result =
    case turn_result of
       (Struct.TurnResult.Moved movement) ->
          (View.SubMenu.Timeline.Movement.get_html
             characters
-            player_id
+            player_ix
             movement
          )
 
       (Struct.TurnResult.Attacked attack) ->
          (View.SubMenu.Timeline.Attack.get_html
             characters
-            player_id
+            player_ix
             attack
          )
 
       (Struct.TurnResult.SwitchedWeapon weapon_switch) ->
          (View.SubMenu.Timeline.WeaponSwitch.get_html
             characters
-            player_id
+            player_ix
             weapon_switch
          )
 
@@ -64,11 +64,11 @@ get_turn_result_html characters player_id turn_result =
 
 true_get_html : (
       (Array.Array Struct.Character.Type) ->
-      String ->
+      Int ->
       (Array.Array Struct.TurnResult.Type) ->
       (Html.Html Struct.Event.Type)
    )
-true_get_html characters player_id turn_results =
+true_get_html characters player_ix turn_results =
    (Html.div
       [
          (Html.Attributes.class "battlemap-tabmenu-content"),
@@ -76,7 +76,7 @@ true_get_html characters player_id turn_results =
       ]
       (Array.toList
          (Array.map
-            (get_turn_result_html characters player_id)
+            (get_turn_result_html characters player_ix)
             turn_results
          )
       )
@@ -90,6 +90,6 @@ get_html model =
    (Html.Lazy.lazy3
       (true_get_html)
       model.characters
-      model.player_id
+      model.player_ix
       model.timeline
    )

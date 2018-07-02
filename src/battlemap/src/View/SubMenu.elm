@@ -39,7 +39,7 @@ get_inner_html model tab =
          (Html.Lazy.lazy2
             (View.SubMenu.Characters.get_html)
             model.characters
-            model.player_id
+            model.player_ix
          )
 
       Struct.UI.SettingsTab ->
@@ -72,7 +72,7 @@ get_html model =
                            (Html.Lazy.lazy3
                               (View.Controlled.CharacterCard.get_summary_html)
                               model.char_turn
-                              model.player_id
+                              model.player_ix
                               char
                            )
                         ]

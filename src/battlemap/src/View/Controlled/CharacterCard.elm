@@ -429,11 +429,11 @@ get_attributes char weapon armor =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_minimal_html : (
-      String ->
+      Int ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_minimal_html player_id char =
+get_minimal_html player_ix char =
    (Html.div
       [
          (Html.Attributes.class "battlemap-character-card"),
@@ -446,7 +446,7 @@ get_minimal_html player_id char =
                (Html.Attributes.class "battlemap-character-card-top")
             ]
             [
-               (View.Character.get_portrait_html player_id char),
+               (View.Character.get_portrait_html player_ix char),
                (get_health_bar char),
                (get_inactive_movement_bar char)
             ]
@@ -456,11 +456,11 @@ get_minimal_html player_id char =
 
 get_summary_html : (
       Struct.CharacterTurn.Type ->
-      String ->
+      Int ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_summary_html char_turn player_id char =
+get_summary_html char_turn player_ix char =
    let
       weapon_set = (Struct.Character.get_weapons char)
       main_weapon = (Struct.WeaponSet.get_active_weapon weapon_set)
@@ -478,7 +478,7 @@ get_summary_html char_turn player_id char =
                   (Html.Attributes.class "battlemap-character-card-top")
                ]
                [
-                  (View.Character.get_portrait_html player_id char),
+                  (View.Character.get_portrait_html player_ix char),
                   (get_health_bar char),
                   (get_movement_bar char_turn char)
                ]
@@ -491,11 +491,11 @@ get_summary_html char_turn player_id char =
       )
 
 get_full_html : (
-      String ->
+      Int ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_full_html player_id char =
+get_full_html player_ix char =
    let
       weapon_set = (Struct.Character.get_weapons char)
       main_weapon = (Struct.WeaponSet.get_active_weapon weapon_set)
@@ -514,7 +514,7 @@ get_full_html player_id char =
                   (Html.Attributes.class "battlemap-character-card-top")
                ]
                [
-                  (View.Character.get_portrait_html player_id char),
+                  (View.Character.get_portrait_html player_ix char),
                   (get_health_bar char),
                   (get_inactive_movement_bar char)
                ]

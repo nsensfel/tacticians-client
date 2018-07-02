@@ -41,7 +41,7 @@ get_alliance_class : (
       (Html.Attribute Struct.Event.Type)
    )
 get_alliance_class model char =
-   if ((Struct.Character.get_player_id char) == model.player_id)
+   if ((Struct.Character.get_player_ix char) == model.player_ix)
    then
       (Html.Attributes.class "battlemap-character-ally")
    else
@@ -94,7 +94,7 @@ get_icon_body_html char =
          (Html.Attributes.class
             (
                "asset-character-team-body-"
-               ++ (Struct.Character.get_player_id char)
+               ++ (toString (Struct.Character.get_player_ix char))
             )
          )
       ]
@@ -183,16 +183,16 @@ get_portrait_armor_html char =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_portrait_html : (
-      String ->
+      Int ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_portrait_html viewer_id char =
+get_portrait_html viewer_ix char =
    (Html.div
       [
          (Html.Attributes.class
             (
-               if ((Struct.Character.get_player_id char) == viewer_id)
+               if ((Struct.Character.get_player_ix char) == viewer_ix)
                then
                   "battlemap-character-ally"
                else
@@ -204,7 +204,7 @@ get_portrait_html viewer_id char =
             (
                "battlemap-character-portrait-team-"
                ++
-               (Struct.Character.get_player_id char)
+               (toString (Struct.Character.get_player_ix char))
             )
          ),
          (Html.Events.onClick

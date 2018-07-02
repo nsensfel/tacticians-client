@@ -17,11 +17,11 @@ import View.Controlled.CharacterCard
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_character_element_html : (
-      String ->
+      Int ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_character_element_html player_id char =
+get_character_element_html player_ix char =
    (Html.div
       [
          (Html.Attributes.class "battlemap-characters-element"),
@@ -44,7 +44,7 @@ get_character_element_html player_id char =
          )
       ]
       [
-         (View.Controlled.CharacterCard.get_minimal_html player_id char)
+         (View.Controlled.CharacterCard.get_minimal_html player_ix char)
       ]
    )
 
@@ -53,17 +53,17 @@ get_character_element_html player_id char =
 --------------------------------------------------------------------------------
 get_html : (
       (Array.Array Struct.Character.Type) ->
-      String ->
+      Int ->
       (Html.Html Struct.Event.Type)
    )
-get_html characters player_id =
+get_html characters player_ix =
    (Html.div
       [
          (Html.Attributes.class "battlemap-tabmenu-content"),
          (Html.Attributes.class "battlemap-tabmenu-characters-tab")
       ]
       (List.map
-         (get_character_element_html player_id)
+         (get_character_element_html player_ix)
          (Array.toList characters)
       )
    )

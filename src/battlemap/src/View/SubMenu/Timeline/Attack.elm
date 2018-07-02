@@ -121,11 +121,11 @@ get_attack_html attacker defender attack =
 --------------------------------------------------------------------------------
 get_html : (
       (Array.Array Struct.Character.Type) ->
-      String ->
+      Int ->
       Struct.TurnResult.Attack ->
       (Html.Html Struct.Event.Type)
    )
-get_html characters player_id attack =
+get_html characters player_ix attack =
    case
       (
          (Array.get attack.attacker_index characters),
@@ -140,8 +140,8 @@ get_html characters player_id attack =
             ]
             (
                [
-                  (View.Character.get_portrait_html player_id atkchar),
-                  (View.Character.get_portrait_html player_id defchar),
+                  (View.Character.get_portrait_html player_ix atkchar),
+                  (View.Character.get_portrait_html player_ix defchar),
                   (get_title_html atkchar defchar)
                ]
                ++

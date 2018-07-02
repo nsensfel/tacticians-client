@@ -3,7 +3,7 @@ module Struct.Character exposing
       Type,
       Rank(..),
       get_index,
-      get_player_id,
+      get_player_ix,
       get_name,
       get_rank,
       get_icon_id,
@@ -50,7 +50,7 @@ type alias PartiallyDecoded =
       prt : String,
       lc : Struct.Location.Type,
       hea : Int,
-      pla : String,
+      pla : Int,
       ena : Bool,
       att : Struct.Attributes.Type,
       awp : Int,
@@ -72,7 +72,7 @@ type alias Type =
       portrait : String,
       location : Struct.Location.Type,
       health : Int,
-      player_id : String,
+      player_ix : Int,
       enabled : Bool,
       attributes : Struct.Attributes.Type,
       statistics : Struct.Statistics.Type,
@@ -106,7 +106,7 @@ finish_decoding add_char =
             health = add_char.hea,
             attributes = add_char.att,
             statistics = (Struct.Statistics.new add_char.att weapon_set armor),
-            player_id = add_char.pla,
+            player_ix = add_char.pla,
             enabled = add_char.ena,
             weapons = weapon_set,
             armor = armor
@@ -126,8 +126,8 @@ get_name c = c.name
 get_rank : Type -> Rank
 get_rank c = c.rank
 
-get_player_id : Type -> String
-get_player_id c = c.player_id
+get_player_ix : Type -> Int
+get_player_ix c = c.player_ix
 
 get_icon_id : Type -> String
 get_icon_id c = c.icon
@@ -199,7 +199,7 @@ decoder =
          |> (Json.Decode.Pipeline.required "prt" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "lc" (Struct.Location.decoder))
          |> (Json.Decode.Pipeline.required "hea" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "pla" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "pla" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "ena" Json.Decode.bool)
          |> (Json.Decode.Pipeline.required "att" (Struct.Attributes.decoder))
          |> (Json.Decode.Pipeline.required "awp" Json.Decode.int)

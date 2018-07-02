@@ -49,6 +49,7 @@ type alias Type =
       tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
       error: (Maybe Struct.Error.Type),
       player_id: String,
+      player_ix: Int,
       ui: Struct.UI.Type,
       char_turn: Struct.CharacterTurn.Type,
       timeline: (Array.Array Struct.TurnResult.Type)
@@ -72,6 +73,7 @@ new =
       tiles = (Dict.empty),
       error = Nothing,
       player_id = "0",
+      player_ix = 0,
       ui = (Struct.UI.default),
       char_turn = (Struct.CharacterTurn.new),
       timeline = (Array.empty)

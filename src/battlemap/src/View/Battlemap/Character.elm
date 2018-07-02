@@ -74,7 +74,7 @@ get_alliance_class : (
       (Html.Attribute Struct.Event.Type)
    )
 get_alliance_class model char =
-   if ((Struct.Character.get_player_id char) == model.player_id)
+   if ((Struct.Character.get_player_ix char) == model.player_ix)
    then
       (Html.Attributes.class "battlemap-character-ally")
    else
@@ -127,7 +127,7 @@ get_body_html char =
          (Html.Attributes.class
             (
                "asset-character-team-body-"
-               ++ (Struct.Character.get_player_id char)
+               ++ (toString (Struct.Character.get_player_ix char))
             )
          )
       ]

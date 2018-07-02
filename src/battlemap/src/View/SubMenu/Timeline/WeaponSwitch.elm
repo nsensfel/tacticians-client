@@ -23,11 +23,11 @@ import View.Character
 --------------------------------------------------------------------------------
 get_html : (
       (Array.Array Struct.Character.Type) ->
-      String ->
+      Int ->
       Struct.TurnResult.WeaponSwitch ->
       (Html.Html Struct.Event.Type)
    )
-get_html characters player_id weapon_switch =
+get_html characters player_ix weapon_switch =
    case (Array.get weapon_switch.character_index characters) of
       (Just char) ->
          (Html.div
@@ -36,7 +36,7 @@ get_html characters player_id weapon_switch =
                (Html.Attributes.class "battlemap-timeline-weapon-switch")
             ]
             [
-               (View.Character.get_portrait_html player_id char),
+               (View.Character.get_portrait_html player_ix char),
                (Html.text
                   (
                      (Struct.Character.get_name char)

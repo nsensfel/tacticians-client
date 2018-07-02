@@ -17,18 +17,18 @@ import View.Controlled.CharacterCard
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html: (
-      String ->
+get_html : (
+      Int ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_html player_id char =
+get_html player_ix char =
    (Html.div
       [
          (Html.Attributes.class "battlemap-tabmenu-character-info")
       ]
       [
          (Html.text ("Focusing:")),
-         (View.Controlled.CharacterCard.get_full_html player_id char)
+         (View.Controlled.CharacterCard.get_full_html player_ix char)
       ]
    )

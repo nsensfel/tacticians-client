@@ -42,7 +42,7 @@ get_html model =
                   (Just char) ->
                      (Html.Lazy.lazy2
                         (View.SubMenu.Status.CharacterInfo.get_html)
-                        model.player_id
+                        model.player_ix
                         char
                      )
 

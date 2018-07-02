@@ -35,7 +35,7 @@ view model =
          (Html.Lazy.lazy2
             (View.Controlled.get_html)
             model.char_turn
-            model.player_id
+            model.player_ix
          ),
          (Html.div
             [
