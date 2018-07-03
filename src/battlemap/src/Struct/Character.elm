@@ -18,8 +18,10 @@ module Struct.Character exposing
       get_attributes,
       get_statistics,
       is_enabled,
+      is_defeated,
       is_alive,
       set_enabled,
+      set_defeated,
       get_weapons,
       set_weapons,
       decoder,
@@ -52,6 +54,7 @@ type alias PartiallyDecoded =
       hea : Int,
       pla : Int,
       ena : Bool,
+      dea : Bool,
       att : Struct.Attributes.Type,
       awp : Int,
       swp : Int,
@@ -74,6 +77,7 @@ type alias Type =
       health : Int,
       player_ix : Int,
       enabled : Bool,
+      defeated : Bool,
       attributes : Struct.Attributes.Type,
       statistics : Struct.Statistics.Type,
       weapons : Struct.WeaponSet.Type,
@@ -108,6 +112,7 @@ finish_decoding add_char =
             statistics = (Struct.Statistics.new add_char.att weapon_set armor),
             player_ix = add_char.pla,
             enabled = add_char.ena,
+            defeated = add_char.dea,
             weapons = weapon_set,
             armor = armor
          }
@@ -157,13 +162,19 @@ get_statistics : Type -> Struct.Statistics.Type
 get_statistics char = char.statistics
 
 is_alive : Type -> Bool
-is_alive char = (char.health > 0)
+is_alive char = ((char.health > 0) && (not char.defeated))
 
 is_enabled : Type -> Bool
 is_enabled char = char.enabled
 
+is_defeated : Type -> Bool
+is_defeated char = char.defeated
+
 set_enabled : Bool -> Type -> Type
 set_enabled enabled char = {char | enabled = enabled}
+
+set_defeated : Bool -> Type -> Type
+set_defeated defeated char = {char | defeated = defeated}
 
 get_weapons : Type -> Struct.WeaponSet.Type
 get_weapons char = char.weapons
@@ -201,6 +212,7 @@ decoder =
          |> (Json.Decode.Pipeline.required "hea" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "pla" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "ena" Json.Decode.bool)
+         |> (Json.Decode.Pipeline.required "dea" Json.Decode.bool)
          |> (Json.Decode.Pipeline.required "att" (Struct.Attributes.decoder))
          |> (Json.Decode.Pipeline.required "awp" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "swp" Json.Decode.int)

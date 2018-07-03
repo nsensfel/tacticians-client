@@ -26,9 +26,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="8"
-     inkscape:cx="72.52201"
-     inkscape:cy="35.869733"
+     inkscape:zoom="2"
+     inkscape:cx="-54.111744"
+     inkscape:cy="55.272005"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -51,7 +51,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -70,32 +70,32 @@
        ry="3.1058819" />
     <g
        aria-label="nline"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:125%;font-family:Bubble_Runes;-inkscape-font-specification:Bubble_Runes;letter-spacing:0px;word-spacing:0px;fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.60000002;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:125%;font-family:Bubble_Runes;-inkscape-font-specification:Bubble_Runes;letter-spacing:0px;word-spacing:0px;fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
        id="text1280"
        transform="translate(0,-1.5875)">
       <path
          d="m 32.889675,81.781917 h -1.839681 l 0.02067,-0.482313 q 0.564995,-1.040419 0.564995,-2.204861 0,-1.515842 -1.378038,-1.515842 -0.310058,0 -0.72347,0.254937 -0.35829,0.220486 -0.35829,0.37896 v 2.604492 q 0,0.206706 0.130914,0.372071 l 0.392741,0.261827 0.06201,0.330729 H 27.63246 l 0.323839,-0.310058 q 0.144694,-0.165365 0.144694,-0.378961 v -3.369303 q 0,-0.248047 -0.461643,-0.695909 h 1.536512 v 0.37896 q 0.757921,-0.468533 1.743219,-0.468533 1.061089,0 1.736328,1.109321 0.172254,0.461643 0.172254,1.061089 0,0.475423 -0.502983,1.570964 l -0.02067,0.124023 q 0.0069,0.172255 0.454753,0.592556 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.60000002;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4582"
          inkscape:connector-curvature="0" />
       <path
          d="m 36.066053,81.699235 h -2.067057 q 0.282498,-0.37207 0.35829,-0.613227 l 0.04134,-0.564996 V 75.02264 q 0,-0.509874 -0.502984,-0.509874 -0.179145,0 -0.502984,0.07579 0.316949,-0.502984 1.012858,-0.764811 0.330729,-0.124024 1.254015,-0.316949 v 7.014214 q 0,0.482314 0.04823,0.640788 0.05512,0.186035 0.35829,0.537435 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.60000002;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4584"
          inkscape:connector-curvature="0" />
       <path
          d="m 38.560302,75.525624 q 0,0.482313 -0.695909,0.551215 -0.654568,0 -0.72347,-0.537435 0,-0.516764 0.7028,-0.544325 0.633897,-0.02756 0.716579,0.530545 z m 0.06201,1.426269 v 4.051433 q 0,0.165364 0.04134,0.254937 0.02067,0.08268 0.392741,0.434082 h -1.956814 l 0.316949,-0.310059 q 0.130913,-0.165364 0.130913,-0.37896 v -2.962782 q 0,-0.206706 -0.303168,-0.620118 -0.282498,-0.38585 -0.454753,-0.475423 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.60000002;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4586"
          inkscape:connector-curvature="0" />
       <path
          d="m 44.795925,81.781917 h -1.839681 l 0.02067,-0.482313 q 0.564995,-1.040419 0.564995,-2.204861 0,-1.515842 -1.378038,-1.515842 -0.310058,0 -0.72347,0.254937 -0.35829,0.220486 -0.35829,0.37896 v 2.604492 q 0,0.206706 0.130914,0.372071 l 0.392741,0.261827 0.06201,0.330729 H 39.53871 l 0.323839,-0.310058 q 0.144694,-0.165365 0.144694,-0.378961 v -3.369303 q 0,-0.248047 -0.461643,-0.695909 h 1.536512 v 0.37896 q 0.757921,-0.468533 1.743219,-0.468533 1.061089,0 1.736328,1.109321 0.172254,0.461643 0.172254,1.061089 0,0.475423 -0.502983,1.570964 l -0.02067,0.124023 q 0.0069,0.172255 0.454753,0.592556 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.60000002;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4588"
          inkscape:connector-curvature="0" />
       <path
          d="m 50.376979,79.818213 c -0.473127,1.332103 -1.31373,1.998155 -2.52181,1.998155 -0.702799,0 -1.304543,-0.241157 -1.80523,-0.72347 -0.500687,-0.482313 -0.751031,-1.072573 -0.751031,-1.770779 0,-0.767108 0.22508,-1.375742 0.675239,-1.825901 0.450159,-0.450159 1.058793,-0.675238 1.8259,-0.675238 0.58337,0 1.049606,0.149287 1.398709,0.447862 0.307762,0.266421 0.567293,0.689019 0.778592,1.267795 l -3.513998,0.627008 0.02757,0.03445 c 0,0.546621 0.156178,1.005967 0.468533,1.378038 0.330729,0.399631 0.762515,0.599446 1.295356,0.599446 0.431785,0 0.845197,-0.130914 1.240234,-0.392741 0.376664,-0.248047 0.670646,-0.569589 0.881945,-0.964626 z m -1.598524,-1.688097 c -0.05512,-0.248047 -0.197517,-0.445565 -0.427192,-0.592556 -0.22508,-0.151585 -0.46394,-0.2113 -0.71658,-0.179145 -0.385851,0.05053 -0.675239,0.229672 -0.868164,0.537435 -0.101056,0.234266 -0.202112,0.466236 -0.303169,0.695909 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.60000002;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4590"
          inkscape:connector-curvature="0"
          sodipodi:nodetypes="cssssscccccsccccccccc" />
@@ -478,51 +478,51 @@
        sodipodi:nodetypes="cc" />
     <g
        aria-label="acticians"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:125%;font-family:Bubble_Runes;-inkscape-font-specification:Bubble_Runes;letter-spacing:0px;word-spacing:0px;fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:125%;font-family:Bubble_Runes;-inkscape-font-specification:Bubble_Runes;letter-spacing:0px;word-spacing:0px;fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
        id="text1280-3">
       <path
          d="m 21.4223,68.175719 h -1.405599 q -0.172254,0 -0.289388,-0.199815 -0.09646,-0.165365 -0.07579,-0.234267 0.0069,-0.03445 0.03445,-0.110243 -0.813042,0.606337 -1.474501,0.606337 -0.764811,0 -1.247124,-0.344509 -0.551215,-0.385851 -0.551215,-1.123102 0,-1.364257 1.226454,-1.694986 1.09554,-0.296279 1.405599,-0.434082 0.447862,-0.199816 0.647678,-0.571886 -0.571886,-0.33762 -1.316027,-0.33762 -0.620117,0 -1.577854,0.254937 0.847494,-0.785481 2.16352,-0.785481 0.647678,0 1.343587,0.234266 0.461643,0.220486 0.461643,0.744141 V 67.4867 q 0,0.03445 0.0689,0.124024 0.165365,0.454752 0.585667,0.564995 z m -1.729437,-1.295355 v -2.177301 q -0.323839,0.33762 -0.744141,0.482314 -0.847494,0.296278 -0.950846,0.36518 -0.392741,0.268717 -0.392741,0.902615 0,0.930175 0.902615,0.930175 0.558105,0 1.185113,-0.502983 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4563"
          inkscape:connector-curvature="0" />
       <path
          d="m 26.183422,66.76323 q -0.571886,1.543403 -2.046387,1.543403 -1.260904,0 -1.956814,-0.72347 -0.695909,-0.72347 -0.695909,-1.984375 0,-1.026638 0.854384,-1.688097 0.771701,-0.599446 1.839681,-0.599446 0.427191,0 1.10932,0.261827 0.785482,0.303168 0.785482,0.647678 0,0.110243 -0.440972,0.406521 -0.37207,0.248047 -0.564996,0.337619 0.0689,-0.172254 0.0689,-0.323838 0,-0.365181 -0.3514,-0.592557 -0.303168,-0.199815 -0.689019,-0.199815 -0.695909,0 -1.08865,0.633897 -0.330729,0.537435 -0.330729,1.274685 0,0.799263 0.496094,1.343588 0.509874,0.564995 1.302246,0.564995 0.310058,0 0.778591,-0.206705 0.571886,-0.254938 0.930176,-0.69591 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4565"
          inkscape:connector-curvature="0" />
       <path
          d="m 30.923873,68.18261 q -0.310058,0.02067 -0.585666,0.02067 -1.329807,0 -1.887912,-0.413411 -0.654568,-0.482314 -0.654568,-1.756999 h 0.0069 l 0.0069,-2.067057 h -1.143772 l 0.206706,-0.489204 q 0.137804,-0.103353 0.137804,-0.275607 0,-0.04134 -0.0069,-0.124024 -0.0069,-0.08957 -0.0069,-0.130913 0,-0.137804 0.05512,-0.248047 0.268717,0.502984 0.757921,0.578776 l 0.0069,-1.260905 q 0,-0.427192 -0.289388,-0.571886 -0.186035,-0.05512 -0.268717,-0.110243 -0.130914,-0.05512 -0.427192,-0.406521 h 2.060167 v 2.397786 h 2.018826 l -0.3514,0.640788 h -1.667426 v 2.18419 q 0,0.840604 0.275607,1.129992 0.34451,0.36518 0.420302,0.413411 0.37207,0.241157 1.336697,0.489204 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4567"
          inkscape:connector-curvature="0" />
       <path
          d="m 33.156295,62.015889 q 0,0.482313 -0.695909,0.551215 -0.654568,0 -0.72347,-0.537435 0,-0.516764 0.7028,-0.544325 0.633897,-0.02756 0.716579,0.530545 z m 0.06201,1.426269 v 4.051432 q 0,0.165365 0.04134,0.254938 0.02067,0.08268 0.392741,0.434082 h -1.956814 l 0.316949,-0.310059 q 0.130913,-0.165365 0.130913,-0.378961 v -2.962782 q 0,-0.206705 -0.303168,-0.620117 -0.282498,-0.38585 -0.454753,-0.475423 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4569"
          inkscape:connector-curvature="0" />
       <path
          d="m 38.833813,66.76323 q -0.571886,1.543403 -2.046387,1.543403 -1.260905,0 -1.956814,-0.72347 -0.695909,-0.72347 -0.695909,-1.984375 0,-1.026638 0.854383,-1.688097 0.771702,-0.599446 1.839681,-0.599446 0.427192,0 1.109321,0.261827 0.785482,0.303168 0.785482,0.647678 0,0.110243 -0.440972,0.406521 -0.372071,0.248047 -0.564996,0.337619 0.0689,-0.172254 0.0689,-0.323838 0,-0.365181 -0.3514,-0.592557 -0.303168,-0.199815 -0.689019,-0.199815 -0.695909,0 -1.08865,0.633897 -0.330729,0.537435 -0.330729,1.274685 0,0.799263 0.496093,1.343588 0.509875,0.564995 1.302246,0.564995 0.310059,0 0.778592,-0.206705 0.571886,-0.254938 0.930176,-0.69591 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4571"
          inkscape:connector-curvature="0" />
       <path
          d="m 41.314281,62.015889 q 0,0.482313 -0.695909,0.551215 -0.654568,0 -0.72347,-0.537435 0,-0.516764 0.702799,-0.544325 0.633898,-0.02756 0.71658,0.530545 z m 0.06201,1.426269 v 4.051432 q 0,0.165365 0.04134,0.254938 0.02067,0.08268 0.392741,0.434082 h -1.956814 l 0.316949,-0.310059 Q 40.30142,67.707186 40.30142,67.49359 v -2.962782 q 0,-0.206705 -0.303168,-0.620117 -0.282498,-0.38585 -0.454753,-0.475423 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4573"
          inkscape:connector-curvature="0" />
       <path
          d="m 47.301857,68.175719 h -1.405599 q -0.172255,0 -0.289388,-0.199815 -0.09646,-0.165365 -0.07579,-0.234267 0.0069,-0.03445 0.03445,-0.110243 -0.813043,0.606337 -1.474501,0.606337 -0.764811,0 -1.247124,-0.344509 -0.551216,-0.385851 -0.551216,-1.123102 0,-1.364257 1.226454,-1.694986 1.095541,-0.296279 1.405599,-0.434082 0.447863,-0.199816 0.647678,-0.571886 -0.571886,-0.33762 -1.316026,-0.33762 -0.620117,0 -1.577854,0.254937 0.847494,-0.785481 2.16352,-0.785481 0.647678,0 1.343587,0.234266 0.461643,0.220486 0.461643,0.744141 V 67.4867 q 0,0.03445 0.0689,0.124024 0.165364,0.454752 0.585666,0.564995 z m -1.729438,-1.295355 v -2.177301 q -0.323839,0.33762 -0.74414,0.482314 -0.847494,0.296278 -0.950847,0.36518 -0.392741,0.268717 -0.392741,0.902615 0,0.930175 0.902615,0.930175 0.558106,0 1.185113,-0.502983 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4575"
          inkscape:connector-curvature="0" />
       <path
          d="m 52.621084,68.272182 h -1.839681 l 0.02067,-0.482313 q 0.564996,-1.040419 0.564996,-2.204861 0,-1.515842 -1.378039,-1.515842 -0.310058,0 -0.72347,0.254937 -0.35829,0.220486 -0.35829,0.37896 v 2.604492 q 0,0.206706 0.130914,0.372071 l 0.392741,0.261827 0.06201,0.330729 h -2.129069 l 0.323839,-0.310059 q 0.144694,-0.165364 0.144694,-0.37896 V 64.21386 q 0,-0.248047 -0.461643,-0.69591 h 1.536512 v 0.378961 q 0.757921,-0.468533 1.743219,-0.468533 1.061089,0 1.736328,1.109321 0.172255,0.461642 0.172255,1.061089 0,0.475423 -0.502984,1.570964 l -0.02067,0.124023 q 0.0069,0.172255 0.454753,0.592556 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4577"
          inkscape:connector-curvature="0" />
       <path
          d="m 57.49245,66.797681 q 0,0.7028 -0.74414,1.123101 -0.633898,0.35829 -1.41938,0.35829 -0.950846,0 -1.522732,-0.37207 -0.682129,-0.440972 -0.682129,-1.343587 0.282498,-0.05512 0.372071,-0.09646 0.275607,-0.08957 0.668348,-0.234266 -0.05512,0.151584 -0.05512,0.303168 0,0.516764 0.530545,0.971517 0.268718,0.234266 0.689019,0.234266 0.434082,0 0.73036,-0.186035 0.35829,-0.220486 0.35829,-0.627007 0,-0.461643 -0.888834,-0.737251 -0.192926,-0.06201 -1.267795,-0.37207 -0.751031,-0.36518 -0.751031,-1.109321 0,-0.695909 0.661458,-1.08176 0.537435,-0.316948 1.295356,-0.316948 1.660536,0 1.874132,1.316026 -0.564996,0.124024 -0.923286,0.378961 -0.06201,-1.157552 -1.005967,-1.157552 -0.826823,0 -0.826823,0.916395 0,0.461643 1.322916,0.751031 1.584744,0.351399 1.584744,1.281575 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;font-family:'Dumbledor 3';-inkscape-font-specification:'Dumbledor 3, ';fill:#e9ddaf;fill-opacity:1;stroke:#a0892c;stroke-width:0.265;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          id="path4579"
          inkscape:connector-curvature="0" />
     </g>

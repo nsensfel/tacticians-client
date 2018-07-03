@@ -143,6 +143,40 @@ apply_attack_to_characters attack characters =
       attack.sequence
    )
 
+apply_player_defeat_to_characters : (
+      PlayerDefeat ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Character.Type)
+   )
+apply_player_defeat_to_characters pdefeat characters =
+   (Array.map
+      (\c ->
+         (
+            if ((Struct.Character.get_player_ix c) == pdefeat.player_index)
+            then (Struct.Character.set_defeated True c)
+            else c
+         )
+      )
+      characters
+   )
+
+apply_inverse_player_defeat_to_characters : (
+      PlayerDefeat ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Character.Type)
+   )
+apply_inverse_player_defeat_to_characters pdefeat characters =
+   (Array.map
+      (\c ->
+         (
+            if ((Struct.Character.get_player_ix c) == pdefeat.player_index)
+            then (Struct.Character.set_defeated False c)
+            else c
+         )
+      )
+      characters
+   )
+
 apply_attack_step_to_characters : (
       Attack ->
       (Array.Array Struct.Character.Type) ->
@@ -344,8 +378,7 @@ apply_to_characters turn_result characters =
       (PlayerWon pvict) -> characters
 
       (PlayerLost pdefeat) ->
-         -- TODO: Their characters are supposed to disappear.
-         characters
+         (apply_player_defeat_to_characters pdefeat characters)
 
       (PlayerTurnStarted pturns) -> characters
 
@@ -385,7 +418,8 @@ apply_step_to_characters turn_result characters =
 
       (PlayerWon pvict) -> characters
 
-      (PlayerLost pdefeat) -> characters
+      (PlayerLost pdefeat) ->
+         (apply_player_defeat_to_characters pdefeat characters)
 
       (PlayerTurnStarted pturns) -> characters
 
@@ -426,10 +460,7 @@ apply_inverse_to_characters turn_result characters =
       (PlayerWon pvict) -> characters
 
       (PlayerLost pdefeat) ->
-         -- TODO
-         -- Their characters are supposed to have disappeared, so we have to
-         -- make them visible again.
-         characters
+         (apply_inverse_player_defeat_to_characters pdefeat characters)
 
       (PlayerTurnStarted pturns) -> characters
 

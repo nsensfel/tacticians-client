@@ -171,7 +171,7 @@ get_banner_html char =
             ]
          )
 
-      Struct.Character.Optional -> (Util.Html.nothing)
+      _ -> (Util.Html.nothing)
 
 get_actual_html : (
       Struct.Model.Type ->
