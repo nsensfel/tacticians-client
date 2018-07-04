@@ -119,8 +119,8 @@ get_resistance_to dmg_type ar =
 apply_to_attributes : Type -> Struct.Attributes.Type -> Struct.Attributes.Type
 apply_to_attributes ar atts =
    let
-      impact = (ceiling (-20.0 * ar.coef))
-      half_impact = (ceiling (-10.0 * ar.coef))
+      impact = (-1 * (ceiling (20.0 * ar.coef)))
+      half_impact = (-1 * (ceiling (10.0 * ar.coef)))
    in
       case ar.category of
          Kinetic -> (Struct.Attributes.mod_mind impact atts)
