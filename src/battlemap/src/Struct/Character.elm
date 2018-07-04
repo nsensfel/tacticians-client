@@ -58,9 +58,7 @@ type alias PartiallyDecoded =
       att : Struct.Attributes.Type,
       awp : Int,
       swp : Int,
-      ar : Int,
-      mvt : Int,
-      mhp : Int
+      ar : Int
    }
 
 type Rank =
@@ -111,14 +109,7 @@ finish_decoding add_char =
             location = add_char.lc,
             health = add_char.hea,
             attributes = add_char.att,
-            statistics =
-               (Struct.Statistics.new
-                  add_char.att
-                  weapon_set
-                  armor
-                  add_char.mhp
-                  add_char.mvt
-               ),
+            statistics = (Struct.Statistics.new add_char.att weapon_set armor),
             player_ix = add_char.pla,
             enabled = add_char.ena,
             defeated = add_char.dea,
@@ -203,14 +194,7 @@ set_weapons : Struct.WeaponSet.Type -> Type -> Type
 set_weapons weapons char =
    {char |
       weapons = weapons,
-      statistics =
-         (Struct.Statistics.new
-            char.attributes
-            weapons
-            char.armor
-            (Struct.Statistics.get_max_health char.statistics)
-            (Struct.Statistics.get_movement_points char.statistics)
-         )
+      statistics = (Struct.Statistics.new char.attributes weapons char.armor)
    }
 
 decoder : (Json.Decode.Decoder (Type, Int, Int, Int))
@@ -233,8 +217,6 @@ decoder =
          |> (Json.Decode.Pipeline.required "awp" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "swp" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "ar" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "mvt" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "mhp" Json.Decode.int)
       )
    )
 
@@ -250,14 +232,7 @@ fill_missing_equipment awp swp ar char =
       weapon_set = (Struct.WeaponSet.new awp swp)
    in
       {char |
-         statistics =
-            (Struct.Statistics.new
-               char.attributes
-               weapon_set
-               ar
-               (Struct.Statistics.get_max_health char.statistics)
-               (Struct.Statistics.get_movement_points char.statistics)
-            ),
+         statistics = (Struct.Statistics.new char.attributes weapon_set ar),
          weapons = weapon_set,
          armor = ar
       }

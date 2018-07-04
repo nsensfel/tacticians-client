@@ -113,11 +113,9 @@ new : (
       Struct.Attributes.Type ->
       Struct.WeaponSet.Type ->
       Struct.Armor.Type ->
-      Int ->
-      Int ->
       Type
    )
-new att wp_set ar max_health max_mvt =
+new att wp_set ar =
    let
       active_weapon = (Struct.WeaponSet.get_active_weapon wp_set)
       actual_att =
@@ -134,18 +132,14 @@ new att wp_set ar max_health max_mvt =
       dmg_bmod = (damage_base_mod (toFloat strength))
    in
       {
-         movement_points = max_mvt,
-         -- Operation is not deterministic, yet can't afford to differ from the
-         -- server's value. As a result, we have to rely on the server's value.
---          (gentle_squared_growth_f
---             (average [mind, constitution, constitution, speed, speed, speed])
---          ),
-         max_health = max_health,
-         -- Operation is not deterministic, yet can't afford to differ from the
-         -- server's value. As a result, we have to rely on the server's value.
---          (gentle_squared_growth_f
---             (average [constitution, constitution, constitution, mind])
---          ),
+         movement_points =
+            (gentle_squared_growth_f
+               (average [mind, constitution, constitution, speed, speed, speed])
+            ),
+         max_health =
+            (gentle_squared_growth_f
+               (average [constitution, constitution, constitution, mind])
+            ),
          dodges =
             (clamp
                0
