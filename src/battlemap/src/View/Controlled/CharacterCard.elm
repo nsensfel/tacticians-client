@@ -20,6 +20,8 @@ import Struct.Statistics
 import Struct.Weapon
 import Struct.WeaponSet
 
+import Util.Html
+
 import View.Character
 import View.Gauge
 
@@ -59,6 +61,49 @@ get_health_bar char =
          []
          []
       )
+
+get_rank_status : (
+      Struct.Character.Rank ->
+      (Html.Html Struct.Event.Type)
+   )
+get_rank_status rank =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-character-card-status"),
+         (Html.Attributes.class
+            (
+               case rank of
+                  Struct.Character.Commander ->
+                     "battlemap-character-card-commander-status"
+
+                  Struct.Character.Target ->
+                     "battlemap-character-card-target-status"
+
+                  Struct.Character.Optional -> ""
+            )
+         )
+      ]
+      [
+      ]
+   )
+
+get_statuses : (
+      Struct.Character.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_statuses char =
+   (Html.div
+      [
+         (Html.Attributes.class "battlemap-character-card-statuses")
+      ]
+      [
+         (
+            case (Struct.Character.get_rank char) of
+               Struct.Character.Optional -> (Util.Html.nothing)
+               other -> (get_rank_status other)
+         )
+      ]
+   )
 
 get_active_movement_bar : (
       (Maybe Struct.Navigator.Type) ->
@@ -448,7 +493,8 @@ get_minimal_html player_ix char =
             [
                (View.Character.get_portrait_html player_ix char),
                (get_health_bar char),
-               (get_inactive_movement_bar char)
+               (get_inactive_movement_bar char),
+               (get_statuses char)
             ]
          )
       ]
@@ -480,7 +526,8 @@ get_summary_html char_turn player_ix char =
                [
                   (View.Character.get_portrait_html player_ix char),
                   (get_health_bar char),
-                  (get_movement_bar char_turn char)
+                  (get_movement_bar char_turn char),
+                  (get_statuses char)
                ]
             ),
             (get_weapon_details char_statistics main_weapon),
@@ -516,7 +563,8 @@ get_full_html player_ix char =
                [
                   (View.Character.get_portrait_html player_ix char),
                   (get_health_bar char),
-                  (get_inactive_movement_bar char)
+                  (get_inactive_movement_bar char),
+                  (get_statuses char)
                ]
             ),
             (get_weapon_details char_statistics main_weapon),

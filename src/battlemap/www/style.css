@@ -312,10 +312,11 @@
 {
    position: absolute;
    left: 100px;
-   top: 1em;
+   top: 0;
    margin-left: 0.5em;
    width: calc(100% - 100px - 0.5em);
 }
+
 
 .battlemap-character-card-health > .battlemap-gauge-bar
 {
@@ -327,9 +328,36 @@
 {
    position: absolute;
    left: 100px;
-   top: calc(1em + 1.5em + 1em);
+   top: calc(1.5em + 1em);
    margin-left: 0.5em;
    width: calc(100% - 100px - 0.5em);
+}
+
+.battlemap-character-card-statuses
+{
+   position: absolute;
+   left: 100px;
+   top: calc(2*(1.5em + 0.5em) + 0.7em);
+   margin-left: 0.5em;
+   width: calc(100% - 100px - 0.5em);
+   display: flex;
+}
+
+.battlemap-character-card-status
+{
+   height: 1.5em;
+   width: 1.5em;
+   background-size: 100%;
+}
+
+.battlemap-character-card-target-status
+{
+   background-image: url("/asset/svg/status/target.svg");
+}
+
+.battlemap-character-card-commander-status
+{
+   background-image: url("/asset/svg/status/commander.svg");
 }
 
 .battlemap-character-card-movement > .battlemap-gauge-bar
