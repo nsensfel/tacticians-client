@@ -161,9 +161,9 @@ get_min_damage wp = wp.dmg_min
 apply_to_attributes : Type -> Struct.Attributes.Type -> Struct.Attributes.Type
 apply_to_attributes wp atts =
    let
-      impact = (-20.0 * wp.coef)
-      full_impact = (ceiling impact)
-      quarter_impact = (ceiling (impact / 4.0))
+      impact = (20.0 * wp.coef)
+      full_impact = (-1 * (ceiling impact))
+      quarter_impact = (-1 * (ceiling (impact / 4.0)))
    in
       case (wp.range_mod, wp.dmg_mod) of
          (Long, Heavy) ->
