@@ -28,6 +28,7 @@ import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error
+import Struct.HelpRequest
 import Struct.Tile
 import Struct.TurnResult
 import Struct.TurnResultAnimator
@@ -41,6 +42,7 @@ import Util.Array
 --------------------------------------------------------------------------------
 type alias Type =
    {
+      help_request: Struct.HelpRequest.Type,
       animator: (Maybe Struct.TurnResultAnimator.Type),
       battlemap: Struct.Battlemap.Type,
       characters: (Array.Array Struct.Character.Type),
@@ -65,6 +67,7 @@ type alias Type =
 new : Type
 new =
    {
+      help_request = Struct.HelpRequest.None,
       animator = Nothing,
       battlemap = (Struct.Battlemap.empty),
       characters = (Array.empty),
@@ -125,6 +128,7 @@ add_tile tl model =
 reset : Type -> Type
 reset model =
    {model |
+      help_request = Struct.HelpRequest.None,
       error = Nothing,
       ui =
          (Struct.UI.reset_displayed_nav
@@ -136,6 +140,7 @@ reset model =
 full_debug_reset : Type -> Type
 full_debug_reset model =
    {model |
+      help_request = Struct.HelpRequest.None,
       animator = Nothing,
       battlemap = (Struct.Battlemap.empty),
       characters = (Array.empty),

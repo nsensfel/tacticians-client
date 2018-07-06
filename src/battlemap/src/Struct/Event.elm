@@ -8,6 +8,7 @@ import Struct.Direction
 import Struct.Error
 import Struct.Location
 import Struct.ServerReply
+import Struct.HelpRequest
 import Struct.UI
 
 --------------------------------------------------------------------------------
@@ -32,6 +33,7 @@ type Type =
    | TileSelected Struct.Location.Ref
    | CharacterOrTileSelected Struct.Location.Ref
    | TurnEnded
+   | RequestedHelp Struct.HelpRequest.Type
    | WeaponSwitchRequest
 
 attempted : (Result.Result err val) -> Type

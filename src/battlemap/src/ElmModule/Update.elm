@@ -20,6 +20,7 @@ import Update.SelectCharacterOrTile
 import Update.SelectTab
 import Update.SelectTile
 import Update.SendLoadBattlemapRequest
+import Update.SetRequestedHelp
 import Update.SwitchTeam
 import Update.SwitchWeapon
 import Update.TestAnimation
@@ -100,3 +101,6 @@ update event model =
 
       Struct.Event.AbortTurnRequest ->
          (Update.AbortTurn.apply_to new_model)
+
+      (Struct.Event.RequestedHelp help_request) ->
+         (Update.SetRequestedHelp.apply_to new_model help_request)

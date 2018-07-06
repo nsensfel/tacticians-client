@@ -8,13 +8,15 @@ module View.Controlled.CharacterCard exposing
 -- Elm -------------------------------------------------------------------------
 import Html
 import Html.Attributes
+import Html.Events
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Attributes
 import Struct.Armor
+import Struct.Attributes
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
+import Struct.HelpRequest
 import Struct.Navigator
 import Struct.Statistics
 import Struct.Weapon
@@ -70,6 +72,10 @@ get_rank_status rank =
    (Html.div
       [
          (Html.Attributes.class "battlemap-character-card-status"),
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (Struct.Event.RequestedHelp (Struct.HelpRequest.HelpOnRank rank))
+         ),
          (Html.Attributes.class
             (
                case rank of
