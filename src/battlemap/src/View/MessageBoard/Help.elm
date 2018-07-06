@@ -22,18 +22,27 @@ get_rank_help_message rank =
    case rank of
       Struct.Character.Target ->
          [
-            (Html.h1 [] [(Html.text "Protected Character")]),
-            (Html.div
+            (Html.h1
+               []
                [
-                  (Html.Attributes.class
-                     "battlemap-character-card-target-status"
+                  (get_guide_icon),
+                  (Html.text "Protected Character - "),
+                  (Html.div
+                     [
+                        (Html.Attributes.class
+                           "battlemap-message-board-help-figure"
+                        ),
+                        (Html.Attributes.class
+                           "battlemap-character-card-target-status"
+                        )
+                     ]
+                     []
                   )
                ]
-               []
             ),
             (Html.text
                (
-                  "Players that lost all of their Protected characters are"
+                  "Players that lose all of their protected characters are"
                   ++ " eliminated."
                )
             )
@@ -41,18 +50,27 @@ get_rank_help_message rank =
 
       Struct.Character.Commander ->
          [
-            (Html.h1 [] [(Html.text "Critical Character")]),
-            (Html.div
+            (Html.h1
+               []
                [
-                  (Html.Attributes.class
-                     "battlemap-character-card-commander-status"
+                  (get_guide_icon),
+                  (Html.text "Critical Character - "),
+                  (Html.div
+                     [
+                        (Html.Attributes.class
+                           "battlemap-message-board-help-figure"
+                        ),
+                        (Html.Attributes.class
+                           "battlemap-character-card-commander-status"
+                        )
+                     ]
+                     []
                   )
                ]
-               []
             ),
             (Html.text
                (
-                  "Players that lost any of their Critical characters are"
+                  "Players that lose any of their protected characters are"
                   ++ " eliminated."
                )
             )
@@ -60,14 +78,28 @@ get_rank_help_message rank =
 
       Struct.Character.Optional ->
          [
-            (Html.h1 [] [(Html.text "Reinforcement Character")]),
+            (Html.h1
+               []
+               [
+                  (get_guide_icon),
+                  (Html.text "Reinforcement Character")
+               ]
+            ),
             (Html.text
                (
-                  "Unless it is their last character, losing Reinforcement"
-                  ++ " characters does not cause a player to be eliminated."
+                  "Unless it is their very last character, losing a"
+                  ++ " Reinforcement characters never causes a player to be"
+                  ++ " eliminated."
                )
             )
          ]
+
+get_guide_icon : (Html.Html Struct.Event.Type)
+get_guide_icon =
+   (Html.div
+      [(Html.Attributes.class "battlemap-help-guide-icon")]
+      []
+   )
 
 get_default_help_message : (
       Struct.Model.Type ->
@@ -77,7 +109,13 @@ get_default_help_message model =
    case (Struct.CharacterTurn.get_state model.char_turn) of
       Struct.CharacterTurn.SelectedCharacter ->
          [
-            (Html.h1 [] [(Html.text "Character Selected")]),
+            (Html.h1
+               []
+               [
+                  (get_guide_icon),
+                  (Html.text "Character Selected")
+               ]
+            ),
             (Html.text
                (
                   "Click on a target tile to select a path or use the manual"
@@ -89,7 +127,13 @@ get_default_help_message model =
 
       Struct.CharacterTurn.MovedCharacter ->
          [
-            (Html.h1 [] [(Html.text "Character Moved")]),
+            (Html.h1
+               []
+               [
+                  (get_guide_icon),
+                  (Html.text "Character Moved")
+               ]
+            ),
             (Html.text
                (
                   "You can now choose a target in range. Dashed tiles indicate"
@@ -101,7 +145,13 @@ get_default_help_message model =
 
       Struct.CharacterTurn.ChoseTarget ->
          [
-            (Html.h1 [] [(Html.text "Target Selected")]),
+            (Html.h1
+               []
+               [
+                  (get_guide_icon),
+                  (Html.text "Target Selected")
+               ]
+            ),
             (Html.text
                (
                   "If you are satisfied with your choices, end the turn to"
@@ -112,7 +162,13 @@ get_default_help_message model =
 
       _ ->
          [
-            (Html.h1 [] [(Html.text "Selecting Character")]),
+            (Html.h1
+               []
+               [
+                  (get_guide_icon),
+                  (Html.text "Selecting a Character")
+               ]
+            ),
             (Html.text
                (
                   "Click once on a character to focus them. This will show you"
@@ -130,7 +186,8 @@ get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-message-board")
+         (Html.Attributes.class "battlemap-message-board"),
+         (Html.Attributes.class "battlemap-message-board-help")
       ]
       (
          case model.help_request of
