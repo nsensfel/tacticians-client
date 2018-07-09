@@ -1,13 +1,21 @@
-module ElmModule.Init exposing (init)
+module Struct.Flags exposing
+   (
+      Type
+   )
 
 -- Elm -------------------------------------------------------------------------
 
 -- Battlemap -------------------------------------------------------------------
-import Comm.LoadBattlemap
 
-import Struct.Event
-import Struct.Flags
-import Struct.Model
+--------------------------------------------------------------------------------
+-- TYPES -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
+type alias Type =
+   {
+      user_id : String,
+      token : String,
+      url_params : (List (List String))
+   }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -16,13 +24,3 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-init : Struct.Flags.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
-init flags =
-   let model = (Struct.Model.new) in
-      (
-         model,
-         (case (Comm.LoadBattlemap.try model) of
-            (Just cmd) -> cmd
-            Nothing -> Cmd.none
-         )
-      )
