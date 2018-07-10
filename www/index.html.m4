@@ -18,7 +18,7 @@
          <p>This website lets you play the game, even during its development phase. As a result, there is a lot missing.</p>
          <p>
             Having accounts at that stage would needlessly slow us down, so access to
-            <a href="/battlemap/">the game's battle system</a> is done without login in.
+            <a href="/battlemap/?id=0">the game's battle system</a> is done without login in.
          </p>
          <p>You can access the source code for the game this website is running, under the Apache 2.0 License:</p>
          <ul>

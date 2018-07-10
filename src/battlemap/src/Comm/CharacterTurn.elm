@@ -99,9 +99,9 @@ try_encoding model =
          (Just
             (Json.Encode.object
                [
-                  ("stk", (Json.Encode.string "0")),
+                  ("stk", (Json.Encode.string model.session_token)),
                   ("pid", (Json.Encode.string model.player_id)),
-                  ("bid", (Json.Encode.string "0")),
+                  ("bid", (Json.Encode.string model.battlemap_id)),
                   (
                      "cix",
                      (Json.Encode.int (Struct.Character.get_index char))

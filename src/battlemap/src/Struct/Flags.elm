@@ -1,11 +1,14 @@
 module Struct.Flags exposing
    (
-      Type
+      Type,
+      maybe_get_param
    )
 
 -- Elm -------------------------------------------------------------------------
+import List
 
 -- Battlemap -------------------------------------------------------------------
+import Util.List
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -24,3 +27,16 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+maybe_get_param : String -> Type -> (Maybe String)
+maybe_get_param param flags =
+   case
+      (Util.List.get_first
+         (\e -> ((List.head e) == (Just param)))
+         flags.url_params
+      )
+   of
+      Nothing -> Nothing
+      (Just a) ->
+         case (List.tail a) of
+            Nothing -> Nothing
+            (Just b) -> (List.head b)

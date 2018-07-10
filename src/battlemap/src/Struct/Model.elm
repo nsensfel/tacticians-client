@@ -28,6 +28,7 @@ import Struct.Battlemap
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error
+import Struct.Flags
 import Struct.HelpRequest
 import Struct.Tile
 import Struct.TurnResult
@@ -51,6 +52,8 @@ type alias Type =
       tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
       error: (Maybe Struct.Error.Type),
       player_id: String,
+      battlemap_id: String,
+      session_token: String,
       player_ix: Int,
       ui: Struct.UI.Type,
       char_turn: Struct.CharacterTurn.Type,
@@ -64,23 +67,45 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Type
-new =
-   {
-      help_request = Struct.HelpRequest.None,
-      animator = Nothing,
-      battlemap = (Struct.Battlemap.empty),
-      characters = (Array.empty),
-      weapons = (Dict.empty),
-      armors = (Dict.empty),
-      tiles = (Dict.empty),
-      error = Nothing,
-      player_id = "0",
-      player_ix = 0,
-      ui = (Struct.UI.default),
-      char_turn = (Struct.CharacterTurn.new),
-      timeline = (Array.empty)
-   }
+new : Struct.Flags.Type -> Type
+new flags =
+   let
+      maybe_battlemap_id = (Struct.Flags.maybe_get_param "id" flags)
+      model =
+         {
+            help_request = Struct.HelpRequest.None,
+            animator = Nothing,
+            battlemap = (Struct.Battlemap.empty),
+            characters = (Array.empty),
+            weapons = (Dict.empty),
+            armors = (Dict.empty),
+            tiles = (Dict.empty),
+            error = Nothing,
+            battlemap_id = "",
+            player_id =
+               (
+                  if (flags.user_id == "")
+                  then "0"
+                  else flags.user_id
+               ),
+            session_token = flags.token,
+            player_ix = 0,
+            ui = (Struct.UI.default),
+            char_turn = (Struct.CharacterTurn.new),
+            timeline = (Array.empty)
+         }
+   in
+      case maybe_battlemap_id of
+         Nothing ->
+            (invalidate
+               (Struct.Error.new
+                  Struct.Error.Failure
+                  "Could not find battlemap id."
+               )
+               model
+            )
+
+         (Just id) -> {model | battlemap_id = id}
 
 add_character : Struct.Character.Type -> Type -> Type
 add_character char model =
@@ -148,7 +173,6 @@ full_debug_reset model =
       armors = (Dict.empty),
       tiles = (Dict.empty),
       error = Nothing,
-      -- player_id remains
       ui = (Struct.UI.default),
       char_turn = (Struct.CharacterTurn.new),
       timeline = (Array.empty)
@@ -223,8 +247,7 @@ update_character_fun ix fun model =
 invalidate : Struct.Error.Type -> Type -> Type
 invalidate err model =
    {model |
-      error = (Just err),
-      ui = (Struct.UI.set_displayed_tab Struct.UI.StatusTab model.ui)
+      error = (Just err)
    }
 
 clear_error : Type -> Type

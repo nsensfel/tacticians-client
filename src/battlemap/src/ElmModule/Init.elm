@@ -18,7 +18,7 @@ import Struct.Model
 --------------------------------------------------------------------------------
 init : Struct.Flags.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 init flags =
-   let model = (Struct.Model.new) in
+   let model = (Struct.Model.new flags) in
       (
          model,
          (case (Comm.LoadBattlemap.try model) of

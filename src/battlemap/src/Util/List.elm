@@ -1,4 +1,4 @@
-module Util.List exposing (pop)
+module Util.List exposing (..)
 
 import List
 
@@ -10,3 +10,7 @@ pop l =
       (Nothing, _) -> Nothing
       (_ , Nothing) -> Nothing
       ((Just head), (Just tail)) -> (Just (head, tail))
+
+get_first : (a -> Bool) -> (List a) -> (Maybe a)
+get_first fun list =
+   (List.head (List.filter fun list))
