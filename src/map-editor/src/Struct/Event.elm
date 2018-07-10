@@ -15,26 +15,13 @@ import Struct.UI
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type Type =
-   AbortTurnRequest
-   | AnimationEnded
-   | AttackWithoutMovingRequest
-   | CharacterInfoRequested Int
-   | CharacterSelected Int
-   | DebugLoadBattlemapRequest
-   | DebugTeamSwitchRequest
-   | DebugTestAnimation
-   | DirectionRequested Struct.Direction.Type
+   None
    | Failed Struct.Error.Type
-   | LookingForCharacter Int
-   | None
    | ScaleChangeRequested Float
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
    | TabSelected Struct.UI.Tab
    | TileSelected Struct.Location.Ref
-   | CharacterOrTileSelected Struct.Location.Ref
-   | TurnEnded
    | RequestedHelp Struct.HelpRequest.Type
-   | WeaponSwitchRequest
 
 attempted : (Result.Result err val) -> Type
 attempted act =

@@ -7,13 +7,8 @@ import Json.Decode
 import Json.Encode
 
 -- Battlemap -------------------------------------------------------------------
-import Comm.AddArmor
-import Comm.AddChar
 import Comm.AddTile
-import Comm.AddWeapon
 import Comm.SetMap
-import Comm.SetTimeline
-import Comm.TurnResults
 
 import Struct.Event
 import Struct.ServerReply
@@ -30,12 +25,8 @@ internal_decoder : String -> (Json.Decode.Decoder Struct.ServerReply.Type)
 internal_decoder reply_type =
    case reply_type of
       "add_tile" -> (Comm.AddTile.decode)
-      "add_armor" -> (Comm.AddArmor.decode)
-      "add_char" -> (Comm.AddChar.decode)
-      "add_weapon" -> (Comm.AddWeapon.decode)
       "set_map" -> (Comm.SetMap.decode)
-      "turn_results" -> (Comm.TurnResults.decode)
-      "set_timeline" -> (Comm.SetTimeline.decode)
+      "okay" -> (Comm.Okay.decode)
       other ->
          (Json.Decode.fail
             (

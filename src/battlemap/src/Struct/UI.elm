@@ -21,7 +21,6 @@ module Struct.UI exposing
       -- Manual Controls
       has_manual_controls_enabled,
       -- Previous Action
-      has_focus,
       get_previous_action,
       set_previous_action
    )
@@ -129,9 +128,6 @@ set_enable_manual_controls : Bool -> Type -> Type
 set_enable_manual_controls val ui = {ui | show_manual_controls = val}
 
 -- Previous Action -------------------------------------------------------------
-has_focus : Type -> Bool
-has_focus ui = True
-
 set_previous_action : (Maybe Action) -> Type -> Type
 set_previous_action act ui = {ui | previous_action = act}
 

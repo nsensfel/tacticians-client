@@ -1,4 +1,4 @@
-module Comm.LoadBattlemap exposing (try)
+module Comm.LoadMap exposing (try)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Encode
@@ -25,7 +25,7 @@ try_encoding model =
          [
             ("stk", (Json.Encode.string model.session_token)),
             ("pid", (Json.Encode.string model.player_id)),
-            ("bmi", (Json.Encode.string model.battlemap_id))
+            ("mix", (Json.Encode.string model.map_ix))
          ]
       )
    )
@@ -37,6 +37,6 @@ try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
 try model =
    (Comm.Send.try_sending
       model
-      Constants.IO.battlemap_loading_handler
+      Constants.IO.map_loading_handler
       try_encoding
    )

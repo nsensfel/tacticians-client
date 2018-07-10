@@ -1,4 +1,4 @@
-module Struct.HelpRequest exposing (Type(..))
+module Struct.Toolbox exposing (Tool(..))
 
 -- Elm -------------------------------------------------------------------------
 
@@ -8,6 +8,8 @@ import Struct.Toolbox
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-type Type =
-   None
-   | HelpOnTool Struct.Toolbox.Tool
+type Tool =
+   Simple
+   | Select
+   | Fill
+   | Square

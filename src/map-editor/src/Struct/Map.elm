@@ -1,4 +1,4 @@
-module Struct.Battlemap exposing
+module Struct.Map exposing
    (
       Type,
       empty,
@@ -14,12 +14,9 @@ module Struct.Battlemap exposing
 -- Elm -------------------------------------------------------------------------
 import Array
 
--- Battlemap -------------------------------------------------------------------
-import Struct.Character
+-- Map -------------------------------------------------------------------
 import Struct.Tile
 import Struct.Location
-
-import Constants.Movement
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -35,29 +32,29 @@ type alias Type =
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 location_to_index : Struct.Location.Type -> Type -> Int
-location_to_index loc bmap =
-   ((loc.y * bmap.width) + loc.x)
+location_to_index loc map =
+   ((loc.y * map.width) + loc.x)
 
 has_location : Struct.Location.Type -> Type -> Bool
-has_location loc bmap =
+has_location loc map =
    (
       (loc.x >= 0)
       && (loc.y >= 0)
-      && (loc.x < bmap.width)
-      && (loc.y < bmap.height)
+      && (loc.x < map.width)
+      && (loc.y < map.height)
    )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_width : Type -> Int
-get_width bmap = bmap.width
+get_width map = map.width
 
 get_height : Type -> Int
-get_height bmap = bmap.height
+get_height map = map.height
 
 get_tiles : Type -> (Array.Array Struct.Tile.Instance)
-get_tiles bmap = bmap.content
+get_tiles map = map.content
 
 empty : Type
 empty =
@@ -80,44 +77,11 @@ try_getting_tile_at : (
       Type ->
       (Maybe Struct.Tile.Instance)
    )
-try_getting_tile_at loc bmap =
-   (Array.get (location_to_index loc bmap) bmap.content)
-
-get_movement_cost_function : (
-      Type ->
-      Struct.Location.Type ->
-      (List Struct.Character.Type) ->
-      Struct.Location.Type ->
-      Int
-   )
-get_movement_cost_function bmap start_loc char_list loc =
-   if (has_location loc bmap)
-   then
-      case (Array.get (location_to_index loc bmap) bmap.content) of
-         (Just tile) ->
-            if
-               (List.any
-                  (
-                     \c ->
-                        (
-                           ((Struct.Character.get_location c) == loc)
-                           && (loc /= start_loc)
-                           && (Struct.Character.is_alive c)
-                        )
-                  )
-                  char_list
-               )
-            then
-               Constants.Movement.cost_when_occupied_tile
-            else
-               (Struct.Tile.get_instance_cost tile)
-
-         Nothing -> Constants.Movement.cost_when_out_of_bounds
-   else
-      Constants.Movement.cost_when_out_of_bounds
+try_getting_tile_at loc map =
+   (Array.get (location_to_index loc map) map.content)
 
 solve_tiles : (List Struct.Tile.Type) -> Type -> Type
-solve_tiles tiles bmap =
-   {bmap |
-      content = (Array.map (Struct.Tile.solve_tile_instance tiles) bmap.content)
+solve_tiles tiles map =
+   {map |
+      content = (Array.map (Struct.Tile.solve_tile_instance tiles) map.content)
    }
