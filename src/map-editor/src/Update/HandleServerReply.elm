@@ -89,5 +89,9 @@ apply_to model query_result =
 
       (Result.Ok commands) ->
          case (List.foldl (apply_command) (model, Nothing) commands) of
-            (updated_model, Nothing) -> updated_model
-            (_, (Just error)) -> (Struct.Model.invalidate error model)
+            (updated_model, Nothing) -> (updated_model, Cmd.none)
+            (_, (Just error)) ->
+               (
+                  (Struct.Model.invalidate error model),
+                  Cmd.none
+               )

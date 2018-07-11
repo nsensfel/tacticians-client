@@ -12,7 +12,7 @@ import Struct.Event
 import Struct.Model
 
 import View.Map
-import View.Controlled
+import View.Toolbox
 import View.MessageBoard
 import View.MainMenu
 import View.SubMenu
@@ -32,8 +32,8 @@ view model =
       ]
       [
          (View.MainMenu.get_html),
-         (Html.Lazy.lazy2
-            (View.ToolBox.get_html)
+         (Html.Lazy.lazy
+            (View.Toolbox.get_html)
             model.toolbox
          ),
          (Html.div

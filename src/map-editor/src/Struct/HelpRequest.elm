@@ -10,4 +10,3 @@ import Struct.Toolbox
 --------------------------------------------------------------------------------
 type Type =
    None
-   | HelpOnTool Struct.Toolbox.Tool

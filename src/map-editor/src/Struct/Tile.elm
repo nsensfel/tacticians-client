@@ -4,6 +4,7 @@ module Struct.Tile exposing
       Type,
       Instance,
       new,
+      clone_instance,
       new_instance,
       error_tile_instance,
       get_id,
@@ -111,6 +112,9 @@ new id name crossing_cost range_minimum range_maximum =
       range_minimum = range_minimum,
       range_maximum = range_maximum
    }
+
+clone_instance : Struct.Location.Type -> Instance -> Instance
+clone_instance loc inst = {inst | location = loc}
 
 new_instance : Int -> Int -> Int -> Int -> Int -> Instance
 new_instance x y icon_id crossing_cost type_id =

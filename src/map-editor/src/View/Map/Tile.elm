@@ -1,4 +1,4 @@
-module View.Battlemap.Tile exposing (get_html)
+module View.Map.Tile exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html
@@ -30,11 +30,11 @@ get_html tile =
    in
       (Html.div
          [
-            (Html.Attributes.class "battlemap-tile-icon"),
-            (Html.Attributes.class "battlemap-tiled"),
+            (Html.Attributes.class "map-tile-icon"),
+            (Html.Attributes.class "map-tiled"),
             (Html.Attributes.class
                (
-                  "battlemap-tile-variant-"
+                  "map-tile-variant-"
                   ++ (toString (Struct.Tile.get_variant_id tile))
                )
             ),

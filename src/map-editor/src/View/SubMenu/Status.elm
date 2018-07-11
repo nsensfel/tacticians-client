@@ -13,7 +13,6 @@ import Struct.Location
 import Struct.Model
 import Struct.UI
 
-import View.SubMenu.Status.CharacterInfo
 import View.SubMenu.Status.TileInfo
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -26,8 +25,8 @@ get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-footer-tabmenu-content"),
-         (Html.Attributes.class "battlemap-footer-tabmenu-content-status")
+         (Html.Attributes.class "map-footer-tabmenu-content"),
+         (Html.Attributes.class "map-footer-tabmenu-content-status")
       ]
       [
          (case (Struct.UI.get_previous_action model.ui) of
@@ -36,17 +35,6 @@ get_html model =
                   model
                   (Struct.Location.from_ref loc)
                )
-
-            (Just (Struct.UI.SelectedCharacter target_char)) ->
-               case (Array.get target_char model.characters) of
-                  (Just char) ->
-                     (Html.Lazy.lazy2
-                        (View.SubMenu.Status.CharacterInfo.get_html)
-                        model.player_ix
-                        char
-                     )
-
-                  _ -> (Html.text "Error: Unknown character selected.")
 
             _ ->
                (Html.text "Nothing is being focused.")

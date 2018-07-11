@@ -6,11 +6,11 @@ import Dict
 import Html
 import Html.Attributes
 
--- Struct.Battlemap -------------------------------------------------------------------
+-- Map Editor ------------------------------------------------------------------
 import Constants.IO
 import Constants.Movement
 
-import Struct.Battlemap
+import Struct.Map
 import Struct.Event
 import Struct.Location
 import Struct.Model
@@ -24,10 +24,10 @@ get_icon : (Struct.Tile.Instance -> (Html.Html Struct.Event.Type))
 get_icon tile =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-tile-card-icon"),
+         (Html.Attributes.class "map-tile-card-icon"),
          (Html.Attributes.class
             (
-               "battlemap-tile-variant-"
+               "map-tile-variant-"
                ++ (toString (Struct.Tile.get_variant_id tile))
             )
          ),
@@ -60,7 +60,7 @@ get_name model tile =
       (Just tile_type) ->
          (Html.div
             [
-               (Html.Attributes.class "battlemap-tile-card-name")
+               (Html.Attributes.class "map-tile-card-name")
             ]
             [
                (Html.text (Struct.Tile.get_name tile_type))
@@ -80,7 +80,7 @@ get_cost tile =
    in
       (Html.div
          [
-            (Html.Attributes.class "battlemap-tile-card-cost")
+            (Html.Attributes.class "map-tile-card-cost")
          ]
          [
             (Html.text text)
@@ -94,7 +94,7 @@ get_location tile =
    in
       (Html.div
          [
-            (Html.Attributes.class "battlemap-tile-card-location")
+            (Html.Attributes.class "map-tile-card-location")
          ]
          [
             (Html.text
@@ -118,17 +118,17 @@ get_html : (
       (Html.Html Struct.Event.Type)
    )
 get_html model loc =
-   case (Struct.Battlemap.try_getting_tile_at loc model.battlemap) of
+   case (Struct.Map.try_getting_tile_at loc model.map) of
       (Just tile) ->
          (Html.div
             [
-               (Html.Attributes.class "battlemap-tile-card")
+               (Html.Attributes.class "map-tile-card")
             ]
             [
                (get_name model tile),
                (Html.div
                   [
-                     (Html.Attributes.class "battlemap-tile-card-top")
+                     (Html.Attributes.class "map-tile-card-top")
                   ]
                   [
                      (get_icon tile),

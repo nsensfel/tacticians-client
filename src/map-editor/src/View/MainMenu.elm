@@ -29,7 +29,7 @@ get_html : (Html.Html Struct.Event.Type)
 get_html =
    (Html.div
       [
-         (Html.Attributes.class "battlemap-main-menu")
+         (Html.Attributes.class "map-main-menu")
       ]
       (List.map
          (get_menu_button_html)

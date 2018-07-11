@@ -1,15 +1,15 @@
-module View.MessageBoard.Help exposing (get_html)
+module View.Toolbox exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html
 import Html.Attributes
+import Html.Events
 
--- Battlemap -------------------------------------------------------------------
+-- Struct.Battlemap -------------------------------------------------------------------
 import Struct.Event
-import Struct.HelpRequest
-import Struct.Model
+import Struct.Toolbox
 
-import View.MessageBoard.Help.Guide
+import Util.Html
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -18,16 +18,10 @@ import View.MessageBoard.Help.Guide
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
-get_html model =
+get_html : Struct.Toolbox.Type -> (Html.Html Struct.Event.Type)
+get_html tb =
    (Html.div
+      [(Html.Attributes.class "map-toolbox")]
       [
-         (Html.Attributes.class "map-message-board"),
-         (Html.Attributes.class "map-message-board-help")
       ]
-      (
-         case model.help_request of
-            Struct.HelpRequest.None ->
-               (View.MessageBoard.Help.Guide.get_html_contents model)
-      )
    )

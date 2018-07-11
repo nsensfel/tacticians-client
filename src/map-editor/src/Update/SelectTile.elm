@@ -25,13 +25,11 @@ apply_to model loc_ref =
    (
       {model |
          ui =
-            (Struct.UI.reset_displayed_nav
-               (Struct.UI.set_displayed_tab
-                  Struct.UI.StatusTab
-                  (Struct.UI.set_previous_action
-                     (Just (Struct.UI.SelectedLocation loc_ref))
-                     model.ui
-                  )
+            (Struct.UI.set_displayed_tab
+               Struct.UI.StatusTab
+               (Struct.UI.set_previous_action
+                  (Just (Struct.UI.SelectedLocation loc_ref))
+                  model.ui
                )
             )
       },

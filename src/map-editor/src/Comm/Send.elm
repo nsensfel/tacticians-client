@@ -8,6 +8,7 @@ import Json.Encode
 
 -- Battlemap -------------------------------------------------------------------
 import Comm.AddTile
+import Comm.Okay
 import Comm.SetMap
 
 import Struct.Event

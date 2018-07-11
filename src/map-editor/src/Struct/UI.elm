@@ -14,10 +14,6 @@ module Struct.UI exposing
       reset_displayed_tab,
       to_string,
       get_all_tabs,
-      -- Navigator
-      try_getting_displayed_nav,
-      set_displayed_nav,
-      reset_displayed_nav,
       -- Previous Action
       get_previous_action,
       set_previous_action

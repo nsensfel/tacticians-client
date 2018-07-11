@@ -14,11 +14,12 @@ import Array
 import Dict
 
 -- Map -------------------------------------------------------------------
-import Struct.Map
 import Struct.Error
 import Struct.Flags
 import Struct.HelpRequest
+import Struct.Map
 import Struct.Tile
+import Struct.Toolbox
 import Struct.UI
 
 import Util.Array
@@ -28,12 +29,13 @@ import Util.Array
 --------------------------------------------------------------------------------
 type alias Type =
    {
+      toolbox: Struct.Toolbox.Type,
       help_request: Struct.HelpRequest.Type,
       map: Struct.Map.Type,
       tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
       error: (Maybe Struct.Error.Type),
       player_id: String,
-      map_id: String,
+      map_ix: String,
       session_token: String,
       ui: Struct.UI.Type
    }
@@ -48,14 +50,15 @@ type alias Type =
 new : Struct.Flags.Type -> Type
 new flags =
    let
-      maybe_map_id = (Struct.Flags.maybe_get_param "id" flags)
+      maybe_map_ix = (Struct.Flags.maybe_get_param "id" flags)
       model =
          {
+            toolbox = (Struct.Toolbox.default),
             help_request = Struct.HelpRequest.None,
             map = (Struct.Map.empty),
             tiles = (Dict.empty),
             error = Nothing,
-            map_id = "",
+            map_ix = "",
             player_id =
                (
                   if (flags.user_id == "")
@@ -66,7 +69,7 @@ new flags =
             ui = (Struct.UI.default)
          }
    in
-      case maybe_map_id of
+      case maybe_map_ix of
          Nothing ->
             (invalidate
                (Struct.Error.new
@@ -76,7 +79,7 @@ new flags =
                model
             )
 
-         (Just id) -> {model | map_id = id}
+         (Just id) -> {model | map_ix = id}
 
 add_tile : Struct.Tile.Type -> Type -> Type
 add_tile tl model =
@@ -92,12 +95,10 @@ add_tile tl model =
 reset : Type -> Type
 reset model =
    {model |
+      toolbox = (Struct.Toolbox.default),
       help_request = Struct.HelpRequest.None,
       error = Nothing,
-      ui =
-         (Struct.UI.reset_displayed_nav
-            (Struct.UI.set_previous_action Nothing model.ui)
-         )
+      ui = (Struct.UI.set_previous_action Nothing model.ui)
    }
 
 invalidate : Struct.Error.Type -> Type -> Type

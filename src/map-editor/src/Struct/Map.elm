@@ -6,7 +6,7 @@ module Struct.Map exposing
       get_width,
       get_height,
       get_tiles,
-      get_movement_cost_function,
+      set_tile_to,
       solve_tiles,
       try_getting_tile_at
    )
@@ -55,6 +55,12 @@ get_height map = map.height
 
 get_tiles : Type -> (Array.Array Struct.Tile.Instance)
 get_tiles map = map.content
+
+set_tile_to : Struct.Location.Type -> Struct.Tile.Instance -> Type -> Type
+set_tile_to loc tile_inst map =
+   {map |
+      content = (Array.set (location_to_index loc map) tile_inst map.content)
+   }
 
 empty : Type
 empty =

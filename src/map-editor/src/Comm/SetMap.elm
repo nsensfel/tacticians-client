@@ -3,8 +3,8 @@ module Comm.SetMap exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Battlemap -------------------------------------------------------------------
-import Struct.Battlemap
+-- Map -------------------------------------------------------------------------
+import Struct.Map
 import Struct.ServerReply
 import Struct.Tile
 
@@ -34,7 +34,7 @@ deserialize_tile_instance map_width index id =
 internal_decoder : MapData -> Struct.ServerReply.Type
 internal_decoder map_data =
    (Struct.ServerReply.SetMap
-      (Struct.Battlemap.new
+      (Struct.Map.new
          map_data.w
          map_data.h
          (List.indexedMap
