@@ -1,14 +1,18 @@
-module ElmModule.Init exposing (init)
+module Comm.LoadTiles exposing (try)
 
 -- Elm -------------------------------------------------------------------------
 
 -- Battlemap -------------------------------------------------------------------
-import Comm.LoadTiles
-import Comm.LoadMap
+import Comm.Send
+
+import Constants.IO
 
 import Struct.Event
-import Struct.Flags
 import Struct.Model
+
+--------------------------------------------------------------------------------
+-- TYPES ------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -17,21 +21,11 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-init : Struct.Flags.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
-init flags =
-   let model = (Struct.Model.new flags) in
-      (
-         model,
-         (Cmd.batch
-            [
-               (case (Comm.LoadTiles.try model) of
-                  (Just cmd) -> cmd
-                  Nothing -> Cmd.none
-               ),
-               (case (Comm.LoadMap.try model) of
-                  (Just cmd) -> cmd
-                  Nothing -> Cmd.none
-               )
-            ]
-         )
+try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
+try model =
+   (Just
+      (Comm.Send.empty_request
+         model
+         Constants.IO.tiles_data_url
       )
+   )

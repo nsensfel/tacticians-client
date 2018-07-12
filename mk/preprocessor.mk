@@ -9,6 +9,9 @@ CONFIG_FILE ?= ${CURDIR}/conf/constants.conf
 PREPROCESSOR_FILES = $(shell find ${CURDIR} -name "*.m4")
 PREPROCESSED_FILES = $(patsubst %.m4,%,$(PREPROCESSOR_FILES))
 
+MAKEFILE_TO_M4 = \
+	--define=__MAKEFILE_DATA_DIR=$(DATA_DIR)
+
 ################################################################################
 ## SANITY CHECKS ###############################################################
 ################################################################################
@@ -25,7 +28,7 @@ PREPROCESSOR_RESULT = $(PREPROCESSED_FILES)
 ## INTERNAL RULES ##############################################################
 ################################################################################
 $(PREPROCESSED_FILES): %: %.m4 .PHONY
-	m4 -P $(CONFIG_FILE) $< > $@
+	m4 -P $(MAKEFILE_TO_M4) $(CONFIG_FILE) $< > $@
 
 .PHONY:
 

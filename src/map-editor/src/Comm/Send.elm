@@ -1,4 +1,4 @@
-module Comm.Send exposing (try_sending)
+module Comm.Send exposing (try_sending, empty_request)
 
 -- Elm -------------------------------------------------------------------------
 import Http
@@ -66,3 +66,17 @@ try_sending model recipient try_encoding_fun =
          )
 
       Nothing -> Nothing
+
+empty_request : (
+      Struct.Model.Type ->
+      String ->
+      (Cmd Struct.Event.Type)
+   )
+empty_request model recipient =
+   (Http.send
+      Struct.Event.ServerReplied
+      (Http.get
+         recipient
+         (Json.Decode.list (decode))
+      )
+   )

@@ -3,6 +3,12 @@ module Constants.IO exposing (..)
 base_url : String
 base_url = "__CONF_SERVER_URL"
 
+data_url : String
+data_url = (base_url ++ "/asset/data/")
+
+tiles_data_url : String
+tiles_data_url = (base_url ++ "/asset/data/tiles.json")
+
 map_editor_handler_url : String
 map_editor_handler_url = (base_url ++ "/handler/map-editor")
 
