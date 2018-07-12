@@ -10,7 +10,7 @@ character_turn_handler : String
 character_turn_handler = (map_handler_url ++ "/btl_character_turn")
 
 map_loading_handler : String
-map_loading_handler = (map_handler_url ++ "/btl_load_state")
+map_loading_handler = (map_handler_url ++ "/btl_load")
 
 tile_assets_url : String
 tile_assets_url = (base_url ++ "/asset/svg/tile/")

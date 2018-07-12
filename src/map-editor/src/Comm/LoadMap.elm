@@ -25,7 +25,7 @@ try_encoding model =
          [
             ("stk", (Json.Encode.string model.session_token)),
             ("pid", (Json.Encode.string model.player_id)),
-            ("mix", (Json.Encode.string model.map_ix))
+            ("mid", (Json.Encode.string model.map_id))
          ]
       )
    )

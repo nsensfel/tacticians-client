@@ -35,7 +35,7 @@ type alias Type =
       tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
       error: (Maybe Struct.Error.Type),
       player_id: String,
-      map_ix: String,
+      map_id: String,
       session_token: String,
       ui: Struct.UI.Type
    }
@@ -50,7 +50,7 @@ type alias Type =
 new : Struct.Flags.Type -> Type
 new flags =
    let
-      maybe_map_ix = (Struct.Flags.maybe_get_param "id" flags)
+      maybe_map_id = (Struct.Flags.maybe_get_param "id" flags)
       model =
          {
             toolbox = (Struct.Toolbox.default),
@@ -58,7 +58,7 @@ new flags =
             map = (Struct.Map.empty),
             tiles = (Dict.empty),
             error = Nothing,
-            map_ix = "",
+            map_id = "",
             player_id =
                (
                   if (flags.user_id == "")
@@ -69,7 +69,7 @@ new flags =
             ui = (Struct.UI.default)
          }
    in
-      case maybe_map_ix of
+      case maybe_map_id of
          Nothing ->
             (invalidate
                (Struct.Error.new
@@ -79,7 +79,7 @@ new flags =
                model
             )
 
-         (Just id) -> {model | map_ix = id}
+         (Just id) -> {model | map_id = id}
 
 add_tile : Struct.Tile.Type -> Type -> Type
 add_tile tl model =
