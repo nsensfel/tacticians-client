@@ -5,7 +5,8 @@ MODULES ?= battle global asset map-editor
 
 SRC_DIR = ${CURDIR}/src
 WWW_DIR = ${CURDIR}/www
-DATA_DIR ?= /my/src/tacticians-server/data/
+DATA_DIR ?= /my/src/tacticians-data/
+
 ################################################################################
 ## MAKEFILE MAGIC ##############################################################
 ################################################################################
