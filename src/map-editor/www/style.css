@@ -355,6 +355,20 @@
 
 .map-tile-icon       {z-index: 0; position: absolute; background-size: 300%;}
 
+.map-tile {background-size: 300%;}
+
+.map-tabmenu-tiles-tab
+{
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+}
+
+.map-tabmenu-tiles-tab .map-tile
+{
+   margin: 0.1em;
+}
+
 .map-tile-selected
 {
    border: 1px dashed white;

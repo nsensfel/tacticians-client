@@ -25,6 +25,8 @@ type Type =
    | RequestedHelp Struct.HelpRequest.Type
    | ModeRequested Struct.Toolbox.Mode
    | ShapeRequested Struct.Toolbox.Shape
+   | ClearSelectionRequested
+   | TemplateRequested Int
 
 attempted : (Result.Result err val) -> Type
 attempted act =

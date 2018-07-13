@@ -13,6 +13,8 @@ import Update.SelectTile
 import Update.SetRequestedHelp
 import Update.SetToolboxMode
 import Update.SetToolboxShape
+import Update.SetToolboxTemplate
+import Update.ClearToolboxSelection
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -59,3 +61,9 @@ update event model =
 
       (Struct.Event.ModeRequested mode) ->
          (Update.SetToolboxMode.apply_to new_model mode)
+
+      (Struct.Event.TemplateRequested id) ->
+         (Update.SetToolboxTemplate.apply_to new_model id)
+
+      Struct.Event.ClearSelectionRequested ->
+         (Update.ClearToolboxSelection.apply_to new_model)

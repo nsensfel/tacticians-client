@@ -46,6 +46,22 @@ html, body, .fullscreen-module
    background-color: #C8BEB7;
 }
 
+* button:disabled
+{
+   background-color: #502D16;
+}
+
+* button:disabled:hover
+{
+   cursor: default;
+   background-color: #502D16;
+}
+
+* button:disabled:active
+{
+   background-color: #502D16;
+}
+
 html, body, .fullscreen-module
 {
    position: absolute;
