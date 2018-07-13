@@ -12,9 +12,10 @@ import List
 -- Map -------------------------------------------------------------------------
 import Constants.UI
 
-import Struct.Map
 import Struct.Event
+import Struct.Map
 import Struct.Model
+import Struct.Toolbox
 import Struct.UI
 
 import Util.Html
@@ -24,8 +25,12 @@ import View.Map.Tile
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_tiles_html : Struct.Map.Type -> (Html.Html Struct.Event.Type)
-get_tiles_html map =
+get_tiles_html : (
+      Struct.Toolbox.Type ->
+      Struct.Map.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_tiles_html tb map =
    (Html.div
       [
          (Html.Attributes.class "map-tiles-layer"),
@@ -59,7 +64,7 @@ get_tiles_html map =
          )
       ]
       (List.map
-         (View.Map.Tile.get_html)
+         (View.Map.Tile.get_html tb)
          (Array.toList (Struct.Map.get_tiles map))
       )
    )
@@ -95,6 +100,6 @@ get_html model =
          )
       ]
       [
-         (Html.Lazy.lazy (get_tiles_html) model.map)
+         (Html.Lazy.lazy2 (get_tiles_html) model.toolbox model.map)
       ]
    )

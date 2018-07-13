@@ -125,11 +125,11 @@ new_instance x y icon_id crossing_cost type_id =
       type_id = type_id
    }
 
-error_tile_instance : Int -> Int -> Instance
-error_tile_instance x y =
+error_tile_instance : Int -> Int -> Int -> Instance
+error_tile_instance icon_id x y =
    {
       location = {x = x, y = y},
-      icon_id = -1,
+      icon_id = icon_id,
       type_id = -1,
       crossing_cost = Constants.Movement.cost_when_out_of_bounds
    }
@@ -188,6 +188,7 @@ solve_tile_instance tiles tile_instance =
 
          Nothing ->
             (error_tile_instance
+               tile_instance.icon_id
                tile_instance.location.x
                tile_instance.location.y
             )

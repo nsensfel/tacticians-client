@@ -6,9 +6,10 @@ import Http
 -- Battlemap -------------------------------------------------------------------
 import Struct.Direction
 import Struct.Error
+import Struct.HelpRequest
 import Struct.Location
 import Struct.ServerReply
-import Struct.HelpRequest
+import Struct.Toolbox
 import Struct.UI
 
 --------------------------------------------------------------------------------
@@ -22,6 +23,8 @@ type Type =
    | TabSelected Struct.UI.Tab
    | TileSelected Struct.Location.Ref
    | RequestedHelp Struct.HelpRequest.Type
+   | ModeRequested Struct.Toolbox.Mode
+   | ShapeRequested Struct.Toolbox.Shape
 
 attempted : (Result.Result err val) -> Type
 attempted act =

@@ -1,14 +1,10 @@
-module Update.SelectTile exposing (apply_to)
-
+module Update.SetToolboxShape exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Error
 import Struct.Event
-import Struct.Location
-import Struct.Model
 import Struct.Toolbox
-import Struct.UI
+import Struct.Model
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -19,22 +15,11 @@ import Struct.UI
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Struct.Location.Ref ->
+      Struct.Toolbox.Shape ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model loc_ref =
-   let
-      (toolbox, map) =
-         (Struct.Toolbox.apply_to
-            (Struct.Location.from_ref loc_ref)
-            model.toolbox
-            model.map
-         )
-   in
-      (
-         {model |
-            toolbox = toolbox,
-            map = map
-         },
-         Cmd.none
-      )
+apply_to model shape =
+   (
+      {model | toolbox = (Struct.Toolbox.set_shape shape model.toolbox)},
+      Cmd.none
+   )

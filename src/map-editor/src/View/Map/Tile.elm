@@ -12,6 +12,7 @@ import Constants.IO
 import Struct.Event
 import Struct.Location
 import Struct.Tile
+import Struct.Toolbox
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -21,10 +22,11 @@ import Struct.Tile
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
+      Struct.Toolbox.Type ->
       Struct.Tile.Instance ->
       (Html.Html Struct.Event.Type)
    )
-get_html tile =
+get_html tb tile =
    let
       tile_loc = (Struct.Tile.get_location tile)
    in
@@ -32,6 +34,16 @@ get_html tile =
          [
             (Html.Attributes.class "map-tile-icon"),
             (Html.Attributes.class "map-tiled"),
+            (
+               if (Struct.Toolbox.is_selected tile_loc tb)
+               then (Html.Attributes.class "map-tile-selected")
+               else (Html.Attributes.class "")
+            ),
+            (
+               if (Struct.Toolbox.is_square_corner tile_loc tb)
+               then (Html.Attributes.class "map-tile-square-corner")
+               else (Html.Attributes.class "")
+            ),
             (Html.Attributes.class
                (
                   "map-tile-variant-"

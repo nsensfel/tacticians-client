@@ -53,6 +53,22 @@ set_map map current_state =
             Nothing
          )
 
+refresh_map : (
+      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type))
+   )
+refresh_map current_state =
+   case current_state of
+      (_, (Just _)) -> current_state
+      (model, _) ->
+         (
+            {model |
+               map =
+                  (Struct.Map.solve_tiles (Dict.values model.tiles) model.map)
+            },
+            Nothing
+         )
+
 apply_command : (
       Struct.ServerReply.Type ->
       (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
@@ -66,7 +82,8 @@ apply_command command current_state =
       (Struct.ServerReply.SetMap map) ->
          (set_map map current_state)
 
-      Struct.ServerReply.Okay -> current_state
+      Struct.ServerReply.Okay ->
+         (refresh_map current_state)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

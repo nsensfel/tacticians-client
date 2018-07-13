@@ -11,7 +11,8 @@ import Update.HandleServerReply
 import Update.SelectTab
 import Update.SelectTile
 import Update.SetRequestedHelp
-
+import Update.SetToolboxMode
+import Update.SetToolboxShape
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -52,3 +53,9 @@ update event model =
 
       (Struct.Event.RequestedHelp help_request) ->
          (Update.SetRequestedHelp.apply_to new_model help_request)
+
+      (Struct.Event.ShapeRequested shape) ->
+         (Update.SetToolboxShape.apply_to new_model shape)
+
+      (Struct.Event.ModeRequested mode) ->
+         (Update.SetToolboxMode.apply_to new_model mode)

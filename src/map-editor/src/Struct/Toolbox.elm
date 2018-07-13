@@ -5,13 +5,16 @@ module Struct.Toolbox exposing
       Shape(..),
       apply_to,
       is_selected,
+      is_square_corner,
       clear_selection,
       set_template,
       set_mode,
       set_shape,
       get_template,
       get_mode,
+      get_modes,
       get_shape,
+      get_shapes,
       get_selection,
       default
    )
@@ -22,6 +25,8 @@ module Struct.Toolbox exposing
 import Struct.Location
 import Struct.Map
 import Struct.Tile
+
+import Util.List
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -56,14 +61,17 @@ apply_mode_to : (
 apply_mode_to loc (tb, map) =
    case tb.mode of
       Draw ->
-         (
-            tb,
-            (Struct.Map.set_tile_to
-               loc
-               (Struct.Tile.clone_instance loc tb.template)
-               map
+         if ((tb.selection == []) || (List.member loc tb.selection))
+         then
+            (
+               tb,
+               (Struct.Map.set_tile_to
+                  loc
+                  (Struct.Tile.clone_instance loc tb.template)
+                  map
+               )
             )
-         )
+         else (tb, map)
 
       RemoveSelection ->
          (
@@ -87,23 +95,32 @@ apply_mode_to loc (tb, map) =
          )
 
 get_filled_tiles : (
-      Struct.Location.Type ->
       Struct.Map.Type ->
+      Struct.Location.Type ->
       (List Struct.Location.Type)
    )
-get_filled_tiles loc map =
+get_filled_tiles map loc =
    -- TODO: unimplemented
    []
 
 get_square_tiles : (
       Struct.Location.Type ->
-      Struct.Location.Type ->
       Struct.Map.Type ->
+      Struct.Location.Type ->
       (List Struct.Location.Type)
    )
-get_square_tiles new_loc corner map =
-   -- TODO: unimplemented
-   []
+get_square_tiles corner map new_loc =
+   let
+      x_range =
+         if (corner.x < new_loc.x)
+         then (List.range corner.x new_loc.x)
+         else (List.range new_loc.x corner.x)
+      y_range =
+         if (corner.y < new_loc.y)
+         then (List.range corner.y new_loc.y)
+         else (List.range new_loc.y corner.y)
+   in
+      (Util.List.product_map (Struct.Location.new) x_range y_range)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -111,7 +128,7 @@ get_square_tiles new_loc corner map =
 default : Type
 default =
    {
-      template = (Struct.Tile.error_tile_instance 0 0),
+      template = (Struct.Tile.error_tile_instance 0 0 0),
       mode = Draw,
       shape = Simple,
       selection = [],
@@ -124,8 +141,24 @@ get_template tb = tb.template
 get_mode : Type -> Mode
 get_mode tb = tb.mode
 
+get_modes : (List Mode)
+get_modes =
+   [
+      Draw,
+      AddSelection,
+      RemoveSelection
+   ]
+
 get_shape : Type -> Shape
 get_shape tb = tb.shape
+
+get_shapes : (List Shape)
+get_shapes =
+   [
+      Simple,
+      Fill,
+      Square
+   ]
 
 get_selection : Type -> (List Struct.Location.Type)
 get_selection tb = tb.selection
@@ -157,9 +190,13 @@ clear_selection tb =
       square_corner = Nothing
    }
 
-is_selected : Type -> Struct.Location.Type -> Bool
-is_selected tb loc =
+is_selected : Struct.Location.Type -> Type -> Bool
+is_selected loc tb =
    (List.member loc tb.selection)
+
+is_square_corner : Struct.Location.Type -> Type -> Bool
+is_square_corner loc tb =
+   (tb.square_corner == (Just loc))
 
 apply_to : (
       Struct.Location.Type ->
@@ -174,7 +211,7 @@ apply_to loc tb map =
          (List.foldl
             (apply_mode_to)
             (tb, map)
-            (get_filled_tiles loc map)
+            (get_filled_tiles map loc)
          )
 
       Square ->
@@ -183,6 +220,6 @@ apply_to loc tb map =
             (Just corner) ->
                (List.foldl
                   (apply_mode_to)
-                  (tb, map)
-                  (get_square_tiles loc corner map)
+                  ({tb | square_corner = Nothing}, map)
+                  (get_square_tiles corner map loc)
                )
