@@ -3,6 +3,7 @@ module Struct.Model exposing
       Type,
       new,
       add_tile,
+      add_tile_pattern,
       invalidate,
       reset,
       clear_error
@@ -19,6 +20,7 @@ import Struct.Flags
 import Struct.HelpRequest
 import Struct.Map
 import Struct.Tile
+import Struct.TilePattern
 import Struct.Toolbox
 import Struct.UI
 
@@ -32,6 +34,7 @@ type alias Type =
       toolbox: Struct.Toolbox.Type,
       help_request: Struct.HelpRequest.Type,
       map: Struct.Map.Type,
+      tile_patterns: (Dict.Dict (Maybe Int) (List Struct.TilePattern.Type)),
       tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
       error: (Maybe Struct.Error.Type),
       player_id: String,
@@ -57,6 +60,7 @@ new flags =
             help_request = Struct.HelpRequest.None,
             map = (Struct.Map.empty),
             tiles = (Dict.empty),
+            tile_patterns = [],
             error = Nothing,
             map_id = "",
             player_id =
@@ -91,6 +95,49 @@ add_tile tl model =
             model.tiles
          )
    }
+
+add_tile_pattern : Struct.TilePattern.Type -> Type -> Type
+add_tile_pattern tp model =
+   case (Struct.TilePattern.get_source_pattern tp) of
+      (Struct.TilePattern.Exactly i) ->
+         case (Dict.get (Just i) model.tile_patterns) of
+            Nothing ->
+               {model |
+                  tile_patterns =
+                     (Dict.insert (Just i) [tp] model.tile_patterns)
+               }
+
+            (Just l) ->
+               {model |
+                  tile_patterns =
+                     (Dict.insert (Just i) (tp :: l) model.tile_patterns)
+               }
+
+      _ ->
+         case (Dict.get Nothing model.tile_patterns) of
+            Nothing ->
+               {model |
+                  tile_patterns =
+                     (Dict.insert Nothing [tp] model.tile_patterns)
+               }
+
+            (Just l) ->
+               {model |
+                  tile_patterns =
+                     (Dict.insert Nothing (tp :: l) model.tile_patterns)
+               }
+
+get_tile_patterns_for : Int -> Type -> (List Struct.TilePattern.Type)
+get_tile_patterns_for i model =
+   case (Dict.get (Just i) model.tile_patterns) of
+      Nothing -> []
+      (Just r) -> r
+
+get_wild_tile_patterns : Type -> (List Struct.TilePattern.Type)
+get_wild_tile_patterns model =
+   case (Dict.get Nothing model.tile_patterns) of
+      Nothing -> []
+      (Just r) -> r
 
 reset : Type -> Type
 reset model =
