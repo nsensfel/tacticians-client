@@ -41,6 +41,15 @@ neighbor dir loc =
       Struct.Direction.Down -> {loc | y = (loc.y + 1)}
       Struct.Direction.None -> loc
 
+neighbors : Type -> (List Type)
+neighbors loc =
+   [
+      {loc | x = (loc.x + 1)},
+      {loc | x = (loc.x - 1)},
+      {loc | y = (loc.y - 1)},
+      {loc | y = (loc.y + 1)}
+   ]
+
 get_ref : Type -> Ref
 get_ref l =
    (l.x, l.y)

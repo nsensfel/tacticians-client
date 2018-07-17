@@ -84,7 +84,9 @@ try_getting_tile_at : (
       (Maybe Struct.Tile.Instance)
    )
 try_getting_tile_at loc map =
-   (Array.get (location_to_index loc map) map.content)
+   if (has_location loc map)
+   then (Array.get (location_to_index loc map) map.content)
+   else Nothing
 
 solve_tiles : (List Struct.Tile.Type) -> Type -> Type
 solve_tiles tiles map =

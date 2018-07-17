@@ -93,15 +93,72 @@ apply_mode_to loc (tb, map) =
             ),
             map
          )
+get_filled_tiles_internals : (
+      (Struct.Location.Type -> Bool) ->
+      (List Struct.Location.Type) ->
+      (List Struct.Location.Type) ->
+      (List Struct.Location.Type)
+   )
+get_filled_tiles_internals match_fun candidates result =
+   case (Util.List.pop candidates) of
+      Nothing -> result
+      (Just (loc, remaining_candidates)) ->
+         if (match_fun loc)
+         then
+            (get_filled_tiles_internals
+               match_fun
+               (
+                  (List.filter
+                     (\e ->
+                        (not
+                           (
+                              (List.member e remaining_candidates)
+                              || (List.member e result)
+                           )
+                        )
+                     )
+                     (Struct.Location.neighbors loc)
+                  )
+                  ++ remaining_candidates
+               )
+               (loc :: result)
+            )
+         else
+            (get_filled_tiles_internals match_fun remaining_candidates result)
 
 get_filled_tiles : (
+      (List Struct.Location.Type) ->
       Struct.Map.Type ->
       Struct.Location.Type ->
       (List Struct.Location.Type)
    )
-get_filled_tiles map loc =
-   -- TODO: unimplemented
-   []
+get_filled_tiles selection map loc =
+   case (Struct.Map.try_getting_tile_at loc map) of
+      Nothing -> []
+      (Just target) ->
+         let
+            target_class_id = (Struct.Tile.get_type_id target)
+            map_match_fun =
+               (\e ->
+                  (case (Struct.Map.try_getting_tile_at e map) of
+                     Nothing -> False
+                     (Just t) ->
+                        (
+                           (Struct.Tile.get_type_id t)
+                           == target_class_id
+                        )
+                  )
+               )
+            match_fun =
+               if (selection == [])
+               then map_match_fun
+               else (\e -> ((map_match_fun e) && (List.member e selection)))
+         in
+            (get_filled_tiles_internals
+               match_fun
+               [loc]
+               []
+            )
 
 get_square_tiles : (
       Struct.Location.Type ->
@@ -166,7 +223,8 @@ get_selection tb = tb.selection
 set_template : Struct.Tile.Instance -> Type -> Type
 set_template template tb =
    {tb |
-      template = template
+      template = template,
+      mode = Draw
    }
 
 set_mode : Mode -> Type -> Type
@@ -211,7 +269,15 @@ apply_to loc tb map =
          (List.foldl
             (apply_mode_to)
             (tb, map)
-            (get_filled_tiles map loc)
+            (get_filled_tiles
+               (
+                  if (tb.mode == Draw)
+                  then tb.selection
+                  else []
+               )
+               map
+               loc
+            )
          )
 
       Square ->
