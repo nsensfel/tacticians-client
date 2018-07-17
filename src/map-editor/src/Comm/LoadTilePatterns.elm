@@ -1,21 +1,18 @@
-module Struct.ServerReply exposing (Type(..))
+module Comm.LoadTilePatterns exposing (try)
 
 -- Elm -------------------------------------------------------------------------
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Map
-import Struct.Tile
-import Struct.TilePattern
+import Comm.Send
+
+import Constants.IO
+
+import Struct.Event
+import Struct.Model
 
 --------------------------------------------------------------------------------
--- TYPES -----------------------------------------------------------------------
+-- TYPES ------------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
-type Type =
-   Okay
-   | AddTile Struct.Tile.Type
-   | AddTilePattern Struct.TilePattern.Type
-   | SetMap Struct.Map.Type
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -24,3 +21,11 @@ type Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
+try model =
+   (Just
+      (Comm.Send.empty_request
+         model
+         Constants.IO.tile_patterns_data_url
+      )
+   )

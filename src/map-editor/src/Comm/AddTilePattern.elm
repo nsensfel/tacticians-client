@@ -1,26 +1,24 @@
-module Struct.ServerReply exposing (Type(..))
+module Comm.AddTilePattern exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
+import Json.Decode
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Map
-import Struct.Tile
 import Struct.TilePattern
+import Struct.ServerReply
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-type Type =
-   Okay
-   | AddTile Struct.Tile.Type
-   | AddTilePattern Struct.TilePattern.Type
-   | SetMap Struct.Map.Type
-
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+internal_decoder : Struct.TilePattern.Type -> Struct.ServerReply.Type
+internal_decoder tp = (Struct.ServerReply.AddTilePattern tp)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+decode : (Json.Decode.Decoder Struct.ServerReply.Type)
+decode = (Json.Decode.map (internal_decoder) (Struct.TilePattern.decoder))

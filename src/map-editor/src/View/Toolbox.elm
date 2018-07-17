@@ -117,6 +117,10 @@ get_others_menu_html =
          (Html.button
             [(Html.Events.onClick Struct.Event.ClearSelectionRequested)]
             [(Html.text "Clear Selection")]
+         ),
+         (Html.button
+            [(Html.Events.onClick Struct.Event.PrettifySelectionRequested)]
+            [(Html.text "Prettify Selection")]
          )
       ]
    )

@@ -107,5 +107,5 @@ decoder =
 get_target : Type -> Int
 get_target tile_pattern = tile_pattern.t
 
-get_source_pattern : Type -> Int
-get_source_pattern tile_pattern = tile_pattern.t
+get_source_pattern : Type -> PatternElement
+get_source_pattern tile_pattern = tile_pattern.s

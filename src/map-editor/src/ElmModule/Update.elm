@@ -7,14 +7,15 @@ import Struct.Event
 import Struct.Model
 
 import Update.ChangeScale
+import Update.ClearToolboxSelection
 import Update.HandleServerReply
+import Update.PrettifySelectedTiles
 import Update.SelectTab
 import Update.SelectTile
 import Update.SetRequestedHelp
 import Update.SetToolboxMode
 import Update.SetToolboxShape
 import Update.SetToolboxTemplate
-import Update.ClearToolboxSelection
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -67,3 +68,6 @@ update event model =
 
       Struct.Event.ClearSelectionRequested ->
          (Update.ClearToolboxSelection.apply_to new_model)
+
+      Struct.Event.PrettifySelectionRequested ->
+         (Update.PrettifySelectedTiles.apply_to new_model)

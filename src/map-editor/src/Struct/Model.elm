@@ -4,6 +4,8 @@ module Struct.Model exposing
       new,
       add_tile,
       add_tile_pattern,
+      get_tile_patterns_for,
+      get_wild_tile_patterns,
       invalidate,
       reset,
       clear_error
@@ -34,7 +36,8 @@ type alias Type =
       toolbox: Struct.Toolbox.Type,
       help_request: Struct.HelpRequest.Type,
       map: Struct.Map.Type,
-      tile_patterns: (Dict.Dict (Maybe Int) (List Struct.TilePattern.Type)),
+      wild_tile_patterns: (List Struct.TilePattern.Type),
+      tile_patterns: (Dict.Dict Int (List Struct.TilePattern.Type)),
       tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
       error: (Maybe Struct.Error.Type),
       player_id: String,
@@ -60,7 +63,8 @@ new flags =
             help_request = Struct.HelpRequest.None,
             map = (Struct.Map.empty),
             tiles = (Dict.empty),
-            tile_patterns = [],
+            wild_tile_patterns = [],
+            tile_patterns = (Dict.empty),
             error = Nothing,
             map_id = "",
             player_id =
@@ -100,44 +104,32 @@ add_tile_pattern : Struct.TilePattern.Type -> Type -> Type
 add_tile_pattern tp model =
    case (Struct.TilePattern.get_source_pattern tp) of
       (Struct.TilePattern.Exactly i) ->
-         case (Dict.get (Just i) model.tile_patterns) of
+         case (Dict.get i model.tile_patterns) of
             Nothing ->
                {model |
                   tile_patterns =
-                     (Dict.insert (Just i) [tp] model.tile_patterns)
+                     (Dict.insert i [tp] model.tile_patterns)
                }
 
             (Just l) ->
                {model |
                   tile_patterns =
-                     (Dict.insert (Just i) (tp :: l) model.tile_patterns)
+                     (Dict.insert i (tp :: l) model.tile_patterns)
                }
 
       _ ->
-         case (Dict.get Nothing model.tile_patterns) of
-            Nothing ->
-               {model |
-                  tile_patterns =
-                     (Dict.insert Nothing [tp] model.tile_patterns)
-               }
-
-            (Just l) ->
-               {model |
-                  tile_patterns =
-                     (Dict.insert Nothing (tp :: l) model.tile_patterns)
-               }
+         {model |
+            wild_tile_patterns = (tp :: model.wild_tile_patterns)
+         }
 
 get_tile_patterns_for : Int -> Type -> (List Struct.TilePattern.Type)
 get_tile_patterns_for i model =
-   case (Dict.get (Just i) model.tile_patterns) of
+   case (Dict.get i model.tile_patterns) of
       Nothing -> []
       (Just r) -> r
 
 get_wild_tile_patterns : Type -> (List Struct.TilePattern.Type)
-get_wild_tile_patterns model =
-   case (Dict.get Nothing model.tile_patterns) of
-      Nothing -> []
-      (Just r) -> r
+get_wild_tile_patterns model = model.wild_tile_patterns
 
 reset : Type -> Type
 reset model =

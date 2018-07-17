@@ -18,6 +18,7 @@ import Struct.Event
 import Struct.Model
 import Struct.ServerReply
 import Struct.Tile
+import Struct.TilePattern
 import Struct.UI
 
 --------------------------------------------------------------------------------
@@ -36,6 +37,16 @@ add_tile tl current_state =
    case current_state of
       (_, (Just _)) -> current_state
       (model, _) -> ((Struct.Model.add_tile tl model), Nothing)
+
+add_tile_pattern : (
+      Struct.TilePattern.Type ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
+      (Struct.Model.Type, (Maybe Struct.Error.Type))
+   )
+add_tile_pattern tp current_state =
+   case current_state of
+      (_, (Just _)) -> current_state
+      (model, _) -> ((Struct.Model.add_tile_pattern tp model), Nothing)
 
 set_map : (
       Struct.Map.Type ->
@@ -78,6 +89,9 @@ apply_command command current_state =
    case command of
       (Struct.ServerReply.AddTile tl) ->
          (add_tile tl current_state)
+
+      (Struct.ServerReply.AddTilePattern tp) ->
+         (add_tile_pattern tp current_state)
 
       (Struct.ServerReply.SetMap map) ->
          (set_map map current_state)

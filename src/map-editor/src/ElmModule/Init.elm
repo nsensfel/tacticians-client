@@ -3,6 +3,7 @@ module ElmModule.Init exposing (init)
 -- Elm -------------------------------------------------------------------------
 
 -- Battlemap -------------------------------------------------------------------
+import Comm.LoadTilePatterns
 import Comm.LoadTiles
 import Comm.LoadMap
 
@@ -29,6 +30,10 @@ init flags =
                   Nothing -> Cmd.none
                ),
                (case (Comm.LoadMap.try model) of
+                  (Just cmd) -> cmd
+                  Nothing -> Cmd.none
+               ),
+               (case (Comm.LoadTilePatterns.try model) of
                   (Just cmd) -> cmd
                   Nothing -> Cmd.none
                )

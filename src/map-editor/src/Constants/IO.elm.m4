@@ -9,6 +9,9 @@ data_url = (base_url ++ "/asset/data/")
 tiles_data_url : String
 tiles_data_url = (base_url ++ "/asset/data/tiles.json")
 
+tile_patterns_data_url : String
+tile_patterns_data_url = (base_url ++ "/asset/data/tile_patterns.json")
+
 map_editor_handler_url : String
 map_editor_handler_url = (base_url ++ "/handler/map-editor")
 

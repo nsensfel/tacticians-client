@@ -27,6 +27,7 @@ type Type =
    | ShapeRequested Struct.Toolbox.Shape
    | ClearSelectionRequested
    | TemplateRequested Int
+   | PrettifySelectionRequested
 
 attempted : (Result.Result err val) -> Type
 attempted act =

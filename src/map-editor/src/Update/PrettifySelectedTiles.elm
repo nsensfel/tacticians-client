@@ -1,23 +1,45 @@
 module Update.PrettifySelectedTiles exposing (apply_to)
+
 -- Elm -------------------------------------------------------------------------
+import Dict
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Event
-import Struct.Toolbox
+import Struct.Location
 import Struct.Map
+import Struct.Model
 import Struct.Tile
 import Struct.TilePattern
-import Struct.Model
+import Struct.Toolbox
+
+import Util.List
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+set_tile_to : (
+      Struct.Model.Type ->
+      Struct.Location.Type ->
+      Int ->
+      Struct.Map.Type ->
+      Struct.Map.Type
+   )
+set_tile_to model loc id map =
+   (Struct.Map.set_tile_to
+      loc
+      (Struct.Tile.solve_tile_instance
+         (Dict.values model.tiles)
+         (Struct.Tile.error_tile_instance id loc.x loc.y)
+      )
+      map
+   )
+
 apply_to_location : (
       (List Struct.TilePattern.Type) ->
       Struct.Model.Type ->
       Struct.Location.Type ->
       Struct.Map.Type ->
-      Struct.Map.Type ->
+      Struct.Map.Type
    )
 apply_to_location wild_patterns model loc map =
    case (Struct.Map.try_getting_tile_at loc map) of
@@ -28,11 +50,11 @@ apply_to_location wild_patterns model loc map =
             full_neighborhood_class_ids =
                (List.map
                   (\e ->
-                     case (Struct.Map.try_getting_tile_at \e map) of
+                     case (Struct.Map.try_getting_tile_at e map) of
                         Nothing -> -1
-                        (Just e) -> (Struct.Tile.get_type_id e)
+                        (Just t) -> (Struct.Tile.get_type_id t)
                   )
-                  (Struct.Map.try_getting_tile_at loc map)
+                  (Struct.Location.get_full_neighborhood loc)
                )
          in
             case
@@ -45,6 +67,12 @@ apply_to_location wild_patterns model loc map =
                )
             of
                (Just pattern) -> -- TODO
+                  (set_tile_to
+                     model
+                     loc
+                     (Struct.TilePattern.get_target pattern)
+                     map
+                  )
 
                Nothing ->
                   case
@@ -57,6 +85,12 @@ apply_to_location wild_patterns model loc map =
                      )
                   of
                      (Just pattern) -> -- TODO
+                        (set_tile_to
+                           model
+                           loc
+                           (Struct.TilePattern.get_target pattern)
+                           map
+                        )
 
                      Nothing -> map
 
@@ -79,7 +113,6 @@ apply_to model =
                model.map
                (Struct.Toolbox.get_selection model.toolbox)
             )
-      }
-      {model | toolbox = (Struct.Toolbox.set_mode mode model.toolbox)},
+      },
       Cmd.none
    )

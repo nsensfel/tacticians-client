@@ -8,6 +8,7 @@ import Json.Encode
 
 -- Battlemap -------------------------------------------------------------------
 import Comm.AddTile
+import Comm.AddTilePattern
 import Comm.Okay
 import Comm.SetMap
 
@@ -26,6 +27,7 @@ internal_decoder : String -> (Json.Decode.Decoder Struct.ServerReply.Type)
 internal_decoder reply_type =
    case reply_type of
       "add_tile" -> (Comm.AddTile.decode)
+      "add_tile_pattern" -> (Comm.AddTilePattern.decode)
       "set_map" -> (Comm.SetMap.decode)
       "okay" -> (Comm.Okay.decode)
       other ->

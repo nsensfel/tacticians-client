@@ -50,6 +50,19 @@ neighbors loc =
       {loc | y = (loc.y + 1)}
    ]
 
+get_full_neighborhood : Type -> (List Type)
+get_full_neighborhood loc =
+   [
+      {loc | x = (loc.x - 1), y = (loc.y - 1)},
+      {loc | y = (loc.y - 1)},
+      {loc | x = (loc.x + 1), y = (loc.y - 1)},
+      {loc | x = (loc.x - 1)},
+      {loc | x = (loc.x + 1)},
+      {loc | x = (loc.x - 1), y = (loc.y + 1)},
+      {loc | y = (loc.y + 1)},
+      {loc | x = (loc.x + 1), y = (loc.y + 1)}
+   ]
+
 get_ref : Type -> Ref
 get_ref l =
    (l.x, l.y)
