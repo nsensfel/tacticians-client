@@ -69,7 +69,21 @@ type alias Instance =
 --------------------------------------------------------------------------------
 noise_function : Int -> Int -> Int -> Int
 noise_function a b c =
-   (round (radians (toFloat ((a + 1) * 2 + (b + 1) * 3 + c))))
+   let
+      af = (toFloat a)
+      bf = (toFloat b)
+      cf = (toFloat c)
+      (df, ef) = (toPolar (af, bf))
+      (ff, gf) = (toPolar (bf, af))
+      (hf, jf) = (toPolar (bf, cf))
+      (kf, lf) = (toPolar (cf, bf))
+      (mf, nf) = (toPolar (af, cf))
+      (qf, rf) = (toPolar (cf, af))
+      (resA, resB) = (fromPolar ((df + qf), (ef + nf)))
+      (resC, resD) = (fromPolar ((hf + mf), (jf + gf)))
+      (resE, resF) = (toPolar ((resA - resC), (resB - resD)))
+   in
+      (round (resE - resF))
 
 finish_decoding : PartiallyDecoded -> Type
 finish_decoding add_tile =
