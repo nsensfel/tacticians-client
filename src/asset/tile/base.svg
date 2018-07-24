@@ -13,8 +13,115 @@
     viewBox="0 0 128 128"
     version="1.1"
     id="base_svg"
-    sodipodi:docname="test1.svg"
+    sodipodi:docname="base.svg"
     inkscape:version="0.92.2 5c3e80d, 2017-08-06">
+   <defs
+       id="defs921">
+      <mask
+          maskUnits="userSpaceOnUse"
+          id="mask977">
+         <g
+             id="g1011"
+             transform="scale(1)">
+            <path
+                sodipodi:nodetypes="ccsssscc"
+                inkscape:connector-curvature="0"
+                id="path979"
+                d="M 0,-0.0054 H 8.001 C 7.977,1.625 7.879,1.353 7.075,2.201 6.636,2.665 8.133,3.662 7.072,4.451 6.644,4.768 6.122,6.681 5.114,6.914 4.053,7.16 2.507,5.723 2.252,5.879 0.9546,6.676 1.496,8.033 0,7.996 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="cczzcc"
+                inkscape:connector-curvature="0"
+                id="path981"
+                d="M 31.99,-0.0054 H 40 C 39.98,1.961 38.36,7.173 37.02,6.694 35.67,6.213 36.17,5.276 33.92,5.9 31.67,6.522 33.5,8.033 31.99,7.996 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="cczzzcc"
+                inkscape:connector-curvature="0"
+                id="path983"
+                d="M 64,-0.0054 H 71.99 C 71.99,1.13 72.42,2.491 70.46,2.763 68.53,3.035 67.92,1.883 67.26,3.189 66.6,4.493 68.58,7.874 67.18,9.245 65.8,10.61 65.51,8.033 64,7.996 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="cczcc"
+                inkscape:connector-curvature="0"
+                id="path985"
+                d="M 95.99,-0.0054 H 104 C 103.9,3.345 100.6,4.858 98.5,3.919 96.33,2.982 97.5,8.033 95.99,7.996 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="ccsssscc"
+                inkscape:connector-curvature="0"
+                id="path987"
+                d="M 0,31.98 H 8.001 C 7.977,33.46 5.371,33.67 6.63,34.62 8.268,35.84 7.49,35.87 7.443,36.95 7.361,38.83 8.276,38.25 7.064,39.6 5.747,41.08 4.31,40.55 2.608,39.81 1.054,39.15 0.3768,39.99 0,39.99 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="cczcc"
+                inkscape:connector-curvature="0"
+                id="path989"
+                d="M 31.99,31.98 H 40 C 39.95,35.34 37.17,35.39 35.88,36.42 34.61,37.45 33.5,40.02 31.99,39.99 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="cczcc"
+                inkscape:connector-curvature="0"
+                id="path991"
+                d="M 64,31.98 H 71.99 C 71.94,35.34 75.14,33.49 73.55,35.26 71.99,37.03 65.51,40.02 64,39.99 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="cczcc"
+                inkscape:connector-curvature="0"
+                id="path993"
+                d="M 95.99,31.98 H 104 C 103.9,35.34 99.72,32.27 98.05,34.44 96.33,36.61 97.5,40.02 95.99,39.99 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="cczzzcc"
+                inkscape:connector-curvature="0"
+                id="path995"
+                d="M 0,63.99 H 8.001 C 7.972,65.79 5.794,64.18 4.609,65.58 3.421,66.98 3.336,65.66 2.376,67.38 1.416,69.13 4.061,69.84 2.433,70.45 0.8043,71.11 1.496,72.04 0,71.98 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="cczsscc"
+                inkscape:connector-curvature="0"
+                id="path997"
+                d="M 31.99,63.99 H 40 C 39.98,64.87 40.61,65.1 39.26,66.8 37.94,68.52 37.07,66.48 36.43,68.07 35.06,71.53 35.8,70.9 34.87,71.03 33.02,71.27 33.5,72.04 31.99,71.98 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="cczcc"
+                inkscape:connector-curvature="0"
+                id="path999"
+                d="M 64,63.99 H 71.99 C 71.94,67.35 71.07,69.26 69.37,70.95 67.68,72.67 65.51,72.04 64,71.98 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="cczcc"
+                inkscape:connector-curvature="0"
+                id="path1001"
+                d="M 95.99,63.99 H 104 C 103.9,67.35 102.1,64.47 101.6,66.45 101,68.46 97.5,72.04 95.99,71.98 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="cczcc"
+                inkscape:connector-curvature="0"
+                id="path1003"
+                d="M 0,95.98 H 8.001 C 7.948,99.34 6.879,99.87 6.765,102.4 6.654,105 1.496,104 0,104 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="ccsscc"
+                inkscape:connector-curvature="0"
+                id="path1005"
+                d="M 31.99,95.98 H 40 C 39.98,97.91 38.81,97.46 37.49,98.57 36.49,99.42 37.84,101.3 36.72,102 33.71,104.1 33.5,104 31.99,104 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="ccssscc"
+                inkscape:connector-curvature="0"
+                id="path1007"
+                d="M 64,95.98 H 71.99 C 71.99,96.93 71.78,96.93 70.43,97.99 69.29,98.89 70.75,99.95 69.77,101 68.29,102.6 67.5,99.63 67.07,101.1 66.46,103.1 65.51,104 64,104 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+            <path
+                sodipodi:nodetypes="ccszcc"
+                inkscape:connector-curvature="0"
+                id="path1009"
+                d="M 95.99,95.98 H 104 C 104,97.86 104.8,97.22 103.8,99.79 102.9,101.8 101.3,100.5 99.85,101.4 98.42,102.3 97.5,104 95.99,104 Z"
+                style="fill:#ffffff;stroke-width:0.5218" />
+         </g>
+      </mask>
+   </defs>
    <sodipodi:namedview
        pagecolor="#ffffff"
        bordercolor="#666666"
@@ -35,169 +142,6 @@
        inkscape:window-y="516"
        inkscape:window-maximized="0"
        inkscape:current-layer="bg_b_layer" />
-   <defs
-       id="defs1916">
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4005">
-         <path
-             sodipodi:nodetypes="cczcc"
-             inkscape:connector-curvature="0"
-             id="path4007"
-             d="M 95.99,0 H 104 C 103.9,3.35 100.6,4.863 98.48,3.924 96.31,2.987 97.5,8.038 95.99,8.001 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4009">
-         <path
-             sodipodi:nodetypes="cczcc"
-             inkscape:connector-curvature="0"
-             id="path4011"
-             d="M 95.99,31.99 H 104 C 103.9,35.35 99.72,32.28 98.03,34.45 96.33,36.62 97.5,40.03 95.99,40 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4013">
-         <path
-             sodipodi:nodetypes="cczcc"
-             inkscape:connector-curvature="0"
-             id="path4015"
-             d="M 95.99,64 H 104 C 103.9,67.36 102.1,64.48 101.6,66.46 101,68.47 97.5,72.05 95.99,71.99 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4017">
-         <path
-             sodipodi:nodetypes="ccszcc"
-             inkscape:connector-curvature="0"
-             id="path4019"
-             d="M 95.99,95.99 H 104 C 104,97.87 104.8,97.23 103.8,99.8 102.9,101.8 101.3,100.5 99.85,101.4 98.4,102.3 97.5,104 95.99,104 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4021">
-         <path
-             sodipodi:nodetypes="ccssscc"
-             inkscape:connector-curvature="0"
-             id="path4023"
-             d="M 64,95.99 H 71.99 C 71.99,96.92 71.78,96.94 70.43,98 69.29,98.9 70.75,99.96 69.77,101 68.29,102.6 67.5,99.64 67.07,101.1 66.46,103.1 65.51,104 64,104 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4025">
-         <path
-             sodipodi:nodetypes="cczcc"
-             inkscape:connector-curvature="0"
-             id="path4027"
-             d="M 64,64 H 71.99 C 71.94,67.36 71.07,69.27 69.37,70.96 67.68,72.68 65.51,72.05 64,71.99 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4029">
-         <path
-             sodipodi:nodetypes="cczcc"
-             inkscape:connector-curvature="0"
-             id="path4031"
-             d="M 64,31.99 H 71.99 C 71.94,35.35 75.12,33.5 73.55,35.27 71.99,37.04 65.51,40.03 64,40 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4033">
-         <path
-             sodipodi:nodetypes="cczzzcc"
-             inkscape:connector-curvature="0"
-             id="path4035"
-             d="M 64,0 H 71.99 C 71.99,1.135 72.42,2.496 70.46,2.768 68.53,3.04 67.92,1.888 67.26,3.194 66.6,4.498 68.58,7.877 67.18,9.25 65.8,10.62 65.51,8.038 64,8.001 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4037">
-         <path
-             sodipodi:nodetypes="cczzcc"
-             inkscape:connector-curvature="0"
-             id="path4039"
-             d="M 31.99,0 H 40 C 39.98,1.966 38.36,7.178 37.02,6.699 35.67,6.218 36.17,5.281 33.92,5.905 31.67,6.527 33.5,8.038 31.99,8.001 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4041">
-         <path
-             sodipodi:nodetypes="cczcc"
-             inkscape:connector-curvature="0"
-             id="path4043"
-             d="M 31.99,31.99 H 40 C 39.95,35.35 37.17,35.4 35.88,36.43 34.61,37.46 33.5,40.03 31.99,40 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4045">
-         <path
-             sodipodi:nodetypes="cczsscc"
-             inkscape:connector-curvature="0"
-             id="path4047"
-             d="M 31.99,64 H 40 C 39.98,64.88 40.61,65.11 39.26,66.81 37.94,68.53 37.07,66.49 36.43,68.08 35.06,71.54 35.8,70.91 34.87,71.04 33.02,71.28 33.5,72.05 31.99,71.99 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4049">
-         <path
-             sodipodi:nodetypes="ccsscc"
-             inkscape:connector-curvature="0"
-             id="path4051"
-             d="M 31.99,95.99 H 40 C 39.98,97.92 38.81,97.47 37.49,98.58 36.49,99.43 37.84,101.3 36.72,102 33.71,104.1 33.5,104 31.99,104 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4053">
-         <path
-             sodipodi:nodetypes="cczcc"
-             inkscape:connector-curvature="0"
-             id="path4055"
-             d="M 0,95.99 H 8.001 C 7.948,99.35 6.877,99.88 6.765,102.4 6.654,105 1.496,104 0,104 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4057">
-         <path
-             sodipodi:nodetypes="cczzzcc"
-             inkscape:connector-curvature="0"
-             id="path4059"
-             d="M 0,64 H 8.001 C 7.972,65.8 5.794,64.19 4.609,65.59 3.421,66.99 3.336,65.67 2.376,67.39 1.416,69.14 4.061,69.85 2.433,70.46 0.8043,71.12 1.496,72.05 0,71.99 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4061">
-         <path
-             sodipodi:nodetypes="ccsssscc"
-             inkscape:connector-curvature="0"
-             id="path4063"
-             d="M 0,31.99 H 8.001 C 7.977,33.47 5.371,33.68 6.63,34.63 8.268,35.85 7.49,35.88 7.443,36.96 7.361,38.84 8.274,38.26 7.064,39.61 5.747,41.09 4.31,40.56 2.608,39.82 1.054,39.16 0.3768,40 0,40 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-      <mask
-          maskUnits="userSpaceOnUse"
-          id="mask4065">
-         <path
-             sodipodi:nodetypes="ccsssscc"
-             inkscape:connector-curvature="0"
-             id="path4067"
-             d="M 0,0 H 8.001 C 7.975,1.63 7.879,1.358 7.075,2.206 6.636,2.67 8.133,3.667 7.072,4.456 6.644,4.773 6.122,6.686 5.114,6.919 4.053,7.165 2.507,5.728 2.252,5.884 0.9546,6.681 1.496,8.038 0,8.001 Z"
-             style="fill:#ffffff;stroke-width:0.5217" />
-      </mask>
-   </defs>
    <metadata
        id="metadata1919">
       <rdf:RDF>
@@ -206,7 +150,7 @@
             <dc:format>image/svg+xml</dc:format>
             <dc:type
                 rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-            <dc:title></dc:title>
+            <dc:title />
          </cc:Work>
       </rdf:RDF>
    </metadata>
@@ -220,8 +164,8 @@
          <rect
              y="0"
              x="0"
-             height="32"
-             width="32"
+             height="128"
+             width="128"
              id="rect2648"
              style="fill:#008080;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke" />
          <text
@@ -240,8 +184,8 @@
          <rect
              y="0"
              x="0"
-             height="32"
-             width="32"
+             height="128"
+             width="128"
              id="rect2648-6"
              style="fill:#800000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke" />
          <text
@@ -268,111 +212,6 @@
           id="bga30"
           width="100%"
           height="100%" />
-      <use
-          x="32"
-          y="0"
-          xlink:href="#bg_a_model"
-          id="bga31"
-          width="100%"
-          height="100%" />
-      <use
-          x="64"
-          y="0"
-          xlink:href="#bg_a_model"
-          id="bga32"
-          width="100%"
-          height="100%" />
-      <use
-          x="96"
-          y="0"
-          xlink:href="#bg_a_model"
-          id="bga33"
-          width="100%"
-          height="100%" />
-      <use
-          x="0"
-          y="32"
-          xlink:href="#bg_a_model"
-          id="bga00"
-          width="100%"
-          height="100%" />
-      <use
-          x="32"
-          y="32"
-          xlink:href="#bg_a_model"
-          id="bga01"
-          width="100%"
-          height="100%" />
-      <use
-          x="64"
-          y="32"
-          xlink:href="#bg_a_model"
-          id="bga02"
-          width="100%"
-          height="100%" />
-      <use
-          x="96"
-          y="32"
-          xlink:href="#bg_a_model"
-          id="bga03"
-          width="100%"
-          height="100%" />
-      <use
-          x="0"
-          y="64"
-          xlink:href="#bg_a_model"
-          id="bga10"
-          width="100%"
-          height="100%" />
-      <use
-          x="32"
-          y="64"
-          xlink:href="#bg_a_model"
-          id="bga11"
-          width="100%"
-          height="100%" />
-      <use
-          x="64"
-          y="64"
-          xlink:href="#bg_a_model"
-          id="bga12"
-          width="100%"
-          height="100%" />
-      <use
-          x="96"
-          y="64"
-          xlink:href="#bg_a_model"
-          id="bga13"
-          width="100%"
-          height="100%" />
-      <use
-          x="0"
-          y="96"
-          xlink:href="#bg_a_model"
-          id="bga20"
-          width="100%"
-          height="100%" />
-      <use
-          x="32"
-          y="96"
-          xlink:href="#bg_a_model"
-          id="bga21"
-          width="100%"
-          height="100%" />
-      <use
-          x="64"
-          y="96"
-          xlink:href="#bg_a_model"
-          id="bga22"
-          width="100%"
-          height="100%" />
-      <use
-          x="96"
-          y="96"
-          xlink:href="#bg_a_model"
-          id="bga23"
-          width="100%"
-          height="100%" />
    </g>
    <g
        inkscape:groupmode="layer"
@@ -385,127 +224,7 @@
           id="bgb30"
           width="100%"
           height="100%"
-          mask="url(#mask4065)" />
-      <use
-          x="32"
-          y="0"
-          xlink:href="#bg_b_model"
-          id="bgb31"
-          width="100%"
-          height="100%"
-          mask="url(#mask4037)" />
-      <use
-          x="64"
-          y="0"
-          xlink:href="#bg_b_model"
-          id="bgb32"
-          width="100%"
-          height="100%"
-          mask="url(#mask4033)" />
-      <use
-          x="96"
-          y="0"
-          xlink:href="#bg_b_model"
-          id="bgb33"
-          width="100%"
-          height="100%"
-          mask="url(#mask4005)" />
-      <use
-          x="0"
-          y="32"
-          xlink:href="#bg_b_model"
-          id="bgb00"
-          width="100%"
-          height="100%"
-          mask="url(#mask4061)" />
-      <use
-          x="32"
-          y="32"
-          xlink:href="#bg_b_model"
-          id="bgb01"
-          width="100%"
-          height="100%"
-          mask="url(#mask4041)" />
-      <use
-          x="64"
-          y="32"
-          xlink:href="#bg_b_model"
-          id="bgb02"
-          width="100%"
-          height="100%"
-          mask="url(#mask4029)" />
-      <use
-          x="96"
-          y="32"
-          xlink:href="#bg_b_model"
-          id="bgb03"
-          width="100%"
-          height="100%"
-          mask="url(#mask4009)" />
-      <use
-          x="0"
-          y="64"
-          xlink:href="#bg_b_model"
-          id="bgb10"
-          width="100%"
-          height="100%"
-          mask="url(#mask4057)" />
-      <use
-          x="32"
-          y="64"
-          xlink:href="#bg_b_model"
-          id="bgb11"
-          width="100%"
-          height="100%"
-          mask="url(#mask4045)" />
-      <use
-          x="64"
-          y="64"
-          xlink:href="#bg_b_model"
-          id="bgb12"
-          width="100%"
-          height="100%"
-          mask="url(#mask4025)" />
-      <use
-          x="96"
-          y="64"
-          xlink:href="#bg_b_model"
-          id="bgb13"
-          width="100%"
-          height="100%"
-          mask="url(#mask4013)" />
-      <use
-          x="0"
-          y="96"
-          xlink:href="#bg_b_model"
-          id="bgb20"
-          width="100%"
-          height="100%"
-          mask="url(#mask4053)" />
-      <use
-          x="32"
-          y="96"
-          xlink:href="#bg_b_model"
-          id="bgb21"
-          width="100%"
-          height="100%"
-          mask="url(#mask4049)" />
-      <use
-          x="64"
-          y="96"
-          xlink:href="#bg_b_model"
-          id="bgb22"
-          width="100%"
-          height="100%"
-          mask="url(#mask4021)" />
-      <use
-          x="96"
-          y="96"
-          xlink:href="#bg_b_model"
-          id="bgb23"
-          width="100%"
-          height="100%"
-          mask="url(#mask4017)" />
+          mask="url(#mask977)" />
    </g>
    <g
        inkscape:groupmode="layer"
