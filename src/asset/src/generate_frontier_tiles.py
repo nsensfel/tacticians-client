@@ -2,27 +2,68 @@
 import xml.etree.ElementTree as XML
 import sys
 
+SVG_PREFIX = "{http://www.w3.org/2000/svg}"
+G_TAG = SVG_PREFIX + "g"
+
+################################################################################
+def get_xml (filename):
+    model_root = XML.parse(filename)
+
+    if (model_root == None):
+        print("Could not open SVG file " + filename + ".")
+        exit(-1)
+
+    return model_root
+
+def get_model (filename):
+    model_root = get_xml(filename)
+
+    result = model_root.findall(G_TAG+"[1]/*")
+
+    if (len(result) == 0):
+        print("Could not find content in model file (" + filename + ")")
+        exit(-1)
+
+    return result
+
+def replace_group_by (root_node, group_name, new_content, filename):
+    target_group = root_node.find(G_TAG+"[@id='" + group_name + "']")
+
+    if (target_group == None):
+        print("Could not find group " + group_name + " in " + filename)
+        exit(-1)
+
+    for e in target_group:
+        target_group.remove(e)
+
+    target_group.extend(new_content)
+################################################################################
+
 if (len(sys.argv) < 3):
     print("Usage: <A> <B> <TEMPLATES>")
     exit(-1)
 
-model_a = XML.parse(sys.argv[1]).findall("./svg/g[1]/*")
-model_b = XML.parse(sys.argv[2]).findall("./svg/g[1]/*")
+model_a = get_model(sys.argv[1])
+model_b = get_model(sys.argv[2])
+
+if ((model_b == None) or (len(model_b) == 0)):
+    print("Could not find content in model B (" + sys.argv[2] + ")")
+    exit(-1)
+
 current_arg = 3
 
-while (current_arg <= 3):
-    template_root = XML.parse(sys.argv[current_arg])
+while (current_arg < len(sys.argv)):
+    filename = sys.argv[current_arg]
     current_arg += 1
-    template_model_a = template_root.find("./svg/g[id='models_layer']/g[id='bg_a_model']")
-    template_model_b = template_root.find("/svg/g[id='models_layer']/g[id='bg_b_model']")
 
-    for e in template_model_a:
-        template_model_a.remove(e)
+    template_root = get_xml(filename)
 
-    for e in template_model_b:
-        template_model_b.remove(e)
+    models_layer = template_root.find(G_TAG+"[@id='models_layer']")
 
-    template_model_a.extend(model_a)
-    template_model_b.extend(model_b)
+    if (models_layer == None):
+        print("Could not find model layer in file " + filename + ".")
 
-    template_root.write("/tmp/test" + str(current_arg) + ".xml")
+    replace_group_by(models_layer, "bg_a_model", model_a, filename)
+    replace_group_by(models_layer, "bg_b_model", model_b, filename)
+
+    template_root.write("/tmp/test" + str(current_arg) + ".svg")
