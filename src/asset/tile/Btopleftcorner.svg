@@ -328,4 +328,8 @@
           inkscape:connector-curvature="0"
           mask="none" />
    </g>
+  <g
+     inkscape:groupmode="layer"
+     id="details"
+     inkscape:label="details" />
 </svg>
