@@ -26,27 +26,51 @@ set_tile_to : (
       Struct.Map.Type
    )
 set_tile_to loc main_class border_class variant_ix map =
-   (Struct.Map.set_tile_to
-      loc
-      (Struct.Tile.new_instance
-         0
-         0
-         main_class
-         border_class
-         variant_ix
-         -1
+   let
+      true_variant_ix =
+         if (variant_ix >= 0)
+         then variant_ix
+         else
+            case (Struct.Map.try_getting_tile_at loc map) of
+               Nothing -> 0
+               (Just t) -> (Struct.Tile.get_variant_ix t)
+   in
+      (Struct.Map.set_tile_to
+         loc
+         (Struct.Tile.new_instance
+            loc.x
+            loc.y
+            main_class
+            border_class
+            true_variant_ix
+            -1
+         )
+         map
       )
-      map
+
+find_matching_pattern : (
+      Int ->
+      (List Int) ->
+      (List Struct.TilePattern.Type) ->
+      (Maybe (Int, Int, Int))
    )
+find_matching_pattern source full_neighborhood candidates =
+   case (Util.List.pop candidates) of
+      (Just (c, rc)) ->
+         case (Struct.TilePattern.matches full_neighborhood source c) of
+            (True, main, border, variant) -> (Just (main, border, variant))
+            (False, _, _, _) ->
+               (find_matching_pattern source full_neighborhood rc)
+
+      Nothing -> Nothing
 
 apply_to_location : (
-      (List Struct.TilePattern.Type) ->
       Struct.Model.Type ->
       Struct.Location.Type ->
       Struct.Map.Type ->
       Struct.Map.Type
    )
-apply_to_location wild_patterns model loc map =
+apply_to_location model loc map =
    case (Struct.Map.try_getting_tile_at loc map) of
       Nothing -> map
       (Just base) ->
@@ -63,51 +87,16 @@ apply_to_location wild_patterns model loc map =
                )
          in
             case
-               (Util.List.get_first
-                  (Struct.TilePattern.matches
-                     full_neighborhood_class_ids
-                     base_id
-                  )
-                  (Struct.Model.get_tile_patterns_for base_id model)
+               (find_matching_pattern
+                  base_id
+                  full_neighborhood_class_ids
+                  model.tile_patterns
                )
             of
-               (Just pattern) -> -- TODO
-                  let
-                     (main, border, variant) =
-                        (Struct.TilePattern.get_target pattern)
-                  in
-                     (set_tile_to
-                        loc
-                        main
-                        border
-                        variant
-                        map
-                     )
+               (Just (main, border, variant)) ->
+                  (set_tile_to loc main border variant map)
 
-               Nothing ->
-                  case
-                     (Util.List.get_first
-                        (Struct.TilePattern.matches
-                           full_neighborhood_class_ids
-                           base_id
-                        )
-                        wild_patterns
-                     )
-                  of
-                     (Just pattern) -> -- TODO
-                        let
-                           (main, border, variant) =
-                              (Struct.TilePattern.get_target pattern)
-                        in
-                           (set_tile_to
-                              loc
-                              main
-                              border
-                              variant
-                              map
-                           )
-
-                     Nothing -> map
+               Nothing -> map
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -121,10 +110,7 @@ apply_to model =
       {model |
          map =
             (List.foldl
-               (apply_to_location
-                  (Struct.Model.get_wild_tile_patterns model)
-                  model
-               )
+               (apply_to_location model)
                model.map
                (Struct.Toolbox.get_selection model.toolbox)
             )

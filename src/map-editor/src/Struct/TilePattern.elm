@@ -4,9 +4,7 @@ module Struct.TilePattern exposing
       Type,
       decoder,
       matches,
-      matches_pattern,
-      get_source_pattern,
-      get_target
+      matches_pattern
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -28,98 +26,120 @@ import Util.List
 --------------------------------------------------------------------------------
 type PatternElement =
    Any
-   | Exactly Int
-   | Not Int
+   | Major
+   | Minor
 
 type alias Type =
    {
-      s : PatternElement,
-      t : (Int, Int, Int),
+      t : (PatternElement, PatternElement),
+      tv : Int,
       p : (List PatternElement)
-   }
-
-type alias PartialPatternElement =
-   {
-      c : String,
-      i : Int
    }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
-matches_internals : (List Int) -> (List PatternElement) -> Bool
-matches_internals neighbors pattern =
+matches_internals : (
+      Int ->
+      (List Int) ->
+      (List PatternElement) ->
+      (Maybe Int) ->
+      (Bool, Int)
+   )
+matches_internals source neighbors pattern maybe_border =
    case ((Util.List.pop neighbors), (Util.List.pop pattern)) of
-      (Nothing, Nothing) -> True
+      (Nothing, Nothing) ->
+         (
+            True,
+            (
+               case maybe_border of
+                  Nothing -> source
+                  (Just e) -> e
+            )
+         )
+
       ((Just (n, r_n)), (Just (p, r_p))) ->
-         ((matches_pattern n p) && (matches_internals r_n r_p))
+         if (matches_pattern source n p)
+         then
+            if
+            (
+               (maybe_border == (Just source))
+               || (maybe_border == Nothing)
+            )
+            then
+               (matches_internals source r_n r_p (Just n))
+            else
+               (matches_internals source r_n r_p maybe_border)
+         else
+            (False, source)
 
-      (_, _) -> False
+      (_, _) -> (False, source)
 
-finish_decoding_pattern : PartialPatternElement -> PatternElement
-finish_decoding_pattern ppe =
-   case ppe.c of
-      "a" -> Any
-      "n" -> (Not ppe.i)
-      _ -> (Exactly ppe.i)
+finish_decoding_pattern : String -> PatternElement
+finish_decoding_pattern str =
+   case str of
+      "any" -> Any
+      "A" -> Minor
+      "B" -> Major
+      _ -> Major
 
-finish_decoding_target : (List Int) -> (Int, Int, Int)
+finish_decoding_target : (
+      (List String) ->
+      (PatternElement, PatternElement)
+   )
 finish_decoding_target t =
    case t of
-      [m] -> (m, m, 0)
-      [m, b, v] -> (m, b, v)
-      _ -> (0, 0, 0)
+      ["A", "B"] -> (Minor, Major)
+      ["A", "A"] -> (Minor, Minor)
+      ["B", "A"] -> (Major, Minor)
+      ["B", "B"] -> (Major, Major)
+      _ -> (Minor, Minor)
 
 pattern_decoder : (Json.Decode.Decoder PatternElement)
 pattern_decoder =
    (Json.Decode.map
       (finish_decoding_pattern)
-      (Json.Decode.Pipeline.decode
-         PartialPatternElement
-         |> (Json.Decode.Pipeline.required "c" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required "i" Json.Decode.int)
-      )
+      (Json.Decode.string)
    )
 
-target_decoder : (Json.Decode.Decoder (Int, Int, Int))
+target_decoder : (
+      (Json.Decode.Decoder (PatternElement, PatternElement))
+   )
 target_decoder =
    (Json.Decode.map
       (finish_decoding_target)
-      (Json.Decode.list (Json.Decode.int))
+      (Json.Decode.list (Json.Decode.string))
    )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-matches_pattern : Int -> PatternElement -> Bool
-matches_pattern n p =
+matches_pattern : Int -> Int -> PatternElement -> Bool
+matches_pattern source n p =
    case p of
-      (Exactly v) -> (v == n)
-      (Not v) -> (v /= n)
       Any -> True
+      Major -> (source < n)
+      Minor -> (source >= n)
 
-matches : (List Int) -> Int -> Type -> Bool
+matches : (List Int) -> Int -> Type -> (Bool, Int, Int, Int)
 matches neighbors source tile_pattern =
-   (
-      (matches_pattern source tile_pattern.s)
-      && (matches_internals neighbors tile_pattern.p)
-   )
+   case (matches_internals source neighbors tile_pattern.p Nothing) of
+      (False, _) -> (False, 0, 0, 0)
+      (True, border) ->
+         case tile_pattern.t of
+            (Minor, Major) -> (True, source, border, tile_pattern.tv)
+            (Minor, Minor) -> (True, source, source, tile_pattern.tv)
+            (Major, Minor) -> (True, border, source, tile_pattern.tv)
+            (_, _) -> (True, border, border, tile_pattern.tv)
 
 decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.Pipeline.decode
       Type
-      |> (Json.Decode.Pipeline.required "s" (pattern_decoder))
       |> (Json.Decode.Pipeline.required "t" (target_decoder))
+      |> (Json.Decode.Pipeline.required "tv" (Json.Decode.int))
       |> (Json.Decode.Pipeline.required
             "p"
             (Json.Decode.list (pattern_decoder))
          )
    )
-
-get_target : Type -> (Int, Int, Int)
-get_target tile_pattern = tile_pattern.t
-
-get_source_pattern : Type -> PatternElement
-get_source_pattern tile_pattern = tile_pattern.s

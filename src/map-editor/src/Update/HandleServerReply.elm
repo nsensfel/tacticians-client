@@ -39,7 +39,11 @@ add_tile_pattern : (
 add_tile_pattern tp current_state =
    case current_state of
       (_, (Just _)) -> current_state
-      (model, _) -> ((Struct.Model.add_tile_pattern tp model), Nothing)
+      (model, _) ->
+         (
+            {model | tile_patterns = (tp :: model.tile_patterns)},
+            Nothing
+         )
 
 set_map : (
       Struct.Map.Type ->

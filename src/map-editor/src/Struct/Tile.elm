@@ -15,6 +15,7 @@ module Struct.Tile exposing
       get_icon_id,
       get_type_id,
       get_variant_ix,
+      get_local_variant_ix,
       solve_tile_instance,
       decoder
    )
@@ -151,7 +152,10 @@ get_type_id : Instance -> Int
 get_type_id tile_inst = tile_inst.type_id
 
 get_variant_ix : Instance -> Int
-get_variant_ix tile_inst =
+get_variant_ix tile_inst = tile_inst.variant_ix
+
+get_local_variant_ix : Instance -> Int
+get_local_variant_ix tile_inst =
    (
       (noise_function
          tile_inst.location.x

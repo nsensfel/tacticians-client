@@ -28,7 +28,7 @@ get_icon tile =
          (Html.Attributes.class
             (
                "map-tile-variant-"
-               ++ (toString (Struct.Tile.get_variant_ix tile))
+               ++ (toString (Struct.Tile.get_local_variant_ix tile))
             )
          ),
          (Html.Attributes.style
