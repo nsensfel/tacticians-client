@@ -4,8 +4,11 @@ import sys
 
 SVG_PREFIX = "{http://www.w3.org/2000/svg}"
 G_TAG = SVG_PREFIX + "g"
-
+TEMPLATE_PREFIX = "rtid-"
 ################################################################################
+def id_to_prefix (id_val):
+    return ("rmid-" + id_val + "-")
+
 def get_xml (filename):
     model_root = XML.parse(filename)
 
@@ -15,10 +18,15 @@ def get_xml (filename):
 
     return model_root
 
-def get_model (filename):
+def get_model (filename, id_prefix):
     model_root = get_xml(filename)
 
-    background = model_root.findall(G_TAG+"[@id='background']/*")
+    background = model_root.findall(
+        G_TAG
+        + "[@id='"
+        + id_prefix
+        + "background']/*"
+    )
 
     if (len(background) == 0):
         print(
@@ -28,10 +36,15 @@ def get_model (filename):
         )
         exit(-1)
 
-    extras = model_root.findall(G_TAG+"[@id='details']/*")
+    extras = model_root.findall(
+        G_TAG
+        + "[@id='"
+        + id_prefix
+        + "details']/*"
+    )
 
     if (len(extras) == 0):
-        if (model_root.find(G_TAG+"[@id='details']") == None):
+        if (model_root.find(G_TAG+"[@id='" + id_prefix + "details']") == None):
             print(
                 "[W] Could not find 'details' layer in model file ("
                 + filename
@@ -53,14 +66,18 @@ def replace_group_by (root_node, group_name, new_content, filename):
     target_group.extend(new_content)
 ################################################################################
 
-if (len(sys.argv) < 3):
-    print("Usage: <A> <B> <TEMPLATES>")
+if (len(sys.argv) < 6):
+    print("Usage: <OUTPUT_DIR> <A_ID> <B_ID> <A> <B> <TEMPLATES>")
     exit(-1)
 
-(model_a_bg, model_a_details) = get_model(sys.argv[1])
-(model_b_bg, model_b_details) = get_model(sys.argv[2])
+output_dir = sys.argv[1]
+model_a_id = sys.argv[2]
+model_b_id = sys.argv[3]
+(model_a_bg, model_a_details) = get_model(sys.argv[4], id_to_prefix(model_a_id))
+(model_b_bg, model_b_details) = get_model(sys.argv[5], id_to_prefix(model_b_id))
 
-current_arg = 3
+current_arg = 6
+variant_count = 0
 
 while (current_arg < len(sys.argv)):
     filename = sys.argv[current_arg]
@@ -68,13 +85,29 @@ while (current_arg < len(sys.argv)):
 
     template_root = get_xml(filename)
 
-    models_layer = template_root.find(G_TAG+"[@id='models_layer']")
+    models_layer = template_root.find(
+        G_TAG
+        + "[@id='"
+        + TEMPLATE_PREFIX
+        + "models_layer']"
+    )
 
     if (models_layer == None):
         print("[F] Could not find model layer in file " + filename + ".")
 
-    replace_group_by(models_layer, "bg_a_model", model_a_bg, filename)
-    replace_group_by(models_layer, "bg_b_model", model_b_bg, filename)
-    replace_group_by(template_root, "details", model_a_details, filename)
+    replace_group_by(models_layer, TEMPLATE_PREFIX + "bg_a_model", model_a_bg, filename)
+    replace_group_by(models_layer, TEMPLATE_PREFIX + "bg_b_model", model_b_bg, filename)
+    replace_group_by(template_root, TEMPLATE_PREFIX + "details", model_a_details, filename)
 
-    template_root.write("/tmp/test" + str(current_arg) + ".svg")
+    template_root.write(
+        output_dir
+        + "/"
+        + model_a_id
+        + "-"
+        + model_b_id
+        + "-"
+        + str(variant_count)
+        + ".svg"
+    )
+
+    variant_count += 1

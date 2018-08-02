@@ -14,6 +14,8 @@ module Struct.Map exposing
 -- Elm -------------------------------------------------------------------------
 import Array
 
+import Dict
+
 -- Map -------------------------------------------------------------------
 import Struct.Character
 import Struct.Tile
@@ -116,7 +118,7 @@ get_movement_cost_function bmap start_loc char_list loc =
    else
       Constants.Movement.cost_when_out_of_bounds
 
-solve_tiles : (List Struct.Tile.Type) -> Type -> Type
+solve_tiles : (Dict.Dict Int Struct.Tile.Type) -> Type -> Type
 solve_tiles tiles bmap =
    {bmap |
       content = (Array.map (Struct.Tile.solve_tile_instance tiles) bmap.content)

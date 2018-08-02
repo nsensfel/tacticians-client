@@ -3,7 +3,9 @@ module Comm.SetMap exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Map -------------------------------------------------------------------
+-- Map -------------------------------------------------------------------------
+import Constants.Movement
+
 import Struct.Map
 import Struct.ServerReply
 import Struct.Tile
@@ -15,21 +17,34 @@ type alias MapData =
    {
       w : Int,
       h : Int,
-      t : (List Int)
+      t : (List (List Int))
    }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-deserialize_tile_instance : Int -> Int -> Int -> Struct.Tile.Instance
-deserialize_tile_instance map_width index id =
-   (Struct.Tile.new_instance
-      (index % map_width)
-      (index // map_width)
-      id
-      -1
-      -1
-   )
+deserialize_tile_instance : Int -> Int -> (List Int) -> Struct.Tile.Instance
+deserialize_tile_instance map_width index t =
+   case t of
+      [type_id, border_id, variant_ix] ->
+         (Struct.Tile.new_instance
+            (index % map_width)
+            (index // map_width)
+            type_id
+            border_id
+            variant_ix
+            Constants.Movement.cost_when_out_of_bounds
+         )
+
+      _ ->
+         (Struct.Tile.new_instance
+            (index % map_width)
+            (index // map_width)
+            0
+            0
+            0
+            Constants.Movement.cost_when_out_of_bounds
+         )
 
 internal_decoder : MapData -> Struct.ServerReply.Type
 internal_decoder map_data =
@@ -56,7 +71,7 @@ decode =
          (Json.Decode.field "h" Json.Decode.int)
          (Json.Decode.field
             "t"
-            (Json.Decode.list Json.Decode.int)
+            (Json.Decode.list (Json.Decode.list Json.Decode.int))
          )
       )
    )

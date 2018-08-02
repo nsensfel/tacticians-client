@@ -35,7 +35,7 @@ get_html tile =
             (Html.Attributes.class
                (
                   "battle-tile-variant-"
-                  ++ (toString (Struct.Tile.get_variant_id tile))
+                  ++ (toString (Struct.Tile.get_local_variant_ix tile))
                )
             ),
             (Html.Attributes.class "clickable"),

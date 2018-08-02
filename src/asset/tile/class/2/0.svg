@@ -1,0 +1,45 @@
+<ns0:svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns0="http://www.w3.org/2000/svg" xmlns:ns1="http://www.inkscape.org/namespaces/inkscape" xmlns:ns2="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns4="http://creativecommons.org/ns#" xmlns:ns6="http://www.w3.org/1999/xlink" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" height="128mm" id="svg8" version="1.1" viewBox="0 0 128 128" width="128mm" ns2:docname="background.svg" ns1:version="0.92.2 5c3e80d, 2017-08-06">
+  <ns2:namedview bordercolor="#666666" borderopacity="1.0" id="rmid-2-base" pagecolor="#ffffff" showgrid="true" showguides="false" ns1:current-layer="rmid-2-background" ns1:cx="-20.57" ns1:cy="427.4" ns1:document-units="mm" ns1:pageopacity="0.0" ns1:pageshadow="2" ns1:snap-global="false" ns1:window-height="1059" ns1:window-maximized="0" ns1:window-width="1918" ns1:window-x="1" ns1:window-y="20" ns1:zoom="2">
+    <ns1:grid id="rmid-2-grid882" spacingx="31.999999" spacingy="31.999999" type="xygrid" units="mm" />
+  </ns2:namedview>
+  <ns0:defs id="rmid-2-defs2" />
+  <ns0:metadata id="rmid-2-metadata5">
+    <rdf:RDF>
+      <ns4:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </ns4:Work>
+    </rdf:RDF>
+  </ns0:metadata>
+  <ns0:g id="rmid-2-background" ns1:groupmode="layer" ns1:label="rmid-2-background">
+    <ns0:g id="1_rmid-2-base">
+      <ns0:rect height="32" id="1_rmid-2-base_bg" style="fill:#6c5353;stroke-width:1.1739;stroke-linejoin:bevel" width="32" x="0" y="0" />
+      <ns0:path d="M 0,0 C 0,0 1,0 1,0 1,0 0,1 0,1 0,1 0,0 0,0" id="1_rmid-2-base_p0" style="fill:#916f6f;stroke-width:0.099" ns1:connector-curvature="0" />
+      <ns0:path d="M 32,32 H 31 C 31.21,31.57 31.56,31.24 32,31 V 32" id="1_rmid-2-base_p1" style="fill:#916f6f;stroke-width:0.099" ns2:nodetypes="cccc" ns1:connector-curvature="0" />
+      <ns0:path d="M 31,0 C 31,0 32,0 32,0 32,0 32,1 32,1 32,1 29.37,2.88 28.15,4.1 26.93,5.3 27.3,7.6 25.72,9.2 24.14,10.8 20.57,11.7 18.77,13.5 16.97,15.3 16.27,18.7 14.49,20.5 12.7,22.3 9.458,22.2 7.835,23.9 6.212,25.5 6.049,28.3 4.793,29.5 3.537,30.8 1,32 1,32 1,32 0,32 0,32 0,32 0,31 0,31 0,31 2.529,29.7 3.779,28.4 5.03,27.2 5.193,24.6 6.802,23 8.412,21.4 11.81,20.4 13.58,18.6 15.35,16.9 15.84,13.9 17.65,12.1 19.47,10.3 22.84,9.7 24.41,8.1 25.98,6.5 25.33,4.1 26.55,2.91 27.76,1.69 31,0 31,0 31,0 31,0 31,0" id="1_rmid-2-base_p2" style="fill:#916f6f;stroke-width:0.099" ns1:connector-curvature="0" />
+      <ns0:path d="M 7,0 C 7,0 9,0 9,0 9,0 6.568,1.54 5.499,2.61 4.431,3.68 4.117,5.9 3.118,6.9 2.119,7.9 0,9 0,9 0,9 0,7 0,7 0,7 1.357,6.5 2.184,5.6 3.011,4.8 3.653,2.69 4.533,1.81 5.412,0.93 7,0 7,0 7,0 7,0 7,0" id="1_rmid-2-base_p3" style="fill:#916f6f;stroke-width:0.099" ns1:connector-curvature="0" />
+      <ns0:path d="M 23,0 C 23,0 25,0 25,0 25,0 21.72,2.05 20.2,3.58 18.67,5.1 18.43,8.2 16.66,9.9 14.88,11.7 11.56,12.6 9.713,14.4 7.866,16.3 6.258,20.2 5.413,21 4.568,21.9 0,25 0,25 0,25 0,23 0,23 0,23 2.812,21.3 4.364,19.8 5.915,18.2 7.042,14.8 8.845,13 10.65,11.2 13.64,10.7 15.38,9 17.11,7.3 17.89,4.1 19.26,2.71 19.26,2.71 23,0 23,0" id="1_rmid-2-base_p4" style="fill:#916f6f;stroke-width:0.099" ns1:connector-curvature="0" />
+      <ns0:path d="M 15,0 C 15,0 17,0 17,0 17,0 14.76,3.67 13.37,5.1 11.98,6.4 10.42,6.5 8.772,7.9 7.121,9.3 5.707,12.4 4.241,13.9 2.775,15.3 0,17 0,17 0,17 0,15 0,15 0,15 1.701,13.9 2.976,12.6 4.252,11.3 6.027,8 7.623,6.6 9.219,5.2 10.98,5.2 12.2,3.99 13.43,2.75 15,0 15,0 15,0 15,0 15,0" id="1_rmid-2-base_p5" style="fill:#916f6f;stroke-width:0.099" ns1:connector-curvature="0" />
+      <ns0:path d="M 25,32 C 25,32 23,32 23,32 23,32 25.87,30.1 26.98,29 28.1,27.9 27.67,26.1 28.67,25.1 29.66,24.1 32,23 32,23 32,23 32,25 32,25 32,25 30.94,25.5 30.09,26.4 29.23,27.2 29.09,29.3 28.17,30.2 27.24,31.2 25,32 25,32 25,32 25,32 25,32" id="1_rmid-2-base_p6" style="fill:#916f6f;stroke-width:0.099" ns1:connector-curvature="0" />
+      <ns0:path d="M 9,32 C 9,32 7,32 7,32 7,32 9.599,30.4 11.1,28.9 12.6,27.4 14.06,24 15.82,22.2 17.59,20.5 19.93,19.9 21.65,18.2 23.37,16.5 23.98,13.4 25.81,11.6 27.64,9.7 32,7 32,7 32,7 32,9 32,9 32,9 28.56,11.3 26.88,13 25.2,14.7 24.57,17.7 22.88,19.4 21.19,21.1 18.36,21.6 16.64,23.3 14.91,25.1 13.7,28.7 12.36,30 11.01,31.4 9,32 9,32 9,32 9,32 9,32" id="1_rmid-2-base_p7" style="fill:#916f6f;stroke-width:0.099" ns1:connector-curvature="0" />
+      <ns0:path d="M 17,32 C 17,32 15,32 15,32 15,32 16.41,29 17.84,27.6 19.26,26.2 22.16,26.1 24.1,24.1 26.05,22.2 27.37,18.6 28.78,17.1 30.19,15.7 32,15 32,15 32,15 32,17 32,17 32,17 30.63,17.2 29.36,18.5 28.09,19.7 26.65,23.5 24.87,25.3 23.09,27 20.19,27.4 18.95,28.6 17.72,29.8 17,32 17,32 17,32 17,32 17,32" id="1_rmid-2-base_p8" style="fill:#916f6f;stroke-width:0.099" ns1:connector-curvature="0" />
+    </ns0:g>
+    <ns0:use height="100%" id="rmid-2-1i_00" width="100%" x="32" y="0" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_01" width="100%" x="64" y="0" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_02" width="100%" x="96" y="0" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_10" width="100%" x="0" y="32" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_11" width="100%" x="32" y="32" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_12" width="100%" x="64" y="32" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_13" width="100%" x="96" y="32" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_20" width="100%" x="0" y="64" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_21" width="100%" x="32" y="64" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_22" width="100%" x="64" y="64" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_23" width="100%" x="96" y="64" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_30" width="100%" x="0" y="96" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_31" width="100%" x="32" y="96" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_32" width="100%" x="64" y="96" ns6:href="#1_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-1i_33" width="100%" x="96" y="96" ns6:href="#1_rmid-2-base" />
+  </ns0:g>
+  <ns0:g id="rmid-2-details" ns1:groupmode="layer" ns1:label="rmid-2-details" />
+</ns0:svg>

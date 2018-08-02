@@ -3,8 +3,8 @@ module Constants.UI exposing (..)
 tile_size : Int
 tile_size = 32
 
-variants_per_tile : Int
-variants_per_tile = 16
+local_variants_per_tile : Int
+local_variants_per_tile = 16
 
 viewer_html_id : String
 viewer_html_id = "map_viewer"

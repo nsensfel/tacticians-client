@@ -111,7 +111,7 @@ set_map map current_state =
          (
             {model |
                map =
-                  (Struct.Map.solve_tiles (Dict.values model.tiles) map)
+                  (Struct.Map.solve_tiles model.tiles map)
             },
             Nothing
          )

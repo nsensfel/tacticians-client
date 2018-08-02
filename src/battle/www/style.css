@@ -606,7 +606,7 @@
 .battle-tile-variant-14 {background-position: 200% 300%;}
 .battle-tile-variant-15 {background-position: 300% 300%;}
 
-.battle-tile-icon       {z-index: 0; position: absolute; background-size: 300%;}
+.battle-tile-icon       {z-index: 0; position: absolute; background-size: 400%;}
 .battle-path-icon-below-markers {z-index: 1;}
 .battle-marker-icon     {z-index: 2;}
 .battle-path-icon-above-markers {z-index: 3;}
