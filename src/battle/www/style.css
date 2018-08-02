@@ -589,12 +589,22 @@
 .battle-tile-variant-0  {background-position: 0    0;}
 .battle-tile-variant-1  {background-position: 100% 0;}
 .battle-tile-variant-2  {background-position: 200% 0;}
-.battle-tile-variant-3  {background-position: 0    100%;}
-.battle-tile-variant-4  {background-position: 100% 100%;}
-.battle-tile-variant-5  {background-position: 200% 100%;}
-.battle-tile-variant-6  {background-position: 0    200%;}
-.battle-tile-variant-7  {background-position: 100% 200%;}
-.battle-tile-variant-8  {background-position: 200% 200%;}
+.battle-tile-variant-3  {background-position: 300% 0;}
+
+.battle-tile-variant-4  {background-position: 0    100%;}
+.battle-tile-variant-5  {background-position: 100% 100%;}
+.battle-tile-variant-6  {background-position: 200% 100%;}
+.battle-tile-variant-7  {background-position: 300% 100%;}
+
+.battle-tile-variant-8  {background-position: 0    200%;}
+.battle-tile-variant-9  {background-position: 100% 200%;}
+.battle-tile-variant-10 {background-position: 200% 200%;}
+.battle-tile-variant-11 {background-position: 300% 200%;}
+
+.battle-tile-variant-12 {background-position: 0    300%;}
+.battle-tile-variant-13 {background-position: 100% 300%;}
+.battle-tile-variant-14 {background-position: 200% 300%;}
+.battle-tile-variant-15 {background-position: 300% 300%;}
 
 .battle-tile-icon       {z-index: 0; position: absolute; background-size: 300%;}
 .battle-path-icon-below-markers {z-index: 1;}

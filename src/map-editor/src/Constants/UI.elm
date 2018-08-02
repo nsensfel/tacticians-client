@@ -4,7 +4,7 @@ tile_size : Int
 tile_size = 32
 
 variants_per_tile : Int
-variants_per_tile = 9
+variants_per_tile = 16
 
 viewer_html_id : String
 viewer_html_id = "map_viewer"
