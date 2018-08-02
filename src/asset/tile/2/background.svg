@@ -1,1239 +1,179 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="128mm"
-   height="128mm"
-   viewBox="0 0 128 128"
-   version="1.1"
-   id="svg8"
-   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
-   sodipodi:docname="background.svg">
-  <defs
-     id="defs2" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="3.3941125"
-     inkscape:cx="109.73111"
-     inkscape:cy="87.897795"
-     inkscape:document-units="mm"
-     inkscape:current-layer="details"
-     showgrid="true"
-     showguides="false"
-     inkscape:window-width="1918"
-     inkscape:window-height="1059"
-     inkscape:window-x="1"
-     inkscape:window-y="20"
-     inkscape:window-maximized="0"
-     inkscape:snap-global="false">
-    <inkscape:grid
-       type="xygrid"
-       id="grid882"
-       units="mm"
-       spacingx="31.999999"
-       spacingy="31.999999" />
-  </sodipodi:namedview>
-  <metadata
-     id="metadata5">
+<ns0:svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns0="http://www.w3.org/2000/svg" xmlns:ns1="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns2="http://www.inkscape.org/namespaces/inkscape" xmlns:ns4="http://creativecommons.org/ns#" xmlns:ns6="http://www.w3.org/1999/xlink" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" height="128mm" id="svg8" version="1.1" viewBox="0 0 128 128" width="128mm" ns1:docname="background.svg" ns2:version="0.92.2 5c3e80d, 2017-08-06">
+  <ns0:defs id="rmid-2-defs2" />
+  <ns1:namedview bordercolor="#666666" borderopacity="1.0" id="rmid-2-base" pagecolor="#ffffff" showgrid="true" showguides="false" ns2:current-layer="rmid-2-details" ns2:cx="109.73111" ns2:cy="87.897795" ns2:document-units="mm" ns2:pageopacity="0.0" ns2:pageshadow="2" ns2:snap-global="false" ns2:window-height="1059" ns2:window-maximized="0" ns2:window-width="1918" ns2:window-x="1" ns2:window-y="20" ns2:zoom="3.3941125">
+    <ns2:grid id="rmid-2-grid882" spacingx="31.999999" spacingy="31.999999" type="xygrid" units="mm" />
+  </ns1:namedview>
+  <ns0:metadata id="rmid-2-metadata5">
     <rdf:RDF>
-      <cc:Work
-         rdf:about="">
+      <ns4:Work rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
         <dc:title />
-      </cc:Work>
+      </ns4:Work>
     </rdf:RDF>
-  </metadata>
-  <g
-     inkscape:groupmode="layer"
-     id="background"
-     inkscape:label="background">
-    <g
-       id="0_base">
-      <rect
-         style="fill:#bcd35f;stroke-width:3.1368;stroke-linejoin:bevel"
-         id="0_greenbg"
-         width="32"
-         height="32"
-         x="0"
-         y="0" />
-    </g>
-    <use
-       x="32"
-       y="0"
-       xlink:href="#0_base"
-       id="0b00"
-       width="100%"
-       height="100%" />
-    <use
-       x="64"
-       y="0"
-       xlink:href="#0_base"
-       id="0b01"
-       width="100%"
-       height="100%" />
-    <use
-       x="96"
-       y="0"
-       xlink:href="#0_base"
-       id="0b02"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="32"
-       xlink:href="#0_base"
-       id="0b10"
-       width="100%"
-       height="100%" />
-    <use
-       x="32"
-       y="32"
-       xlink:href="#0_base"
-       id="0b11"
-       width="100%"
-       height="100%" />
-    <use
-       x="64"
-       y="32"
-       xlink:href="#0_base"
-       id="0b12"
-       width="100%"
-       height="100%" />
-    <use
-       x="96"
-       y="32"
-       xlink:href="#0_base"
-       id="0b13"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="64"
-       xlink:href="#0_base"
-       id="0b20"
-       width="100%"
-       height="100%" />
-    <use
-       x="32"
-       y="64"
-       xlink:href="#0_base"
-       id="0b21"
-       width="100%"
-       height="100%" />
-    <use
-       x="64"
-       y="64"
-       xlink:href="#0_base"
-       id="0b22"
-       width="100%"
-       height="100%" />
-    <use
-       x="96"
-       y="64"
-       xlink:href="#0_base"
-       id="0b23"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="96"
-       xlink:href="#0_base"
-       id="0b30"
-       width="100%"
-       height="100%" />
-    <use
-       x="32"
-       y="96"
-       xlink:href="#0_base"
-       id="0b31"
-       width="100%"
-       height="100%" />
-    <use
-       x="64"
-       y="96"
-       xlink:href="#0_base"
-       id="0b32"
-       width="100%"
-       height="100%" />
-    <use
-       x="96"
-       y="96"
-       xlink:href="#0_base"
-       id="0b33"
-       width="100%"
-       height="100%" />
-  </g>
-  <g
-     inkscape:groupmode="layer"
-     id="details"
-     inkscape:label="details"
-     style="display:inline">
-    <use
-       x="0"
-       y="0"
-       xlink:href="#g4770"
-       id="use5814"
-       transform="translate(-32.111603,2.9128416)"
-       width="100%"
-       height="100%" />
-    <g
-       transform="translate(-2.0138701,42.096727)"
-       style="display:inline"
-       id="g4770">
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path4674-2"
-         d="m 43.485313,-35.750981 c -1.080827,-2.417219 -6.626129,-1.924553 -7.613836,0.172224 -0.320129,0.336383 5.821847,3.260637 7.613836,-0.172224 z"
-         style="fill:#454837;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccccc"
-         inkscape:connector-curvature="0"
-         id="path4672-9"
-         d="m 38.041504,-39.849914 c -0.344109,1.026149 -0.851263,1.834906 -0.137788,4.271164 1.376363,0.937912 2.249413,0.617545 2.893369,-0.275559 0.237474,-1.657275 -0.20541,-2.974369 -0.688896,-4.271164 z"
-         style="fill:#806600;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path4670-1"
-         d="m 35.716005,-38.233289 c 2.696517,-3.451103 4.075106,-4.934811 7.040778,-0.595525 0.204119,2.145328 -5.117611,1.501731 -7.040778,0.595525 z"
-         style="fill:#aa8800;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    </g>
-    <use
-       x="0"
-       y="0"
-       xlink:href="#g4726"
-       id="use5832"
-       transform="translate(13.449653,-0.11024306)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5818"
-       id="use5828"
-       transform="translate(36.049479,-10.914063)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#g4721"
-       id="use5830"
-       transform="translate(58.869792,-9.4809027)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5816"
-       id="use5826"
-       transform="translate(41.010417,-1.1024306)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2465"
-       id="use2467"
-       transform="translate(-72.055789,39.395331)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use886"
-       id="use916"
-       transform="translate(-69.563369,27.450521)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use910"
-       id="use926"
-       transform="translate(19.513021,-0.11024306)"
-       width="100%"
-       height="100%" />
-    <g
-       transform="translate(18.029089,19.39164)"
-       id="g5465-3">
-      <path
-         style="fill:#cdde87;fill-rule:evenodd;stroke-width:0.403px"
-         d="M 7.726,11.73 C 10.3,11.51 11.75,8.451 12.66,5.179 9.471,5.267 7.892,7.74 7.726,11.73 Z"
-         id="path4744-67"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="ccc" />
-      <path
-         style="fill:#cdde87;fill-rule:evenodd;stroke-width:0.403px"
-         d="M 7.726,11.73 C 5.22,10.25 4.498,10.5 3.588,7.229 6.775,7.317 7.958,7.211 7.726,11.73 Z"
-         id="path4744-6-5"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="ccc" />
-    </g>
-    <use
-       x="0"
-       y="0"
-       xlink:href="#g5465-3"
-       id="use2461"
-       transform="translate(22.072196,-22.664022)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#g5465-3"
-       id="use2463"
-       transform="translate(54.090911,-0.54124455)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#g5465-3"
-       id="use2465"
-       transform="translate(84.450391,-23.279161)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2467"
-       id="use2469"
-       transform="translate(46.292839,-2.3523794)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use910"
-       id="use932"
-       transform="translate(32.190973,5.6223958)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2471"
-       id="use2473"
-       transform="translate(51.252469,-16.595021)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#g4721-3"
-       id="use5810"
-       transform="translate(8.9118117,-21.058988)"
-       width="100%"
-       height="100%" />
-    <g
-       style="display:inline"
-       id="g4726"
-       transform="matrix(1.5625102,0,0,1.5625102,47.506845,67.886662)">
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path4674-5"
-         d="m 9.9909907,-37.153412 c -1.2623362,-2.250062 -5.101187,-1.785086 -6.0406876,0.172223 0.3413295,0.851202 2.9186053,2.780689 6.0406876,-0.172223 z"
-         style="display:inline;fill:#454837;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccccc"
-         inkscape:connector-curvature="0"
-         id="path4672-3"
-         d="m 5.3409313,-41.252345 c -0.342164,1.026149 1.485821,1.834905 -0.1377878,4.271164 1.376363,0.937912 2.2494133,0.617544 2.8933697,-0.27556 0.2374738,-1.657275 -0.205411,-2.974369 -0.6888964,-4.271164 z"
-         style="display:inline;fill:#552200;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path4670-5"
-         d="m 3.6758794,-39.692114 c -2.298e-4,-2.95874 2.620153,-5.049217 5.4204345,-1.931781 -0.8510705,1.040393 -4.2240781,5.163777 -5.4204345,1.931781 z"
-         style="display:inline;fill:#aa4400;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    </g>
-    <use
-       x="0"
-       y="0"
-       xlink:href="#g4721"
-       id="use5812"
-       transform="translate(22.303016,-6.5259098)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#g4770"
-       id="use5781"
-       transform="translate(-10.314026,5.3603223)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#g4726"
-       id="use5808"
-       transform="translate(-48.045447,9.5024723)"
-       width="100%"
-       height="100%" />
-    <g
-       style="display:inline"
-       id="g4721"
-       transform="matrix(1.5625102,0,0,1.5625102,-9.7702979,105.03701)">
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path4674"
-         d="m 23.715824,-52.392332 c -2.13916,-2.152636 -4.906337,-1.395386 -6.820086,0.172224 0.341329,0.0718 3.308305,3.657512 6.820086,-0.172224 z"
-         style="fill:#454837;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccccc"
-         inkscape:connector-curvature="0"
-         id="path4672"
-         d="m 19.065765,-56.491265 c -0.344109,1.026149 -0.851263,1.834906 -0.137788,4.271164 1.376363,0.937912 2.249413,0.617545 2.893369,-0.275559 0.237474,-1.657275 -0.20541,-2.974369 -0.688896,-4.271164 z"
-         style="fill:#6c5353;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccc"
-         inkscape:connector-curvature="0"
-         id="path4670"
-         d="m 15.549641,-56.197557 c 2.696517,-3.451103 6.059481,-5.199394 9.025153,-0.860108 0.204119,2.145328 -7.101986,1.766314 -9.025153,0.860108 z"
-         style="fill:#ac9393;fill-opacity:1;stroke:#000000;stroke-width:0.09599937;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    </g>
-    <g
-       style="display:inline"
-       id="g4721-3"
-       transform="matrix(1.0422678,0,0,0.98849778,-12.756429,81.093821)">
-      <path
-         sodipodi:nodetypes="csc"
-         inkscape:connector-curvature="0"
-         id="path4674-6"
-         d="m 23.715824,-52.671147 c -1.982336,-2.666106 -6.647205,-0.909062 -6.820086,0.395276 -0.130657,0.985771 5.447711,3.013773 6.820086,-0.395276 z"
-         style="fill:#454837;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="ccccc"
-         inkscape:connector-curvature="0"
-         id="path4672-7"
-         d="m 19.065765,-56.491265 c -0.344109,1.026149 -0.851263,1.834906 -0.137788,4.271164 1.376363,0.937912 2.249413,0.617545 2.893369,-0.275559 0.237474,-1.657275 -0.20541,-2.974369 -0.688896,-4.271164 z"
-         style="fill:#502d16;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         sodipodi:nodetypes="zcz"
-         inkscape:connector-curvature="0"
-         id="path4670-53"
-         d="m 16.368659,-56.341485 c 0.482093,-3.99943 5.240463,-5.055466 8.206135,-0.71618 0.204119,2.807184 -8.688227,4.71561 -8.206135,0.71618 z"
-         style="fill:#552200;fill-opacity:1;stroke:#000000;stroke-width:0.14777935;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    </g>
-    <use
-       x="0"
-       y="0"
-       xlink:href="#g4721-3"
-       id="use5816"
-       transform="translate(29.324652,-4.7404515)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5781"
-       id="use5818"
-       transform="translate(28.001735,6.5043402)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5810"
-       id="use5820"
-       transform="translate(39.30165,20.284722)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2467"
-       id="use5822"
-       transform="translate(8.3233506,-18.079861)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#g4726"
-       id="use5824"
-       transform="translate(32.521702,19.513021)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2465"
-       id="use5834"
-       transform="translate(-41.45139,11.244792)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5828"
-       id="use5836"
-       transform="translate(-21.276909,21.717882)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5820"
-       id="use882"
-       transform="translate(43.65625,-20.835937)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5814"
-       id="use884"
-       transform="translate(102.63629,5.5121527)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5826"
-       id="use888"
-       transform="translate(42.774304,-13.559896)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5830"
-       id="use890"
-       transform="translate(38.915798,11.355035)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use884"
-       id="use892"
-       transform="translate(-7.717014,7.3862848)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5824"
-       id="use886"
-       transform="translate(17.087674,-1.874132)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5816"
-       id="use894"
-       transform="translate(-33.293402,15.213541)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2467"
-       id="use900"
-       transform="translate(-23.261284,-7.8272569)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5808"
-       id="use896"
-       transform="translate(3.3072917,27.891494)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#g4721"
-       id="use898"
-       transform="translate(3.1970485,20.615451)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5836"
-       id="use902"
-       transform="translate(-45.42014,22.37934)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5836"
-       id="use904"
-       transform="translate(-65.153646,22.820313)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5826"
-       id="use906"
-       transform="translate(-66.035589,36.380208)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2469"
-       id="use908"
-       transform="translate(-59.53125,17.087674)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5818"
-       id="use910"
-       transform="translate(4.4097223,20.064236)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use910"
-       id="use912"
-       transform="translate(-23.040799,-0.22048611)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use882"
-       id="use918"
-       transform="translate(-42.553819,43.65625)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5830"
-       id="use914"
-       transform="translate(-31.309027,46.853298)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2469"
-       id="use920"
-       transform="translate(-35.277777,-4.5199657)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5826"
-       id="use922"
-       transform="translate(-30.868056,23.371528)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use914"
-       id="use924"
-       transform="translate(22.599826,-16.867188)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use918"
-       id="use928"
-       transform="translate(23.8125,-1.5434028)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use916"
-       id="use930"
-       transform="translate(31.639756,-2.6458333)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use5824"
-       id="use934"
-       transform="translate(-0.44097223,26.678819)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2473"
-       id="use936"
-       transform="translate(20.247844,-16.487548)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use892"
-       id="use938"
-       transform="translate(-28.442708,39.6875)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use934"
-       id="use942"
-       transform="translate(10.914062,-14.221354)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use928"
-       id="use946"
-       transform="translate(31.529515,-8.7092012)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use890"
-       id="use940"
-       transform="translate(-12.236979,27.560765)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use884"
-       id="use944"
-       transform="translate(-6.8350694,44.758681)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2463"
-       id="use948"
-       transform="translate(42.333333,9.4809027)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use892"
-       id="use950"
-       transform="translate(21.828125,25.355903)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use928"
-       id="use952"
-       transform="translate(40.018229,10.583333)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use948"
-       id="use954"
-       transform="translate(-10.252604,17.528646)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use952"
-       id="use1642"
-       transform="translate(-20.969522,11.303274)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use934"
-       id="use1648"
-       transform="translate(29.310558,17.851377)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use940"
-       id="use1644"
-       transform="translate(2.3386084,25.646738)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2475"
-       id="use2477"
-       transform="translate(35.879986,-12.219072)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use944"
-       id="use1646"
-       transform="translate(1.013397,30.401909)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use932"
-       id="use1650"
-       transform="translate(29.77828,38.353177)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use952"
-       id="use1652"
-       transform="translate(-8.0292221,29.544419)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use928"
-       id="use1662"
-       transform="translate(-1.1693042,23.464038)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use934"
-       id="use1658"
-       transform="translate(-2.1827011,28.531022)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use940"
-       id="use1654"
-       transform="translate(-31.883027,40.068157)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2473"
-       id="use2475"
-       transform="translate(9.7598228,19.811583)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1646"
-       id="use1656"
-       transform="translate(-10.13397,3.9756342)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use938"
-       id="use1660"
-       transform="translate(-2.1047475,13.17416)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use936"
-       id="use1664"
-       transform="translate(10.835552,13.797789)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1650"
-       id="use1666"
-       transform="translate(-21.203383,19.566357)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1652"
-       id="use1668"
-       transform="translate(-3.0401909,19.254542)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1648"
-       id="use1672"
-       transform="translate(3.1181445,31.72712)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1644"
-       id="use1670"
-       transform="translate(10.36783,38.275223)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1672"
-       id="use1674"
-       transform="translate(-18.708867,15.74663)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1646"
-       id="use1676"
-       transform="translate(16.058444,35.936615)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1662"
-       id="use1682"
-       transform="translate(-34.299589,-1.1693042)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1654"
-       id="use1678"
-       transform="translate(-21.515197,-14.343465)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1660"
-       id="use1680"
-       transform="translate(-30.63577,1.4811187)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1662"
-       id="use1686"
-       transform="translate(-35.157079,12.628485)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1658"
-       id="use1684"
-       transform="translate(-49.578497,6.0803817)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1656"
-       id="use1688"
-       transform="translate(-33.598007,-6.4701498)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use928"
-       id="use1690"
-       transform="translate(-28.297161,44.277652)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1694"
-       id="use1704"
-       transform="translate(-12.550532,-17.539563)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1698"
-       id="use1700"
-       transform="translate(-12.784392,-16.526166)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1654"
-       id="use1692"
-       transform="translate(-65.481034,-7.1717323)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2469"
-       id="use2471"
-       transform="translate(-77.106529,47.76257)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1686"
-       id="use1696"
-       transform="translate(-21.749058,0.62362893)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1684"
-       id="use1694"
-       transform="translate(-19.332496,1.3252114)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1680"
-       id="use1698"
-       transform="translate(-11.459181,17.305702)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1692"
-       id="use1702"
-       transform="translate(14.88914,-9.8221551)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1716"
-       id="use1718"
-       transform="translate(-2.1047475,-14.265511)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1654"
-       id="use1706"
-       transform="translate(1.7929331,16.604119)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1674"
-       id="use1712"
-       transform="translate(-12.9403,-7.8733148)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1654"
-       id="use1708"
-       transform="translate(6.3921962,25.646739)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1656"
-       id="use1710"
-       transform="translate(-0.77953612,8.5748973)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1668"
-       id="use1714"
-       transform="translate(-20.112032,15.74663)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1714"
-       id="use1716"
-       transform="translate(-18.864774,-5.4567529)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use2475"
-       id="use1736"
-       transform="translate(-30.791677,7.7174076)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1686"
-       id="use1722"
-       transform="translate(-0.70158254,19.410449)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1724"
-       id="use1732"
-       transform="translate(-2.026794,-7.7953612)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1688"
-       id="use1724"
-       transform="translate(0.62362891,22.372687)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1654"
-       id="use1720"
-       transform="translate(-24.867202,17.617516)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1736"
-       id="use1738"
-       transform="translate(0.85748973,10.13397)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1684"
-       id="use1726"
-       transform="translate(5.6126604,26.11446)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1688"
-       id="use1728"
-       transform="translate(-1.7929332,29.77828)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1686"
-       id="use1730"
-       transform="translate(-6.7040107,39.28862)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1684"
-       id="use1734"
-       transform="translate(13.797789,34.221636)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1722"
-       id="use1742"
-       transform="translate(-39.678389,-1.5590722)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1698"
-       id="use1744"
-       transform="translate(-13.096207,8.3410365)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1720"
-       id="use1740"
-       transform="translate(-37.33978,2.416562)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1694"
-       id="use1746"
-       transform="translate(-13.563929,25.179017)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1742"
-       id="use1748"
-       transform="translate(22.216779,0.23386084)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1700"
-       id="use1750"
-       transform="translate(9.5882943,34.689358)"
-       width="100%"
-       height="100%" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use1740"
-       id="use1752"
-       transform="translate(6.3921962,10.991459)"
-       width="100%"
-       height="100%" />
-  </g>
-</svg>
+  </ns0:metadata>
+  <ns0:g id="rmid-2-background" ns2:groupmode="layer" ns2:label="rmid-2-background">
+    <ns0:g id="0_rmid-2-base">
+      <ns0:rect height="32" id="rmid-2-0_greenbg" style="fill:#bcd35f;stroke-width:3.1368;stroke-linejoin:bevel" width="32" x="0" y="0" />
+    </ns0:g>
+    <ns0:use height="100%" id="rmid-2-0b00" width="100%" x="32" y="0" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b01" width="100%" x="64" y="0" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b02" width="100%" x="96" y="0" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b10" width="100%" x="0" y="32" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b11" width="100%" x="32" y="32" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b12" width="100%" x="64" y="32" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b13" width="100%" x="96" y="32" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b20" width="100%" x="0" y="64" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b21" width="100%" x="32" y="64" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b22" width="100%" x="64" y="64" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b23" width="100%" x="96" y="64" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b30" width="100%" x="0" y="96" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b31" width="100%" x="32" y="96" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b32" width="100%" x="64" y="96" ns6:href="#0_rmid-2-base" />
+    <ns0:use height="100%" id="rmid-2-0b33" width="100%" x="96" y="96" ns6:href="#0_rmid-2-base" />
+  </ns0:g>
+  <ns0:g id="rmid-2-details" style="display:inline" ns2:groupmode="layer" ns2:label="rmid-2-details">
+    <ns0:use height="100%" id="rmid-2-use5814" transform="translate(-32.111603,2.9128416)" width="100%" x="0" y="0" ns6:href="#rmid-2-g4770" />
+    <ns0:g id="rmid-2-g4770" style="display:inline" transform="translate(-2.0138701,42.096727)">
+      <ns0:path d="m 43.485313,-35.750981 c -1.080827,-2.417219 -6.626129,-1.924553 -7.613836,0.172224 -0.320129,0.336383 5.821847,3.260637 7.613836,-0.172224 z" id="rmid-2-rmid-2-path4674-2" style="fill:#454837;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" ns1:nodetypes="ccc" ns2:connector-curvature="0" />
+      <ns0:path d="m 38.041504,-39.849914 c -0.344109,1.026149 -0.851263,1.834906 -0.137788,4.271164 1.376363,0.937912 2.249413,0.617545 2.893369,-0.275559 0.237474,-1.657275 -0.20541,-2.974369 -0.688896,-4.271164 z" id="rmid-2-rmid-2-path4672-9" style="fill:#806600;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" ns1:nodetypes="ccccc" ns2:connector-curvature="0" />
+      <ns0:path d="m 35.716005,-38.233289 c 2.696517,-3.451103 4.075106,-4.934811 7.040778,-0.595525 0.204119,2.145328 -5.117611,1.501731 -7.040778,0.595525 z" id="rmid-2-rmid-2-path4670-1" style="fill:#aa8800;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" ns1:nodetypes="ccc" ns2:connector-curvature="0" />
+    </ns0:g>
+    <ns0:use height="100%" id="rmid-2-use5832" transform="translate(13.449653,-0.11024306)" width="100%" x="0" y="0" ns6:href="#rmid-2-g4726" />
+    <ns0:use height="100%" id="rmid-2-use5828" transform="translate(36.049479,-10.914063)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5818" />
+    <ns0:use height="100%" id="rmid-2-use5830" transform="translate(58.869792,-9.4809027)" width="100%" x="0" y="0" ns6:href="#rmid-2-g4721" />
+    <ns0:use height="100%" id="rmid-2-use5826" transform="translate(41.010417,-1.1024306)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5816" />
+    <ns0:use height="100%" id="rmid-2-use2467" transform="translate(-72.055789,39.395331)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2465" />
+    <ns0:use height="100%" id="rmid-2-use916" transform="translate(-69.563369,27.450521)" width="100%" x="0" y="0" ns6:href="#rmid-2-use886" />
+    <ns0:use height="100%" id="rmid-2-use926" transform="translate(19.513021,-0.11024306)" width="100%" x="0" y="0" ns6:href="#rmid-2-use910" />
+    <ns0:g id="rmid-2-g5465-3" transform="translate(18.029089,19.39164)">
+      <ns0:path d="M 7.726,11.73 C 10.3,11.51 11.75,8.451 12.66,5.179 9.471,5.267 7.892,7.74 7.726,11.73 Z" id="rmid-2-path4744-67" style="fill:#cdde87;fill-rule:evenodd;stroke-width:0.403px" ns1:nodetypes="ccc" ns2:connector-curvature="0" />
+      <ns0:path d="M 7.726,11.73 C 5.22,10.25 4.498,10.5 3.588,7.229 6.775,7.317 7.958,7.211 7.726,11.73 Z" id="rmid-2-path4744-6-5" style="fill:#cdde87;fill-rule:evenodd;stroke-width:0.403px" ns1:nodetypes="ccc" ns2:connector-curvature="0" />
+    </ns0:g>
+    <ns0:use height="100%" id="rmid-2-use2461" transform="translate(22.072196,-22.664022)" width="100%" x="0" y="0" ns6:href="#rmid-2-g5465-3" />
+    <ns0:use height="100%" id="rmid-2-use2463" transform="translate(54.090911,-0.54124455)" width="100%" x="0" y="0" ns6:href="#rmid-2-g5465-3" />
+    <ns0:use height="100%" id="rmid-2-use2465" transform="translate(84.450391,-23.279161)" width="100%" x="0" y="0" ns6:href="#rmid-2-g5465-3" />
+    <ns0:use height="100%" id="rmid-2-use2469" transform="translate(46.292839,-2.3523794)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2467" />
+    <ns0:use height="100%" id="rmid-2-use932" transform="translate(32.190973,5.6223958)" width="100%" x="0" y="0" ns6:href="#rmid-2-use910" />
+    <ns0:use height="100%" id="rmid-2-use2473" transform="translate(51.252469,-16.595021)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2471" />
+    <ns0:use height="100%" id="rmid-2-use5810" transform="translate(8.9118117,-21.058988)" width="100%" x="0" y="0" ns6:href="#rmid-2-rmid-2-g4721-3" />
+    <ns0:g id="rmid-2-g4726" style="display:inline" transform="matrix(1.5625102,0,0,1.5625102,47.506845,67.886662)">
+      <ns0:path d="m 9.9909907,-37.153412 c -1.2623362,-2.250062 -5.101187,-1.785086 -6.0406876,0.172223 0.3413295,0.851202 2.9186053,2.780689 6.0406876,-0.172223 z" id="rmid-2-rmid-2-path4674-5" style="display:inline;fill:#454837;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" ns1:nodetypes="ccc" ns2:connector-curvature="0" />
+      <ns0:path d="m 5.3409313,-41.252345 c -0.342164,1.026149 1.485821,1.834905 -0.1377878,4.271164 1.376363,0.937912 2.2494133,0.617544 2.8933697,-0.27556 0.2374738,-1.657275 -0.205411,-2.974369 -0.6888964,-4.271164 z" id="rmid-2-rmid-2-path4672-3" style="display:inline;fill:#552200;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" ns1:nodetypes="ccccc" ns2:connector-curvature="0" />
+      <ns0:path d="m 3.6758794,-39.692114 c -2.298e-4,-2.95874 2.620153,-5.049217 5.4204345,-1.931781 -0.8510705,1.040393 -4.2240781,5.163777 -5.4204345,1.931781 z" id="rmid-2-rmid-2-path4670-5" style="display:inline;fill:#aa4400;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" ns1:nodetypes="ccc" ns2:connector-curvature="0" />
+    </ns0:g>
+    <ns0:use height="100%" id="rmid-2-use5812" transform="translate(22.303016,-6.5259098)" width="100%" x="0" y="0" ns6:href="#rmid-2-g4721" />
+    <ns0:use height="100%" id="rmid-2-use5781" transform="translate(-10.314026,5.3603223)" width="100%" x="0" y="0" ns6:href="#rmid-2-g4770" />
+    <ns0:use height="100%" id="rmid-2-use5808" transform="translate(-48.045447,9.5024723)" width="100%" x="0" y="0" ns6:href="#rmid-2-g4726" />
+    <ns0:g id="rmid-2-g4721" style="display:inline" transform="matrix(1.5625102,0,0,1.5625102,-9.7702979,105.03701)">
+      <ns0:path d="m 23.715824,-52.392332 c -2.13916,-2.152636 -4.906337,-1.395386 -6.820086,0.172224 0.341329,0.0718 3.308305,3.657512 6.820086,-0.172224 z" id="rmid-2-path4674" style="fill:#454837;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" ns1:nodetypes="ccc" ns2:connector-curvature="0" />
+      <ns0:path d="m 19.065765,-56.491265 c -0.344109,1.026149 -0.851263,1.834906 -0.137788,4.271164 1.376363,0.937912 2.249413,0.617545 2.893369,-0.275559 0.237474,-1.657275 -0.20541,-2.974369 -0.688896,-4.271164 z" id="rmid-2-path4672" style="fill:#6c5353;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" ns1:nodetypes="ccccc" ns2:connector-curvature="0" />
+      <ns0:path d="m 15.549641,-56.197557 c 2.696517,-3.451103 6.059481,-5.199394 9.025153,-0.860108 0.204119,2.145328 -7.101986,1.766314 -9.025153,0.860108 z" id="rmid-2-path4670" style="fill:#ac9393;fill-opacity:1;stroke:#000000;stroke-width:0.09599937;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" ns1:nodetypes="ccc" ns2:connector-curvature="0" />
+    </ns0:g>
+    <ns0:g id="rmid-2-rmid-2-g4721-3" style="display:inline" transform="matrix(1.0422678,0,0,0.98849778,-12.756429,81.093821)">
+      <ns0:path d="m 23.715824,-52.671147 c -1.982336,-2.666106 -6.647205,-0.909062 -6.820086,0.395276 -0.130657,0.985771 5.447711,3.013773 6.820086,-0.395276 z" id="rmid-2-rmid-2-path4674-6" style="fill:#454837;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" ns1:nodetypes="csc" ns2:connector-curvature="0" />
+      <ns0:path d="m 19.065765,-56.491265 c -0.344109,1.026149 -0.851263,1.834906 -0.137788,4.271164 1.376363,0.937912 2.249413,0.617545 2.893369,-0.275559 0.237474,-1.657275 -0.20541,-2.974369 -0.688896,-4.271164 z" id="rmid-2-rmid-2-path4672-7" style="fill:#502d16;stroke:none;stroke-width:0.38969928px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" ns1:nodetypes="ccccc" ns2:connector-curvature="0" />
+      <ns0:path d="m 16.368659,-56.341485 c 0.482093,-3.99943 5.240463,-5.055466 8.206135,-0.71618 0.204119,2.807184 -8.688227,4.71561 -8.206135,0.71618 z" id="rmid-2-rmid-2-rmid-2-path4670-53" style="fill:#552200;fill-opacity:1;stroke:#000000;stroke-width:0.14777935;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" ns1:nodetypes="zcz" ns2:connector-curvature="0" />
+    </ns0:g>
+    <ns0:use height="100%" id="rmid-2-use5816" transform="translate(29.324652,-4.7404515)" width="100%" x="0" y="0" ns6:href="#rmid-2-rmid-2-g4721-3" />
+    <ns0:use height="100%" id="rmid-2-use5818" transform="translate(28.001735,6.5043402)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5781" />
+    <ns0:use height="100%" id="rmid-2-use5820" transform="translate(39.30165,20.284722)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5810" />
+    <ns0:use height="100%" id="rmid-2-use5822" transform="translate(8.3233506,-18.079861)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2467" />
+    <ns0:use height="100%" id="rmid-2-use5824" transform="translate(32.521702,19.513021)" width="100%" x="0" y="0" ns6:href="#rmid-2-g4726" />
+    <ns0:use height="100%" id="rmid-2-use5834" transform="translate(-41.45139,11.244792)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2465" />
+    <ns0:use height="100%" id="rmid-2-use5836" transform="translate(-21.276909,21.717882)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5828" />
+    <ns0:use height="100%" id="rmid-2-use882" transform="translate(43.65625,-20.835937)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5820" />
+    <ns0:use height="100%" id="rmid-2-use884" transform="translate(102.63629,5.5121527)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5814" />
+    <ns0:use height="100%" id="rmid-2-use888" transform="translate(42.774304,-13.559896)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5826" />
+    <ns0:use height="100%" id="rmid-2-use890" transform="translate(38.915798,11.355035)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5830" />
+    <ns0:use height="100%" id="rmid-2-use892" transform="translate(-7.717014,7.3862848)" width="100%" x="0" y="0" ns6:href="#rmid-2-use884" />
+    <ns0:use height="100%" id="rmid-2-use886" transform="translate(17.087674,-1.874132)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5824" />
+    <ns0:use height="100%" id="rmid-2-use894" transform="translate(-33.293402,15.213541)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5816" />
+    <ns0:use height="100%" id="rmid-2-use900" transform="translate(-23.261284,-7.8272569)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2467" />
+    <ns0:use height="100%" id="rmid-2-use896" transform="translate(3.3072917,27.891494)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5808" />
+    <ns0:use height="100%" id="rmid-2-use898" transform="translate(3.1970485,20.615451)" width="100%" x="0" y="0" ns6:href="#rmid-2-g4721" />
+    <ns0:use height="100%" id="rmid-2-use902" transform="translate(-45.42014,22.37934)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5836" />
+    <ns0:use height="100%" id="rmid-2-use904" transform="translate(-65.153646,22.820313)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5836" />
+    <ns0:use height="100%" id="rmid-2-use906" transform="translate(-66.035589,36.380208)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5826" />
+    <ns0:use height="100%" id="rmid-2-use908" transform="translate(-59.53125,17.087674)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2469" />
+    <ns0:use height="100%" id="rmid-2-use910" transform="translate(4.4097223,20.064236)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5818" />
+    <ns0:use height="100%" id="rmid-2-use912" transform="translate(-23.040799,-0.22048611)" width="100%" x="0" y="0" ns6:href="#rmid-2-use910" />
+    <ns0:use height="100%" id="rmid-2-use918" transform="translate(-42.553819,43.65625)" width="100%" x="0" y="0" ns6:href="#rmid-2-use882" />
+    <ns0:use height="100%" id="rmid-2-use914" transform="translate(-31.309027,46.853298)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5830" />
+    <ns0:use height="100%" id="rmid-2-use920" transform="translate(-35.277777,-4.5199657)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2469" />
+    <ns0:use height="100%" id="rmid-2-use922" transform="translate(-30.868056,23.371528)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5826" />
+    <ns0:use height="100%" id="rmid-2-use924" transform="translate(22.599826,-16.867188)" width="100%" x="0" y="0" ns6:href="#rmid-2-use914" />
+    <ns0:use height="100%" id="rmid-2-use928" transform="translate(23.8125,-1.5434028)" width="100%" x="0" y="0" ns6:href="#rmid-2-use918" />
+    <ns0:use height="100%" id="rmid-2-use930" transform="translate(31.639756,-2.6458333)" width="100%" x="0" y="0" ns6:href="#rmid-2-use916" />
+    <ns0:use height="100%" id="rmid-2-use934" transform="translate(-0.44097223,26.678819)" width="100%" x="0" y="0" ns6:href="#rmid-2-use5824" />
+    <ns0:use height="100%" id="rmid-2-use936" transform="translate(20.247844,-16.487548)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2473" />
+    <ns0:use height="100%" id="rmid-2-use938" transform="translate(-28.442708,39.6875)" width="100%" x="0" y="0" ns6:href="#rmid-2-use892" />
+    <ns0:use height="100%" id="rmid-2-use942" transform="translate(10.914062,-14.221354)" width="100%" x="0" y="0" ns6:href="#rmid-2-use934" />
+    <ns0:use height="100%" id="rmid-2-use946" transform="translate(31.529515,-8.7092012)" width="100%" x="0" y="0" ns6:href="#rmid-2-use928" />
+    <ns0:use height="100%" id="rmid-2-use940" transform="translate(-12.236979,27.560765)" width="100%" x="0" y="0" ns6:href="#rmid-2-use890" />
+    <ns0:use height="100%" id="rmid-2-use944" transform="translate(-6.8350694,44.758681)" width="100%" x="0" y="0" ns6:href="#rmid-2-use884" />
+    <ns0:use height="100%" id="rmid-2-use948" transform="translate(42.333333,9.4809027)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2463" />
+    <ns0:use height="100%" id="rmid-2-use950" transform="translate(21.828125,25.355903)" width="100%" x="0" y="0" ns6:href="#rmid-2-use892" />
+    <ns0:use height="100%" id="rmid-2-use952" transform="translate(40.018229,10.583333)" width="100%" x="0" y="0" ns6:href="#rmid-2-use928" />
+    <ns0:use height="100%" id="rmid-2-use954" transform="translate(-10.252604,17.528646)" width="100%" x="0" y="0" ns6:href="#rmid-2-use948" />
+    <ns0:use height="100%" id="rmid-2-use1642" transform="translate(-20.969522,11.303274)" width="100%" x="0" y="0" ns6:href="#rmid-2-use952" />
+    <ns0:use height="100%" id="rmid-2-use1648" transform="translate(29.310558,17.851377)" width="100%" x="0" y="0" ns6:href="#rmid-2-use934" />
+    <ns0:use height="100%" id="rmid-2-use1644" transform="translate(2.3386084,25.646738)" width="100%" x="0" y="0" ns6:href="#rmid-2-use940" />
+    <ns0:use height="100%" id="rmid-2-use2477" transform="translate(35.879986,-12.219072)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2475" />
+    <ns0:use height="100%" id="rmid-2-use1646" transform="translate(1.013397,30.401909)" width="100%" x="0" y="0" ns6:href="#rmid-2-use944" />
+    <ns0:use height="100%" id="rmid-2-use1650" transform="translate(29.77828,38.353177)" width="100%" x="0" y="0" ns6:href="#rmid-2-use932" />
+    <ns0:use height="100%" id="rmid-2-use1652" transform="translate(-8.0292221,29.544419)" width="100%" x="0" y="0" ns6:href="#rmid-2-use952" />
+    <ns0:use height="100%" id="rmid-2-use1662" transform="translate(-1.1693042,23.464038)" width="100%" x="0" y="0" ns6:href="#rmid-2-use928" />
+    <ns0:use height="100%" id="rmid-2-use1658" transform="translate(-2.1827011,28.531022)" width="100%" x="0" y="0" ns6:href="#rmid-2-use934" />
+    <ns0:use height="100%" id="rmid-2-use1654" transform="translate(-31.883027,40.068157)" width="100%" x="0" y="0" ns6:href="#rmid-2-use940" />
+    <ns0:use height="100%" id="rmid-2-use2475" transform="translate(9.7598228,19.811583)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2473" />
+    <ns0:use height="100%" id="rmid-2-use1656" transform="translate(-10.13397,3.9756342)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1646" />
+    <ns0:use height="100%" id="rmid-2-use1660" transform="translate(-2.1047475,13.17416)" width="100%" x="0" y="0" ns6:href="#rmid-2-use938" />
+    <ns0:use height="100%" id="rmid-2-use1664" transform="translate(10.835552,13.797789)" width="100%" x="0" y="0" ns6:href="#rmid-2-use936" />
+    <ns0:use height="100%" id="rmid-2-use1666" transform="translate(-21.203383,19.566357)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1650" />
+    <ns0:use height="100%" id="rmid-2-use1668" transform="translate(-3.0401909,19.254542)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1652" />
+    <ns0:use height="100%" id="rmid-2-use1672" transform="translate(3.1181445,31.72712)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1648" />
+    <ns0:use height="100%" id="rmid-2-use1670" transform="translate(10.36783,38.275223)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1644" />
+    <ns0:use height="100%" id="rmid-2-use1674" transform="translate(-18.708867,15.74663)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1672" />
+    <ns0:use height="100%" id="rmid-2-use1676" transform="translate(16.058444,35.936615)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1646" />
+    <ns0:use height="100%" id="rmid-2-use1682" transform="translate(-34.299589,-1.1693042)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1662" />
+    <ns0:use height="100%" id="rmid-2-use1678" transform="translate(-21.515197,-14.343465)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1654" />
+    <ns0:use height="100%" id="rmid-2-use1680" transform="translate(-30.63577,1.4811187)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1660" />
+    <ns0:use height="100%" id="rmid-2-use1686" transform="translate(-35.157079,12.628485)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1662" />
+    <ns0:use height="100%" id="rmid-2-use1684" transform="translate(-49.578497,6.0803817)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1658" />
+    <ns0:use height="100%" id="rmid-2-use1688" transform="translate(-33.598007,-6.4701498)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1656" />
+    <ns0:use height="100%" id="rmid-2-use1690" transform="translate(-28.297161,44.277652)" width="100%" x="0" y="0" ns6:href="#rmid-2-use928" />
+    <ns0:use height="100%" id="rmid-2-use1704" transform="translate(-12.550532,-17.539563)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1694" />
+    <ns0:use height="100%" id="rmid-2-use1700" transform="translate(-12.784392,-16.526166)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1698" />
+    <ns0:use height="100%" id="rmid-2-use1692" transform="translate(-65.481034,-7.1717323)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1654" />
+    <ns0:use height="100%" id="rmid-2-use2471" transform="translate(-77.106529,47.76257)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2469" />
+    <ns0:use height="100%" id="rmid-2-use1696" transform="translate(-21.749058,0.62362893)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1686" />
+    <ns0:use height="100%" id="rmid-2-use1694" transform="translate(-19.332496,1.3252114)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1684" />
+    <ns0:use height="100%" id="rmid-2-use1698" transform="translate(-11.459181,17.305702)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1680" />
+    <ns0:use height="100%" id="rmid-2-use1702" transform="translate(14.88914,-9.8221551)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1692" />
+    <ns0:use height="100%" id="rmid-2-use1718" transform="translate(-2.1047475,-14.265511)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1716" />
+    <ns0:use height="100%" id="rmid-2-use1706" transform="translate(1.7929331,16.604119)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1654" />
+    <ns0:use height="100%" id="rmid-2-use1712" transform="translate(-12.9403,-7.8733148)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1674" />
+    <ns0:use height="100%" id="rmid-2-use1708" transform="translate(6.3921962,25.646739)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1654" />
+    <ns0:use height="100%" id="rmid-2-use1710" transform="translate(-0.77953612,8.5748973)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1656" />
+    <ns0:use height="100%" id="rmid-2-use1714" transform="translate(-20.112032,15.74663)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1668" />
+    <ns0:use height="100%" id="rmid-2-use1716" transform="translate(-18.864774,-5.4567529)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1714" />
+    <ns0:use height="100%" id="rmid-2-use1736" transform="translate(-30.791677,7.7174076)" width="100%" x="0" y="0" ns6:href="#rmid-2-use2475" />
+    <ns0:use height="100%" id="rmid-2-use1722" transform="translate(-0.70158254,19.410449)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1686" />
+    <ns0:use height="100%" id="rmid-2-use1732" transform="translate(-2.026794,-7.7953612)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1724" />
+    <ns0:use height="100%" id="rmid-2-use1724" transform="translate(0.62362891,22.372687)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1688" />
+    <ns0:use height="100%" id="rmid-2-use1720" transform="translate(-24.867202,17.617516)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1654" />
+    <ns0:use height="100%" id="rmid-2-use1738" transform="translate(0.85748973,10.13397)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1736" />
+    <ns0:use height="100%" id="rmid-2-use1726" transform="translate(5.6126604,26.11446)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1684" />
+    <ns0:use height="100%" id="rmid-2-use1728" transform="translate(-1.7929332,29.77828)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1688" />
+    <ns0:use height="100%" id="rmid-2-use1730" transform="translate(-6.7040107,39.28862)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1686" />
+    <ns0:use height="100%" id="rmid-2-use1734" transform="translate(13.797789,34.221636)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1684" />
+    <ns0:use height="100%" id="rmid-2-use1742" transform="translate(-39.678389,-1.5590722)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1722" />
+    <ns0:use height="100%" id="rmid-2-use1744" transform="translate(-13.096207,8.3410365)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1698" />
+    <ns0:use height="100%" id="rmid-2-use1740" transform="translate(-37.33978,2.416562)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1720" />
+    <ns0:use height="100%" id="rmid-2-use1746" transform="translate(-13.563929,25.179017)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1694" />
+    <ns0:use height="100%" id="rmid-2-use1748" transform="translate(22.216779,0.23386084)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1742" />
+    <ns0:use height="100%" id="rmid-2-use1750" transform="translate(9.5882943,34.689358)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1700" />
+    <ns0:use height="100%" id="rmid-2-use1752" transform="translate(6.3921962,10.991459)" width="100%" x="0" y="0" ns6:href="#rmid-2-use1740" />
+  </ns0:g>
+</ns0:svg>
