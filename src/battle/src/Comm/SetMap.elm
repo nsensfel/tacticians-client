@@ -26,6 +26,16 @@ type alias MapData =
 deserialize_tile_instance : Int -> Int -> (List Int) -> Struct.Tile.Instance
 deserialize_tile_instance map_width index t =
    case t of
+      [type_id] ->
+         (Struct.Tile.new_instance
+            (index % map_width)
+            (index // map_width)
+            type_id
+            type_id
+            0
+            Constants.Movement.cost_when_out_of_bounds
+         )
+
       [type_id, border_id, variant_ix] ->
          (Struct.Tile.new_instance
             (index % map_width)

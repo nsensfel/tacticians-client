@@ -1,6 +1,5 @@
 module Update.SetToolboxTemplate exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
-import Dict
 
 -- Battlemap -------------------------------------------------------------------
 import Struct.Event
@@ -18,16 +17,22 @@ import Struct.Model
 apply_to : (
       Struct.Model.Type ->
       Int ->
+      Int ->
+      Int ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model id =
+apply_to model main_class border_class variant_ix =
    (
       {model |
          toolbox =
             (Struct.Toolbox.set_template
-               (Struct.Tile.solve_tile_instance
-                  (Dict.values model.tiles)
-                  (Struct.Tile.error_tile_instance id 0 0)
+               (Struct.Tile.new_instance
+                  0
+                  0
+                  main_class
+                  border_class
+                  variant_ix
+                  -1
                )
                model.toolbox
             )

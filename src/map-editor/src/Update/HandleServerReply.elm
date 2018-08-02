@@ -1,15 +1,9 @@
 module Update.HandleServerReply exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
-import Array
-
-import Delay
-
 import Dict
 
 import Http
-
-import Time
 
 -- Map -------------------------------------------------------------------
 import Struct.Map
@@ -19,7 +13,6 @@ import Struct.Model
 import Struct.ServerReply
 import Struct.Tile
 import Struct.TilePattern
-import Struct.UI
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -57,12 +50,7 @@ set_map map current_state =
    case current_state of
       (_, (Just _)) -> current_state
       (model, _) ->
-         (
-            {model |
-               map = (Struct.Map.solve_tiles (Dict.values model.tiles) map)
-            },
-            Nothing
-         )
+         ( {model | map = map}, Nothing)
 
 refresh_map : (
       (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
@@ -75,7 +63,7 @@ refresh_map current_state =
          (
             {model |
                map =
-                  (Struct.Map.solve_tiles (Dict.values model.tiles) model.map)
+                  (Struct.Map.solve_tiles model.tiles model.map)
             },
             Nothing
          )

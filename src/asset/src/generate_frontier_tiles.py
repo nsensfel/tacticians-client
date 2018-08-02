@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import xml.etree.ElementTree as XML
 import sys
+import os
 
 SVG_PREFIX = "{http://www.w3.org/2000/svg}"
 G_TAG = SVG_PREFIX + "g"
@@ -106,8 +107,7 @@ while (current_arg < len(sys.argv)):
         + "-"
         + model_b_id
         + "-"
-        + str(variant_count)
-        + ".svg"
+        + os.path.basename(filename)
     )
 
     variant_count += 1

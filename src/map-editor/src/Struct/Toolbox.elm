@@ -185,7 +185,7 @@ get_square_tiles corner map new_loc =
 default : Type
 default =
    {
-      template = (Struct.Tile.error_tile_instance 0 0 0),
+      template = (Struct.Tile.error_tile_instance 0 0),
       mode = Draw,
       shape = Simple,
       selection = [],

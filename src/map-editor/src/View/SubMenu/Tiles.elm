@@ -13,6 +13,7 @@ import Struct.Event
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+-- TODO: display and allow selection of all variations.
 get_icon_html : Int -> (Html.Html Struct.Event.Type)
 get_icon_html icon_id =
    (Html.div
@@ -26,21 +27,29 @@ get_icon_html icon_id =
                (
                   "background-image",
                   (
-                     "url("
-                     ++ Constants.IO.tile_assets_url
-                     ++ (toString icon_id)
-                     ++".svg)"
+                     let
+                        icon_id_str = (toString icon_id)
+                     in
+                        (
+                           "url("
+                           ++ Constants.IO.tile_assets_url
+                           ++ icon_id_str
+                           ++ "-"
+                           ++ icon_id_str
+                           ++"-0.svg)"
+                        )
                   )
                )
             ]
          ),
-         (Html.Events.onClick (Struct.Event.TemplateRequested icon_id))
+         (Html.Events.onClick
+            (Struct.Event.TemplateRequested (icon_id, icon_id, 0))
+         )
       ]
       [
       ]
    )
 
-m4_include(__MAKEFILE_DATA_DIR/tile/global.m4.conf)m4_dnl
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -53,6 +62,6 @@ get_html =
       ]
       (List.map
          (get_icon_html)
-         (List.range 0 __TILE_CLASS_MAX_ID)
+         (List.range 0 3)
       )
    )

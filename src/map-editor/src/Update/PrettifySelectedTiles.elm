@@ -18,18 +18,23 @@ import Util.List
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 set_tile_to : (
-      Struct.Model.Type ->
       Struct.Location.Type ->
+      Int ->
+      Int ->
       Int ->
       Struct.Map.Type ->
       Struct.Map.Type
    )
-set_tile_to model loc id map =
+set_tile_to loc main_class border_class variant_ix map =
    (Struct.Map.set_tile_to
       loc
-      (Struct.Tile.solve_tile_instance
-         (Dict.values model.tiles)
-         (Struct.Tile.error_tile_instance id loc.x loc.y)
+      (Struct.Tile.new_instance
+         0
+         0
+         main_class
+         border_class
+         variant_ix
+         -1
       )
       map
    )
@@ -67,12 +72,17 @@ apply_to_location wild_patterns model loc map =
                )
             of
                (Just pattern) -> -- TODO
-                  (set_tile_to
-                     model
-                     loc
-                     (Struct.TilePattern.get_target pattern)
-                     map
-                  )
+                  let
+                     (main, border, variant) =
+                        (Struct.TilePattern.get_target pattern)
+                  in
+                     (set_tile_to
+                        loc
+                        main
+                        border
+                        variant
+                        map
+                     )
 
                Nothing ->
                   case
@@ -85,12 +95,17 @@ apply_to_location wild_patterns model loc map =
                      )
                   of
                      (Just pattern) -> -- TODO
-                        (set_tile_to
-                           model
-                           loc
-                           (Struct.TilePattern.get_target pattern)
-                           map
-                        )
+                        let
+                           (main, border, variant) =
+                              (Struct.TilePattern.get_target pattern)
+                        in
+                           (set_tile_to
+                              loc
+                              main
+                              border
+                              variant
+                              map
+                           )
 
                      Nothing -> map
 

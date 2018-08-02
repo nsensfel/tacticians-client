@@ -26,7 +26,7 @@ type Type =
    | ModeRequested Struct.Toolbox.Mode
    | ShapeRequested Struct.Toolbox.Shape
    | ClearSelectionRequested
-   | TemplateRequested Int
+   | TemplateRequested (Int, Int, Int)
    | PrettifySelectionRequested
 
 attempted : (Result.Result err val) -> Type

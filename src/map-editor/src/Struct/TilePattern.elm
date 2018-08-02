@@ -34,7 +34,7 @@ type PatternElement =
 type alias Type =
    {
       s : PatternElement,
-      t : Int,
+      t : (Int, Int, Int),
       p : (List PatternElement)
    }
 
@@ -64,6 +64,13 @@ finish_decoding_pattern ppe =
       "n" -> (Not ppe.i)
       _ -> (Exactly ppe.i)
 
+finish_decoding_target : (List Int) -> (Int, Int, Int)
+finish_decoding_target t =
+   case t of
+      [m] -> (m, m, 0)
+      [m, b, v] -> (m, b, v)
+      _ -> (0, 0, 0)
+
 pattern_decoder : (Json.Decode.Decoder PatternElement)
 pattern_decoder =
    (Json.Decode.map
@@ -73,6 +80,13 @@ pattern_decoder =
          |> (Json.Decode.Pipeline.required "c" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "i" Json.Decode.int)
       )
+   )
+
+target_decoder : (Json.Decode.Decoder (Int, Int, Int))
+target_decoder =
+   (Json.Decode.map
+      (finish_decoding_target)
+      (Json.Decode.list (Json.Decode.int))
    )
 
 --------------------------------------------------------------------------------
@@ -97,14 +111,14 @@ decoder =
    (Json.Decode.Pipeline.decode
       Type
       |> (Json.Decode.Pipeline.required "s" (pattern_decoder))
-      |> (Json.Decode.Pipeline.required "t" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "t" (target_decoder))
       |> (Json.Decode.Pipeline.required
             "p"
             (Json.Decode.list (pattern_decoder))
          )
    )
 
-get_target : Type -> Int
+get_target : Type -> (Int, Int, Int)
 get_target tile_pattern = tile_pattern.t
 
 get_source_pattern : Type -> PatternElement
