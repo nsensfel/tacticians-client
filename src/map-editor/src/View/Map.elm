@@ -18,8 +18,6 @@ import Struct.Model
 import Struct.Toolbox
 import Struct.UI
 
-import Util.Html
-
 import View.Map.Tile
 
 --------------------------------------------------------------------------------

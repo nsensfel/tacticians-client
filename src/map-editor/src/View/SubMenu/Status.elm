@@ -1,11 +1,8 @@
 module View.SubMenu.Status exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
-import Array
-
 import Html
 import Html.Attributes
-import Html.Lazy
 
 -- Struct.Battlemap -------------------------------------------------------------------
 import Struct.Event

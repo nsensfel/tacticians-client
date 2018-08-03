@@ -7,7 +7,6 @@ import Html
 import Html.Attributes
 
 -- Map Editor ------------------------------------------------------------------
-import Constants.IO
 import Constants.Movement
 
 import Struct.Map
