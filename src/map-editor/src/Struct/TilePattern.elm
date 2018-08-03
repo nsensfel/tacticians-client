@@ -65,11 +65,14 @@ matches_internals source neighbors pattern maybe_border =
             (
                (maybe_border == (Just source))
                || (maybe_border == Nothing)
+               || (maybe_border == (Just n))
+               || (maybe_border == (Just -1))
             )
-            then
-               (matches_internals source r_n r_p (Just n))
+            then (matches_internals source r_n r_p (Just n))
             else
-               (matches_internals source r_n r_p maybe_border)
+               if ((n == -1) || (n == source))
+               then (matches_internals source r_n r_p maybe_border)
+               else (matches_internals source r_n r_p maybe_border) --(False, source)
          else
             (False, source)
 
@@ -81,7 +84,7 @@ finish_decoding_pattern str =
       "any" -> Any
       "A" -> Minor
       "B" -> Major
-      _ -> Major
+      _ -> Minor
 
 finish_decoding_target : (
       (List String) ->
@@ -119,7 +122,7 @@ matches_pattern source n p =
    case p of
       Any -> True
       Major -> (source < n)
-      Minor -> (source >= n)
+      Minor -> ((source == n) || (n == -1))
 
 matches : (List Int) -> Int -> Type -> (Bool, Int, Int, Int)
 matches neighbors source tile_pattern =

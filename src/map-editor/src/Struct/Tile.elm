@@ -172,10 +172,7 @@ solve_tile_instance tiles tile_instance =
          {tile_instance | crossing_cost = tile.crossing_cost}
 
       Nothing ->
-         (error_tile_instance
-            tile_instance.location.x
-            tile_instance.location.y
-         )
+         {tile_instance | crossing_cost = -1}
 
 decoder : (Json.Decode.Decoder Type)
 decoder =
