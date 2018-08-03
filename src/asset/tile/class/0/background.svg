@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="128mm"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 128 128"
+   width="128mm"
+   sodipodi:docname="background.svg"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06">
+  <defs
+     id="rmid-defs2" />
+  <sodipodi:namedview
+     bordercolor="#666666"
+     borderopacity="1.0"
+     id="rmid-base"
+     pagecolor="#ffffff"
+     showgrid="true"
+     showguides="false"
+     inkscape:current-layer="rmid-background"
+     inkscape:cx="70.52"
+     inkscape:cy="279.72681"
+     inkscape:document-units="mm"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:snap-global="false"
+     inkscape:window-height="1059"
+     inkscape:window-maximized="0"
+     inkscape:window-width="1918"
+     inkscape:window-x="1"
+     inkscape:window-y="20"
+     inkscape:zoom="1.315">
+    <inkscape:grid
+       id="rmid-grid882"
+       spacingx="31.999999"
+       spacingy="31.999999"
+       type="xygrid"
+       units="mm" />
+  </sodipodi:namedview>
+  <metadata
+     id="rmid-metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="rmid-background"
+     sodipodi:insensitive="true"
+     inkscape:groupmode="layer"
+     inkscape:label="rmid-background">
+    <g
+       id="rmid-0_rmid-base"
+       style="fill:#800080">
+      <rect
+         height="32"
+         id="rmid-0_greenbg"
+         style="fill:#800080;stroke-width:3.13680005;stroke-linejoin:bevel"
+         width="32"
+         x="0"
+         y="0" />
+    </g>
+    <use
+       height="100%"
+       id="rmid-0b00"
+       width="100%"
+       x="32"
+       y="0"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b01"
+       width="100%"
+       x="64"
+       y="0"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b02"
+       width="100%"
+       x="96"
+       y="0"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b10"
+       width="100%"
+       x="0"
+       y="32"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b11"
+       width="100%"
+       x="32"
+       y="32"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b12"
+       width="100%"
+       x="64"
+       y="32"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b13"
+       width="100%"
+       x="96"
+       y="32"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b20"
+       width="100%"
+       x="0"
+       y="64"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b21"
+       width="100%"
+       x="32"
+       y="64"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b22"
+       width="100%"
+       x="64"
+       y="64"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b23"
+       width="100%"
+       x="96"
+       y="64"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b30"
+       width="100%"
+       x="0"
+       y="96"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b31"
+       width="100%"
+       x="32"
+       y="96"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b32"
+       width="100%"
+       x="64"
+       y="96"
+       xlink:href="#rmid-0_rmid-base" />
+    <use
+       height="100%"
+       id="rmid-0b33"
+       width="100%"
+       x="96"
+       y="96"
+       xlink:href="#rmid-0_rmid-base" />
+  </g>
+</svg>
