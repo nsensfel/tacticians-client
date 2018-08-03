@@ -34,6 +34,7 @@ deserialize_tile_instance map_width index t =
             type_id
             0
             Constants.Movement.cost_when_out_of_bounds
+            -1
          )
 
       [type_id, border_id, variant_ix] ->
@@ -44,6 +45,7 @@ deserialize_tile_instance map_width index t =
             border_id
             variant_ix
             Constants.Movement.cost_when_out_of_bounds
+            -1
          )
 
       _ ->
@@ -54,6 +56,7 @@ deserialize_tile_instance map_width index t =
             0
             0
             Constants.Movement.cost_when_out_of_bounds
+            -1
          )
 
 internal_decoder : MapData -> Struct.ServerReply.Type

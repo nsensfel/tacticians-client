@@ -18,6 +18,7 @@ import Constants.UI
 import Constants.Movement
 
 import Struct.Location
+import Struct.Tile
 
 import Util.List
 
@@ -40,20 +41,21 @@ type alias Type =
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 matches_internals : (
-      Int ->
-      (List Int) ->
+      Struct.Tile.Instance ->
+      (List Struct.Tile.Instance) ->
       (List PatternElement) ->
+      (Maybe Int) ->
       (Maybe Int) ->
       (Bool, Int)
    )
-matches_internals source neighbors pattern maybe_border =
+matches_internals source neighbors pattern maybe_border_fa maybe_border_mc =
    case ((Util.List.pop neighbors), (Util.List.pop pattern)) of
       (Nothing, Nothing) ->
          (
             True,
             (
-               case maybe_border of
-                  Nothing -> source
+               case maybe_border_mc of
+                  Nothing -> (Struct.Tile.get_type_id source)
                   (Just e) -> e
             )
          )
@@ -61,22 +63,42 @@ matches_internals source neighbors pattern maybe_border =
       ((Just (n, r_n)), (Just (p, r_p))) ->
          if (matches_pattern source n p)
          then
-            if
-            (
-               (maybe_border == (Just source))
-               || (maybe_border == Nothing)
-               || (maybe_border == (Just n))
-               || (maybe_border == (Just -1))
-            )
-            then (matches_internals source r_n r_p (Just n))
-            else
-               if ((n == -1) || (n == source))
-               then (matches_internals source r_n r_p maybe_border)
-               else (matches_internals source r_n r_p maybe_border) --(False, source)
+            let
+               source_mc = (Struct.Tile.get_type_id source)
+               source_fa = (Struct.Tile.get_instance_family source)
+               n_mc = (Struct.Tile.get_type_id n)
+               n_fa = (Struct.Tile.get_instance_family n)
+            in
+               if
+               (
+                  (maybe_border_fa == (Just source_fa))
+                  || (maybe_border_fa == Nothing)
+                  || (maybe_border_fa == (Just n_fa))
+                  || (maybe_border_fa == (Just -1))
+               )
+               then
+                  (matches_internals
+                     source
+                     r_n
+                     r_p
+                     (Just n_fa)
+                     (Just n_mc)
+                  )
+               else
+                  if ((n_fa == -1) || (n_fa == source_fa))
+                  then
+                     (matches_internals
+                        source
+                        r_n
+                        r_p
+                        maybe_border_fa
+                        maybe_border_mc
+                     )
+                  else (False, source_mc)
          else
-            (False, source)
+            (False, (Struct.Tile.get_type_id source))
 
-      (_, _) -> (False, source)
+      (_, _) -> (False, (Struct.Tile.get_type_id source))
 
 finish_decoding_pattern : String -> PatternElement
 finish_decoding_pattern str =
@@ -117,23 +139,40 @@ target_decoder =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-matches_pattern : Int -> Int -> PatternElement -> Bool
+matches_pattern : (
+      Struct.Tile.Instance ->
+      Struct.Tile.Instance ->
+      PatternElement ->
+      Bool
+   )
 matches_pattern source n p =
+   let
+      source_fa = (Struct.Tile.get_instance_family source)
+      n_fa = (Struct.Tile.get_instance_family n)
+   in
    case p of
       Any -> True
-      Major -> (source < n)
-      Minor -> ((source == n) || (n == -1))
+      Major -> (source_fa < n_fa)
+      Minor -> ((source_fa == n_fa) || (n_fa == -1))
 
-matches : (List Int) -> Int -> Type -> (Bool, Int, Int, Int)
+matches : (
+      (List Struct.Tile.Instance) ->
+      Struct.Tile.Instance ->
+      Type ->
+      (Bool, Int, Int, Int)
+   )
 matches neighbors source tile_pattern =
-   case (matches_internals source neighbors tile_pattern.p Nothing) of
+   case (matches_internals source neighbors tile_pattern.p Nothing Nothing) of
       (False, _) -> (False, 0, 0, 0)
-      (True, border) ->
-         case tile_pattern.t of
-            (Minor, Major) -> (True, source, border, tile_pattern.tv)
-            (Minor, Minor) -> (True, source, source, tile_pattern.tv)
-            (Major, Minor) -> (True, border, source, tile_pattern.tv)
-            (_, _) -> (True, border, border, tile_pattern.tv)
+      (True, border_mc) ->
+         let
+            source_mc = (Struct.Tile.get_type_id source)
+         in
+            case tile_pattern.t of
+               (Minor, Major) -> (True, source_mc, border_mc, tile_pattern.tv)
+               (Minor, Minor) -> (True, source_mc, source_mc, tile_pattern.tv)
+               (Major, Minor) -> (True, border_mc, source_mc, tile_pattern.tv)
+               (_, _) -> (True, border_mc, border_mc, tile_pattern.tv)
 
 decoder : (Json.Decode.Decoder Type)
 decoder =

@@ -33,6 +33,7 @@ apply_to model main_class border_class variant_ix =
                   border_class
                   variant_ix
                   -1
+                  -1
                )
                model.toolbox
             )

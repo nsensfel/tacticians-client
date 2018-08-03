@@ -18,6 +18,7 @@ import Util.List
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 set_tile_to : (
+      (Dict.Dict Int Struct.Tile.Type) ->
       Struct.Location.Type ->
       Int ->
       Int ->
@@ -25,7 +26,7 @@ set_tile_to : (
       Struct.Map.Type ->
       Struct.Map.Type
    )
-set_tile_to loc main_class border_class variant_ix map =
+set_tile_to tiles loc main_class border_class variant_ix map =
    let
       true_variant_ix =
          if (variant_ix >= 0)
@@ -37,20 +38,35 @@ set_tile_to loc main_class border_class variant_ix map =
    in
       (Struct.Map.set_tile_to
          loc
-         (Struct.Tile.new_instance
-            loc.x
-            loc.y
-            main_class
-            border_class
-            true_variant_ix
-            -1
+         (case (Dict.get main_class tiles) of
+            Nothing ->
+               (Struct.Tile.new_instance
+                  loc.x
+                  loc.y
+                  main_class
+                  border_class
+                  true_variant_ix
+                  -1
+                  -1
+               )
+
+            (Just t) ->
+               (Struct.Tile.new_instance
+                  loc.x
+                  loc.y
+                  main_class
+                  border_class
+                  true_variant_ix
+                  (Struct.Tile.get_cost t)
+                  (Struct.Tile.get_family t)
+               )
          )
          map
       )
 
 find_matching_pattern : (
-      Int ->
-      (List Int) ->
+      Struct.Tile.Instance ->
+      (List Struct.Tile.Instance) ->
       (List Struct.TilePattern.Type) ->
       (Maybe (Int, Int, Int))
    )
@@ -75,26 +91,26 @@ apply_to_location model loc map =
       Nothing -> map
       (Just base) ->
          let
-            base_id = (Struct.Tile.get_type_id base)
-            full_neighborhood_class_ids =
+            oob_tile = (Struct.Tile.new_instance -1 -1 -1 -1 -1 -1 -1)
+            full_neighborhood =
                (List.map
                   (\e ->
                      case (Struct.Map.try_getting_tile_at e map) of
-                        Nothing -> -1
-                        (Just t) -> (Struct.Tile.get_type_id t)
+                        Nothing -> oob_tile
+                        (Just t) -> t
                   )
                   (Struct.Location.get_full_neighborhood loc)
                )
          in
             case
                (find_matching_pattern
-                  base_id
-                  full_neighborhood_class_ids
+                  base
+                  full_neighborhood
                   model.tile_patterns
                )
             of
                (Just (main, border, variant)) ->
-                  (set_tile_to loc main border variant map)
+                  (set_tile_to model.tiles loc main border variant map)
 
                Nothing -> map
 

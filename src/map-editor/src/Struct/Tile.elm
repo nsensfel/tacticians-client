@@ -14,6 +14,8 @@ module Struct.Tile exposing
       get_location,
       get_icon_id,
       get_type_id,
+      get_family,
+      get_instance_family,
       get_variant_ix,
       get_local_variant_ix,
       solve_tile_instance,
@@ -41,20 +43,25 @@ type alias PartiallyDecoded =
    {
       id : Int,
       nam : String,
-      ct : Int
+      ct : Int,
+      fa : Int,
+      de : Int
    }
 
 type alias Type =
    {
       id : Int,
       name : String,
-      crossing_cost : Int
+      crossing_cost : Int,
+      family : Int,
+      depth : Int
    }
 
 type alias Instance =
    {
       location : Struct.Location.Type,
       crossing_cost : Int,
+      family : Int,
       type_id : Int,
       border_id : Int,
       variant_ix : Int
@@ -86,31 +93,36 @@ finish_decoding add_tile =
    {
       id = add_tile.id,
       name = add_tile.nam,
-      crossing_cost = add_tile.ct
+      crossing_cost = add_tile.ct,
+      family = add_tile.fa,
+      depth = add_tile.de
    }
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Int -> String -> Int -> Type
-new id name crossing_cost =
+new : Int -> String -> Int -> Int -> Int -> Type
+new id name crossing_cost family depth =
    {
       id = id,
       name = name,
-      crossing_cost = crossing_cost
+      crossing_cost = crossing_cost,
+      family = family,
+      depth = depth
    }
 
 clone_instance : Struct.Location.Type -> Instance -> Instance
 clone_instance loc inst = {inst | location = loc}
 
-new_instance : Int -> Int -> Int -> Int -> Int -> Int -> Instance
-new_instance x y type_id border_id variant_ix crossing_cost =
+new_instance : Int -> Int -> Int -> Int -> Int -> Int -> Int -> Instance
+new_instance x y type_id border_id variant_ix crossing_cost family =
    {
       location = {x = x, y = y},
       type_id = type_id,
       border_id = border_id,
       variant_ix = variant_ix,
-      crossing_cost = crossing_cost
+      crossing_cost = crossing_cost,
+      family = family
    }
 
 error_tile_instance : Int -> Int -> Instance
@@ -120,6 +132,7 @@ error_tile_instance x y =
       type_id = 0,
       border_id = 0,
       variant_ix = 0,
+      family = 0,
       crossing_cost = Constants.Movement.cost_when_out_of_bounds
    }
 
@@ -151,6 +164,12 @@ get_icon_id tile_inst =
 get_type_id : Instance -> Int
 get_type_id tile_inst = tile_inst.type_id
 
+get_family : Type -> Int
+get_family tile = tile.family
+
+get_instance_family : Instance -> Int
+get_instance_family tile_inst = tile_inst.family
+
 get_variant_ix : Instance -> Int
 get_variant_ix tile_inst = tile_inst.variant_ix
 
@@ -169,10 +188,16 @@ solve_tile_instance : (Dict.Dict Int Type) -> Instance -> Instance
 solve_tile_instance tiles tile_instance =
    case (Dict.get tile_instance.type_id tiles) of
       (Just tile) ->
-         {tile_instance | crossing_cost = tile.crossing_cost}
+         {tile_instance |
+            crossing_cost = tile.crossing_cost,
+            family = tile.family
+         }
 
       Nothing ->
-         {tile_instance | crossing_cost = -1}
+         {tile_instance |
+            crossing_cost = -1,
+            family = -1
+         }
 
 decoder : (Json.Decode.Decoder Type)
 decoder =
@@ -183,5 +208,7 @@ decoder =
          |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "ct" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "fa" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "de" Json.Decode.int)
       )
    )
