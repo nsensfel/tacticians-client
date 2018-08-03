@@ -4,6 +4,7 @@ module Struct.Model exposing
       new,
       invalidate,
       add_tile,
+      add_tile_pattern,
       reset,
       clear_error
    )
@@ -33,7 +34,8 @@ type alias Type =
       toolbox: Struct.Toolbox.Type,
       help_request: Struct.HelpRequest.Type,
       map: Struct.Map.Type,
-      tile_patterns: (List Struct.TilePattern.Type),
+      tile_patterns: (Dict.Dict String Int),
+      wild_tile_patterns: (List Struct.TilePattern.Type),
       tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
       error: (Maybe Struct.Error.Type),
       player_id: String,
@@ -59,7 +61,8 @@ new flags =
             help_request = Struct.HelpRequest.None,
             map = (Struct.Map.empty),
             tiles = (Dict.empty),
-            tile_patterns = [],
+            tile_patterns = (Dict.empty),
+            wild_tile_patterns = [],
             error = Nothing,
             map_id = "",
             player_id =
@@ -94,6 +97,20 @@ add_tile tl model =
             model.tiles
          )
    }
+
+add_tile_pattern : Struct.TilePattern.Type -> Type -> Type
+add_tile_pattern tp model =
+   if (Struct.TilePattern.is_wild tp)
+   then {model | wild_tile_patterns = (tp :: model.wild_tile_patterns)}
+   else
+      {model |
+         tile_patterns =
+            (Dict.insert
+               (Struct.TilePattern.get_pattern tp)
+               (Struct.TilePattern.get_variant tp)
+               model.tile_patterns
+            )
+      }
 
 reset : Type -> Type
 reset model =

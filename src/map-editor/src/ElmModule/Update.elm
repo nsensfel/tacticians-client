@@ -63,8 +63,8 @@ update event model =
       (Struct.Event.ModeRequested mode) ->
          (Update.SetToolboxMode.apply_to new_model mode)
 
-      (Struct.Event.TemplateRequested (main, border, variant)) ->
-         (Update.SetToolboxTemplate.apply_to new_model main border variant)
+      (Struct.Event.TemplateRequested (main, variant)) ->
+         (Update.SetToolboxTemplate.apply_to new_model main variant)
 
       Struct.Event.ClearSelectionRequested ->
          (Update.ClearToolboxSelection.apply_to new_model)

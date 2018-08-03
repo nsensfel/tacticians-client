@@ -18,22 +18,23 @@ apply_to : (
       Struct.Model.Type ->
       Int ->
       Int ->
-      Int ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model main_class border_class variant_ix =
+apply_to model main_class variant_ix =
    (
       {model |
          toolbox =
             (Struct.Toolbox.set_template
-               (Struct.Tile.new_instance
-                  0
-                  0
-                  main_class
-                  border_class
-                  variant_ix
-                  -1
-                  -1
+               (Struct.Tile.solve_tile_instance
+                  model.tiles
+                  (Struct.Tile.new_instance
+                     {x = 0, y = 0}
+                     main_class
+                     variant_ix
+                     0
+                     0
+                     []
+                  )
                )
                model.toolbox
             )

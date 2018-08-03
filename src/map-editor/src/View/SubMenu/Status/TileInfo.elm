@@ -17,6 +17,9 @@ import Struct.Model
 import Struct.Tile
 
 import Util.Html
+
+import View.Map.Tile
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -30,23 +33,9 @@ get_icon tile =
                "map-tile-variant-"
                ++ (toString (Struct.Tile.get_local_variant_ix tile))
             )
-         ),
-         (Html.Attributes.style
-            [
-               (
-                  "background-image",
-                  (
-                     "url("
-                     ++ Constants.IO.tile_assets_url
-                     ++ (Struct.Tile.get_icon_id tile)
-                     ++".svg)"
-                  )
-               )
-            ]
          )
       ]
-      [
-      ]
+      (View.Map.Tile.get_content_html tile)
    )
 
 get_name : (

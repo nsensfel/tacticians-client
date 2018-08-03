@@ -41,7 +41,7 @@ add_tile_pattern tp current_state =
       (_, (Just _)) -> current_state
       (model, _) ->
          (
-            {model | tile_patterns = (tp :: model.tile_patterns)},
+            (Struct.Model.add_tile_pattern tp model),
             Nothing
          )
 
@@ -54,7 +54,7 @@ set_map map current_state =
    case current_state of
       (_, (Just _)) -> current_state
       (model, _) ->
-         ( {model | map = map}, Nothing)
+         ( {model | map = (Struct.Map.solve_tiles model.tiles map)}, Nothing)
 
 refresh_map : (
       (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
@@ -65,10 +65,7 @@ refresh_map current_state =
       (_, (Just _)) -> current_state
       (model, _) ->
          (
-            {model |
-               map =
-                  (Struct.Map.solve_tiles model.tiles model.map)
-            },
+            {model | map = (Struct.Map.solve_tiles model.tiles model.map)},
             Nothing
          )
 

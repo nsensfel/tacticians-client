@@ -3,16 +3,21 @@ module Struct.Tile exposing
       Ref,
       Type,
       Instance,
+      Border,
       new,
       clone_instance,
       new_instance,
+      new_border,
       error_tile_instance,
       get_id,
       get_name,
+      set_borders,
+      get_borders,
+      get_border_type_id,
+      get_border_variant_ix,
       get_cost,
       get_instance_cost,
       get_location,
-      get_icon_id,
       get_type_id,
       get_family,
       get_instance_family,
@@ -57,14 +62,20 @@ type alias Type =
       depth : Int
    }
 
+type alias Border =
+   {
+      type_id : Int,
+      variant_ix : Int
+   }
+
 type alias Instance =
    {
       location : Struct.Location.Type,
       crossing_cost : Int,
       family : Int,
       type_id : Int,
-      border_id : Int,
-      variant_ix : Int
+      variant_ix : Int,
+      borders : (List Border)
    }
 
 --------------------------------------------------------------------------------
@@ -114,15 +125,30 @@ new id name crossing_cost family depth =
 clone_instance : Struct.Location.Type -> Instance -> Instance
 clone_instance loc inst = {inst | location = loc}
 
-new_instance : Int -> Int -> Int -> Int -> Int -> Int -> Int -> Instance
-new_instance x y type_id border_id variant_ix crossing_cost family =
+new_border : Int -> Int -> Border
+new_border type_id variant_ix =
    {
-      location = {x = x, y = y},
       type_id = type_id,
-      border_id = border_id,
+      variant_ix = variant_ix
+   }
+
+new_instance : (
+      Struct.Location.Type ->
+      Int ->
+      Int ->
+      Int ->
+      Int ->
+      (List Border) ->
+      Instance
+   )
+new_instance location type_id variant_ix crossing_cost family borders =
+   {
+      location = location,
+      type_id = type_id,
       variant_ix = variant_ix,
       crossing_cost = crossing_cost,
-      family = family
+      family = family,
+      borders = borders
    }
 
 error_tile_instance : Int -> Int -> Instance
@@ -130,10 +156,10 @@ error_tile_instance x y =
    {
       location = {x = x, y = y},
       type_id = 0,
-      border_id = 0,
       variant_ix = 0,
       family = 0,
-      crossing_cost = Constants.Movement.cost_when_out_of_bounds
+      crossing_cost = Constants.Movement.cost_when_out_of_bounds,
+      borders = []
    }
 
 get_id : Type -> Int
@@ -151,27 +177,29 @@ get_name tile = tile.name
 get_location : Instance -> Struct.Location.Type
 get_location tile_inst = tile_inst.location
 
-get_icon_id : Instance -> String
-get_icon_id tile_inst =
-   (
-      (toString tile_inst.type_id)
-      ++ "-"
-      ++ (toString tile_inst.border_id)
-      ++ "-"
-      ++ (toString tile_inst.variant_ix)
-   )
-
 get_type_id : Instance -> Int
 get_type_id tile_inst = tile_inst.type_id
 
+get_border_type_id : Border -> Int
+get_border_type_id tile_border = tile_border.type_id
+
 get_family : Type -> Int
 get_family tile = tile.family
+
+set_borders : (List Border) -> Instance -> Instance
+set_borders borders tile_inst = {tile_inst | borders = borders}
+
+get_borders : Instance -> (List Border)
+get_borders tile_inst = tile_inst.borders
 
 get_instance_family : Instance -> Int
 get_instance_family tile_inst = tile_inst.family
 
 get_variant_ix : Instance -> Int
 get_variant_ix tile_inst = tile_inst.variant_ix
+
+get_border_variant_ix : Border -> Int
+get_border_variant_ix tile_border = tile_border.variant_ix
 
 get_local_variant_ix : Instance -> Int
 get_local_variant_ix tile_inst =

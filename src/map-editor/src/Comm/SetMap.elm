@@ -23,40 +23,49 @@ type alias MapData =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+deserialize_tile_borders : (
+      (List Int) ->
+      (List Struct.Tile.Border) ->
+      (List Struct.Tile.Border)
+   )
+deserialize_tile_borders rem_ints current_borders =
+   case rem_ints of
+      [] -> current_borders
+      (a :: (b :: c)) ->
+         (deserialize_tile_borders
+            c
+            ((Struct.Tile.new_border a b) :: current_borders)
+         )
+
+      _ -> []
+
 deserialize_tile_instance : Int -> Int -> (List Int) -> Struct.Tile.Instance
 deserialize_tile_instance map_width index t =
    case t of
-      [type_id] ->
+      (a :: (b :: c)) ->
          (Struct.Tile.new_instance
-            (index % map_width)
-            (index // map_width)
-            type_id
-            type_id
-            0
+            {
+               x = (index % map_width),
+               y = (index // map_width)
+            }
+            a
+            b
             Constants.Movement.cost_when_out_of_bounds
             -1
-         )
-
-      [type_id, border_id, variant_ix] ->
-         (Struct.Tile.new_instance
-            (index % map_width)
-            (index // map_width)
-            type_id
-            border_id
-            variant_ix
-            Constants.Movement.cost_when_out_of_bounds
-            -1
+            (deserialize_tile_borders c [])
          )
 
       _ ->
          (Struct.Tile.new_instance
-            (index % map_width)
-            (index // map_width)
-            0
+            {
+               x = (index % map_width),
+               y = (index // map_width)
+            }
             0
             0
             Constants.Movement.cost_when_out_of_bounds
             -1
+            []
          )
 
 internal_decoder : MapData -> Struct.ServerReply.Type

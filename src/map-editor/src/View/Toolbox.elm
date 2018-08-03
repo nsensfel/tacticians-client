@@ -14,6 +14,8 @@ import Struct.Toolbox
 
 import Util.Html
 
+import View.Map.Tile
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -24,23 +26,9 @@ get_template_icon_html template =
          (Html.Attributes.class "map-toolbox-template"),
          (Html.Attributes.class "map-tiled"),
          (Html.Attributes.class "map-tile"),
-         (Html.Attributes.class "map-tile-variant-0"),
-         (Html.Attributes.style
-            [
-               (
-                  "background-image",
-                  (
-                     "url("
-                     ++ Constants.IO.tile_assets_url
-                     ++ (Struct.Tile.get_icon_id template)
-                     ++".svg)"
-                  )
-               )
-            ]
-         )
+         (Html.Attributes.class "map-tile-variant-0")
       ]
-      [
-      ]
+      (View.Map.Tile.get_content_html template)
    )
 
 get_mode_button : (

@@ -9,6 +9,9 @@ import Html.Events
 import Constants.IO
 
 import Struct.Event
+import Struct.Tile
+
+import View.Map.Tile
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -22,32 +25,20 @@ get_icon_html icon_id =
          (Html.Attributes.class "map-tiled"),
          (Html.Attributes.class "clickable"),
          (Html.Attributes.class "map-tile-variant-0"),
-         (Html.Attributes.style
-            [
-               (
-                  "background-image",
-                  (
-                     let
-                        icon_id_str = (toString icon_id)
-                     in
-                        (
-                           "url("
-                           ++ Constants.IO.tile_assets_url
-                           ++ icon_id_str
-                           ++ "-"
-                           ++ icon_id_str
-                           ++"-0.svg)"
-                        )
-                  )
-               )
-            ]
-         ),
          (Html.Events.onClick
-            (Struct.Event.TemplateRequested (icon_id, icon_id, 0))
+            (Struct.Event.TemplateRequested (icon_id, 0))
          )
       ]
-      [
-      ]
+      (View.Map.Tile.get_content_html
+         (Struct.Tile.new_instance
+            {x = 0, y = 0}
+            icon_id
+            0
+            0
+            0
+            []
+         )
+      )
    )
 
 --------------------------------------------------------------------------------
@@ -62,6 +53,6 @@ get_html =
       ]
       (List.map
          (get_icon_html)
-         (List.range 0 3)
+         (List.range 0 5)
       )
    )

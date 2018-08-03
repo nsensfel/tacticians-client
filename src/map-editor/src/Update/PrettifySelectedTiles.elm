@@ -3,6 +3,8 @@ module Update.PrettifySelectedTiles exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Dict
 
+import Set
+
 -- Battlemap -------------------------------------------------------------------
 import Struct.Event
 import Struct.Location
@@ -17,68 +19,77 @@ import Util.List
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-set_tile_to : (
-      (Dict.Dict Int Struct.Tile.Type) ->
+neighborhood_tile_instances : (
       Struct.Location.Type ->
-      Int ->
-      Int ->
-      Int ->
       Struct.Map.Type ->
-      Struct.Map.Type
+      (List Struct.Tile.Instance)
    )
-set_tile_to tiles loc main_class border_class variant_ix map =
-   let
-      true_variant_ix =
-         if (variant_ix >= 0)
-         then variant_ix
-         else
-            case (Struct.Map.try_getting_tile_at loc map) of
-               Nothing -> 0
-               (Just t) -> (Struct.Tile.get_variant_ix t)
-   in
-      (Struct.Map.set_tile_to
-         loc
-         (case (Dict.get main_class tiles) of
-            Nothing ->
-               (Struct.Tile.new_instance
-                  loc.x
-                  loc.y
-                  main_class
-                  border_class
-                  true_variant_ix
-                  -1
-                  -1
-               )
-
-            (Just t) ->
-               (Struct.Tile.new_instance
-                  loc.x
-                  loc.y
-                  main_class
-                  border_class
-                  true_variant_ix
-                  (Struct.Tile.get_cost t)
-                  (Struct.Tile.get_family t)
-               )
-         )
-         map
+neighborhood_tile_instances loc map =
+   (List.map
+      (\e ->
+         case (Struct.Map.try_getting_tile_at e map) of
+            Nothing -> (Struct.Tile.error_tile_instance -1 -1)
+            (Just t) -> t
       )
-
-find_matching_pattern : (
-      Struct.Tile.Instance ->
-      (List Struct.Tile.Instance) ->
-      (List Struct.TilePattern.Type) ->
-      (Maybe (Int, Int, Int))
+      (Struct.Location.get_full_neighborhood loc)
    )
-find_matching_pattern source full_neighborhood candidates =
-   case (Util.List.pop candidates) of
-      (Just (c, rc)) ->
-         case (Struct.TilePattern.matches full_neighborhood source c) of
-            (True, main, border, variant) -> (Just (main, border, variant))
-            (False, _, _, _) ->
-               (find_matching_pattern source full_neighborhood rc)
 
-      Nothing -> Nothing
+get_nigh_patterns : Int -> (List Struct.Tile.Instance) -> (List (Int, Int))
+get_nigh_patterns source_fm full_neighborhood =
+   (Set.toList
+      (List.foldl
+         (\e -> \acc ->
+            let
+               e_fm = (Struct.Tile.get_instance_family e)
+            in
+               if (e_fm <= source_fm)
+               then acc
+               else
+                  (Set.insert
+                     (
+                        (Struct.Tile.get_instance_family e),
+                        (Struct.Tile.get_type_id e)
+                     )
+                     acc
+                  )
+         )
+         (Set.empty)
+         full_neighborhood
+      )
+   )
+
+nigh_pattern_to_border : (
+      Struct.Model.Type ->
+      (List Struct.Tile.Instance) ->
+      (Int, Int) ->
+      (Struct.Tile.Border)
+   )
+nigh_pattern_to_border model full_neighborhood nigh_pattern =
+   let
+      (fm, tid) = nigh_pattern
+      pattern = (Struct.TilePattern.get_pattern_for fm full_neighborhood)
+   in
+      case (Dict.get pattern model.tile_patterns) of
+         Nothing ->
+            case
+               (Util.List.get_first
+                  (\e ->
+                     (Struct.TilePattern.patterns_match
+                        pattern
+                        (Struct.TilePattern.get_pattern e)
+                     )
+                  )
+                  model.wild_tile_patterns
+               )
+            of
+               Nothing -> (Struct.Tile.new_border 0 0)
+               (Just tp) ->
+                  (Struct.Tile.new_border
+                     tid
+                     (Struct.TilePattern.get_variant tp)
+                  )
+
+         (Just v) -> (Struct.Tile.new_border tid v)
 
 apply_to_location : (
       Struct.Model.Type ->
@@ -91,28 +102,22 @@ apply_to_location model loc map =
       Nothing -> map
       (Just base) ->
          let
-            oob_tile = (Struct.Tile.new_instance -1 -1 -1 -1 -1 -1 -1)
-            full_neighborhood =
-               (List.map
-                  (\e ->
-                     case (Struct.Map.try_getting_tile_at e map) of
-                        Nothing -> oob_tile
-                        (Just t) -> t
-                  )
-                  (Struct.Location.get_full_neighborhood loc)
-               )
+            full_neighborhood = (neighborhood_tile_instances loc map)
          in
-            case
-               (find_matching_pattern
+            (Struct.Map.set_tile_to
+               loc
+               (Struct.Tile.set_borders
+                  (List.map
+                     (nigh_pattern_to_border model full_neighborhood)
+                     (get_nigh_patterns
+                        (Struct.Tile.get_instance_family base)
+                        full_neighborhood
+                     )
+                  )
                   base
-                  full_neighborhood
-                  model.tile_patterns
                )
-            of
-               (Just (main, border, variant)) ->
-                  (set_tile_to model.tiles loc main border variant map)
-
-               Nothing -> map
+               map
+            )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
