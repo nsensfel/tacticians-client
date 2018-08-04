@@ -4,7 +4,6 @@ module Struct.Event exposing (Type(..), attempted)
 import Http
 
 -- Battlemap -------------------------------------------------------------------
-import Struct.Direction
 import Struct.Error
 import Struct.HelpRequest
 import Struct.Location
@@ -28,6 +27,7 @@ type Type =
    | ClearSelectionRequested
    | TemplateRequested (Int, Int)
    | PrettifySelectionRequested
+   | SendMapUpdateRequested
 
 attempted : (Result.Result err val) -> Type
 attempted act =

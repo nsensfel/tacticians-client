@@ -1,8 +1,6 @@
 module Update.HandleServerReply exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
-
 import Http
 
 -- Map -------------------------------------------------------------------

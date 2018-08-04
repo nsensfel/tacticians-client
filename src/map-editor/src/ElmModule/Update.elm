@@ -10,6 +10,7 @@ import Update.ChangeScale
 import Update.ClearToolboxSelection
 import Update.HandleServerReply
 import Update.PrettifySelectedTiles
+import Update.SendMapUpdate
 import Update.SelectTab
 import Update.SelectTile
 import Update.SetRequestedHelp
@@ -71,3 +72,6 @@ update event model =
 
       Struct.Event.PrettifySelectionRequested ->
          (Update.PrettifySelectedTiles.apply_to new_model)
+
+      Struct.Event.SendMapUpdateRequested ->
+         (Update.SendMapUpdate.apply_to new_model)
