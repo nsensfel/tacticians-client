@@ -38,11 +38,9 @@ encode_tile_instance tile_inst =
             (Json.Encode.int (Struct.Tile.get_variant_ix tile_inst))
          ]
          ++
-         (List.concat
-            (List.map
-               (encode_tile_border_values)
-               (Struct.Tile.get_borders tile_inst)
-            )
+         (List.concatMap
+            (encode_tile_border_values)
+            (Struct.Tile.get_borders tile_inst)
          )
       )
    )

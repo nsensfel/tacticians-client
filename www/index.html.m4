@@ -15,19 +15,21 @@
          <h3>Currently running: __CONF_VERSION</h3>
       </div>
       <div class="popup-message">
-         <p>This website lets you play the game, even during its development phase. As a result, there is a lot missing.</p>
-         <p>
-            Having accounts at that stage would needlessly slow us down, so access to
-            <a href="/battle/?id=0">the game's battle system</a> is done without login in.
+         <h3>Welcome to __CONF_SERVER_NAME</h3>
+         <p>__CONF_SERVER_NAME is a turn based multiplayer strategy game.</p>
+            It is still in an early development phase, meaning that most of its
+            features are not implemented yet.
          </p>
-         <p>
-            <a href="/map-editor/?id=0">The game's map editor</a> is also
-            available, albeit nowhere near as finished.
-         </p>
-         <p>You can access the source code for the game this website is running, under the Apache 2.0 License:</p>
+         <h3>Available content</h3>
          <ul>
-            <li><a href="https://noot-noot.org/cgit.cgi/tacticians-client/">Source code for the front-end</a></li>
-            <li><a href="https://noot-noot.org/cgit.cgi/tacticians-server/">Source code for the back-end</a></li>
+            <li><a href="/battle/?id=0">Battle System</a></li>
+            <li><a href="/map-editor/?id=0">Map Editor</a></li>
+            <li><a href="/login/">Sign-In/Sign-Up Manager</a> (Soon)</li>
+         </ul>
+         <h3>Access to the source code (Apache 2.0 License)</h3>
+         <ul>
+            <li><a href="https://noot-noot.org/cgit.cgi/tacticians-client/">Front-End</a></li>
+            <li><a href="https://noot-noot.org/cgit.cgi/tacticians-server/">Back-End</a></li>
          </ul>
       </div>
    </body>

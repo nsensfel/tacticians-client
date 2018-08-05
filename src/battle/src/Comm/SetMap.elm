@@ -30,7 +30,7 @@ deserialize_tile_borders : (
    )
 deserialize_tile_borders rem_ints current_borders =
    case rem_ints of
-      [] -> current_borders
+      [] -> (List.reverse current_borders)
       (a :: (b :: c)) ->
          (deserialize_tile_borders
             c
