@@ -1,0 +1,63 @@
+.battle-message-board .battle-character-card
+{
+   width: 16em;
+}
+
+.battle-message-attack-text
+{
+   width: 100%;
+   text-align: center;
+   font-size: 1.2em;
+}
+
+/**** Character Portrait Animations *******************************************/
+.battle-animated-portrait-damaged .battle-character-portrait > *
+{
+   animation: blinking 0.2s steps(2, start) 8;
+}
+
+.battle-animated-portrait-absent .battle-character-portrait > *
+{
+   visibility: hidden;
+}
+
+.battle-animated-portrait-dodges .battle-character-portrait,
+.battle-animated-portrait-dies .battle-character-portrait,
+.battle-animated-portrait-parries .battle-character-portrait,
+.battle-animated-portrait-attacks .battle-character-portrait
+{
+   overflow: hidden;
+}
+
+.battle-animated-portrait
+{
+}
+
+.battle-animated-portrait-dodges .battle-character-portrait > *
+{
+   animation-name: dodges;
+   animation-duration: 1s;
+   animation-iteration-count: 1;
+}
+
+.battle-animated-portrait-attacks .battle-character-portrait > *
+{
+   animation-name: attacks;
+   animation-duration: 1s;
+   animation-iteration-count: 1;
+}
+
+.battle-animated-portrait-dies .battle-character-portrait > *
+{
+   animation-name: blinking2, dies;
+   animation-duration: 0.15s, 2s;
+   animation-delay: 0s, 1s;
+   animation-iteration-count: 8, 1;
+}
+
+.battle-animated-portrait-parries .battle-character-portrait > *
+{
+   animation-name: parries;
+   animation-duration: 1s;
+   animation-iteration-count: 1;
+}

@@ -1,0 +1,58 @@
+.battle-character-icon
+{
+   border-radius: 5px;
+   height: 38px;
+   margin-top: -6px;
+}
+
+.battle-character-icon *
+{
+   position: absolute;
+   left: 0;
+   top: 0;
+   background-size: 100% 100%;
+   width: inherit;
+   height: inherit;
+}
+
+.battle-character-icon-enabled
+{
+   animation-name: pulsating;
+   animation-duration: 1.5s;
+   animation-iteration-count: infinite;
+   transform-origin: center;
+}
+
+.battle-character-icon-banner { z-index: 2; }
+.battle-character-icon-head { z-index: 1; }
+.battle-character-icon-body { z-index: 0; }
+
+.battle-character-ally
+{
+}
+
+.battle-character-enemy
+{
+   transform: scale(-1, 1);
+}
+
+.battle-character-ally.battle-character-icon-disabled
+{
+   filter: contrast(35%);
+}
+
+.battle-character-targeted
+{
+   background-color: rgba(255,0,0,0.7);
+   animation-name: red-alarm-bg;
+   animation-duration: 5s;
+   animation-iteration-count: infinite;
+}
+
+.battle-character-selected
+{
+   animation-name: strongly-pulsating;
+   animation-duration: 1.5s;
+   animation-iteration-count: infinite;
+}
+

@@ -1,0 +1,31 @@
+@import 'shared/colors';
+@import 'shared/parameters';
+@import 'shared/sanitize';
+@import 'shared/shadows';
+
+html, body, .fullscreen-module
+{
+   min-width: $MIN_PAGE_WIDTH;
+   min-height: $MIN_PAGE_HEIGHT;
+}
+
+button
+{
+   border-radius: 5px;
+   border-width: 1px;
+   border-style: solid;
+   border-bottom-width: 3px;
+   transition: background-color 0.3s ease-out;
+   font-variant: small-caps;
+}
+
+button:hover
+{
+   cursor: pointer;
+}
+
+.clickable
+{
+   cursor: pointer;
+   touch-action: manipulation;
+}

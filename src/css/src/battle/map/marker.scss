@@ -1,0 +1,145 @@
+.battle-marker-icon.battle-navigator-non-interactive
+{
+   box-sizing: border-box;
+   width: 12px;
+   height: 12px;
+   background-size: 100%;
+   margin: 10px;
+}
+
+.battle-marker-icon.battle-navigator-interactive
+{
+   box-sizing: border-box;
+   width: 24px;
+   /*min-width: 24px;
+   max-width: 24px; */
+   margin: 4px 0 0 4px;
+   height: 24px;
+   border-radius: 4px;
+   border: none;
+   box-shadow:
+      1px 0px 2px #333,
+      -1px 0px 2px #333,
+      0px 1px 2px #333,
+      0px -1px 2px #333;
+}
+
+.battle-can-go-to-can-defend-marker.battle-navigator-interactive
+{
+   background-color: #FFF;
+   opacity: 0.3;
+   transition: opacity 0.3s ease-out;
+}
+
+.battle-can-go-to-cant-defend-marker.battle-navigator-interactive
+{
+   background:
+      repeating-linear-gradient(
+        -55deg,
+        rgb(255,255,255),
+        rgb(255,255,255) 3px,
+        rgba(0,0,0,0) 3px,
+        rgba(0,0,0,0) 7px
+      );
+   opacity: 0.3;
+   transition: opacity 0.3s ease-out;
+}
+
+.battle-can-go-to-can-defend-marker.battle-navigator-interactive:hover,
+.battle-can-go-to-cant-defend-marker.battle-navigator-interactive:hover
+{
+   opacity: 0.9;
+}
+
+.battle-can-attack-can-defend-marker.battle-navigator-interactive
+{
+   background-color: #000;
+   opacity: 0.7;
+   width: 28px;
+   /*min-width: 28px;
+   max-width: 28px;*/
+   height: 28px;
+   margin: 2px 0 0 2px;
+   border-radius: 0;
+}
+
+.battle-can-attack-cant-defend-marker.battle-navigator-interactive
+{
+   background:
+      repeating-linear-gradient(
+        -55deg,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 3px,
+        rgb(0,0,0) 3px,
+        rgb(0,0,0) 7px
+      );
+   width: 28px;
+   /*min-width: 28px;
+   max-width: 28px;*/
+   opacity: 0.7;
+   height: 28px;
+   margin: 2px 0 0 2px;
+   border-radius: 0;
+}
+
+.battle-can-attack-can-defend-marker.battle-navigator-non-interactive
+{
+   z-index: 5;
+   background-image: url(/asset/svg/marker/blade.svg);
+}
+
+.battle-can-attack-cant-defend-marker.battle-navigator-non-interactive
+{
+   z-index: 5;
+   background-image:
+      url(/asset/svg/marker/blade.svg),
+      url(/asset/svg/marker/brokenshield.svg);
+}
+
+.battle-can-go-to-cant-defend-marker.battle-navigator-non-interactive
+{
+   background-image:
+      url(/asset/svg/marker/pawprint.svg),
+      url(/asset/svg/marker/brokenshield.svg);
+}
+
+.battle-can-attack-cant-defend-marker.battle-navigator-non-interactive,
+.battle-can-go-to-cant-defend-marker.battle-navigator-non-interactive
+{
+   width: 24px;
+   height: 24px;
+   background-position: top left, bottom right;
+   background-size: 50%, 50%;
+   background-repeat: no-repeat, no-repeat;
+   margin: 2px;
+}
+
+.battle-can-go-to-can-defend-marker.battle-navigator-non-interactive
+{
+   background-image: url(/asset/svg/marker/pawprint.svg);
+}
+
+.battle-can-attack-can-defend-marker.battle-navigator-non-interactive,
+.battle-can-attack-cant-defend-marker.battle-navigator-non-interactive
+{
+   z-index: 5;
+}
+
+.battle-can-go-to-can-defend-marker,
+.battle-can-go-to-cant-defend-marker
+{
+   z-index: 3;
+}
+
+.battle-cant-defend-marker
+{
+   background:
+      repeating-linear-gradient(
+        -55deg,
+        rgba(255,255,255,0.3),
+        rgba(255,255,255,0.3) 3px,
+        rgba(0,0,0,0.3) 3px,
+        rgba(0,0,0,0.3) 7px
+      );
+}
+

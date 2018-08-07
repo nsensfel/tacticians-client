@@ -37,6 +37,8 @@ get_name : (
 get_name char =
    (Html.div
       [
+         (Html.Attributes.class "battle-info-card-name"),
+         (Html.Attributes.class "battle-info-card-text-field"),
          (Html.Attributes.class "battle-character-card-name")
       ]
       [
@@ -487,6 +489,8 @@ get_minimal_html : (
 get_minimal_html player_ix char =
    (Html.div
       [
+         (Html.Attributes.class "battle-info-card"),
+         (Html.Attributes.class "battle-info-card-minimal"),
          (Html.Attributes.class "battle-character-card"),
          (Html.Attributes.class "battle-character-card-minimal")
       ]
@@ -494,10 +498,18 @@ get_minimal_html player_ix char =
          (get_name char),
          (Html.div
             [
+               (Html.Attributes.class "battle-info-card-top"),
                (Html.Attributes.class "battle-character-card-top")
             ]
             [
-               (View.Character.get_portrait_html player_ix char),
+               (Html.div
+                  [
+                     (Html.Attributes.class "battle-info-card-picture")
+                  ]
+                  [
+                     (View.Character.get_portrait_html player_ix char)
+                  ]
+               ),
                (get_health_bar char),
                (get_inactive_movement_bar char),
                (get_statuses char)
@@ -527,10 +539,18 @@ get_summary_html char_turn player_ix char =
             (get_name char),
             (Html.div
                [
+                  (Html.Attributes.class "battle-info-card-top"),
                   (Html.Attributes.class "battle-character-card-top")
                ]
                [
-                  (View.Character.get_portrait_html player_ix char),
+                  (Html.div
+                     [
+                        (Html.Attributes.class "battle-info-card-picture")
+                     ]
+                     [
+                        (View.Character.get_portrait_html player_ix char)
+                     ]
+                  ),
                   (get_health_bar char),
                   (get_movement_bar char_turn char),
                   (get_statuses char)
@@ -558,16 +578,25 @@ get_full_html player_ix char =
    in
       (Html.div
          [
+            (Html.Attributes.class "battle-info-card"),
             (Html.Attributes.class "battle-character-card")
          ]
          [
             (get_name char),
             (Html.div
                [
+                  (Html.Attributes.class "battle-info-card-top"),
                   (Html.Attributes.class "battle-character-card-top")
                ]
                [
-                  (View.Character.get_portrait_html player_ix char),
+                  (Html.div
+                     [
+                        (Html.Attributes.class "battle-info-card-picture")
+                     ]
+                     [
+                        (View.Character.get_portrait_html player_ix char)
+                     ]
+                  ),
                   (get_health_bar char),
                   (get_inactive_movement_bar char),
                   (get_statuses char)

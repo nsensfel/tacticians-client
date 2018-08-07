@@ -1,0 +1,83 @@
+@import 'constants';
+@import 'menu-mixins';
+
+.battle-container-centerer
+{
+   position: absolute;
+
+   top: $BELOW-MAIN-MENU;
+   left: $NEXT-TO-CONTROLLED-MENU;
+   right: $NEXT-TO-SUB-MENU;
+   bottom: $ABOVE-MESSAGE-BOARD;
+
+   display: flex;
+}
+
+.battle-container
+{
+   display: inline-block;
+   max-height: 100%;
+   max-width: 100%;
+
+   overflow: scroll;
+
+   margin: auto;
+   resize: both;
+
+   @include menu-border();
+
+   @include menu-background-color();
+}
+
+.battle-actual
+{
+   display: inline-block;
+   transform-origin: top left;
+
+   /*** Otherwise, it won't display correctly without 'transform: scale' ***/
+   position: relative;
+}
+
+.battle-tiled, .battle-tiled *
+{
+   height: 32px;
+   width: 32px;
+   /** Fixes odd behavior of table cell being resized. **/
+   /* min-width: 32px; */
+   /* max-width: 32px; */
+}
+
+.battle-tile-icon, .battle-tile-icon *
+{
+   z-index: 0;
+   position: absolute;
+   background-size: 400%;
+}
+
+.battle-path-icon-below-markers  {z-index: 1;}
+.battle-marker-icon              {z-index: 2;}
+.battle-path-icon-above-markers  {z-index: 3;}
+.battle-character-icon           {z-index: 4;}
+
+.battle-marker-icon,
+.battle-character-icon,
+.battle-path-icon
+{
+   position: absolute;
+}
+
+.battle-tiles-layer
+{
+   /*display: table; */
+}
+
+.battle-tiles-layer-row
+{
+  /* display: table-row; */
+}
+
+@import 'map/animation.scss';
+@import 'map/character.scss';
+@import 'map/marker.scss';
+@import 'map/path.scss';
+@import 'map/variant.scss';

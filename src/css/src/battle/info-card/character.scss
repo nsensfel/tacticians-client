@@ -1,0 +1,134 @@
+@import "../../shared/colors";
+
+.battle-character-portrait
+{
+   background-size: 100% 100%;
+   width: 100px;
+   height: 100px;
+   overflow: hidden;
+   cursor: pointer;
+}
+
+.battle-character-portrait *
+{
+   box-sizing: border-box;
+   background-size: 100% 100%;
+   width: inherit;
+   height: inherit;
+}
+
+.battle-character-portrait-body
+{
+   z-index: 1;
+}
+
+.battle-character-portrait-armor
+{
+   position: relative;
+   z-index: 1;
+   top: -100%;
+   background-size: 200% 100%;
+}
+
+.battle-character-portrait-team-0 { background-color: rgba(57, 106, 177, 0.3); }
+.battle-character-portrait-team-1 { background-color: rgba(204, 37, 41, 0.3); }
+.battle-character-portrait-team-2 { background-color: rgba(62, 150, 81, 0.3); }
+.battle-character-portrait-team-3 { background-color: rgba(218, 124, 48, 0.3); }
+.battle-character-portrait-team-4 { background-color: rgba(83, 81, 84, 0.3); }
+.battle-character-portrait-team-5 { background-color: rgba(107, 76, 154, 0.3); }
+.battle-character-portrait-team-6 { background-color: rgba(127, 167, 169, 0.3); }
+.battle-character-portrait-team-7 { background-color: rgba(231, 167, 169, 0.3); }
+
+.battle-character-card-statuses
+{
+   position: absolute;
+   left: 100px;
+   top: calc(2*(1.5em + 0.5em) + 0.7em);
+   margin-left: 0.5em;
+   width: calc(100% - 100px - 0.5em);
+   display: flex;
+}
+
+.battle-character-card-status
+{
+   height: 1.5em;
+   width: 1.5em;
+   background-size: 100%;
+}
+
+.battle-character-card-target-status
+{
+   background-image: url("/asset/svg/status/target.svg");
+}
+
+.battle-character-card-commander-status
+{
+   background-image: url("/asset/svg/status/commander.svg");
+}
+
+.battle-character-card-health > .battle-gauge-bar
+{
+   background-color: $RED-3;
+}
+
+.battle-character-card-movement > .battle-gauge-bar
+{
+   background-color: $BLUE-3;
+}
+
+.battle-character-card-weapon,
+.battle-character-card-weapon-summary
+{
+   display: grid;
+
+   border-radius: 5px;
+
+   padding: 0.3em;
+   margin-top: 0.3em;
+}
+
+.battle-character-card-weapon
+{
+   background-color: #6C5D53;
+}
+
+.battle-character-card-weapon-summary
+{
+   background-color: $BROWN-1;
+}
+
+.battle-character-card-armor
+{
+   display: grid;
+   border-radius: 5px;
+   background-color: $BROWN-2;
+
+   padding: 0.3em;
+   margin-top: 0.3em;
+}
+
+.battle-character-card-armor-stats
+{
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+}
+
+.battle-character-card-stats > *,
+.battle-character-card-armor-stats > *
+{
+   width: 25%;
+}
+
+.battle-character-card-stats
+{
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+
+   border-radius: 5px;
+   background-color: $BROWN-2;
+
+   padding: 0.3em;
+   margin-top: 0.3em;
+}

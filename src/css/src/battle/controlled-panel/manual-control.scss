@@ -1,0 +1,58 @@
+.battle-manual-controls
+{
+   width: 96px;
+   height: 96px;
+   display: grid;
+   grid-template:
+      '.    top .'
+      'left  go  right'
+      '.   bottom .';
+   margin: auto;
+}
+
+.battle-manual-controls > div
+{
+   width: 32px;
+   height: 32px;
+   background-image: url(/asset/svg/arrowhead.svg);
+   background-size: 100%;
+   transition: opacity 0.3s ease-out;
+   opacity: 0.5;
+}
+
+.battle-manual-controls > div:hover
+{
+   opacity: 1;
+}
+
+.battle-manual-controls-go
+{
+   margin: auto;
+   width: 28px;
+   height: 28px;
+   border-radius: 100em;
+   grid-area: go;
+}
+
+.battle-manual-controls-up
+{
+   transform: rotate(-90deg);
+   grid-area: top;
+}
+
+.battle-manual-controls-down
+{
+   transform: rotate(90deg);
+   grid-area: bottom;
+}
+
+.battle-manual-controls-left
+{
+   transform: rotate(180deg);
+   grid-area: left;
+}
+
+.battle-manual-controls-right
+{
+   grid-area: right;
+}

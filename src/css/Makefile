@@ -1,59 +1,37 @@
 ################################################################################
 ## CONFIG ######################################################################
 ################################################################################
-MODULES ?= battle css global asset map-editor
+SRC_DIR ?= ${CURDIR}/src/
+TILE_CLASSES_DIR ?= ${CURDIR}/tile/class
+TILE_FRONTIER_DIR ?= ${CURDIR}/tile/frontier
+WWW_DIR ?= ${CURDIR}/www/
 
-SRC_DIR = ${CURDIR}/src
-WWW_DIR = ${CURDIR}/www
-DATA_DIR ?= /my/src/tacticians-data/
-
+SCSS_EXEC = scss
 ################################################################################
 ## MAKEFILE MAGIC ##############################################################
 ################################################################################
-MODULES_SRC = $(addprefix $(SRC_DIR)/,$(MODULES))
-MODULES_WWW = $(addprefix $(WWW_DIR)/,$(MODULES))
+#INCLUDE_SCSS = $(shell find $(SRC_DIR)/shared/ -name ".scss")
+INCLUDE_SCSS = $(shell find $(SRC_DIR) -name "*.scss")
+SCSS_FILES = $(wildcard $(SRC_DIR)/*.scss)
+CSS_FILES = $(patsubst $(SRC_DIR)/%.scss,$(WWW_DIR)/%.css,$(SCSS_FILES))
 
 ################################################################################
 ## SANITY CHECKS ###############################################################
 ################################################################################
 
 ################################################################################
-## INCLUDES ####################################################################
-################################################################################
-main_target: all
-
-include ${CURDIR}/mk/preprocessor.mk
-
-################################################################################
 ## TARGET RULES ################################################################
 ################################################################################
-all: $(PREPROCESSOR_RESULT) build $(WWW_DIR) $(MODULES_WWW)
-
-upload_demo:
-	scp -r $(WWW_DIR)/* dreamhost:~/tacticians.online/
-
-build:
-	for module in $(MODULES_SRC) ; do \
-		$(MAKE) -C $$module build ; \
-	done
+build: $(CSS_FILES)
 
 clean:
-	for module in $(MODULES_SRC) ; do \
-		$(MAKE) -C $$module clean ; \
-	done
-	rm -f $(PREPROCESSED_FILES)
+	rm -f $(CSS_FILES)
 
 reset:
-	$(MAKE) clean
-	for module in $(MODULES_SRC) ; do \
-		$(MAKE) -C $$module reset; \
-	done
+	$(MAKE) -C clean
 
 ################################################################################
 ## INTERNAL RULES ##############################################################
 ################################################################################
-$(MODULES_WWW): %:
-	ln -s $(SRC_DIR)/$(patsubst $(WWW_DIR)/%,%,$@)/www/ $@
-
-$(WWW_DIR):
-	mkdir -p $@
+$(CSS_FILES): $(WWW_DIR)/%.css: $(SRC_DIR)/%.scss $(INCLUDE_SCSS)
+	$(SCSS_EXEC) $< > $@

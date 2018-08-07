@@ -1,0 +1,26 @@
+@import 'constants';
+@import 'menu-mixins';
+
+.battle-sub-menu
+{
+   position: absolute;
+   right: 0;
+   top: $BELOW-MAIN-MENU;
+   bottom: $ABOVE-MESSAGE-BOARD;
+
+   width: $SUB-MENU-WIDTH;
+
+   @include menu-background-color();
+
+   @include menu-padding();
+
+   @include menu-border();
+   border-top-right-radius: 0;
+   border-bottom-right-radius: 0;
+   border-right: none;
+
+   overflow: auto;
+}
+
+@import 'sub-menus/characters-tab';
+@import 'sub-menus/timeline-tab';

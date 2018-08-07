@@ -1,0 +1,17 @@
+@mixin text-shadow ($size, $color, $alpha)
+{
+   text-shadow:
+      1px   0     $size rgba($color, $alpha),
+      -1px  0     $size rgba($color, $alpha),
+      0     1px   $size rgba($color, $alpha),
+      0     -1px  $size rgba($color, $alpha);
+}
+
+@mixin box-shadow ($size, $color, $alpha)
+{
+   box-shadow:
+      1px   0     $size rgba($color, $alpha),
+      -1px  0     $size rgba($color, $alpha),
+      0     1px   $size rgba($color, $alpha),
+      0     -1px  $size rgba($color, $alpha);
+}

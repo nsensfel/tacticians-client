@@ -1,0 +1,27 @@
+@import '../../shared/colors';
+
+.battle-tabmenu-characters-tab
+{
+   display: flex;
+   flex-grow: 1;
+   flex-direction: column;
+   flex-wrap: wrap;
+}
+
+.battle-characters-element-active
+{
+   animation-name: brown-alarm-bg;
+   animation-duration: 5s;
+   animation-iteration-count: infinite;
+}
+
+.battle-characters-element
+{
+   flex: 2;
+   margin: 0.5em 0.5em 0 0.5em;
+
+   border-radius: 5px;
+   border: 1px solid $BROWN-1;
+   border-bottom-width: 2px;
+   padding: 0.5em;
+}

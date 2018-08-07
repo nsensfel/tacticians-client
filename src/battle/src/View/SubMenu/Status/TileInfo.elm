@@ -27,6 +27,7 @@ get_icon tile =
    (Html.div
       [
          (Html.Attributes.class "battle-tile-card-icon"),
+         (Html.Attributes.class "battle-info-card-picture"),
          (Html.Attributes.class
             (
                "battle-tile-variant-"
@@ -48,6 +49,8 @@ get_name model tile =
       (Just tile_type) ->
          (Html.div
             [
+               (Html.Attributes.class "battle-info-card-name"),
+               (Html.Attributes.class "battle-info-card-text-field"),
                (Html.Attributes.class "battle-tile-card-name")
             ]
             [
@@ -68,6 +71,7 @@ get_cost tile =
    in
       (Html.div
          [
+            (Html.Attributes.class "battle-info-card-text-field"),
             (Html.Attributes.class "battle-tile-card-cost")
          ]
          [
@@ -82,6 +86,7 @@ get_location tile =
    in
       (Html.div
          [
+            (Html.Attributes.class "battle-info-card-text-field"),
             (Html.Attributes.class "battle-tile-card-location")
          ]
          [
@@ -110,12 +115,14 @@ get_html model loc =
       (Just tile) ->
          (Html.div
             [
+               (Html.Attributes.class "battle-info-card"),
                (Html.Attributes.class "battle-tile-card")
             ]
             [
                (get_name model tile),
                (Html.div
                   [
+                     (Html.Attributes.class "battle-info-card-top"),
                      (Html.Attributes.class "battle-tile-card-top")
                   ]
                   [
