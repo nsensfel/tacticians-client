@@ -3,7 +3,7 @@
 @import 'constants';
 @import 'menu-mixins';
 
-.battle-main-menu
+.map-main-menu
 {
    position: absolute;
    top: 0;
@@ -34,4 +34,3 @@
    flex-wrap: wrap;
    justify-content: space-between;
 }
-

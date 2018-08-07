@@ -36,10 +36,10 @@ button:disabled
    background-color: $BROWN-0;
 }
 
-@import 'battle/controlled-panel';
-@import 'battle/info-card';
-@import 'battle/keyframes';
-@import 'battle/main-menu';
-@import 'battle/map';
-@import 'battle/message-board';
-@import 'battle/sub-menus';
+
+//@import 'map-editor/info-card';
+@import 'map-editor/main-menu';
+@import 'map-editor/map';
+@import 'map-editor/message-board';
+@import 'map-editor/sub-menus';
+@import 'map-editor/toolbox';

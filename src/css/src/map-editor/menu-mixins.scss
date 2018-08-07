@@ -1,0 +1,24 @@
+@import '../shared/colors';
+
+@import 'constants';
+
+@mixin menu-border ()
+{
+   border: $MENU-BORDER solid $BROWN-1;
+   border-radius: 15px;
+}
+
+@mixin menu-margin ()
+{
+   margin: $MENU-MARGIN;
+}
+
+@mixin menu-padding ()
+{
+   padding: $MENU-PADDING;
+}
+
+@mixin menu-background-color ()
+{
+   background-color: $BROWN-3;
+}

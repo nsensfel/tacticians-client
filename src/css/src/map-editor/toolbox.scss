@@ -1,0 +1,37 @@
+@import 'constants';
+@import 'menu-mixins';
+
+.map-toolbox
+{
+   position: absolute;
+   display: block;
+   left: 0;
+   top: $BELOW-MAIN-MENU;
+   bottom: $ABOVE-MESSAGE-BOARD;
+
+   width: $TOOLBOX-MENU-WIDTH;
+
+   @include menu-background-color();
+
+   @include menu-padding();
+
+   @include menu-border();
+
+   border-top-left-radius: 0;
+   border-bottom-left-radius: 0;
+   border-left: none;
+
+   display: flex;
+   flex-flow: column;
+   justify-content: space-between;
+}
+
+.map-toolbox-actions
+{
+   display: flex;
+   flex-flow: row wrap;
+
+   align-items: center;
+   justify-content: center;
+}
+

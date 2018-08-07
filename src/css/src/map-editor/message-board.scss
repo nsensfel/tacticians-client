@@ -1,0 +1,44 @@
+@import 'constants';
+@import 'menu-mixins';
+
+.map-message-board
+{
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   right: 0;
+
+   height: $MESSAGE-BOARD-HEIGHT;
+
+   @include menu-background-color();
+
+   @include menu-border();
+   border-bottom: none;
+   border-bottom-left-radius: 0;
+   border-bottom-right-radius: 0;
+
+   @include menu-padding();
+
+   @include menu-margin();
+   margin-bottom: 0;
+
+   display: flex;
+   flex-flow: row;
+   justify-content: space-between;
+
+   overflow-y: auto;
+}
+
+/*
+.map-message-board
+{
+   background: $BROWN-4;
+   color: $BROWN-0;
+   line-height: 1.3em;
+   font-size: 1.2em;
+   text-shadow: none;
+}
+*/
+
+@import 'message-board/error';
+@import 'message-board/help';

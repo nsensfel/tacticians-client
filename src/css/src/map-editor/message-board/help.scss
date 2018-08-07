@@ -1,0 +1,33 @@
+.map-message-board-help
+{
+   display: block;
+}
+
+.map-message-board-help h1
+{
+   margin: 0;
+   margin-bottom: 0.3em;
+   font-size: 1.5em;
+   text-align: center;
+}
+
+.map-message-board-help-figure
+{
+   width: 1.5em;
+   height: 1.5em;
+   background-size: 100%;
+   display: inline-block;
+   vertical-align: middle;
+}
+
+.map-help-guide-icon
+{
+   margin-right: 0.5em;
+   width: 1.5em;
+   height: 1.5em;
+   background-image: url("/asset/svg/help-icon.svg");
+   background-size: 100%;
+   display: inline-block;
+   vertical-align: middle;
+}
+
