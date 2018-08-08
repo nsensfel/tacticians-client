@@ -1,9 +1,9 @@
-module Comm.Okay exposing (decode)
+module Comm.SetSession exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Battlemap -------------------------------------------------------------------
+-- Map -------------------------------------------------------------------
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------
@@ -13,9 +13,16 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+internal_decoder : String -> String -> Struct.ServerReply.Type
+internal_decoder pid stk = (Struct.ServerReply.SetSession (pid, stk))
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.succeed Struct.ServerReply.Okay)
+decode =
+   (Json.Decode.map2
+      (internal_decoder)
+      (Json.Decode.field "pid" Json.Decode.string)
+      (Json.Decode.field "stk" Json.Decode.string)
+   )

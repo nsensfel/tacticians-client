@@ -1,14 +1,24 @@
-module Comm.Okay exposing (decode)
+module Struct.Flags exposing
+   (
+      Type,
+      maybe_get_param
+   )
 
 -- Elm -------------------------------------------------------------------------
-import Json.Decode
+import List
 
--- Battlemap -------------------------------------------------------------------
-import Struct.ServerReply
+-- Map -------------------------------------------------------------------
+import Util.List
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+type alias Type =
+   {
+      user_id : String,
+      token : String,
+      url_params : (List (List String))
+   }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -17,5 +27,16 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.succeed Struct.ServerReply.Okay)
+maybe_get_param : String -> Type -> (Maybe String)
+maybe_get_param param flags =
+   case
+      (Util.List.get_first
+         (\e -> ((List.head e) == (Just param)))
+         flags.url_params
+      )
+   of
+      Nothing -> Nothing
+      (Just a) ->
+         case (List.tail a) of
+            Nothing -> Nothing
+            (Just b) -> (List.head b)

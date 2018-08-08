@@ -19,12 +19,13 @@
    width: 36px;
    height: 36px;
 
+   border-radius: 5px;
+
    @include box-shadow(1px, $BROWN-0, 1);
 }
 
 .battle-timeline-element .battle-character-portrait + *
 {
-   border-radius: 5px;
    margin-left: 1em;
 }
 

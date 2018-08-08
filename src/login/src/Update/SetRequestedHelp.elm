@@ -1,14 +1,10 @@
-module Comm.Okay exposing (decode)
-
+module Update.SetRequestedHelp exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
-import Json.Decode
 
--- Battlemap -------------------------------------------------------------------
-import Struct.ServerReply
-
---------------------------------------------------------------------------------
--- TYPES -----------------------------------------------------------------------
---------------------------------------------------------------------------------
+-- Map -------------------------------------------------------------------
+import Struct.Event
+import Struct.HelpRequest
+import Struct.Model
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -17,5 +13,10 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.succeed Struct.ServerReply.Okay)
+apply_to : (
+      Struct.Model.Type ->
+      Struct.HelpRequest.Type ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
+apply_to model help_request =
+   ({model | help_request = help_request}, Cmd.none)

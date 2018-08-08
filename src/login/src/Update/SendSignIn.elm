@@ -1,14 +1,11 @@
-module Comm.Okay exposing (decode)
-
+module Update.SendSignIn exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
-import Json.Decode
 
--- Battlemap -------------------------------------------------------------------
-import Struct.ServerReply
+-- Map -------------------------------------------------------------------
+import Comm.SendSignIn
 
---------------------------------------------------------------------------------
--- TYPES -----------------------------------------------------------------------
---------------------------------------------------------------------------------
+import Struct.Event
+import Struct.Model
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -17,5 +14,16 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.succeed Struct.ServerReply.Okay)
+apply_to : (
+      Struct.Model.Type ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
+apply_to model =
+   (
+      model,
+      (case (Comm.SendSignIn.try model) of
+         (Just cmd) -> cmd
+         Nothing -> Cmd.none
+      )
+   )
+

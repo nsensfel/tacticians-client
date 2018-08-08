@@ -1,59 +1,36 @@
 ################################################################################
 ## CONFIG ######################################################################
 ################################################################################
-MODULES ?= css login map-editor battle asset
+SRC_DIR ?= src
+WWW_DIR ?= www
+WWW_SCRIPT_DIR ?= $(WWW_DIR)/script
 
-SRC_DIR = ${CURDIR}/src
-WWW_DIR = ${CURDIR}/www
-DATA_DIR ?= /my/src/tacticians-data/
+ELM_CC ?= elm-make --warn
+
+MAIN_MODULE ?= $(SRC_DIR)/Main.elm
 
 ################################################################################
 ## MAKEFILE MAGIC ##############################################################
 ################################################################################
-MODULES_SRC = $(addprefix $(SRC_DIR)/,$(MODULES))
-MODULES_WWW = $(addprefix $(WWW_DIR)/,$(MODULES))
+SUB_MODULES = $(shell find $(SRC_DIR) -type f | grep "elm$$")
 
 ################################################################################
 ## SANITY CHECKS ###############################################################
 ################################################################################
 
 ################################################################################
-## INCLUDES ####################################################################
-################################################################################
-main_target: all
-
-include ${CURDIR}/mk/preprocessor.mk
-
-################################################################################
 ## TARGET RULES ################################################################
 ################################################################################
-all: $(PREPROCESSOR_RESULT) build $(WWW_DIR) $(MODULES_WWW)
-
-upload_demo:
-	scp -r $(WWW_DIR)/* dreamhost:~/tacticians.online/
-
-build:
-	for module in $(MODULES_SRC) ; do \
-		$(MAKE) -C $$module build ; \
-	done
+build: $(WWW_SCRIPT_DIR)/main.js
 
 clean:
-	for module in $(MODULES_SRC) ; do \
-		$(MAKE) -C $$module clean ; \
-	done
-	rm -f $(PREPROCESSED_FILES)
+	rm -f $(WWW_SCRIPT_DIR)/main.js
 
 reset:
-	$(MAKE) clean
-	for module in $(MODULES_SRC) ; do \
-		$(MAKE) -C $$module reset; \
-	done
+	rm -rf elm-stuff
 
 ################################################################################
 ## INTERNAL RULES ##############################################################
 ################################################################################
-$(MODULES_WWW): %:
-	ln -s $(SRC_DIR)/$(patsubst $(WWW_DIR)/%,%,$@)/www/ $@
-
-$(WWW_DIR):
-	mkdir -p $@
+$(WWW_SCRIPT_DIR)/main.js: $(MAIN_MODULE) $(SUB_MODULES)
+	$(ELM_CC) $(MAIN_MODULE) --output $@

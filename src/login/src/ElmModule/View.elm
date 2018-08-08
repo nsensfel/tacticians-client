@@ -1,14 +1,13 @@
-module Comm.Okay exposing (decode)
+module ElmModule.View exposing (view)
 
 -- Elm -------------------------------------------------------------------------
-import Json.Decode
+import Html
+import Html.Lazy
+import Html.Attributes
 
--- Battlemap -------------------------------------------------------------------
-import Struct.ServerReply
-
---------------------------------------------------------------------------------
--- TYPES -----------------------------------------------------------------------
---------------------------------------------------------------------------------
+-- Map -------------------------------------------------------------------
+import Struct.Event
+import Struct.Model
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -17,5 +16,12 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.succeed Struct.ServerReply.Okay)
+view : Struct.Model.Type -> (Html.Html Struct.Event.Type)
+view model =
+   (Html.div
+      [
+         (Html.Attributes.class "fullscreen-module")
+      ]
+      [
+      ]
+   )
