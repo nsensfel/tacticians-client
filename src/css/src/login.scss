@@ -17,6 +17,11 @@ body,
    align-items: center;
 }
 
+.fullscreen-module
+{
+   padding-bottom: 1em;
+}
+
 .fullscreen-module > header
 {
    display: flex;
@@ -141,6 +146,13 @@ article
    flex-direction: column;
 }
 
+article p
+{
+   color: $BROWN-0;
+   text-shadow: none;
+   margin: 0.5em 4em 0.5em 4em;
+}
+
 article header
 {
    display: inline-block;
@@ -171,6 +183,27 @@ article h1
    padding: 0.5em;
    padding-left: 1.5em;
    max-width: 50%;
+
+   align-self: start;
+}
+
+article .multi-input
+{
+   display: flex;
+   flex-direction: column;
+
+   flex: 1;
+}
+
+.multi-input input:first-child
+{
+   margin-bottom: 0.5em;
+}
+
+.multi-input input:nth-child(2)
+{
+   background: $RED-4;
+   border: 2px solid $RED-2;
 }
 
 article input
@@ -186,6 +219,8 @@ article input
 
    color: $BROWN-0;
    text-shadow: none;
+
+   flex: 1;
 }
 
 article .user-input input

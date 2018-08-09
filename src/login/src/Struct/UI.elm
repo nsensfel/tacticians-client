@@ -21,6 +21,8 @@ type Tab =
    SignInTab
    | SignUpTab
    | SignedInTab
+   | SignedOutTab
+   | RecoveryTab
 
 type alias Type =
    {
@@ -54,16 +56,19 @@ to_string : Tab -> String
 to_string tab =
    case tab of
       SignInTab -> "Sign In"
-      SignUpTab -> "Sign Up"
+      SignUpTab -> "Create Account"
       SignedInTab -> "Signed In"
+      SignedOutTab -> "Signed Out"
+      RecoveryTab -> "Account Recovery"
 
 tab_from_string : String -> Tab
 tab_from_string str =
    case str of
       "signin" -> SignInTab
       "signup" -> SignUpTab
+      "recover" -> RecoveryTab
       _ -> SignInTab
 
 get_all_tabs : (List Tab)
 get_all_tabs =
-   [SignInTab, SignUpTab]
+   [SignInTab, SignUpTab, RecoveryTab]

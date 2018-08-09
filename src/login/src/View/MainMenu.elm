@@ -12,18 +12,26 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-link_html : String -> Bool -> (Html.Html Struct.Event.Type)
-link_html label is_active =
+link_html : (
+      Struct.UI.Tab ->
+      String ->
+      Struct.UI.Tab ->
+      (Html.Html Struct.Event.Type)
+   )
+link_html tab label active_tab =
    (Html.a
-      [
-         (Html.Attributes.class
-            (
-               if (is_active)
-               then "active"
-               else "inactive"
-            )
-         )
-      ]
+      (
+         if (tab == active_tab)
+         then
+            [
+               (Html.Attributes.class "active")
+            ]
+         else
+            [
+               (Html.Attributes.class "inactive"),
+               (Html.Events.onClick (Struct.Event.TabSelected tab))
+            ]
+      )
       [
          (Html.text label)
       ]
@@ -32,51 +40,19 @@ link_html label is_active =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : (Html.Html Struct.Event.Type)
-get_html =
-   (Html.main_
-      [
-      ]
-      [
-         (Html.nav
-            []
-            [
-               (link_html "Login" True),
-               (link_html "Create Account" False),
-               (link_html "Recover Account" False)
-            ]
-         ),
-         (Html.article
-            []
-            [
-               (Html.div
-                  [
-                     (Html.Attributes.class "user-input")
-                  ]
-                  [
-                     (Html.h1 [] [(Html.text "Username")]),
-                     (Html.input [] [])
-                  ]
-               ),
-               (Html.div
-                  [
-                     (Html.Attributes.class "user-input")
-                  ]
-                  [
-                     (Html.h1 [] [(Html.text "Password")]),
-                     (Html.input
-                        [
-                           (Html.Attributes.type_ "password")
-                        ]
-                        []
-                     )
-                  ]
-               ),
-               (Html.button
-                  []
-                  [ (Html.text "Send") ]
-               )
-            ]
-         )
-      ]
-   )
+get_html : (Maybe Struct.UI.Tab) -> (Html.Html Struct.Event.Type)
+get_html maybe_tab =
+   let
+      tab =
+         case maybe_tab of
+            Nothing -> Struct.UI.SignInTab
+            (Just t) -> t
+   in
+      (Html.nav
+         []
+         [
+            (link_html Struct.UI.SignInTab "Login" tab),
+            (link_html Struct.UI.SignUpTab "Create Account" tab),
+            (link_html Struct.UI.RecoveryTab "Recover Account" tab)
+         ]
+      )
