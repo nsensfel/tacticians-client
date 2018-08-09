@@ -15,8 +15,7 @@
          <div class="main-server-logo"><img src="__CONF_SERVER_LOGO"/></div>
          <div class="main-server-version">__CONF_VERSION</div>
          <nav>
-            <a href="/login/?act=signin"><s>Login</s></a>
-            <a href="/login/?act=signup"><s>Create Account</s></a>
+            <a href="/login/"><s>Play</s></a>
             <a href="/news/"><s>News</s></a>
             <a href="/community/"><s>Community</s></a>
             <a href="/about/"><s>About</s></a>

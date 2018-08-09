@@ -9,6 +9,9 @@ import Html.Attributes
 import Struct.Event
 import Struct.Model
 
+import View.Header
+import View.MainMenu
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -23,5 +26,7 @@ view model =
          (Html.Attributes.class "fullscreen-module")
       ]
       [
+         (View.Header.get_html),
+         (View.MainMenu.get_html)
       ]
    )

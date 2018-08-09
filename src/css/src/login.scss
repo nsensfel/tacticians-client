@@ -1,0 +1,228 @@
+@import 'shared/colors';
+@import 'shared/shadows';
+
+*
+{
+   color: $GOLD-0;
+   @include text-shadow(1px, $BROWN-0, 0.5);
+}
+
+body,
+.fullscreen-module
+{
+   display: flex;
+   flex-direction: column;
+   background-color: $BROWN-2;
+
+   align-items: center;
+}
+
+.fullscreen-module > header
+{
+   display: flex;
+   flex-direction: row;
+}
+
+.fullscreen-module > header nav
+{
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   flex: 1;
+   align-items: center;
+   justify-content: space-around;
+}
+
+.fullscreen-module > header nav a
+{
+   color: $GOLD-0;
+   transition: background-color 0.3s ease-out;
+   font-size: 1.5em;
+   font-variant: small-caps;
+   font-weight: bold;
+   text-decoration: none;
+   margin: 0.5em;
+}
+
+.main-server-logo
+{
+   z-index: 1;
+   margin: 0.5em;
+}
+
+.main-server-version
+{
+   z-index: 0;
+   position: absolute;
+   font-size: 0.7em;
+   top: 0;
+   right: 0;
+}
+
+main
+{
+   position: relative;
+   display: inline-block;
+   max-width: 80em;
+   min-width: 40em;
+   margin: 1em;
+}
+
+main > nav a
+{
+   position: relative;
+   margin-bottom: -1px;
+
+   color: $BROWN-1;
+   text-shadow: none;
+   box-shadow: none;
+
+   transition: background-color 0.3s ease-out;
+   font-size: 1.5em;
+   font-variant: small-caps;
+   font-weight: bold;
+   text-decoration: none;
+
+   display: inline-block;
+
+   background-color: $BROWN-4;
+
+   border: 1px solid $BROWN-0;
+
+   border-radius: 8px 8px 0 0;
+   border-bottom: 1px solid $BROWN-4;
+
+   padding: 0.5em 1em 0.5em 1em;
+   margin-left: 0.5em;
+
+   z-index: 0;
+}
+
+main > nav a.active
+{
+   z-index: 2;
+}
+
+main > nav a.inactive
+{
+   background: $BROWN-3;
+}
+
+main > nav a:first-of-type
+{
+   margin-left: 1em;
+}
+
+main > nav a:last-of-type
+{
+   margin-right: 1em;
+}
+
+main > nav a.inactive:hover
+{
+   background-color: $BROWN-4;
+   cursor: pointer;
+}
+
+article
+{
+   position: relative;
+   z-index: 1;
+   background: $BROWN-4;
+
+   border: 1px solid $BROWN-0;
+
+   line-height: 1.3em;
+   font-size: 1.2em;
+   color: $BROWN-0;
+   text-shadow: none;
+
+   display: flex;
+   flex-direction: column;
+}
+
+article header
+{
+   display: inline-block;
+   margin: -0.1em 0.5em 1em 0.5em;
+   border: 2px solid $GLAUQUE-1;
+   border-top-width: 1px;
+   border-radius: 0 0 8px 8px;
+   text-align: center;
+   padding: 0.5em 1em 0.5em 1em;
+   background: $GLAUQUE-2;
+   color: $GLAUQUE-6;
+   font-size: 1.5em;
+   font-variant: small-caps;
+   font-weight: bold;
+}
+
+article h1
+{
+   display: inline-block;
+   background: $BLUE-2;
+   font-size: 1.2em;
+   font-variant: small-caps;
+   font-weight: normal;
+   border: 2px solid $BLUE-1;
+   border-left-width: 1px;
+   border-radius: 0 15px 15px 0;
+   color: $BLUE-6;
+   padding: 0.5em;
+   padding-left: 1.5em;
+   max-width: 50%;
+}
+
+article input
+{
+   background: $BLUE-5;
+   font-size: 1.2em;
+   font-variant: small-caps;
+   font-weight: normal;
+   border: 2px solid $BLUE-3;
+   border-right-width: 1px;
+   border-radius: 15px 0 0 15px;
+   padding: 0.5em;
+
+   color: $BROWN-0;
+   text-shadow: none;
+}
+
+article .user-input input
+{
+   flex: 1;
+   margin-left: 2em;
+}
+
+article .user-input
+{
+   width: calc(100% + 0.4em);
+   display: flex;
+   flex-direction: row;
+   margin: 1em -0.2em 1em -0.2em;
+}
+
+button
+{
+   text-transform: uppercase;
+   background-color: $BROWN-3;
+   border-color: $BROWN-1;
+
+   padding: 0.5em;
+   margin: 0.5em;
+}
+
+button + button
+{
+   margin-left: 0.5em;
+}
+
+button:hover
+{
+   background-color: $BROWN-4;
+}
+
+button:disabled
+{
+   background-color: $BROWN-0;
+}

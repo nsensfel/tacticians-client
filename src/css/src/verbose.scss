@@ -14,13 +14,15 @@ body
    background-color: $BROWN-2;
 }
 
-body > header
+body > header,
+.fullscreen-module > header
 {
    display: flex;
    flex-direction: row;
 }
 
-body > header nav
+body > header nav,
+.fullscreen-module > header nav
 {
    display: flex;
    flex-direction: row;
@@ -30,7 +32,8 @@ body > header nav
    justify-content: space-around;
 }
 
-body > header nav a
+body > header nav a,
+.fullscreen-module > header nav a
 {
    color: $GOLD-0;
    transition: background-color 0.3s ease-out;
