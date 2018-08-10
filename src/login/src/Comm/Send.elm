@@ -25,7 +25,7 @@ internal_decoder : String -> (Json.Decode.Decoder Struct.ServerReply.Type)
 internal_decoder reply_type =
    case reply_type of
       "okay" -> (Comm.Okay.decode)
-      "set_session" -> (Comm.SetSession.decode)
+      "sse" -> (Comm.SetSession.decode)
       other ->
          (Json.Decode.fail
             (

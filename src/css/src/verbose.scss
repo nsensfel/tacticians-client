@@ -12,6 +12,8 @@ body
    display: flex;
    flex-direction: column;
    background-color: $BROWN-2;
+
+   align-items: center;
 }
 
 body > header,

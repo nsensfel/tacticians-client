@@ -6,9 +6,12 @@ import Html.Lazy
 import Html.Attributes
 
 -- Map -------------------------------------------------------------------
+import Struct.Error
 import Struct.Event
 import Struct.Model
 import Struct.UI
+
+import Util.Html
 
 import View.AccountRecovery
 import View.Header
@@ -40,11 +43,25 @@ view model =
                ),
                (
                   case (Struct.UI.try_getting_displayed_tab model.ui) of
-                     (Just Struct.UI.SignInTab) -> (View.SignIn.get_html)
-                     (Just Struct.UI.SignUpTab) -> (View.SignUp.get_html)
+                     (Just Struct.UI.SignInTab) -> (View.SignIn.get_html model)
+                     (Just Struct.UI.SignUpTab) -> (View.SignUp.get_html model)
                      (Just Struct.UI.RecoveryTab) ->
-                        (View.AccountRecovery.get_html)
-                     _ -> (View.SignIn.get_html)
+                        (View.AccountRecovery.get_html model)
+
+                     _ -> (View.SignIn.get_html model)
+               ),
+               (
+                  case model.error of
+                     Nothing -> (Util.Html.nothing)
+                     (Just err) ->
+                        (Html.div
+                           [
+                              (Html.Attributes.class "error-msg")
+                           ]
+                           [
+                              (Html.text (Struct.Error.to_string err))
+                           ]
+                        )
                )
             ]
          )

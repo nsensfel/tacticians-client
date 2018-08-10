@@ -12,7 +12,9 @@
    </head>
    <body>
       <header>
-         <div class="main-server-logo"><img src="__CONF_SERVER_LOGO"/></div>
+         <div class="main-server-logo">
+            <a href="__CONF_SERVER_URL"><img src="__CONF_SERVER_LOGO"/></a>
+         </div>
          <div class="main-server-version">__CONF_VERSION</div>
          <nav>
             <a href="/login/"><s>Play</s></a>

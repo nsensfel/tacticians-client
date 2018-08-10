@@ -9,6 +9,7 @@ import Struct.Model
 import Update.HandleServerReply
 import Update.SendSignIn
 import Update.SendSignUp
+import Update.SendRecovery
 import Update.SelectTab
 
 --------------------------------------------------------------------------------
@@ -40,11 +41,14 @@ update event model =
       (Struct.Event.ServerReplied result) ->
          (Update.HandleServerReply.apply_to model result)
 
-      Struct.Event.SendSignInRequested ->
+      Struct.Event.SignInRequested ->
          (Update.SendSignIn.apply_to new_model)
 
-      Struct.Event.SendSignUpRequested ->
+      Struct.Event.SignUpRequested ->
          (Update.SendSignUp.apply_to model)
+
+      Struct.Event.RecoveryRequested ->
+         (Update.SendRecovery.apply_to model)
 
       (Struct.Event.TabSelected tab) ->
          (Update.SelectTab.apply_to new_model tab)
@@ -52,3 +56,34 @@ update event model =
       (Struct.Event.RequestedHelp _) ->
          -- TODO
          (model, Cmd.none)
+
+      (Struct.Event.SetUsername str) ->
+         (
+            {model | username = str},
+            Cmd.none
+         )
+
+      (Struct.Event.SetPassword1 str) ->
+         (
+            {model | password1 = str},
+            Cmd.none
+         )
+
+      (Struct.Event.SetPassword2 str) ->
+         (
+            {model | password2 = str},
+            Cmd.none
+         )
+
+      (Struct.Event.SetEmail1 str) ->
+         (
+            {model | email1 = str},
+            Cmd.none
+         )
+
+      (Struct.Event.SetEmail2 str) ->
+         (
+            {model | email2 = str},
+            Cmd.none
+         )
+

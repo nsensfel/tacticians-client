@@ -71,8 +71,9 @@ function (token)
 }
 
 tacticians_online.session.store_new_session =
-function (user_id, token)
+function (session)
 {
+   var [user_id, token] = session;
    tacticians_online.session.set_user_id(user_id);
    tacticians_online.session.set_token(token);
    tacticians_online.session.store();
@@ -81,8 +82,9 @@ function (user_id, token)
 tacticians_online.session.attach_to =
 function (app)
 {
-   app.ports.store_new_session.subscribe =
-      tacticians_online.session.store_new_session;
+   app.ports.store_new_session.subscribe(
+      tacticians_online.session.store_new_session
+   );
 
-   app.ports.reset_session.subscribe = tacticians_online.session.reset;
+   app.ports.reset_session.subscribe(tacticians_online.session.reset);
 }

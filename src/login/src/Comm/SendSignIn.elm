@@ -24,7 +24,7 @@ try_encoding model =
       (Json.Encode.object
          [
             ("usr", (Json.Encode.string model.username)),
-            ("pwd", (Json.Encode.string model.password))
+            ("pwd", (Json.Encode.string model.password1))
          ]
       )
    )

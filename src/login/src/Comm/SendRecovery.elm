@@ -1,4 +1,4 @@
-module Comm.SendSignUp exposing (try)
+module Comm.SendRecovery exposing (try)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Encode
@@ -23,8 +23,6 @@ try_encoding model =
    (Just
       (Json.Encode.object
          [
-            ("usr", (Json.Encode.string model.username)),
-            ("pwd", (Json.Encode.string model.password1)),
             ("eml", (Json.Encode.string model.email1))
          ]
       )
@@ -37,6 +35,6 @@ try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
 try model =
    (Comm.Send.try_sending
       model
-      Constants.IO.login_sign_up_handler
+      Constants.IO.login_recovery_handler
       try_encoding
    )

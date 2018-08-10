@@ -7,6 +7,7 @@ import Html.Events
 
 -- Map -------------------------------------------------------------------
 import Struct.Event
+import Struct.Model
 import Struct.UI
 
 --------------------------------------------------------------------------------
@@ -16,8 +17,8 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : (Html.Html Struct.Event.Type)
-get_html =
+get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
+get_html model =
    (Html.article
       []
       [
@@ -27,12 +28,23 @@ get_html =
             ]
             [
                (Html.h1 [] [(Html.text "Email")]),
-               (Html.input [] [])
+               (Html.input
+                  [
+                     (Html.Events.onInput Struct.Event.SetEmail1),
+                     (Html.Attributes.value model.email1)
+                  ]
+                  [
+                  ]
+               )
             ]
          ),
          (Html.button
-            []
-            [ (Html.text "Send") ]
+            [
+               (Html.Events.onClick Struct.Event.RecoveryRequested)
+            ]
+            [
+               (Html.text "Send")
+            ]
          )
       ]
    )

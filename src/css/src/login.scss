@@ -193,6 +193,7 @@ article .multi-input
    flex-direction: column;
 
    flex: 1;
+   transition: background-color 0.3s ease-out, border 0.3s ease-out;
 }
 
 .multi-input input:first-child
@@ -200,10 +201,16 @@ article .multi-input
    margin-bottom: 0.5em;
 }
 
-.multi-input input:nth-child(2)
+.multi-input input.incorrect
 {
    background: $RED-4;
    border: 2px solid $RED-2;
+}
+
+.multi-input input.correct
+{
+   background: $GREEN-4;
+   border: 2px solid $GREEN-2;
 }
 
 article input

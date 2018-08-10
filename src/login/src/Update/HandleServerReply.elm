@@ -8,6 +8,8 @@ import Dict
 import Http
 
 -- Map -------------------------------------------------------------------
+import Action.Session
+
 import Struct.Error
 import Struct.Event
 import Struct.Model
@@ -24,26 +26,46 @@ import Struct.UI
 set_session : (
       String ->
       String ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (
+         Struct.Model.Type,
+         (Maybe Struct.Error.Type),
+         (List (Cmd Struct.Event.Type))
+      ) ->
+      (
+         Struct.Model.Type,
+         (Maybe Struct.Error.Type),
+         (List (Cmd Struct.Event.Type))
+      )
    )
 set_session pid stk current_state =
    case current_state of
-      (_, (Just _)) -> current_state
+      (_, (Just _), _) -> current_state
 
-      (model, _) ->
+      (model, _, cmd_list) ->
          (
             {model |
                player_id = pid,
                session_token = stk
             },
-            Nothing
+            Nothing,
+            (
+               (Action.Session.store_new_session (pid, stk))
+               :: cmd_list
+            )
          )
 
 apply_command : (
       Struct.ServerReply.Type ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (
+         Struct.Model.Type,
+         (Maybe Struct.Error.Type),
+         (List (Cmd Struct.Event.Type))
+      ) ->
+      (
+         Struct.Model.Type,
+         (Maybe Struct.Error.Type),
+         (List (Cmd Struct.Event.Type))
+      )
    )
 apply_command command current_state =
    case command of
@@ -73,10 +95,22 @@ apply_to model query_result =
 
       (Result.Ok commands) ->
          (
-            (
-               case (List.foldl (apply_command) (model, Nothing) commands) of
-                  (updated_model, Nothing) -> updated_model
-                  (_, (Just error)) -> (Struct.Model.invalidate error model)
-            ),
-            Cmd.none
+            case
+               (List.foldl
+                  (apply_command)
+                  (model, Nothing, [])
+                  commands
+               )
+            of
+               (updated_model, Nothing, cmds) ->
+                  (
+                     updated_model,
+                     (Cmd.batch cmds)
+                  )
+
+               (_, (Just error), _) ->
+                  (
+                     (Struct.Model.invalidate error model),
+                     Cmd.none
+                  )
          )

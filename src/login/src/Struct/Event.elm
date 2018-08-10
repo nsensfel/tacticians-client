@@ -16,8 +16,14 @@ type Type =
    None
    | Failed Struct.Error.Type
    | RequestedHelp Struct.HelpRequest.Type
-   | SendSignInRequested
-   | SendSignUpRequested
+   | SignInRequested
+   | SignUpRequested
+   | RecoveryRequested
+   | SetUsername String
+   | SetPassword1 String
+   | SetPassword2 String
+   | SetEmail1 String
+   | SetEmail2 String
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
    | TabSelected Struct.UI.Tab
 

@@ -7,6 +7,7 @@ import Html.Events
 
 -- Map -------------------------------------------------------------------
 import Struct.Event
+import Struct.Model
 import Struct.UI
 
 --------------------------------------------------------------------------------
@@ -16,8 +17,8 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : (Html.Html Struct.Event.Type)
-get_html =
+get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
+get_html model =
    (Html.article
       []
       [
@@ -27,7 +28,14 @@ get_html =
             ]
             [
                (Html.h1 [] [(Html.text "Username")]),
-               (Html.input [] [])
+               (Html.input
+                  [
+                     (Html.Events.onInput Struct.Event.SetUsername),
+                     (Html.Attributes.value model.username)
+                  ]
+                  [
+                  ]
+               )
             ]
          ),
          (Html.p
@@ -69,15 +77,26 @@ get_html =
                   [
                      (Html.input
                         [
-                           (Html.Attributes.type_ "password")
+                           (Html.Attributes.type_ "password"),
+                           (Html.Events.onInput Struct.Event.SetPassword1),
+                           (Html.Attributes.value model.password1)
                         ]
-                        []
+                        [
+                        ]
                      ),
                      (Html.input
                         [
-                           (Html.Attributes.type_ "password")
+                           (Html.Attributes.type_ "password"),
+                           (Html.Events.onInput Struct.Event.SetPassword2),
+                           (Html.Attributes.value model.password2),
+                           (
+                              if (model.password1 == model.password2)
+                              then (Html.Attributes.class "correct")
+                              else (Html.Attributes.class "incorrect")
+                           )
                         ]
-                        []
+                        [
+                        ]
                      )
                   ]
                )
@@ -107,13 +126,24 @@ get_html =
                   [
                      (Html.input
                         [
+                           (Html.Events.onInput Struct.Event.SetEmail1),
+                           (Html.Attributes.value model.email1)
                         ]
-                        []
+                        [
+                        ]
                      ),
                      (Html.input
                         [
+                           (Html.Events.onInput Struct.Event.SetEmail2),
+                           (Html.Attributes.value model.email2),
+                           (
+                              if (model.email1 == model.email2)
+                              then (Html.Attributes.class "correct")
+                              else (Html.Attributes.class "incorrect")
+                           )
                         ]
-                        []
+                        [
+                        ]
                      )
                   ]
                )
@@ -137,8 +167,12 @@ get_html =
             ]
          ),
          (Html.button
-            []
-            [ (Html.text "Send") ]
+            [
+               (Html.Events.onClick Struct.Event.SignUpRequested)
+            ]
+            [
+               (Html.text "Send")
+            ]
          )
       ]
    )

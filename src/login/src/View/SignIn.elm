@@ -7,6 +7,7 @@ import Html.Events
 
 -- Map -------------------------------------------------------------------
 import Struct.Event
+import Struct.Model
 import Struct.UI
 
 --------------------------------------------------------------------------------
@@ -16,8 +17,8 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : (Html.Html Struct.Event.Type)
-get_html =
+get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
+get_html model =
    (Html.article
       []
       [
@@ -26,8 +27,15 @@ get_html =
                (Html.Attributes.class "user-input")
             ]
             [
-               (Html.h1 [] [(Html.text "Username")]),
-               (Html.input [] [])
+               (Html.h1 [] [ (Html.text "Username") ]),
+               (Html.input
+                  [
+                     (Html.Events.onInput Struct.Event.SetUsername),
+                     (Html.Attributes.value model.username)
+                  ]
+                  [
+                  ]
+               )
             ]
          ),
          (Html.div
@@ -38,15 +46,22 @@ get_html =
                (Html.h1 [] [(Html.text "Password")]),
                (Html.input
                   [
-                     (Html.Attributes.type_ "password")
+                     (Html.Attributes.type_ "password"),
+                     (Html.Events.onInput Struct.Event.SetPassword1),
+                     (Html.Attributes.value model.password1)
                   ]
-                  []
+                  [
+                  ]
                )
             ]
          ),
          (Html.button
-            []
-            [ (Html.text "Send") ]
+            [
+               (Html.Events.onClick Struct.Event.SignInRequested)
+            ]
+            [
+               (Html.text "Send")
+            ]
          )
       ]
    )

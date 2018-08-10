@@ -16,7 +16,7 @@ link_html : String -> String -> Bool -> (Html.Html Struct.Event.Type)
 link_html src label is_active =
    (Html.a
       [
-         (Html.Attributes.src src)
+         (Html.Attributes.href src)
       ]
       [
          (
@@ -54,11 +54,18 @@ get_html =
                (Html.Attributes.class "main-server-logo")
             ]
             [
-               (Html.img
+               (Html.a
                   [
-                     (Html.Attributes.src "__CONF_SERVER_LOGO")
+                     (Html.Attributes.href "__CONF_SERVER_URL")
                   ]
                   [
+                     (Html.img
+                        [
+                           (Html.Attributes.src "__CONF_SERVER_LOGO")
+                        ]
+                        [
+                        ]
+                     )
                   ]
                )
             ]
