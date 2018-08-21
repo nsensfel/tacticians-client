@@ -2,13 +2,20 @@
 ## CONFIG ######################################################################
 ################################################################################
 SRC_DIR ?= ${CURDIR}/src/
-TILE_CLASSES_DIR ?= ${CURDIR}/tile/class
-TILE_FRONTIER_DIR ?= ${CURDIR}/tile/frontier
+TILE_DIR ?= ${CURDIR}/tile/
+TILE_CLASSES_DIR ?= $(TILE_DIR)/class/
+TILE_FRONTIER_DIR ?= $(TILE_DIR)/frontier/basic/
 WWW_DIR ?= ${CURDIR}/www/
+WWW_TILES_DIR ?= $(WWW_DIR)/svg/tile/
+TILE_WITNESS ?= $(WWW_TILES_DIR)/.witness
+
+GEN_ALL_TILES_EXEC ?= $(SRC_DIR)/generate_all_tiles.py
 
 ################################################################################
 ## MAKEFILE MAGIC ##############################################################
 ################################################################################
+TILE_CLASSES_FILES = $(wildcard $(TILE_CLASSES_DIR)/*/*)
+TILE_FRONTIER_FILES = $(wildcard $(TILE_FRONTIER_DIR)/*)
 
 ################################################################################
 ## SANITY CHECKS ###############################################################
@@ -17,12 +24,16 @@ WWW_DIR ?= ${CURDIR}/www/
 ################################################################################
 ## TARGET RULES ################################################################
 ################################################################################
-build:
+build: $(TILE_WITNESS)
 
 clean:
 
 reset:
 
+
 ################################################################################
 ## INTERNAL RULES ##############################################################
 ################################################################################
+$(TILE_WITNESS): $(TILE_CLASSES_FILES) $(TILE_FRONTIER_FILES)
+	$(GEN_ALL_TILES_EXEC) $(WWW_TILES_DIR) $(TILE_CLASSES_DIR) $(TILE_FRONTIER_DIR)
+	touch $@
