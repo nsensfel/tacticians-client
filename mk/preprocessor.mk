@@ -10,7 +10,8 @@ PREPROCESSOR_FILES = $(shell find ${CURDIR} -name "*.m4")
 PREPROCESSED_FILES = $(patsubst %.m4,%,$(PREPROCESSOR_FILES))
 
 MAKEFILE_TO_M4 = \
-	--define=__MAKEFILE_DATA_DIR=$(DATA_DIR)
+	--define=__MAKEFILE_DATA_DIR=$(DATA_DIR) \
+	--define=__CODE_STYLE=json
 
 ################################################################################
 ## SANITY CHECKS ###############################################################
