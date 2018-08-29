@@ -6,6 +6,7 @@ module Struct.Armor exposing
       get_id,
       get_name,
       get_image_id,
+      get_omnimods,
       decoder,
       none
    )
@@ -14,9 +15,8 @@ module Struct.Armor exposing
 import Json.Decode
 import Json.Decode.Pipeline
 
--- Map -------------------------------------------------------------------
-import Struct.Attributes
-import Struct.Weapon
+-- Battle ----------------------------------------------------------------------
+import Struct.Omnimods
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -24,7 +24,8 @@ import Struct.Weapon
 type alias Type =
    {
       id : Int,
-      name : String
+      name : String,
+      omnimods : Struct.Omnimods.Type
    }
 
 type alias Ref = Int
@@ -36,11 +37,12 @@ type alias Ref = Int
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Int -> String -> Type
-new id name =
+new : Int -> String -> Struct.Omnimods.Type -> Type
+new id name omnimods =
    {
       id = id,
-      name = name
+      name = name,
+      omnimods = omnimods
    }
 
 get_id : Type -> Ref
@@ -52,17 +54,17 @@ get_name ar = ar.name
 get_image_id : Type -> String
 get_image_id ar = (toString ar.id)
 
+get_omnimods : Type -> Struct.Omnimods.Type
+get_omnimods ar = ar.omnimods
 
 decoder : (Json.Decode.Decoder Type)
 decoder =
-   (Json.Decode.map
-      (finish_decoding)
-      (Json.Decode.Pipeline.decode
-         PartiallyDecoded
-         |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
-      )
+   (Json.Decode.Pipeline.decode
+      Type
+      |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
    )
 
 none : Type
-none = (new 0 "None")
+none = (new 0 "None" (Struct.Omnimods.new [] [] [] []))

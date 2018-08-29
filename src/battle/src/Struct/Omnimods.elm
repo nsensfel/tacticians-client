@@ -25,10 +25,10 @@ import Struct.DamageType
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      attributes : (Dict.Dict Struct.Attributes.Category Int),
-      statistics : (Dict.Dict Struct.Statistics.Category Int),
-      attack : (Dict.Dict Struct.DamageType.Type Int),
-      defense : (Dict.Dict Struct.DamageType.Type Int)
+      attributes : (Dict.Dict String Int),
+      statistics : (Dict.Dict String Int),
+      attack : (Dict.Dict String Int),
+      defense : (Dict.Dict String Int)
    }
 
 type alias GenericMod =
@@ -39,67 +39,35 @@ type alias GenericMod =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-generic_mod_decoder : (Json.Decode.Decoder GenericMod)
-generic_mod_decoder =
-   (Json.Decode.Pipeline.decode
-      GenericMod
-      |> (Json.Decode.Pipeline.required "t" Json.Decode.string)
-      |> (Json.Decode.Pipeline.required "v" Json.Decode.int)
-   )
-
-generic_mod_to_attribute_mod : GenericMod -> (Struct.Attributes.Category, Int)
-generic_mod_to_attribute_mod genm =
-   ((Struct.Attributes.decode_category genm.t), genm.v)
-
-attribute_mods_decoder : (
-      (Json.Decode.Decoder (Dict.Dict Struct.Attributes.Category Int))
-   )
-attribute_mods_decoder =
+generic_mods_decoder : (Json.Decode.Decoder (Dict.Dict String Int))
+generic_mods_decoder =
    (Json.Decode.map
       (Dict.fromList)
       (Json.Decode.list
-         (Json.Decode.map (generic_mod_to_attribute_mod) generic_mod_decoder)
+         (Json.Decode.map
+            (\gm -> (gm.t, gm.v))
+            (Json.Decode.Pipeline.decode
+               GenericMod
+               |> (Json.Decode.Pipeline.required "t" Json.Decode.string)
+               |> (Json.Decode.Pipeline.required "v" Json.Decode.int)
+            )
+         )
       )
    )
 
-generic_mod_to_statistic_mod : GenericMod -> (Struct.Attributes.Category, Int)
-generic_mod_to_statistic_mod genm =
-   ((Struct.Statistics.decode_category genm.t), genm.v)
-
-statistic_mods_decoder : (
-      (Json.Decode.Decoder (Dict.Dict Struct.Statistics.Category Int))
+merge_mods : (
+      (Dict.Dict String Int) ->
+      (Dict.Dict String Int) ->
+      (Dict.Dict String Int)
    )
-statistic_mods_decoder =
-   (Json.Decode.map
-      (Dict.fromList)
-      (Json.Decode.list
-         (Json.Decode.map (generic_mod_to_statistic_mod) generic_mod_decoder)
-      )
-   )
-
-generic_mod_to_damage_mod : GenericMod -> (Struct.DamageType.Type, Int)
-generic_mod_to_damage_mod genm =
-   ((Struct.DamageType.decode genm.t), genm.v)
-
-damage_mods_decoder : (
-      (Json.Decode.Decoder (Dict.Dict Struct.DamageType.Type Int))
-   )
-damage_mods_decoder =
-   (Json.Decode.map
-      (Dict.fromList)
-      (Json.Decode.list
-         (Json.Decode.map (generic_mod_to_damage_mod) generic_mod_decoder)
-      )
-   )
-
-merge_mods : (Dict.Dict a Int) -> (Dict.Dict a Int) -> (Dict.Dict a Int)
 merge_mods a_mods b_mods =
    (Dict.merge
       (Dict.insert)
-      (\t -> \v_a  -> \v_b -> (Dict.insert t (v_a + v_b)))
+      (\t -> \v_a  -> \v_b -> \r -> (Dict.insert t (v_a + v_b) r))
       (Dict.insert)
       a_mods
       b_mods
+      (Dict.empty)
    )
 
 --------------------------------------------------------------------------------
@@ -109,17 +77,17 @@ decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.Pipeline.decode
       Type
-      |> (Json.Decode.Pipeline.required "attm" attribute_mods_decoder)
-      |> (Json.Decode.Pipeline.required "stam" statistic_mods_decoder)
-      |> (Json.Decode.Pipeline.required "atkm" damage_mods_decoder)
-      |> (Json.Decode.Pipeline.required "defm" damage_mods_decoder)
+      |> (Json.Decode.Pipeline.required "attm" generic_mods_decoder)
+      |> (Json.Decode.Pipeline.required "stam" generic_mods_decoder)
+      |> (Json.Decode.Pipeline.required "atkm" generic_mods_decoder)
+      |> (Json.Decode.Pipeline.required "defm" generic_mods_decoder)
    )
 
 new : (
-      (List (Struct.Attributes.Category, Int)) ->
-      (List (Struct.Statistics.Category, Int)) ->
-      (List (Struct.DamageType.Type, Int)) ->
-      (List (Struct.DamageType.Type, Int)) ->
+      (List (String, Int)) ->
+      (List (String, Int)) ->
+      (List (String, Int)) ->
+      (List (String, Int)) ->
       Type
    )
 new attribute_mods statistic_mods attack_mods defense_mods =
@@ -141,18 +109,31 @@ merge omni_a omni_b =
 
 apply_to_attributes : Type -> Struct.Attributes.Type -> Struct.Attributes.Type
 apply_to_attributes omnimods attributes =
-   (Dict.foldl (Struct.Attributes.mod) attributes omnimods.attributes)
+   (Dict.foldl
+      ((Struct.Attributes.decode_category) >> (Struct.Attributes.mod))
+      attributes
+      omnimods.attributes
+   )
 
 apply_to_statistics : Type -> Struct.Statistics.Type -> Struct.Statistics.Type
 apply_to_statistics omnimods statistics =
-   (Dict.foldl (Struct.Statistics.mod) statistics omnimods.statistics)
+   (Dict.foldl
+      ((Struct.Statistics.decode_category) >> (Struct.Statistics.mod))
+      statistics
+      omnimods.statistics
+   )
 
-get_attack_damage : Int -> Type -> Type -> Int
+get_attack_damage : Float -> Type -> Type -> Int
 get_attack_damage dmg_modifier atk_omni def_omni =
    let
       base_def =
          (
-            case (Dict.get Struct.DamageType.Base def_omni.defense) of
+            case
+               (Dict.get
+                  (Struct.DamageType.encode Struct.DamageType.Base)
+                  def_omni.defense
+               )
+            of
                (Just v) -> v
                Nothing -> 0
          )
@@ -173,5 +154,6 @@ get_attack_damage dmg_modifier atk_omni def_omni =
                   (Just def_v) -> (result + (max 0 (actual_atk - def_v)))
                   Nothing -> (result + actual_atk)
          )
+         0
          atk_omni.attack
       )
