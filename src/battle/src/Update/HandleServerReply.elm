@@ -87,13 +87,25 @@ add_character char_and_refs current_state =
       (model, _) ->
          let
             (char, awp_ref, swp_ref, ar_ref) = char_and_refs
+            tile_omnimods =
+               (Struct.Map.get_omnimods_at
+                  (Struct.Character.get_location char)
+                  model.tiles
+                  model.map
+               )
             awp = (weapon_getter model awp_ref)
             swp = (weapon_getter model swp_ref)
             ar = (armor_getter model ar_ref)
          in
             (
                (Struct.Model.add_character
-                  (Struct.Character.fill_missing_equipment awp swp ar char)
+                  (Struct.Character.fill_missing_equipment_and_omnimods
+                     tile_omnimods
+                     awp
+                     swp
+                     ar
+                     char
+                  )
                   model
                ),
                Nothing

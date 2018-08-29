@@ -8,7 +8,8 @@ module Struct.Map exposing
       get_tiles,
       get_movement_cost_function,
       solve_tiles,
-      try_getting_tile_at
+      try_getting_tile_at,
+      get_omnimods_at
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -16,12 +17,13 @@ import Array
 
 import Dict
 
--- Map -------------------------------------------------------------------
-import Struct.Character
-import Struct.Tile
-import Struct.Location
-
+-- Battle ----------------------------------------------------------------------
 import Constants.Movement
+
+import Struct.Character
+import Struct.Location
+import Struct.Omnimods
+import Struct.Tile
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -123,3 +125,17 @@ solve_tiles tiles bmap =
    {bmap |
       content = (Array.map (Struct.Tile.solve_tile_instance tiles) bmap.content)
    }
+
+get_omnimods_at : (
+      Struct.Location.Type ->
+      (Dict.Dict Int Struct.Tile.Type) ->
+      Type ->
+      Struct.Omnimods.Type
+   )
+get_omnimods_at loc tiles_solver map =
+   case (try_getting_tile_at loc map) of
+      Nothing -> (Struct.Omnimods.new [] [] [] [])
+      (Just tile_inst) ->
+         case (Dict.get (Struct.Tile.get_type_id tile_inst) tiles_solver) of
+            Nothing -> (Struct.Omnimods.new [] [] [] [])
+            (Just tile) -> (Struct.Tile.get_omnimods tile)

@@ -19,6 +19,7 @@ module Struct.Tile exposing
       get_type_id,
       get_variant_ix,
       get_local_variant_ix,
+      get_omnimods,
       solve_tile_instance,
       decoder
    )
@@ -29,29 +30,24 @@ import Dict
 import Json.Decode
 import Json.Decode.Pipeline
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Constants.UI
 import Constants.Movement
 
 import Struct.Location
+import Struct.Omnimods
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type alias Ref = Int
 
-type alias PartiallyDecoded =
-   {
-      id : Int,
-      nam : String,
-      ct : Int
-   }
-
 type alias Type =
    {
       id : Int,
       name : String,
-      crossing_cost : Int
+      crossing_cost : Int,
+      omnimods : Struct.Omnimods.Type
    }
 
 type alias Border =
@@ -76,23 +72,16 @@ noise_function : Int -> Int -> Int -> Int
 noise_function a b c =
    (round (radians (toFloat ((a + 1) * 2 + (b + 1) * 3 + c))))
 
-finish_decoding : PartiallyDecoded -> Type
-finish_decoding add_tile =
-   {
-      id = add_tile.id,
-      name = add_tile.nam,
-      crossing_cost = add_tile.ct
-   }
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Int -> String -> Int -> Type
-new id name crossing_cost =
+new : Int -> String -> Int -> Struct.Omnimods.Type -> Type
+new id name crossing_cost omnimods =
    {
       id = id,
       name = name,
-      crossing_cost = crossing_cost
+      crossing_cost = crossing_cost,
+      omnimods = omnimods
    }
 
 new_border : Int -> Int -> Border
@@ -170,6 +159,9 @@ get_local_variant_ix tile_inst =
       % Constants.UI.local_variants_per_tile
    )
 
+get_omnimods : Type -> Struct.Omnimods.Type
+get_omnimods t = t.omnimods
+
 solve_tile_instance : (Dict.Dict Int Type) -> Instance -> Instance
 solve_tile_instance tiles tile_instance =
    case (Dict.get tile_instance.type_id tiles) of
@@ -184,12 +176,10 @@ solve_tile_instance tiles tile_instance =
 
 decoder : (Json.Decode.Decoder Type)
 decoder =
-   (Json.Decode.map
-      (finish_decoding)
-      (Json.Decode.Pipeline.decode
-         PartiallyDecoded
-         |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required "ct" Json.Decode.int)
-      )
+   (Json.Decode.Pipeline.decode
+      Type
+      |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "ct" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
    )

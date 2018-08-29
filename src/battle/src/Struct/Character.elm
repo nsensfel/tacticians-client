@@ -25,7 +25,8 @@ module Struct.Character exposing
       get_weapons,
       set_weapons,
       decoder,
-      fill_missing_equipment
+      refresh_omnimods,
+      fill_missing_equipment_and_omnimods
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -83,6 +84,7 @@ type alias Type =
       statistics : Struct.Statistics.Type,
       weapons : Struct.WeaponSet.Type,
       armor : Struct.Armor.Type,
+      current_omnimods : Struct.Omnimods.Type,
       permanent_omnimods : Struct.Omnimods.Type
    }
 
@@ -101,6 +103,7 @@ finish_decoding add_char =
    let
       weapon_set = (Struct.WeaponSet.new Struct.Weapon.none Struct.Weapon.none)
       armor = Struct.Armor.none
+      default_attributes = (Struct.Attributes.default)
       almost_char =
          {
             ix = add_char.ix,
@@ -110,13 +113,15 @@ finish_decoding add_char =
             portrait = add_char.prt,
             location = add_char.lc,
             health = add_char.hea,
-            attributes = add_char.att,
-            statistics = (Struct.Statistics.new add_char.att weapon_set armor),
+            attributes = default_attributes,
+            statistics = (Struct.Statistics.new_raw default_attributes),
             player_ix = add_char.pla,
             enabled = add_char.ena,
             defeated = add_char.dea,
             weapons = weapon_set,
-            armor = armor
+            armor = armor,
+            current_omnimods = (Struct.Omnimods.new [] [] [] []),
+            permanent_omnimods = add_char.omni
          }
    in
       (almost_char, add_char.awp, add_char.swp, add_char.ar)
@@ -195,8 +200,7 @@ get_armor_variation char =
 set_weapons : Struct.WeaponSet.Type -> Type -> Type
 set_weapons weapons char =
    {char |
-      weapons = weapons,
-      statistics = (Struct.Statistics.new char.attributes weapons char.armor)
+      weapons = weapons
    }
 
 decoder : (Json.Decode.Decoder (Type, Int, Int, Int))
@@ -210,31 +214,61 @@ decoder =
          |> (Json.Decode.Pipeline.required "rnk" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "ico" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "prt" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required "lc" (Struct.Location.decoder))
+         |> (Json.Decode.Pipeline.required "lc" Struct.Location.decoder)
          |> (Json.Decode.Pipeline.required "hea" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "pla" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "ena" Json.Decode.bool)
          |> (Json.Decode.Pipeline.required "dea" Json.Decode.bool)
-         |> (Json.Decode.Pipeline.required "att" (Struct.Attributes.decoder))
          |> (Json.Decode.Pipeline.required "awp" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "swp" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "ar" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
       )
    )
 
-fill_missing_equipment : (
+refresh_omnimods : Struct.Omnimods.Type -> Type -> Type
+refresh_omnimods tile_omnimods char =
+   let
+      current_omnimods =
+         (Struct.Omnimods.merge
+            (Struct.Weapon.get_omnimods
+               (Struct.WeaponSet.get_active_weapon char.weapons)
+            )
+            (Struct.Omnimods.merge
+               tile_omnimods
+               char.permanent_omnimods
+            )
+         )
+      current_attributes =
+         (Struct.Omnimods.apply_to_attributes
+            current_omnimods
+            (Struct.Attributes.default)
+         )
+      current_statistics =
+         (Struct.Omnimods.apply_to_statistics
+            current_omnimods
+            (Struct.Statistics.new_raw current_attributes)
+         )
+   in
+      {char |
+         attributes = current_attributes,
+         statistics = current_statistics,
+         current_omnimods = current_omnimods
+      }
+
+fill_missing_equipment_and_omnimods : (
+      Struct.Omnimods.Type ->
       Struct.Weapon.Type ->
       Struct.Weapon.Type ->
       Struct.Armor.Type ->
       Type ->
       Type
    )
-fill_missing_equipment awp swp ar char =
-   let
-      weapon_set = (Struct.WeaponSet.new awp swp)
-   in
+fill_missing_equipment_and_omnimods tile_omnimods awp swp ar char =
+   (refresh_omnimods
+      tile_omnimods
       {char |
-         statistics = (Struct.Statistics.new char.attributes weapon_set ar),
-         weapons = weapon_set,
+         weapons = (Struct.WeaponSet.new awp swp),
          armor = ar
       }
+   )
