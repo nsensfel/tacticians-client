@@ -11,7 +11,8 @@ module Struct.Statistics exposing
       get_critical_hits,
       get_damage_modifier,
       decode_category,
-      new
+      mod,
+      new_raw
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -75,23 +76,23 @@ sudden_exp_growth_f f = (float_to_int (4.0^(f/25.0)))
 damage_base_mod : Float -> Float
 damage_base_mod str = (((str^1.8)/2000.0) - 0.75)
 
-make_movement_points_safe  : Int -> Int
-make_movement_points_safe val -> (clamp 0 200 val)
+make_movement_points_safe : Int -> Int
+make_movement_points_safe val = (clamp 0 200 val)
 
 make_max_health_safe : Int -> Int
-make_max_health_safe val -> (max 1 val)
+make_max_health_safe val = (max 1 val)
 
 make_dodges_safe : Int -> Int
-make_dodges_safe val -> (clamp 0 100 val)
+make_dodges_safe val = (clamp 0 100 val)
 
 make_parries_safe : Int -> Int
-make_parries_safe val -> (clamp 0 75 val)
+make_parries_safe val = (clamp 0 75 val)
 
 make_accuracy_safe : Int -> Int
-make_accuracy_safe val -> (clamp 0 100 val)
+make_accuracy_safe val = (clamp 0 100 val)
 
 make_double_hits_safe : Int -> Int
-make_double_hits_safe val -> (clamp 0 100 val)
+make_double_hits_safe val = (clamp 0 100 val)
 
 make_critical_hits_safe : Int -> Int
 make_critical_hits_safe val = (clamp 0 100 val)
@@ -144,12 +145,6 @@ get_dodges t = t.dodges
 get_parries : Type -> Int
 get_parries t = t.parries
 
-get_damage_min : Type -> Int
-get_damage_min t = t.damage_min
-
-get_damage_max : Type -> Int
-get_damage_max t = t.damage_max
-
 get_accuracy : Type -> Int
 get_accuracy t = t.accuracy
 
@@ -161,6 +156,17 @@ get_critical_hits t = t.critical_hits
 
 get_damage_modifier : Type -> Float
 get_damage_modifier t = t.damage_modifier
+
+mod : Category -> Int -> Type -> Type
+mod cat v t =
+   case cat of
+      MaxHealth -> (mod_max_health v t)
+      MovementPoints -> (mod_movement_points v t)
+      Dodges -> (mod_dodges v t)
+      Parries -> (mod_parries v t)
+      Accuracy -> (mod_accuracy v t)
+      DoubleHits -> (mod_double_hits v t)
+      CriticalHits -> (mod_critical_hits v t)
 
 new_raw : (Struct.Attributes.Type -> Type)
 new_raw att =
@@ -192,7 +198,7 @@ new_raw att =
          damage_modifier = (damage_base_mod (toFloat strength))
       }
 
-decode_category : String -> Type
+decode_category : String -> Category
 decode_category str =
    case str of
       "mheal" -> MaxHealth

@@ -22,10 +22,8 @@ module Struct.Attributes exposing
    )
 
 -- Elm -------------------------------------------------------------------------
-import Json.Decode
-import Json.Decode.Pipeline
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -124,15 +122,15 @@ mod cat i t =
       Speed -> (mod_speed i t)
       Strength -> (mod_strength i t)
 
-get : Category -> Int -> Type -> Type
-get cat i t =
+get : Category -> Type -> Int
+get cat t =
    case cat of
-      Constitution -> (get_constitution i t)
-      Dexterity -> (get_dexterity i t)
-      Intelligence -> (get_intelligence i t)
-      Mind -> (get_mind i t)
-      Speed -> (get_speed i t)
-      Strength -> (get_strength i t)
+      Constitution -> (get_constitution t)
+      Dexterity -> (get_dexterity t)
+      Intelligence -> (get_intelligence t)
+      Mind -> (get_mind t)
+      Speed -> (get_speed t)
+      Strength -> (get_strength t)
 
 new : (
       Int -> -- constitution
@@ -164,7 +162,7 @@ default =
       strength = 50
    }
 
-decode_category : String -> Type
+decode_category : String -> Category
 decode_category str =
    case str of
       "con" -> Constitution

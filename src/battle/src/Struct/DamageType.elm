@@ -38,7 +38,7 @@ decode str =
 
 encode : Type -> String
 encode t =
-   case str of
+   case t of
       Base -> "bse"
       Slash -> "slh"
       Pierce -> "pie"
@@ -47,7 +47,7 @@ encode t =
 
 to_string : Type -> String
 to_string t =
-   case str of
+   case t of
       Base -> "Base"
       Slash -> "Slash"
       Pierce -> "Piercing"
