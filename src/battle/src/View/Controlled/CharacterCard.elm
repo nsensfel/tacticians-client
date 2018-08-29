@@ -193,11 +193,11 @@ get_movement_bar char_turn char =
          (get_inactive_movement_bar char)
 
 get_weapon_details : (
-      Struct.Statistics.Type ->
+      Float ->
       Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_details stats weapon =
+get_weapon_details damage_multiplier weapon =
    (Html.div
       [
          (Html.Attributes.class "battle-character-card-weapon")
@@ -218,22 +218,10 @@ get_weapon_details stats weapon =
             [
                (Html.text
                   (
-                     "["
-                     ++ (toString (Struct.Statistics.get_damage_min stats))
-                     ++ ", "
-                     ++ (toString (Struct.Statistics.get_damage_max stats))
-                     ++ "] "
-                     ++
-                     (case (Struct.Weapon.get_damage_type weapon) of
-                        Struct.Weapon.Slash -> "slashing "
-                        Struct.Weapon.Pierce -> "piercing "
-                        Struct.Weapon.Blunt -> "bludgeoning "
-                     )
-                     ++
-                     (case (Struct.Weapon.get_range_type weapon) of
-                        Struct.Weapon.Ranged -> "ranged"
-                        Struct.Weapon.Melee -> "melee"
-                     )
+                     -- TODO [VISUAL][HIGH]: unimplemented
+                     "[PH] WEAPON RANGE AND CHAR (ATK MODS * "
+                     ++ (toString damage_multiplier)
+                     ++ ")"
                   )
                )
             ]
@@ -242,10 +230,11 @@ get_weapon_details stats weapon =
    )
 
 get_weapon_summary : (
+      Float ->
       Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_summary weapon =
+get_weapon_summary damage_multiplier weapon =
    (Html.div
       [
          (Html.Attributes.class "battle-character-card-weapon-summary")
@@ -266,16 +255,10 @@ get_weapon_summary weapon =
             [
                (Html.text
                   (
-                     (case (Struct.Weapon.get_damage_type weapon) of
-                        Struct.Weapon.Slash -> "Slashing "
-                        Struct.Weapon.Pierce -> "Piercing "
-                        Struct.Weapon.Blunt -> "Bludgeoning "
-                     )
-                     ++
-                     (case (Struct.Weapon.get_range_type weapon) of
-                        Struct.Weapon.Ranged -> "ranged"
-                        Struct.Weapon.Melee -> "melee"
-                     )
+                     -- TODO [VISUAL][HIGH]: unimplemented
+                     "[PH] WEAPON (ATK_SUM * "
+                     ++ (toString damage_multiplier)
+                     ++ ") AND RANGES"
                   )
                )
             ]
@@ -306,21 +289,7 @@ get_armor_details armor =
                (Html.Attributes.class "battle-character-card-armor-stats")
             ]
             [
-               (stat_name "Slash"),
-               (stat_val
-                  (Struct.Armor.get_resistance_to Struct.Weapon.Slash armor)
-                  False
-               ),
-               (stat_name "Pierc."),
-               (stat_val
-                  (Struct.Armor.get_resistance_to Struct.Weapon.Pierce armor)
-                  False
-               ),
-               (stat_name "Blund."),
-               (stat_val
-                  (Struct.Armor.get_resistance_to Struct.Weapon.Blunt armor)
-                  False
-               )
+               (Html.text "[PH] CHAR DEF MODS")
             ]
          )
       ]
@@ -360,123 +329,53 @@ stat_val val perc =
       ]
    )
 
-att_dual_val : Int -> Int -> (Html.Html Struct.Event.Type)
-att_dual_val base active =
-   let
-      diff = (active - base)
-   in
-      (Html.div
-         [
-            (Html.Attributes.class "battle-character-card-att-dual-val")
-         ]
-         [
-            (Html.text
-               (
-                  (toString base)
-                  ++ " ("
-                  ++
-                  (
-                     if (diff > 0)
-                     then
-                        ("+" ++ (toString diff))
-                     else
-                        if (diff == 0)
-                        then
-                           "~"
-                        else
-                           (toString diff)
-                  )
-                  ++ ")"
-               )
-            )
-         ]
-      )
-
 get_relevant_stats : (
-      Struct.Character.Type ->
-      Struct.Weapon.Type ->
+      Struct.Statistics.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_relevant_stats char weapon =
-   let
-      stats = (Struct.Character.get_statistics char)
-   in
-      (Html.div
-         [
-            (Html.Attributes.class "battle-character-card-stats")
-         ]
-         [
-            (stat_name "Dodge"),
-            (stat_val (Struct.Statistics.get_dodges stats) True),
-            (stat_name "Parry"),
-            (stat_val
-               (case (Struct.Weapon.get_range_type weapon) of
-                  Struct.Weapon.Ranged -> 0
-                  Struct.Weapon.Melee -> (Struct.Statistics.get_parries stats)
-               )
-               True
-            ),
-            (stat_name "Accu."),
-            (stat_val (Struct.Statistics.get_accuracy stats) False),
-            (stat_name "2xHit"),
-            (stat_val (Struct.Statistics.get_double_hits stats) True),
-            (stat_name "Crit."),
-            (stat_val (Struct.Statistics.get_critical_hits stats) True)
-         ]
-      )
+get_relevant_stats stats =
+   (Html.div
+      [
+         (Html.Attributes.class "battle-character-card-stats")
+      ]
+      [
+         (stat_name "Dodge"),
+         (stat_val (Struct.Statistics.get_dodges stats) True),
+         (stat_name "Parry"),
+         (stat_val (Struct.Statistics.get_parries stats) True),
+         (stat_name "Accu."),
+         (stat_val (Struct.Statistics.get_accuracy stats) False),
+         (stat_name "2xHit"),
+         (stat_val (Struct.Statistics.get_double_hits stats) True),
+         (stat_name "Crit."),
+         (stat_val (Struct.Statistics.get_critical_hits stats) True)
+      ]
+   )
 
 get_attributes : (
-      Struct.Character.Type ->
-      Struct.Weapon.Type ->
-      Struct.Armor.Type ->
+      Struct.Attributes.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_attributes char weapon armor =
-   let
-      base_atts = (Struct.Character.get_attributes char)
-      active_atts =
-         (Struct.Armor.apply_to_attributes
-            armor
-            (Struct.Weapon.apply_to_attributes weapon base_atts)
-         )
-   in
-      (Html.div
-         [
-            (Html.Attributes.class "battle-character-card-stats")
-         ]
-         [
-            (stat_name "Con"),
-            (att_dual_val
-               (Struct.Attributes.get_constitution base_atts)
-               (Struct.Attributes.get_constitution active_atts)
-            ),
-            (stat_name "Dex"),
-            (att_dual_val
-               (Struct.Attributes.get_dexterity base_atts)
-               (Struct.Attributes.get_dexterity active_atts)
-            ),
-            (stat_name "Int"),
-            (att_dual_val
-               (Struct.Attributes.get_intelligence base_atts)
-               (Struct.Attributes.get_intelligence active_atts)
-            ),
-            (stat_name "Min"),
-            (att_dual_val
-               (Struct.Attributes.get_mind base_atts)
-               (Struct.Attributes.get_mind active_atts)
-            ),
-            (stat_name "Spe"),
-            (att_dual_val
-               (Struct.Attributes.get_speed base_atts)
-               (Struct.Attributes.get_speed active_atts)
-            ),
-            (stat_name "Str"),
-            (att_dual_val
-               (Struct.Attributes.get_strength base_atts)
-               (Struct.Attributes.get_strength active_atts)
-            )
-         ]
-      )
+get_attributes atts =
+   (Html.div
+      [
+         (Html.Attributes.class "battle-character-card-stats")
+      ]
+      [
+         (stat_name "Con"),
+         (stat_val (Struct.Attributes.get_constitution atts) False),
+         (stat_name "Dex"),
+         (stat_val (Struct.Attributes.get_dexterity atts) False),
+         (stat_name "Int"),
+         (stat_val (Struct.Attributes.get_intelligence atts) False),
+         (stat_name "Min"),
+         (stat_val (Struct.Attributes.get_mind atts) False),
+         (stat_name "Spe"),
+         (stat_val (Struct.Attributes.get_speed atts) False),
+         (stat_name "Str"),
+         (stat_val (Struct.Attributes.get_strength atts) False)
+      ]
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -529,6 +428,8 @@ get_summary_html char_turn player_ix char =
       weapon_set = (Struct.Character.get_weapons char)
       main_weapon = (Struct.WeaponSet.get_active_weapon weapon_set)
       char_statistics = (Struct.Character.get_statistics char)
+      char_attributes =  (Struct.Character.get_attributes char)
+      damage_modifier = (Struct.Statistics.get_damage_modifier char_statistics)
       secondary_weapon = (Struct.WeaponSet.get_secondary_weapon weapon_set)
    in
       (Html.div
@@ -556,10 +457,10 @@ get_summary_html char_turn player_ix char =
                   (get_statuses char)
                ]
             ),
-            (get_weapon_details char_statistics main_weapon),
+            (get_weapon_details damage_modifier main_weapon),
             (get_armor_details (Struct.Character.get_armor char)),
-            (get_relevant_stats char main_weapon),
-            (get_weapon_summary secondary_weapon)
+            (get_relevant_stats char_statistics),
+            (get_weapon_summary damage_modifier secondary_weapon)
          ]
       )
 
@@ -573,6 +474,8 @@ get_full_html player_ix char =
       weapon_set = (Struct.Character.get_weapons char)
       main_weapon = (Struct.WeaponSet.get_active_weapon weapon_set)
       char_statistics = (Struct.Character.get_statistics char)
+      char_attributes =  (Struct.Character.get_attributes char)
+      damage_modifier = (Struct.Statistics.get_damage_modifier char_statistics)
       secondary_weapon = (Struct.WeaponSet.get_secondary_weapon weapon_set)
       armor = (Struct.Character.get_armor char)
    in
@@ -602,10 +505,10 @@ get_full_html player_ix char =
                   (get_statuses char)
                ]
             ),
-            (get_weapon_details char_statistics main_weapon),
+            (get_weapon_details damage_modifier main_weapon),
             (get_armor_details armor),
-            (get_relevant_stats char main_weapon),
-            (get_weapon_summary secondary_weapon),
-            (get_attributes char main_weapon armor)
+            (get_relevant_stats char_statistics),
+            (get_weapon_summary damage_modifier secondary_weapon),
+            (get_attributes char_attributes)
          ]
       )
