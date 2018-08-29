@@ -222,7 +222,7 @@ decoder =
          |> (Json.Decode.Pipeline.required "awp" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "swp" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "ar" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
+         |> (Json.Decode.Pipeline.required "pomni" Struct.Omnimods.decoder)
       )
    )
 
