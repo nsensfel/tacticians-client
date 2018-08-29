@@ -1,33 +1,24 @@
-module Struct.Armor exposing
+module Struct.DamageType exposing
    (
-      Type,
-      Ref,
-      new,
-      get_id,
-      get_name,
-      get_image_id,
-      decoder,
-      none
+      Type(..),
+      encode,
+      decode,
+      to_string
    )
 
 -- Elm -------------------------------------------------------------------------
-import Json.Decode
-import Json.Decode.Pipeline
 
 -- Map -------------------------------------------------------------------
-import Struct.Attributes
-import Struct.Weapon
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-type alias Type =
-   {
-      id : Int,
-      name : String
-   }
-
-type alias Ref = Int
+type Type =
+   Base
+   | Slash
+   | Blunt
+   | Pierce
+   | None
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -36,33 +27,29 @@ type alias Ref = Int
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Int -> String -> Type
-new id name =
-   {
-      id = id,
-      name = name
-   }
+decode : String -> Type
+decode str =
+   case str of
+      "bse" -> Base
+      "slh" -> Slash
+      "pie" -> Pierce
+      "blu" -> Blunt
+      _ -> None
 
-get_id : Type -> Ref
-get_id ar = ar.id
+encode : Type -> String
+encode t =
+   case str of
+      Base -> "bse"
+      Slash -> "slh"
+      Pierce -> "pie"
+      Blunt -> "blu"
+      None  -> "non"
 
-get_name : Type -> String
-get_name ar = ar.name
-
-get_image_id : Type -> String
-get_image_id ar = (toString ar.id)
-
-
-decoder : (Json.Decode.Decoder Type)
-decoder =
-   (Json.Decode.map
-      (finish_decoding)
-      (Json.Decode.Pipeline.decode
-         PartiallyDecoded
-         |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
-      )
-   )
-
-none : Type
-none = (new 0 "None")
+to_string : Type -> String
+to_string t =
+   case str of
+      Base -> "Base"
+      Slash -> "Slash"
+      Pierce -> "Piercing"
+      Blunt -> "Bludgeoning"
+      None  -> "ERROR"

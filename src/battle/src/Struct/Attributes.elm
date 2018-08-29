@@ -1,6 +1,7 @@
 module Struct.Attributes exposing
    (
       Type,
+      Category(..),
       get_constitution,
       get_dexterity,
       get_intelligence,
@@ -13,8 +14,11 @@ module Struct.Attributes exposing
       mod_mind,
       mod_speed,
       mod_strength,
+      mod,
+      get,
       new,
-      decoder
+      decode_category,
+      default
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -26,6 +30,14 @@ import Json.Decode.Pipeline
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+type Category =
+   Constitution
+   | Dexterity
+   | Intelligence
+   | Mind
+   | Speed
+   | Strength
+
 type alias Type =
    {
       constitution : Int,
@@ -102,6 +114,26 @@ mod_strength i t =
       strength = (get_within_att_range (i + t.strength))
    }
 
+mod : Category -> Int -> Type -> Type
+mod cat i t =
+   case cat of
+      Constitution -> (mod_constitution i t)
+      Dexterity -> (mod_dexterity i t)
+      Intelligence -> (mod_intelligence i t)
+      Mind -> (mod_mind i t)
+      Speed -> (mod_speed i t)
+      Strength -> (mod_strength i t)
+
+get : Category -> Int -> Type -> Type
+get cat i t =
+   case cat of
+      Constitution -> (get_constitution i t)
+      Dexterity -> (get_dexterity i t)
+      Intelligence -> (get_intelligence i t)
+      Mind -> (get_mind i t)
+      Speed -> (get_speed i t)
+      Strength -> (get_strength i t)
+
 new : (
       Int -> -- constitution
       Int -> -- dexterity
@@ -121,14 +153,23 @@ new con dex int min spe str =
       strength = str
    }
 
-decoder : (Json.Decode.Decoder Type)
-decoder =
-   (Json.Decode.Pipeline.decode
-      Type
-      |> (Json.Decode.Pipeline.required "con" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "dex" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "int" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "min" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "spe" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "str" Json.Decode.int)
-   )
+default : Type
+default =
+   {
+      constitution = 50,
+      dexterity = 50,
+      intelligence = 50,
+      mind = 50,
+      speed = 50,
+      strength = 50
+   }
+
+decode_category : String -> Type
+decode_category str =
+   case str of
+      "con" -> Constitution
+      "dex" -> Dexterity
+      "int" -> Intelligence
+      "min" -> Mind
+      "spe" -> Speed
+      _ -> Strength

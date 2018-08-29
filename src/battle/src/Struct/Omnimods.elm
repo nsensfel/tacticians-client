@@ -1,13 +1,12 @@
-module Struct.Armor exposing
+module Struct.Omnimods exposing
    (
       Type,
-      Ref,
       new,
-      get_id,
-      get_name,
-      get_image_id,
-      decoder,
-      none
+      merge,
+      apply_to_attributes,
+      apply_to_statistics,
+      get_attack_damage,
+      decode
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -16,18 +15,19 @@ import Json.Decode.Pipeline
 
 -- Map -------------------------------------------------------------------
 import Struct.Attributes
-import Struct.Weapon
+import Struct.Statistics
+import Struct.DamageType
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      id : Int,
-      name : String
+      attributes : (Dict.Dict Struct.Attributes.Category Int),
+      statistics : (Dict.Dict Struct.Statistics.Category Int),
+      attack : (Dict.Dict Struct.DamageType.Type Int),
+      defense : (Dict.Dict Struct.DamageType.Type Int)
    }
-
-type alias Ref = Int
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -36,23 +36,6 @@ type alias Ref = Int
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Int -> String -> Type
-new id name =
-   {
-      id = id,
-      name = name
-   }
-
-get_id : Type -> Ref
-get_id ar = ar.id
-
-get_name : Type -> String
-get_name ar = ar.name
-
-get_image_id : Type -> String
-get_image_id ar = (toString ar.id)
-
-
 decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.map
@@ -61,8 +44,7 @@ decoder =
          PartiallyDecoded
          |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "ct" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "cf" Json.Decode.float)
       )
    )
-
-none : Type
-none = (new 0 "None")

@@ -1,41 +1,47 @@
 module Struct.Statistics exposing
    (
       Type,
+      Category(..),
       get_movement_points,
       get_max_health,
       get_dodges,
       get_parries,
-      get_damage_min,
-      get_damage_max,
       get_accuracy,
       get_double_hits,
       get_critical_hits,
+      get_damage_modifier,
+      decode_category,
       new
    )
 
 -- Elm -------------------------------------------------------------------------
 import List
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Struct.Attributes
-import Struct.Armor
-import Struct.Weapon
-import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+type Category =
+   MovementPoints
+   | MaxHealth
+   | Dodges
+   | Parries
+   | Accuracy
+   | DoubleHits
+   | CriticalHits
+
 type alias Type =
    {
       movement_points : Int,
       max_health : Int,
       dodges : Int,
       parries : Int,
-      damage_min : Int,
-      damage_max : Int,
       accuracy : Int,
       double_hits : Int,
-      critical_hits : Int
+      critical_hits : Int,
+      damage_modifier : Float
    }
 
 --------------------------------------------------------------------------------
@@ -66,18 +72,62 @@ sudden_exp_growth v = (float_to_int (4.0^((toFloat v)/25.0)))
 sudden_exp_growth_f : Float -> Int
 sudden_exp_growth_f f = (float_to_int (4.0^(f/25.0)))
 
-already_high_slow_growth : Int -> Int
-already_high_slow_growth v =
-   (float_to_int
-      (30.0 * (logBase 2.718281828459 (((toFloat v) + 5.0)/4.0)))
-   )
-
 damage_base_mod : Float -> Float
 damage_base_mod str = (((str^1.8)/2000.0) - 0.75)
 
-apply_damage_base_mod : Float -> Float -> Int
-apply_damage_base_mod bmod dmg =
-   (max 0 (float_to_int (dmg + (bmod * dmg))))
+make_movement_points_safe  : Int -> Int
+make_movement_points_safe val -> (clamp 0 200 val)
+
+make_max_health_safe : Int -> Int
+make_max_health_safe val -> (max 1 val)
+
+make_dodges_safe : Int -> Int
+make_dodges_safe val -> (clamp 0 100 val)
+
+make_parries_safe : Int -> Int
+make_parries_safe val -> (clamp 0 75 val)
+
+make_accuracy_safe : Int -> Int
+make_accuracy_safe val -> (clamp 0 100 val)
+
+make_double_hits_safe : Int -> Int
+make_double_hits_safe val -> (clamp 0 100 val)
+
+make_critical_hits_safe : Int -> Int
+make_critical_hits_safe val = (clamp 0 100 val)
+
+mod_movement_points : Int -> Type -> Type
+mod_movement_points v t =
+   {t |
+      movement_points = (make_movement_points_safe (t.movement_points + v))
+   }
+
+mod_max_health : Int -> Type -> Type
+mod_max_health v t =
+   {t |
+      max_health = (make_max_health_safe (t.max_health + v))
+   }
+
+mod_dodges : Int -> Type -> Type
+mod_dodges v t = {t | dodges = (make_dodges_safe (t.dodges + v))}
+
+mod_parries : Int -> Type -> Type
+mod_parries v t = {t | parries = (make_parries_safe (t.parries + v))}
+
+mod_accuracy : Int -> Type -> Type
+mod_accuracy v t = {t | accuracy = (make_accuracy_safe (t.accuracy + v))}
+
+mod_double_hits : Int -> Type -> Type
+mod_double_hits v t =
+   {t |
+      double_hits = (make_double_hits_safe (t.double_hits + v))
+   }
+
+mod_critical_hits : Int -> Type -> Type
+mod_critical_hits v t =
+   {t |
+      critical_hits = (make_critical_hits_safe (t.critical_hits + v))
+   }
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -109,27 +159,18 @@ get_double_hits t = t.double_hits
 get_critical_hits : Type -> Int
 get_critical_hits t = t.critical_hits
 
-new : (
-      Struct.Attributes.Type ->
-      Struct.WeaponSet.Type ->
-      Struct.Armor.Type ->
-      Type
-   )
-new att wp_set ar =
+get_damage_modifier : Type -> Float
+get_damage_modifier t = t.damage_modifier
+
+new_raw : (Struct.Attributes.Type -> Type)
+new_raw att =
    let
-      active_weapon = (Struct.WeaponSet.get_active_weapon wp_set)
-      actual_att =
-         (Struct.Armor.apply_to_attributes
-            ar
-            (Struct.Weapon.apply_to_attributes active_weapon att)
-         )
-      constitution = (Struct.Attributes.get_constitution actual_att)
-      dexterity = (Struct.Attributes.get_dexterity actual_att)
-      intelligence = (Struct.Attributes.get_intelligence actual_att)
-      mind = (Struct.Attributes.get_mind actual_att)
-      speed = (Struct.Attributes.get_speed actual_att)
-      strength = (Struct.Attributes.get_strength actual_att)
-      dmg_bmod = (damage_base_mod (toFloat strength))
+      constitution = (Struct.Attributes.get_constitution att)
+      dexterity = (Struct.Attributes.get_dexterity att)
+      intelligence = (Struct.Attributes.get_intelligence att)
+      mind = (Struct.Attributes.get_mind att)
+      speed = (Struct.Attributes.get_speed att)
+      strength = (Struct.Attributes.get_strength att)
    in
       {
          movement_points =
@@ -140,37 +181,24 @@ new att wp_set ar =
             (gentle_squared_growth_f
                (average [constitution, constitution, constitution, mind])
             ),
-         dodges =
-            (clamp
-               0
-               100
-               (sudden_exp_growth_f
-                  (average
-                     [dexterity, mind, speed]
-                  )
-               )
-            ),
+         dodges = (sudden_exp_growth_f (average [dexterity, mind, speed])),
          parries =
-            (clamp
-               0
-               75
-               (sudden_exp_growth_f
-                  (average [dexterity, intelligence, speed, strength])
-               )
-            ),
-         damage_min =
-            (apply_damage_base_mod
-               dmg_bmod
-               (toFloat (Struct.Weapon.get_min_damage active_weapon))
-            ),
-         damage_max =
-            (apply_damage_base_mod
-               dmg_bmod
-               (toFloat (Struct.Weapon.get_max_damage active_weapon))
+            (sudden_exp_growth_f
+               (average [dexterity, intelligence, speed, strength])
             ),
          accuracy = (sudden_squared_growth dexterity),
-         double_hits =
-            (clamp 0 100 (sudden_squared_growth_f (average [mind, speed]))),
-         critical_hits =
-            (clamp 0 100 (sudden_squared_growth intelligence))
-   }
+         double_hits = (sudden_squared_growth_f (average [mind, speed])),
+         critical_hits = (sudden_squared_growth intelligence),
+         damage_modifier = (damage_base_mod (toFloat strength))
+      }
+
+decode_category : String -> Type
+decode_category str =
+   case str of
+      "mheal" -> MaxHealth
+      "mpts" -> MovementPoints
+      "dodg" -> Dodges
+      "pary" -> Parries
+      "accu" -> Accuracy
+      "dhit" -> DoubleHits
+      _  -> CriticalHits

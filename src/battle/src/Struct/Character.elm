@@ -36,6 +36,7 @@ import Json.Decode.Pipeline
 import Struct.Armor
 import Struct.Attributes
 import Struct.Location
+import Struct.Omnimods
 import Struct.Statistics
 import Struct.Weapon
 import Struct.WeaponSet
@@ -55,10 +56,10 @@ type alias PartiallyDecoded =
       pla : Int,
       ena : Bool,
       dea : Bool,
-      att : Struct.Attributes.Type,
       awp : Int,
       swp : Int,
-      ar : Int
+      ar : Int,
+      omni : Struct.Omnimods.Type
    }
 
 type Rank =
@@ -81,7 +82,8 @@ type alias Type =
       attributes : Struct.Attributes.Type,
       statistics : Struct.Statistics.Type,
       weapons : Struct.WeaponSet.Type,
-      armor : Struct.Armor.Type
+      armor : Struct.Armor.Type,
+      permanent_omnimods : Struct.Omnimods.Type
    }
 
 --------------------------------------------------------------------------------
