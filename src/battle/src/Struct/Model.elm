@@ -14,7 +14,8 @@ module Struct.Model exposing
       move_animator_to_next_step,
       reset,
       full_debug_reset,
-      clear_error
+      clear_error,
+      tile_omnimods_fun
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -22,14 +23,16 @@ import Array
 
 import Dict
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Struct.Armor
-import Struct.Map
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error
 import Struct.Flags
 import Struct.HelpRequest
+import Struct.Location
+import Struct.Map
+import Struct.Omnimods
 import Struct.Tile
 import Struct.TurnResult
 import Struct.TurnResultAnimator
@@ -67,6 +70,10 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+tile_omnimods_fun : Type -> (Struct.Location.Type -> Struct.Omnimods.Type)
+tile_omnimods_fun model =
+   (\loc -> (Struct.Map.get_omnimods_at loc model.tiles model.map))
+
 new : Struct.Flags.Type -> Type
 new flags =
    let
@@ -192,7 +199,9 @@ initialize_animator model =
          ui = (Struct.UI.default),
          characters =
             (List.foldr
-               (Struct.TurnResult.apply_inverse_to_characters)
+               (Struct.TurnResult.apply_inverse_to_characters
+                  (tile_omnimods_fun model)
+               )
                model.characters
                timeline_list
             )
@@ -220,6 +229,7 @@ apply_animator_step model =
                of
                   (Struct.TurnResultAnimator.TurnResult turn_result) ->
                      (Struct.TurnResult.apply_step_to_characters
+                        (tile_omnimods_fun model)
                         turn_result
                         model.characters
                      )

@@ -8,6 +8,7 @@ module Struct.Weapon exposing
       get_attack_range,
       get_defense_range,
       get_omnimods,
+      get_damage_sum,
       decoder,
       none
    )
@@ -37,7 +38,8 @@ type alias Type =
       name : String,
       def_range : Int,
       atk_range : Int,
-      omnimods : Struct.Omnimods.Type
+      omnimods : Struct.Omnimods.Type,
+      damage_sum : Int
    }
 
 type alias Ref = Int
@@ -56,7 +58,8 @@ new id name range_min range_max omnimods =
       name = name,
       def_range = range_min,
       atk_range = range_max,
-      omnimods = omnimods
+      omnimods = omnimods,
+      damage_sum = (Struct.Omnimods.get_damage_sum omnimods)
    }
 
 get_id : Type -> Int
@@ -74,15 +77,22 @@ get_defense_range wp = wp.def_range
 get_omnimods : Type -> Struct.Omnimods.Type
 get_omnimods wp = wp.omnimods
 
+get_damage_sum : Type -> Int
+get_damage_sum wp = wp.damage_sum
+
 decoder : (Json.Decode.Decoder Type)
 decoder =
-   (Json.Decode.Pipeline.decode
-      Type
-      |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
-      |> (Json.Decode.Pipeline.required "rmi" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "rma" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
+   (Json.Decode.map
+      (\e -> {e | damage_sum = (Struct.Omnimods.get_damage_sum e.omnimods)})
+      (Json.Decode.Pipeline.decode
+         Type
+         |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "rmi" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "rma" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
+         |> (Json.Decode.Pipeline.hardcoded 0)
+      )
    )
 
 none : Type

@@ -11,6 +11,7 @@ module Struct.Character exposing
       get_armor,
       get_armor_variation,
       get_current_health,
+      get_current_omnimods,
       get_sane_current_health,
       set_current_health,
       get_location,
@@ -150,6 +151,9 @@ get_portrait_id c = c.portrait
 get_current_health : Type -> Int
 get_current_health c = c.health
 
+get_current_omnimods : Type -> Struct.Omnimods.Type
+get_current_omnimods c = c.current_omnimods
+
 get_sane_current_health : Type -> Int
 get_sane_current_health c = (max 0 c.health)
 
@@ -226,16 +230,21 @@ decoder =
       )
    )
 
-refresh_omnimods : Struct.Omnimods.Type -> Type -> Type
-refresh_omnimods tile_omnimods char =
+refresh_omnimods : (
+      (Struct.Location.Type -> Struct.Omnimods.Type) ->
+      Type ->
+      Type
+   )
+refresh_omnimods tile_omnimods_fun char =
    let
+      previous_max_health = (Struct.Statistics.get_max_health char.statistics)
       current_omnimods =
          (Struct.Omnimods.merge
             (Struct.Weapon.get_omnimods
                (Struct.WeaponSet.get_active_weapon char.weapons)
             )
             (Struct.Omnimods.merge
-               tile_omnimods
+               (tile_omnimods_fun char.location)
                char.permanent_omnimods
             )
          )
@@ -249,26 +258,42 @@ refresh_omnimods tile_omnimods char =
             current_omnimods
             (Struct.Statistics.new_raw current_attributes)
          )
+      new_max_health = (Struct.Statistics.get_max_health current_statistics)
    in
       {char |
          attributes = current_attributes,
          statistics = current_statistics,
-         current_omnimods = current_omnimods
+         current_omnimods = current_omnimods,
+         health =
+            (clamp
+               1
+               new_max_health
+               (round
+                  (
+                     ((toFloat char.health) / (toFloat previous_max_health))
+                     * (toFloat new_max_health)
+                  )
+               )
+            )
       }
 
 fill_missing_equipment_and_omnimods : (
-      Struct.Omnimods.Type ->
+      (Struct.Location.Type -> Struct.Omnimods.Type) ->
       Struct.Weapon.Type ->
       Struct.Weapon.Type ->
       Struct.Armor.Type ->
       Type ->
       Type
    )
-fill_missing_equipment_and_omnimods tile_omnimods awp swp ar char =
-   (refresh_omnimods
-      tile_omnimods
-      {char |
-         weapons = (Struct.WeaponSet.new awp swp),
-         armor = ar
-      }
+fill_missing_equipment_and_omnimods tile_omnimods_fun awp swp ar char =
+   (set_current_health
+      -- We just changed the omnimods, but already had the right health value
+      char.health
+      (refresh_omnimods
+         (tile_omnimods_fun)
+         {char |
+            weapons = (Struct.WeaponSet.new awp swp),
+            armor = ar
+         }
+      )
    )

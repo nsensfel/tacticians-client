@@ -19,10 +19,12 @@ module Struct.CharacterTurn exposing
 
 -- Elm -------------------------------------------------------------------------
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Struct.Character
 import Struct.Direction
+import Struct.Location
 import Struct.Navigator
+import Struct.Omnimods
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -88,18 +90,20 @@ get_state ct = ct.state
 get_path : Type -> (List Struct.Direction.Type)
 get_path ct = ct.path
 
-lock_path : Type -> Type
-lock_path ct =
-   case ct.navigator of
-      (Just old_nav) ->
+lock_path : (Struct.Location.Type -> Struct.Omnimods.Type) -> Type -> Type
+lock_path tile_omnimods ct =
+   case (ct.navigator, ct.active_character) of
+      ((Just old_nav), (Just char)) ->
          {ct |
+            active_character =
+               (Just (Struct.Character.refresh_omnimods (tile_omnimods) char)),
             state = MovedCharacter,
             path = (Struct.Navigator.get_path old_nav),
             target = Nothing,
             navigator = (Just (Struct.Navigator.lock_path old_nav))
          }
 
-      Nothing ->
+      (_, _) ->
          ct
 
 try_getting_navigator : Type -> (Maybe Struct.Navigator.Type)

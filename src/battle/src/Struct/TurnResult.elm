@@ -23,11 +23,12 @@ import Array
 
 import Json.Decode
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Struct.Attack
 import Struct.Character
 import Struct.Direction
 import Struct.Location
+import Struct.Omnimods
 import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
@@ -80,18 +81,23 @@ type Type =
 --------------------------------------------------------------------------------
 apply_movement_to_character : (
       Movement ->
+      (Struct.Location.Type -> Struct.Omnimods.Type) ->
       Struct.Character.Type ->
       Struct.Character.Type
    )
-apply_movement_to_character movement char =
-   (Struct.Character.set_location movement.destination char)
+apply_movement_to_character movement tile_omnimods char =
+   (Struct.Character.refresh_omnimods
+      (tile_omnimods)
+      (Struct.Character.set_location movement.destination char)
+   )
 
 apply_movement_step_to_character : (
       Movement ->
+      (Struct.Location.Type -> Struct.Omnimods.Type) ->
       Struct.Character.Type ->
       Struct.Character.Type
    )
-apply_movement_step_to_character movement char =
+apply_movement_step_to_character movement tile_omnimods char =
    case (List.head movement.path) of
       (Just dir) ->
          (Struct.Character.set_location
@@ -99,33 +105,42 @@ apply_movement_step_to_character movement char =
             char
          )
 
-      Nothing -> char
+      Nothing ->
+         (Struct.Character.refresh_omnimods (tile_omnimods) char)
 
 apply_inverse_movement_to_character : (
       Movement ->
+      (Struct.Location.Type -> Struct.Omnimods.Type) ->
       Struct.Character.Type ->
       Struct.Character.Type
    )
-apply_inverse_movement_to_character movement char =
-   (Struct.Character.set_location
-      (List.foldr
-         (Struct.Location.neighbor)
-         (movement.destination)
-         (List.map (Struct.Direction.opposite_of) movement.path)
+apply_inverse_movement_to_character movement tile_omnimods char =
+   (Struct.Character.refresh_omnimods
+      (tile_omnimods)
+      (Struct.Character.set_location
+         (List.foldr
+            (Struct.Location.neighbor)
+            (movement.destination)
+            (List.map (Struct.Direction.opposite_of) movement.path)
+         )
+         char
       )
-      char
    )
 
 apply_weapon_switch_to_character : (
+      (Struct.Location.Type -> Struct.Omnimods.Type) ->
       Struct.Character.Type ->
       Struct.Character.Type
    )
-apply_weapon_switch_to_character char =
-   (Struct.Character.set_weapons
-      (Struct.WeaponSet.switch_weapons
-         (Struct.Character.get_weapons char)
+apply_weapon_switch_to_character tile_omnimods char =
+   (Struct.Character.refresh_omnimods
+      (tile_omnimods)
+      (Struct.Character.set_weapons
+         (Struct.WeaponSet.switch_weapons
+            (Struct.Character.get_weapons char)
+         )
+         char
       )
-      char
    )
 
 apply_attack_to_characters : (
@@ -342,18 +357,19 @@ maybe_remove_attack_step attack =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to_characters : (
+      (Struct.Location.Type -> Struct.Omnimods.Type) ->
       Type ->
       (Array.Array Struct.Character.Type) ->
       (Array.Array Struct.Character.Type)
    )
-apply_to_characters turn_result characters =
+apply_to_characters tile_omnimods turn_result characters =
    case turn_result of
       (Moved movement) ->
          case (Array.get movement.character_index characters) of
             (Just char) ->
                (Array.set
                   movement.character_index
-                  (apply_movement_to_character movement char)
+                  (apply_movement_to_character movement (tile_omnimods) char)
                   characters
                )
 
@@ -365,7 +381,7 @@ apply_to_characters turn_result characters =
             (Just char) ->
                (Array.set
                   weapon_switch.character_index
-                  (apply_weapon_switch_to_character char)
+                  (apply_weapon_switch_to_character (tile_omnimods) char)
                   characters
                )
 
@@ -383,18 +399,23 @@ apply_to_characters turn_result characters =
       (PlayerTurnStarted pturns) -> characters
 
 apply_step_to_characters : (
+      (Struct.Location.Type -> Struct.Omnimods.Type) ->
       Type ->
       (Array.Array Struct.Character.Type) ->
       (Array.Array Struct.Character.Type)
    )
-apply_step_to_characters turn_result characters =
+apply_step_to_characters tile_omnimods turn_result characters =
    case turn_result of
       (Moved movement) ->
          case (Array.get movement.character_index characters) of
             (Just char) ->
                (Array.set
                   movement.character_index
-                  (apply_movement_step_to_character movement char)
+                  (apply_movement_step_to_character
+                     movement
+                     (tile_omnimods)
+                     char
+                  )
                   characters
                )
 
@@ -406,7 +427,7 @@ apply_step_to_characters turn_result characters =
             (Just char) ->
                (Array.set
                   weapon_switch.character_index
-                  (apply_weapon_switch_to_character char)
+                  (apply_weapon_switch_to_character (tile_omnimods) char)
                   characters
                )
 
@@ -424,18 +445,23 @@ apply_step_to_characters turn_result characters =
       (PlayerTurnStarted pturns) -> characters
 
 apply_inverse_to_characters : (
+      (Struct.Location.Type -> Struct.Omnimods.Type) ->
       Type ->
       (Array.Array Struct.Character.Type) ->
       (Array.Array Struct.Character.Type)
    )
-apply_inverse_to_characters turn_result characters =
+apply_inverse_to_characters tile_omnimods turn_result characters =
    case turn_result of
       (Moved movement) ->
          case (Array.get movement.character_index characters) of
             (Just char) ->
                (Array.set
                   movement.character_index
-                  (apply_inverse_movement_to_character movement char)
+                  (apply_inverse_movement_to_character
+                     movement
+                     (tile_omnimods)
+                     char
+                  )
                   characters
                )
 
@@ -447,7 +473,7 @@ apply_inverse_to_characters turn_result characters =
             (Just char) ->
                (Array.set
                   weapon_switch.character_index
-                  (apply_weapon_switch_to_character char)
+                  (apply_weapon_switch_to_character (tile_omnimods) char)
                   characters
                )
 

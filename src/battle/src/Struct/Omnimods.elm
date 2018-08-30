@@ -6,6 +6,9 @@ module Struct.Omnimods exposing
       apply_to_attributes,
       apply_to_statistics,
       get_attack_damage,
+      get_damage_sum,
+      get_attack_mods,
+      get_defense_mods,
       decoder
    )
 
@@ -123,6 +126,10 @@ apply_to_statistics omnimods statistics =
       omnimods.statistics
    )
 
+get_damage_sum : Type -> Int
+get_damage_sum omni =
+   (Dict.foldl (\t -> \v -> \result -> (result + v)) 0 omni.attack)
+
 get_attack_damage : Float -> Type -> Type -> Int
 get_attack_damage dmg_modifier atk_omni def_omni =
    let
@@ -157,3 +164,9 @@ get_attack_damage dmg_modifier atk_omni def_omni =
          0
          atk_omni.attack
       )
+
+get_attack_mods : Type -> (List (String, Int))
+get_attack_mods omnimods = (Dict.toList omnimods.attack)
+
+get_defense_mods : Type -> (List (String, Int))
+get_defense_mods omnimods = (Dict.toList omnimods.defense)

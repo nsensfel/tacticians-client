@@ -6,11 +6,13 @@ module View.Controlled.CharacterCard exposing
    )
 
 -- Elm -------------------------------------------------------------------------
+import List
+
 import Html
 import Html.Attributes
 import Html.Events
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Struct.Armor
 import Struct.Attributes
 import Struct.Character
@@ -18,6 +20,7 @@ import Struct.CharacterTurn
 import Struct.Event
 import Struct.HelpRequest
 import Struct.Navigator
+import Struct.Omnimods
 import Struct.Statistics
 import Struct.Weapon
 import Struct.WeaponSet
@@ -192,20 +195,19 @@ get_movement_bar char_turn char =
       Nothing ->
          (get_inactive_movement_bar char)
 
-get_weapon_details : (
+get_weapon_field_header : (
       Float ->
       Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_details damage_multiplier weapon =
+get_weapon_field_header damage_multiplier weapon =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-card-weapon")
+         (Html.Attributes.class "battle-character-card-header")
       ]
       [
          (Html.div
             [
-               (Html.Attributes.class "battle-character-card-weapon-name")
             ]
             [
                (Html.text (Struct.Weapon.get_name weapon))
@@ -213,18 +215,89 @@ get_weapon_details damage_multiplier weapon =
          ),
          (Html.div
             [
-               (Html.Attributes.class "battle-character-card-weapon-name")
             ]
             [
                (Html.text
                   (
-                     -- TODO [VISUAL][HIGH]: unimplemented
-                     "[PH] WEAPON RANGE AND CHAR (ATK MODS * "
-                     ++ (toString damage_multiplier)
-                     ++ ")"
+                     "~"
+                     ++
+                     (toString
+                        (ceiling
+                           (
+                              (toFloat (Struct.Weapon.get_damage_sum weapon))
+                              * damage_multiplier
+                           )
+                        )
+                     )
+                     ++ " dmg @ ["
+                     ++ (toString (Struct.Weapon.get_defense_range weapon))
+                     ++ ", "
+                     ++ (toString (Struct.Weapon.get_attack_range weapon))
+                     ++ "]"
                   )
                )
             ]
+         )
+      ]
+   )
+
+get_mod_html : (String, Int) -> (Html.Html Struct.Event.Type)
+get_mod_html mod =
+   let
+      (category, value) = mod
+   in
+      (Html.div
+         [
+            (Html.Attributes.class "battle-character-card-mod")
+         ]
+         [
+            (Html.text
+               (category ++ ": " ++ (toString value))
+            )
+         ]
+      )
+
+get_multiplied_mod_html : Float -> (String, Int) -> (Html.Html Struct.Event.Type)
+get_multiplied_mod_html multiplier mod =
+   let
+      (category, value) = mod
+   in
+      (Html.div
+         [
+            (Html.Attributes.class "battle-character-card-mod")
+         ]
+         [
+            (Html.text
+               (
+                  category
+                  ++ ": "
+                  ++ (toString (ceiling ((toFloat value) * multiplier)))
+               )
+            )
+         ]
+      )
+
+get_weapon_details : (
+      Struct.Omnimods.Type ->
+      Float ->
+      Struct.Weapon.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_weapon_details omnimods damage_multiplier weapon =
+   (Html.div
+      [
+         (Html.Attributes.class "battle-character-card-weapon")
+      ]
+      [
+         (get_weapon_field_header damage_multiplier weapon),
+         (Html.div
+            [
+               (Html.Attributes.class "battle-character-card-weapon-stats")
+            ]
+            (List.map
+               (get_multiplied_mod_html damage_multiplier)
+               (Struct.Omnimods.get_attack_mods omnimods)
+            )
          )
       ]
    )
@@ -240,37 +313,16 @@ get_weapon_summary damage_multiplier weapon =
          (Html.Attributes.class "battle-character-card-weapon-summary")
       ]
       [
-         (Html.div
-            [
-               (Html.Attributes.class "battle-character-card-weapon-name")
-            ]
-            [
-               (Html.text (Struct.Weapon.get_name weapon))
-            ]
-         ),
-         (Html.div
-            [
-               (Html.Attributes.class "battle-character-card-weapon-name")
-            ]
-            [
-               (Html.text
-                  (
-                     -- TODO [VISUAL][HIGH]: unimplemented
-                     "[PH] WEAPON (ATK_SUM * "
-                     ++ (toString damage_multiplier)
-                     ++ ") AND RANGES"
-                  )
-               )
-            ]
-         )
+         (get_weapon_field_header damage_multiplier weapon)
       ]
    )
 
 get_armor_details : (
+      Struct.Omnimods.Type ->
       Struct.Armor.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_armor_details armor =
+get_armor_details omnimods armor =
    (Html.div
       [
          (Html.Attributes.class "battle-character-card-armor")
@@ -288,9 +340,10 @@ get_armor_details armor =
             [
                (Html.Attributes.class "battle-character-card-armor-stats")
             ]
-            [
-               (Html.text "[PH] CHAR DEF MODS")
-            ]
+            (List.map
+               (get_mod_html)
+               (Struct.Omnimods.get_defense_mods omnimods)
+            )
          )
       ]
    )
@@ -352,31 +405,6 @@ get_relevant_stats stats =
       ]
    )
 
-get_attributes : (
-      Struct.Attributes.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_attributes atts =
-   (Html.div
-      [
-         (Html.Attributes.class "battle-character-card-stats")
-      ]
-      [
-         (stat_name "Con"),
-         (stat_val (Struct.Attributes.get_constitution atts) False),
-         (stat_name "Dex"),
-         (stat_val (Struct.Attributes.get_dexterity atts) False),
-         (stat_name "Int"),
-         (stat_val (Struct.Attributes.get_intelligence atts) False),
-         (stat_name "Min"),
-         (stat_val (Struct.Attributes.get_mind atts) False),
-         (stat_name "Spe"),
-         (stat_val (Struct.Attributes.get_speed atts) False),
-         (stat_name "Str"),
-         (stat_val (Struct.Attributes.get_strength atts) False)
-      ]
-   )
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -428,9 +456,9 @@ get_summary_html char_turn player_ix char =
       weapon_set = (Struct.Character.get_weapons char)
       main_weapon = (Struct.WeaponSet.get_active_weapon weapon_set)
       char_statistics = (Struct.Character.get_statistics char)
-      char_attributes =  (Struct.Character.get_attributes char)
       damage_modifier = (Struct.Statistics.get_damage_modifier char_statistics)
       secondary_weapon = (Struct.WeaponSet.get_secondary_weapon weapon_set)
+      omnimods = (Struct.Character.get_current_omnimods char)
    in
       (Html.div
          [
@@ -457,8 +485,8 @@ get_summary_html char_turn player_ix char =
                   (get_statuses char)
                ]
             ),
-            (get_weapon_details damage_modifier main_weapon),
-            (get_armor_details (Struct.Character.get_armor char)),
+            (get_weapon_details omnimods damage_modifier main_weapon),
+            (get_armor_details omnimods (Struct.Character.get_armor char)),
             (get_relevant_stats char_statistics),
             (get_weapon_summary damage_modifier secondary_weapon)
          ]
@@ -474,10 +502,10 @@ get_full_html player_ix char =
       weapon_set = (Struct.Character.get_weapons char)
       main_weapon = (Struct.WeaponSet.get_active_weapon weapon_set)
       char_statistics = (Struct.Character.get_statistics char)
-      char_attributes =  (Struct.Character.get_attributes char)
       damage_modifier = (Struct.Statistics.get_damage_modifier char_statistics)
       secondary_weapon = (Struct.WeaponSet.get_secondary_weapon weapon_set)
       armor = (Struct.Character.get_armor char)
+      omnimods = (Struct.Character.get_current_omnimods char)
    in
       (Html.div
          [
@@ -505,10 +533,9 @@ get_full_html player_ix char =
                   (get_statuses char)
                ]
             ),
-            (get_weapon_details damage_modifier main_weapon),
-            (get_armor_details armor),
+            (get_weapon_details omnimods damage_modifier main_weapon),
+            (get_armor_details omnimods armor),
             (get_relevant_stats char_statistics),
-            (get_weapon_summary damage_modifier secondary_weapon),
-            (get_attributes char_attributes)
+            (get_weapon_summary damage_modifier secondary_weapon)
          ]
       )

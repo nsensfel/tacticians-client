@@ -33,6 +33,7 @@ make_it_so model =
                (Struct.CharacterTurn.set_has_switched_weapons
                   True
                   (Struct.CharacterTurn.lock_path
+                     (Struct.Model.tile_omnimods_fun model)
                      (Struct.CharacterTurn.set_navigator
                         (Struct.Navigator.new
                            (Struct.Character.get_location new_char)

@@ -74,7 +74,7 @@ sudden_exp_growth_f : Float -> Int
 sudden_exp_growth_f f = (float_to_int (4.0^(f/25.0)))
 
 damage_base_mod : Float -> Float
-damage_base_mod str = (((str^1.8)/2000.0) - 0.75)
+damage_base_mod str = ((((str + 10) * 4)^1.5)/3000.0)
 
 make_movement_points_safe : Int -> Int
 make_movement_points_safe val = (clamp 0 200 val)

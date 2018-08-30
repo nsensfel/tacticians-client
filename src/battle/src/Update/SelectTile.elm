@@ -55,7 +55,10 @@ go_to_tile model navigator loc_ref =
          (
             {model |
                char_turn =
-                  (Struct.CharacterTurn.lock_path model.char_turn)
+                  (Struct.CharacterTurn.lock_path
+                     (Struct.Model.tile_omnimods_fun model)
+                     model.char_turn
+                  )
             },
             Cmd.none
          )

@@ -14,7 +14,11 @@ import Struct.Model
 make_it_so : Struct.Model.Type -> Struct.Model.Type
 make_it_so model =
    {model |
-      char_turn = (Struct.CharacterTurn.lock_path model.char_turn)
+      char_turn =
+         (Struct.CharacterTurn.lock_path
+            (Struct.Model.tile_omnimods_fun model)
+            model.char_turn
+         )
    }
 
 --------------------------------------------------------------------------------
