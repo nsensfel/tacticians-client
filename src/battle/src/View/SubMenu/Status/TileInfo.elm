@@ -6,12 +6,13 @@ import Dict
 import Html
 import Html.Attributes
 
--- Struct.Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Constants.Movement
 
 import Struct.Map
 import Struct.Event
 import Struct.Location
+import Struct.Omnimods
 import Struct.Model
 import Struct.Tile
 
@@ -58,7 +59,7 @@ get_name model tile =
             ]
          )
 
-get_cost : (Struct.Tile.Instance -> (Html.Html Struct.Event.Type))
+get_cost : Struct.Tile.Instance -> (Html.Html Struct.Event.Type)
 get_cost tile =
    let
       cost = (Struct.Tile.get_instance_cost tile)
@@ -79,7 +80,7 @@ get_cost tile =
          ]
       )
 
-get_location : (Struct.Tile.Instance -> (Html.Html Struct.Event.Type))
+get_location : Struct.Tile.Instance -> (Html.Html Struct.Event.Type)
 get_location tile =
    let
       tile_location = (Struct.Tile.get_location tile)
@@ -102,6 +103,48 @@ get_location tile =
          ]
       )
 
+get_mod_html : (String, Int) -> (Html.Html Struct.Event.Type)
+get_mod_html mod =
+   let
+      (category, value) = mod
+   in
+      (Html.div
+         [
+            (Html.Attributes.class "battle-info-card-mod")
+         ]
+         [
+            (Html.text
+               (category ++ ": " ++ (toString value))
+            )
+         ]
+      )
+
+get_omnimods_listing : (List (String, Int)) -> (Html.Html Struct.Event.Type)
+get_omnimods_listing mod_list =
+   (Html.div
+      [
+         (Html.Attributes.class "battle-info-card-omnimods-listing")
+      ]
+      (List.map (get_mod_html) mod_list)
+   )
+
+get_omnimods : Struct.Omnimods.Type -> (Html.Html Struct.Event.Type)
+get_omnimods omnimods =
+   (Html.div
+      [
+         (Html.Attributes.class "battle-info-card-omnimods")
+      ]
+      [
+         (Html.text "Attribute Modifiers"),
+         (get_omnimods_listing (Struct.Omnimods.get_attributes_mods omnimods)),
+         (Html.text "Statistics Modifiers"),
+         (get_omnimods_listing (Struct.Omnimods.get_statistics_mods omnimods)),
+         (Html.text "Attack Modifiers"),
+         (get_omnimods_listing (Struct.Omnimods.get_attack_mods omnimods)),
+         (Html.text "Defense Modifiers"),
+         (get_omnimods_listing (Struct.Omnimods.get_defense_mods omnimods))
+      ]
+   )
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -130,7 +173,8 @@ get_html model loc =
                      (get_location tile),
                      (get_cost tile)
                   ]
-               )
+               ),
+               (get_omnimods ((Struct.Model.tile_omnimods_fun model) loc))
             ]
          )
 

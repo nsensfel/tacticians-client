@@ -248,7 +248,7 @@ get_mod_html mod =
    in
       (Html.div
          [
-            (Html.Attributes.class "battle-character-card-mod")
+            (Html.Attributes.class "battle-info-card-mod")
          ]
          [
             (Html.text
@@ -292,7 +292,7 @@ get_weapon_details omnimods damage_multiplier weapon =
          (get_weapon_field_header damage_multiplier weapon),
          (Html.div
             [
-               (Html.Attributes.class "battle-character-card-weapon-stats")
+               (Html.Attributes.class "battle-info-card-omnimods-listing")
             ]
             (List.map
                (get_multiplied_mod_html damage_multiplier)
@@ -338,7 +338,7 @@ get_armor_details omnimods armor =
          ),
          (Html.div
             [
-               (Html.Attributes.class "battle-character-card-armor-stats")
+               (Html.Attributes.class "battle-info-card-omnimods-listing")
             ]
             (List.map
                (get_mod_html)
