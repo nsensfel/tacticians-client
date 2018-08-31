@@ -4,7 +4,8 @@
     "repository": "https://github.com/nsensfel/tacticians-client.git",
     "license": "Apache 2.0",
     "source-directories": [
-        "src"
+        "src",
+        "../shared/elm"
     ],
     "exposed-modules": [],
     "dependencies": {
