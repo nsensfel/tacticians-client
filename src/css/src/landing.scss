@@ -1,0 +1,50 @@
+@import 'shared/colors';
+@import 'shared/parameters';
+@import 'shared/sanitize';
+@import 'shared/shadows';
+
+body
+{
+   flex-direction: column;
+   flex-wrap: wrap;
+   justify-content: center;
+}
+
+html, body, .fullscreen-module
+{
+   min-height: 450px;
+}
+
+.main-server-version
+{
+   font-size: 1em;
+}
+
+.main-server-logo img
+{
+   margin-top: 4em;
+   height: 15em;
+}
+
+nav
+{
+   margin-top: 2em;
+}
+
+nav a
+{
+   display: block;
+   font-size: 1.5em;
+   font-weight: bold;
+   text-decoration: none;
+   margin-bottom: 0.2em;
+   padding: 0.2em 0.5em 0.2em 0.5em;
+   border-radius: 5px;
+   background-color: rgba(0,0,0,0);
+   transition: background-color ease-out 0.5s;
+}
+
+nav a:hover
+{
+   background-color: rgba(0,0,0,0.5);
+}
