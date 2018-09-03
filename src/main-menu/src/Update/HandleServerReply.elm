@@ -1,20 +1,13 @@
 module Update.HandleServerReply exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
-import Array
-
-import Dict
-
 import Http
 
--- Map -------------------------------------------------------------------
-import Action.Session
-
+-- Main Menu -------------------------------------------------------------------
 import Struct.Error
 import Struct.Event
 import Struct.Model
 import Struct.ServerReply
-import Struct.UI
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -23,37 +16,6 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-set_session : (
-      String ->
-      String ->
-      (
-         Struct.Model.Type,
-         (Maybe Struct.Error.Type),
-         (List (Cmd Struct.Event.Type))
-      ) ->
-      (
-         Struct.Model.Type,
-         (Maybe Struct.Error.Type),
-         (List (Cmd Struct.Event.Type))
-      )
-   )
-set_session pid stk current_state =
-   case current_state of
-      (_, (Just _), _) -> current_state
-
-      (model, _, cmd_list) ->
-         (
-            {model |
-               player_id = pid,
-               session_token = stk
-            },
-            Nothing,
-            (
-               (Action.Session.store_new_session (pid, stk))
-               :: cmd_list
-            )
-         )
-
 apply_command : (
       Struct.ServerReply.Type ->
       (
@@ -69,9 +31,7 @@ apply_command : (
    )
 apply_command command current_state =
    case command of
-      (Struct.ServerReply.SetSession (pid, stk)) ->
-         (set_session pid stk current_state)
-
+      (Struct.ServerReply.SetPlayer _) -> current_state
       Struct.ServerReply.Okay -> current_state
 
 --------------------------------------------------------------------------------

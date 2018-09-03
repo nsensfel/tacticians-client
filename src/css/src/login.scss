@@ -22,47 +22,7 @@ body,
    padding-bottom: 1em;
 }
 
-.fullscreen-module > header
-{
-   display: flex;
-   flex-direction: row;
-}
-
-.fullscreen-module > header nav
-{
-   display: flex;
-   flex-direction: row;
-   flex-wrap: wrap;
-   flex: 1;
-   align-items: center;
-   justify-content: space-around;
-}
-
-.fullscreen-module > header nav a
-{
-   color: $GOLD-0;
-   transition: background-color 0.3s ease-out;
-   font-size: 1.5em;
-   font-variant: small-caps;
-   font-weight: bold;
-   text-decoration: none;
-   margin: 0.5em;
-}
-
-.main-server-logo
-{
-   z-index: 1;
-   margin: 0.5em;
-}
-
-.main-server-version
-{
-   z-index: 0;
-   position: absolute;
-   font-size: 0.7em;
-   top: 0;
-   right: 0;
-}
+@import 'shared/general-header';
 
 main
 {

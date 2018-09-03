@@ -16,32 +16,23 @@ module Struct.Player exposing
 import Json.Decode
 import Json.Decode.Pipeline
 
--- Map -------------------------------------------------------------------
-import Struct.Omnimods
+-- Main Menu -------------------------------------------------------------------
+import Struct.BattleSummary
+import Struct.MapSummary
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-type alias PartiallyDecoded =
-   {
-      id : Int,
-      nam : String,
-      rmi : Int,
-      rma : Int,
-      omni : String
-   }
-
 type alias Type =
    {
-      id : Int,
       name : String,
-      def_range : Int,
-      atk_range : Int,
-      omnimods : Struct.Omnimods.Type,
-      damage_sum : Int
+      maps : (List Struct.MapSummary.Type),
+      campaigns : (List Struct.BattleSummary.Type),
+      invasions : (List Struct.BattleSummary.Type),
+      events : (List Struct.BattleSummary.Type),
+      roster_id : String,
+      inventory_id : String
    }
-
-type alias Ref = Int
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -50,50 +41,60 @@ type alias Ref = Int
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Int -> String -> Int -> Int -> Struct.Omnimods.Type -> Type
-new id name range_min range_max omnimods =
-   {
-      id = id,
-      name = name,
-      def_range = range_min,
-      atk_range = range_max,
-      omnimods = omnimods,
-      damage_sum = (Struct.Omnimods.get_damage_sum omnimods)
-   }
+get_username : Type -> String
+get_username t = t.name
 
-get_id : Type -> Int
-get_id wp = wp.id
+get_maps : Type -> (List Struct.MapSummary.Type)
+get_maps t = t.maps
 
-get_name : Type -> String
-get_name wp = wp.name
+get_campaigns : Type -> (List Struct.BattleSummary.Type)
+get_campaigns t = t.campaigns
 
-get_attack_range : Type -> Int
-get_attack_range wp = wp.atk_range
+get_invasions : Type -> (List Struct.BattleSummary.Type)
+get_invasions t = t.invasions
 
-get_defense_range : Type -> Int
-get_defense_range wp = wp.def_range
+get_events : Type -> (List Struct.BattleSummary.Type)
+get_events t = t.events
 
-get_omnimods : Type -> Struct.Omnimods.Type
-get_omnimods wp = wp.omnimods
+get_roster_id : Type -> String
+get_roster_id t = t.roster_id
 
-get_damage_sum : Type -> Int
-get_damage_sum wp = wp.damage_sum
+get_inventory_id : Type -> String
+get_inventory_id t = t.inventory_id
 
 decoder : (Json.Decode.Decoder Type)
 decoder =
-   (Json.Decode.map
-      (\e -> {e | damage_sum = (Struct.Omnimods.get_damage_sum e.omnimods)})
-      (Json.Decode.Pipeline.decode
-         Type
-         |> (Json.Decode.Pipeline.required "usr" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required "maps" Json.Decode.list)
-         |> (Json.Decode.Pipeline.required "cmps" Json.Decode.list)
-         |> (Json.Decode.Pipeline.required "invs" Json.Decode.list)
-         |> (Json.Decode.Pipeline.required "evts" Json.Decode.list)
-         |> (Json.Decode.Pipeline.required "rtid" Json.Decode.list)
-         |> (Json.Decode.Pipeline.required "ivid" Json.Decode.list)
-      )
+   (Json.Decode.Pipeline.decode
+      Type
+      |> (Json.Decode.Pipeline.required "nme" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required
+            "maps"
+            (Json.Decode.list Struct.MapSummary.decoder)
+         )
+      |> (Json.Decode.Pipeline.required
+            "cmps"
+            (Json.Decode.list Struct.BattleSummary.decoder)
+         )
+      |> (Json.Decode.Pipeline.required
+            "invs"
+            (Json.Decode.list Struct.BattleSummary.decoder)
+         )
+      |> (Json.Decode.Pipeline.required
+            "evts"
+            (Json.Decode.list Struct.BattleSummary.decoder)
+         )
+      |> (Json.Decode.Pipeline.required "rtid" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "ivid" Json.Decode.string)
    )
 
 none : Type
-none = (new 0 "None" 0 0 (Struct.Omnimods.new [] [] [] []))
+none =
+   {
+      name = "Unknown",
+      maps = [],
+      campaigns = [],
+      invasions = [],
+      events = [],
+      roster_id = "",
+      inventory_id = ""
+   }

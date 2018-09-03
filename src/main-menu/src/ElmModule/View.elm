@@ -5,19 +5,17 @@ import Html
 import Html.Lazy
 import Html.Attributes
 
--- Map -------------------------------------------------------------------
+-- Main Menu -------------------------------------------------------------------
 import Struct.Error
 import Struct.Event
 import Struct.Model
+import Struct.Player
 import Struct.UI
 
 import Util.Html
 
-import View.AccountRecovery
+import View.BattleListing
 import View.Header
-import View.MainMenu
-import View.SignIn
-import View.SignUp
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -38,30 +36,20 @@ view model =
             [
             ]
             [
-               (View.MainMenu.get_html
-                  (Struct.UI.try_getting_displayed_tab model.ui)
+               (View.BattleListing.get_html
+                  "Campaigns"
+                  "main-menu-campaigns"
+                  (Struct.Player.get_campaigns model.player)
                ),
-               (
-                  case (Struct.UI.try_getting_displayed_tab model.ui) of
-                     (Just Struct.UI.SignInTab) -> (View.SignIn.get_html model)
-                     (Just Struct.UI.SignUpTab) -> (View.SignUp.get_html model)
-                     (Just Struct.UI.RecoveryTab) ->
-                        (View.AccountRecovery.get_html model)
-
-                     _ -> (View.SignIn.get_html model)
+               (View.BattleListing.get_html
+                  "Invasions"
+                  "main-menu-invasions"
+                  (Struct.Player.get_invasions model.player)
                ),
-               (
-                  case model.error of
-                     Nothing -> (Util.Html.nothing)
-                     (Just err) ->
-                        (Html.div
-                           [
-                              (Html.Attributes.class "error-msg")
-                           ]
-                           [
-                              (Html.text (Struct.Error.to_string err))
-                           ]
-                        )
+               (View.BattleListing.get_html
+                  "Events"
+                  "main-menu-events"
+                  (Struct.Player.get_events model.player)
                )
             ]
          )

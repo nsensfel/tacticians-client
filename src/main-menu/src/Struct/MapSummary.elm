@@ -1,32 +1,25 @@
-module Struct.Model exposing
+module Struct.MapSummary exposing
    (
       Type,
-      new,
-      invalidate,
-      reset,
-      clear_error
+      get_id,
+      get_name,
+      decoder,
+      none
    )
 
 -- Elm -------------------------------------------------------------------------
+import Json.Decode
+import Json.Decode.Pipeline
 
 -- Main Menu -------------------------------------------------------------------
-import Struct.Error
-import Struct.Flags
-import Struct.Player
-import Struct.UI
-
-import Util.Array
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      error: (Maybe Struct.Error.Type),
-      player_id: String,
-      session_token: String,
-      player: Struct.Player.Type,
-      ui: Struct.UI.Type
+      id : String,
+      name : String
    }
 
 --------------------------------------------------------------------------------
@@ -36,27 +29,23 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Struct.Flags.Type -> Type
-new flags =
+get_id : Type -> String
+get_id t = t.id
+
+get_name : Type -> String
+get_name t = t.name
+
+decoder : (Json.Decode.Decoder Type)
+decoder =
+   (Json.Decode.Pipeline.decode
+      Type
+      |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "nme" Json.Decode.string)
+   )
+
+none : Type
+none =
    {
-      error = Nothing,
-      player_id = flags.user_id,
-      session_token = flags.token,
-      player = (Struct.Player.none),
-      ui = (Struct.UI.default)
+      id = "",
+      name = "Unknown"
    }
-
-reset : Type -> Type
-reset model =
-   {model |
-      error = Nothing
-   }
-
-invalidate : Struct.Error.Type -> Type -> Type
-invalidate err model =
-   {model |
-      error = (Just err)
-   }
-
-clear_error : Type -> Type
-clear_error model = {model | error = Nothing}
