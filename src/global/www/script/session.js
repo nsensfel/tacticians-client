@@ -20,6 +20,7 @@ function ()
 {
    localStorage.setItem("user_id", tacticians_online.session.private.user_id);
    localStorage.setItem("token", tacticians_online.session.private.token);
+   tacticians_online.app.ports.connected.send(null);
 }
 
 tacticians_online.session.reset =

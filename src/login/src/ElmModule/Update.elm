@@ -6,6 +6,7 @@ module ElmModule.Update exposing (update)
 import Struct.Event
 import Struct.Model
 
+import Update.HandleConnected
 import Update.HandleServerReply
 import Update.SendSignIn
 import Update.SendSignUp
@@ -19,7 +20,6 @@ import Update.SelectTab
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
 update : (
       Struct.Event.Type ->
       Struct.Model.Type ->
@@ -87,3 +87,4 @@ update event model =
             Cmd.none
          )
 
+      Struct.Event.Connected -> (Update.HandleConnected.apply_to model)

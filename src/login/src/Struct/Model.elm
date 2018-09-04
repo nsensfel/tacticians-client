@@ -9,8 +9,9 @@ module Struct.Model exposing
 
 -- Elm -------------------------------------------------------------------------
 
--- Map -------------------------------------------------------------------
+-- Login -----------------------------------------------------------------------
 import Struct.Error
+import Struct.Event
 import Struct.Flags
 import Struct.HelpRequest
 import Struct.UI

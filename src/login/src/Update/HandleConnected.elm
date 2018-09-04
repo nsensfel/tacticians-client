@@ -1,19 +1,25 @@
-module ElmModule.Subscriptions exposing (..)
-
+module Update.HandleConnected exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 
--- Main Menu -------------------------------------------------------------------
+-- Login -----------------------------------------------------------------------
 import Action.Session
+
+import Constants.IO
 
 import Struct.Model
 import Struct.Event
+import Struct.UI
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-subscriptions : Struct.Model.Type -> (Sub Struct.Event.Type)
-subscriptions model =
-   (Action.Session.connected (always Struct.Event.Connected))
+apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
+apply_to model =
+   (
+      model,
+      (Action.Session.go_to (Constants.IO.base_url ++"/main-menu/"))
+   )

@@ -26,6 +26,7 @@ type Type =
    | SetEmail2 String
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
    | TabSelected Struct.UI.Tab
+   | Connected
 
 attempted : (Result.Result err val) -> Type
 attempted act =
