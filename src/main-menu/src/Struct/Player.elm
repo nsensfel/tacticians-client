@@ -1,6 +1,7 @@
 module Struct.Player exposing
    (
       Type,
+      get_id,
       get_username,
       get_maps,
       get_campaigns,
@@ -25,6 +26,7 @@ import Struct.MapSummary
 --------------------------------------------------------------------------------
 type alias Type =
    {
+      id : String,
       name : String,
       maps : (List Struct.MapSummary.Type),
       campaigns : (List Struct.BattleSummary.Type),
@@ -41,6 +43,9 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+get_id : Type -> String
+get_id t = t.id
+
 get_username : Type -> String
 get_username t = t.name
 
@@ -66,6 +71,7 @@ decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.Pipeline.decode
       Type
+      |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "nme" Json.Decode.string)
       |> (Json.Decode.Pipeline.required
             "maps"
@@ -90,6 +96,7 @@ decoder =
 none : Type
 none =
    {
+      id = "",
       name = "Unknown",
       maps = [],
       campaigns = [],

@@ -20,14 +20,18 @@ import Struct.Model
 --------------------------------------------------------------------------------
 try_encoding : Struct.Model.Type -> (Maybe Json.Encode.Value)
 try_encoding model =
-   (Just
-      (Json.Encode.object
-         [
-            ("stk", (Json.Encode.string model.session_token)),
-            ("pid", (Json.Encode.string model.player_id))
-         ]
+   let
+      player_id = (Json.Encode.string model.player_id)
+   in
+      (Just
+         (Json.Encode.object
+            [
+               ("stk", (Json.Encode.string model.session_token)),
+               ("pid", player_id),
+               ("id", player_id)
+            ]
+         )
       )
-   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

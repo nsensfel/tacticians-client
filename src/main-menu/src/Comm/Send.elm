@@ -8,7 +8,7 @@ import Json.Encode
 
 -- Map -------------------------------------------------------------------
 import Comm.Okay
-import Comm.SetSession
+import Comm.SetPlayer
 
 import Struct.Event
 import Struct.ServerReply
@@ -25,7 +25,7 @@ internal_decoder : String -> (Json.Decode.Decoder Struct.ServerReply.Type)
 internal_decoder reply_type =
    case reply_type of
       "okay" -> (Comm.Okay.decode)
-      "sse" -> (Comm.SetSession.decode)
+      "set_plr" -> (Comm.SetPlayer.decode)
       other ->
          (Json.Decode.fail
             (

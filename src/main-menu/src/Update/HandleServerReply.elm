@@ -7,6 +7,7 @@ import Http
 import Struct.Error
 import Struct.Event
 import Struct.Model
+import Struct.Player
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------
@@ -16,6 +17,31 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+set_player : (
+      Struct.Player.Type ->
+      (
+         Struct.Model.Type,
+         (Maybe Struct.Error.Type),
+         (List (Cmd Struct.Event.Type))
+      ) ->
+      (
+         Struct.Model.Type,
+         (Maybe Struct.Error.Type),
+         (List (Cmd Struct.Event.Type))
+      )
+   )
+set_player player current_state =
+   let
+      (model, error, event_list) = current_state
+   in
+      (
+         {model |
+            player = player
+         },
+         error,
+         event_list
+      )
+
 apply_command : (
       Struct.ServerReply.Type ->
       (
@@ -31,7 +57,7 @@ apply_command : (
    )
 apply_command command current_state =
    case command of
-      (Struct.ServerReply.SetPlayer _) -> current_state
+      (Struct.ServerReply.SetPlayer player) -> (set_player player current_state)
       Struct.ServerReply.Okay -> current_state
 
 --------------------------------------------------------------------------------
