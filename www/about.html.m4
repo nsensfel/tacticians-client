@@ -17,12 +17,10 @@
          </div>
          <div class="main-server-version">__CONF_VERSION</div>
          <nav>
-            <a href="/login/"><s>Play</s></a>
+            <a href="/about.html">About</a>
+            <a href="/login/">Play</a>
             <a href="/news/"><s>News</s></a>
             <a href="/community/"><s>Community</s></a>
-            <a href="/about/"><s>About</s></a>
-            <a href="/battle/?id=0">[D] Battle</a>
-            <a href="/map-editor/?id=0">[D] Map Editor</a>
          </nav>
       </header>
       <main>

@@ -32,12 +32,10 @@ navigation_html =
    (Html.nav
       []
       [
-         (link_html "/login/" "Play" False),
+         (link_html "/about.html" "About" True),
+         (link_html "/login/" "Play" True),
          (link_html "/news/" "News" False),
-         (link_html "/community/" "Community" False),
-         (link_html "/about/" "About" False),
-         (link_html "/battle/?id=0" "[D] Battle" True),
-         (link_html "/map-editor/?id=0" "[D] Map Editor" True)
+         (link_html "/community/" "Community" False)
       ]
    )
 

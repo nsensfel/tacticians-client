@@ -19,8 +19,6 @@
          <a href="/login/">Play</a>
          <a href="/news/"><s>News</s></a>
          <a href="/community/"><s>Community</s></a>
-         <a href="/battle/?id=0">[D] Battle</a>
-         <a href="/map-editor/?id=0">[D] Map Editor</a>
       </nav>
    </body>
 </html>
