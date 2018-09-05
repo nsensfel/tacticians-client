@@ -8,15 +8,17 @@ import Struct.Model
 
 import Update.ChangeScale
 import Update.ClearToolboxSelection
+import Update.GoToMainMenu
 import Update.HandleServerReply
 import Update.PrettifySelectedTiles
-import Update.SendMapUpdate
 import Update.SelectTab
 import Update.SelectTile
+import Update.SendMapUpdate
 import Update.SetRequestedHelp
 import Update.SetToolboxMode
 import Update.SetToolboxShape
 import Update.SetToolboxTemplate
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -75,3 +77,6 @@ update event model =
 
       Struct.Event.SendMapUpdateRequested ->
          (Update.SendMapUpdate.apply_to new_model)
+
+      Struct.Event.GoToMainMenu ->
+         (Update.GoToMainMenu.apply_to new_model)

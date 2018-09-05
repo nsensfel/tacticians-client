@@ -28,6 +28,7 @@ type Type =
    | TemplateRequested (Int, Int)
    | PrettifySelectionRequested
    | SendMapUpdateRequested
+   | GoToMainMenu
 
 attempted : (Result.Result err val) -> Type
 attempted act =

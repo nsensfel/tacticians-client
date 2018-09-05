@@ -51,7 +51,7 @@ default : Type
 default =
    {
       zoom_level = 1.0,
-      displayed_tab = Nothing,
+      displayed_tab = (Just TilesTab),
       previous_action = Nothing
    }
 

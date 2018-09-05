@@ -1,6 +1,4 @@
-port module Action.Session exposing (..)
-
-import Struct.Event
+port module Action.Ports exposing (..)
 
 port store_new_session : (String, String) -> (Cmd msg)
 port reset_session : () -> (Cmd msg)

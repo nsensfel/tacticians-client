@@ -1,14 +1,13 @@
-module Update.HandleConnected exposing (apply_to)
+module Update.GoToMainMenu exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 
--- Login -----------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Action.Ports
 
 import Constants.IO
 
 import Struct.Model
 import Struct.Event
-import Struct.UI
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------

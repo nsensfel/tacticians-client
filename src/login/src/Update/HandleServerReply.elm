@@ -8,7 +8,7 @@ import Dict
 import Http
 
 -- Map -------------------------------------------------------------------
-import Action.Session
+import Action.Ports
 
 import Struct.Error
 import Struct.Event
@@ -49,7 +49,7 @@ set_session pid stk current_state =
             },
             Nothing,
             (
-               (Action.Session.store_new_session (pid, stk))
+               (Action.Ports.store_new_session (pid, stk))
                :: cmd_list
             )
          )

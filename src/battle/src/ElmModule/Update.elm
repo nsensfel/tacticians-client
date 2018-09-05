@@ -11,6 +11,7 @@ import Update.AttackWithoutMoving
 import Update.ChangeScale
 import Update.DisplayCharacterInfo
 import Update.EndTurn
+import Update.GoToMainMenu
 import Update.HandleAnimationEnded
 import Update.HandleServerReply
 import Update.LookForCharacter
@@ -104,3 +105,6 @@ update event model =
 
       (Struct.Event.RequestedHelp help_request) ->
          (Update.SetRequestedHelp.apply_to new_model help_request)
+
+      Struct.Event.GoToMainMenu ->
+         (Update.GoToMainMenu.apply_to new_model)

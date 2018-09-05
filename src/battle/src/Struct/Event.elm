@@ -35,6 +35,7 @@ type Type =
    | TurnEnded
    | RequestedHelp Struct.HelpRequest.Type
    | WeaponSwitchRequest
+   | GoToMainMenu
 
 attempted : (Result.Result err val) -> Type
 attempted act =

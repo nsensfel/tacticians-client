@@ -31,8 +31,24 @@ get_html =
       [
          (Html.Attributes.class "map-main-menu")
       ]
-      (List.map
-         (get_menu_button_html)
-         (Struct.UI.get_all_tabs)
+      (
+         (
+            (Html.button
+               [ (Html.Events.onClick Struct.Event.GoToMainMenu) ]
+               [ (Html.text "Main Menu") ]
+            )
+            ::
+            (List.map
+               (get_menu_button_html)
+               (Struct.UI.get_all_tabs)
+            )
+         )
+         ++
+         [
+            (Html.button
+               [ (Html.Events.onClick Struct.Event.SendMapUpdateRequested) ]
+               [ (Html.text "Save Map") ]
+            )
+         ]
       )
    )
