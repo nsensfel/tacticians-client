@@ -62,6 +62,24 @@ get_html model =
             [
                (Html.text "Send")
             ]
+         ),
+         (Html.button
+            [
+               (Html.Attributes.class "login-debug-button"),
+               (Html.Events.onClick (Struct.Event.DebugSignInAs "0"))
+            ]
+            [
+               (Html.text "[PH] Login as Player 1")
+            ]
+         ),
+         (Html.button
+            [
+               (Html.Attributes.class "login-debug-button"),
+               (Html.Events.onClick (Struct.Event.DebugSignInAs "1"))
+            ]
+            [
+               (Html.text "[PH] Login as Player 2")
+            ]
          )
       ]
    )

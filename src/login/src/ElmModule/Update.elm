@@ -88,3 +88,23 @@ update event model =
          )
 
       Struct.Event.Connected -> (Update.HandleConnected.apply_to model)
+
+      (Struct.Event.DebugSignInAs pid) ->
+         (Update.SendSignIn.apply_to
+            (
+               case pid of
+                  "0" ->
+                     {new_model |
+                        username = "Player1",
+                        password1 = "Kalimer0"
+                     }
+
+                  "1" ->
+                     {new_model |
+                        username = "Player2",
+                        password1 = "Kalimer1"
+                     }
+
+                  _ -> new_model
+            )
+         )
