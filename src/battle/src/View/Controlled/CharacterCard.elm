@@ -14,7 +14,6 @@ import Html.Events
 
 -- Battle ----------------------------------------------------------------------
 import Struct.Armor
-import Struct.Attributes
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event

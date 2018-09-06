@@ -7,6 +7,9 @@ import Struct.Event
 import Struct.Flags
 import Struct.Model
 
+import Update.Disconnect
+import Update.HandleConnected
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -15,4 +18,13 @@ import Struct.Model
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 init : Struct.Flags.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
-init flags = ((Struct.Model.new flags), Cmd.none)
+init flags =
+   let
+      new_model = (Struct.Model.new flags)
+   in
+      case (Struct.Flags.maybe_get_param "action" flags) of
+         (Just "disconnect") -> (Update.Disconnect.apply_to new_model)
+         _ ->
+            if (flags.user_id == "")
+            then (new_model, Cmd.none)
+            else (Update.HandleConnected.apply_to new_model)

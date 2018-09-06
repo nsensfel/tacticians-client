@@ -1,10 +1,8 @@
-module Update.HandleConnected exposing (apply_to)
+module Update.Disconnect exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 
 -- Login -----------------------------------------------------------------------
 import Action.Ports
-
-import Constants.IO
 
 import Struct.Model
 import Struct.Event
@@ -20,5 +18,5 @@ apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 apply_to model =
    (
       model,
-      (Action.Ports.go_to (Constants.IO.base_url ++"/main-menu/"))
+      (Action.Ports.reset_session ())
    )

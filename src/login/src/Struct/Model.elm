@@ -11,12 +11,9 @@ module Struct.Model exposing
 
 -- Login -----------------------------------------------------------------------
 import Struct.Error
-import Struct.Event
 import Struct.Flags
 import Struct.HelpRequest
 import Struct.UI
-
-import Util.Array
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------

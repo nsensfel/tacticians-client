@@ -98,3 +98,17 @@ main > *
 {
    background-color: $GREEN-2;
 }
+
+@keyframes reverse-brown-alarm-bg {
+    0% {background-color: $BROWN-0;}
+    50% {background-color: $BROWN-2;}
+    100% {background-color: $BROWN-0;}
+}
+
+.main-menu-battle-summary-is-active
+{
+   border: 1px solid $BROWN-0;
+   animation-name: reverse-brown-alarm-bg;
+   animation-duration: 2s;
+   animation-iteration-count: infinite;
+}

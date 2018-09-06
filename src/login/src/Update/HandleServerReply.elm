@@ -1,10 +1,6 @@
 module Update.HandleServerReply exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
-import Array
-
-import Dict
-
 import Http
 
 -- Map -------------------------------------------------------------------
@@ -14,7 +10,6 @@ import Struct.Error
 import Struct.Event
 import Struct.Model
 import Struct.ServerReply
-import Struct.UI
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------

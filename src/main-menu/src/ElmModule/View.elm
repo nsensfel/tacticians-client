@@ -2,17 +2,12 @@ module ElmModule.View exposing (view)
 
 -- Elm -------------------------------------------------------------------------
 import Html
-import Html.Lazy
 import Html.Attributes
 
 -- Main Menu -------------------------------------------------------------------
-import Struct.Error
 import Struct.Event
 import Struct.Model
 import Struct.Player
-import Struct.UI
-
-import Util.Html
 
 import View.BattleListing
 import View.MapListing

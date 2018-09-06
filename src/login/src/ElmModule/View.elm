@@ -2,7 +2,6 @@ module ElmModule.View exposing (view)
 
 -- Elm -------------------------------------------------------------------------
 import Html
-import Html.Lazy
 import Html.Attributes
 
 -- Map -------------------------------------------------------------------
