@@ -16,6 +16,9 @@ MODULES_WWW = $(addprefix $(WWW_DIR)/,$(MODULES))
 ################################################################################
 ## SANITY CHECKS ###############################################################
 ################################################################################
+ifeq ($(strip $(wildcard $(DATA_DIR))),)
+$(error "Could not find the game's data folder (currently set to $(DATA_DIR)). Download it and set the DATA_DIR variable to match its location.")
+endif
 
 ################################################################################
 ## INCLUDES ####################################################################
@@ -29,8 +32,9 @@ include ${CURDIR}/mk/preprocessor.mk
 ################################################################################
 all: $(PREPROCESSOR_RESULT) build $(WWW_DIR) $(MODULES_WWW)
 
-upload_demo:
-	scp -r $(WWW_DIR)/* dreamhost:~/tacticians.online/
+upload_to:
+	$(MAKE) CONFIG_FILE=conf/tacticians.conf
+	scp -r $(WWW_DIR)/* procyon_:/static_content_node/
 
 build:
 	for module in $(MODULES_SRC) ; do \

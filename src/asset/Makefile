@@ -34,6 +34,9 @@ reset:
 ################################################################################
 ## INTERNAL RULES ##############################################################
 ################################################################################
-$(TILE_WITNESS): $(TILE_CLASSES_FILES) $(TILE_FRONTIER_FILES)
+$(TILE_WITNESS): $(WWW_TILES_DIR) $(TILE_CLASSES_FILES) $(TILE_FRONTIER_FILES)
 	$(GEN_ALL_TILES_EXEC) $(WWW_TILES_DIR) $(TILE_CLASSES_DIR) $(TILE_FRONTIER_DIR)
 	touch $@
+
+$(WWW_TILES_DIR):
+	mkdir -p $@
