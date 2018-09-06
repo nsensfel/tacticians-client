@@ -23,3 +23,78 @@ body,
 }
 
 @import 'shared/general-header';
+
+main
+{
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   align-items: center;
+}
+
+main > *
+{
+   margin: 0.5em;
+}
+
+.main-menu-battle-listing,
+.main-menu-map-listing
+{
+   border-left: 2px solid $BROWN-1;
+   border-right: 2px solid $BROWN-1;
+   border-bottom: 4px solid $BROWN-1;
+   border-top: none;
+   border-radius: 8px 8px 15px 15px;
+   background-color: $BROWN-3;
+}
+
+.main-menu-map-listing-body > *,
+.main-menu-map-listing-add-new,
+.main-menu-battle-listing-body > *,
+.main-menu-battle-listing-add-new
+{
+   padding: 0.3em;
+   margin: 0.5em;
+}
+
+.main-menu-map-listing-body a,
+.main-menu-battle-listing-body a
+{
+   text-decoration: none;
+}
+
+.main-menu-map-listing-body > *,
+.main-menu-battle-listing-body > *
+{
+   background-color: $BROWN-0;
+   border-radius: 5px;
+   display: block;
+   transition: background-color 0.3s ease-out;
+}
+
+.main-menu-map-listing-body > *:hover,
+.main-menu-battle-listing-body > *:hover
+{
+   background-color: $BROWN-1;
+}
+
+.main-menu-map-listing-header,
+.main-menu-battle-listing-header
+{
+   font-size: 1.3em;
+   font-variant: small-caps;
+   padding: 0.5em;
+   border-top: 1px solid $BROWN-1;
+   border-bottom: 1px solid $GLAUQUE-1;
+   border-radius: 7px;
+}
+
+.main-menu-battle-listing-header
+{
+   background-color: $RED-2;
+}
+
+.main-menu-map-listing-header
+{
+   background-color: $GREEN-2;
+}
