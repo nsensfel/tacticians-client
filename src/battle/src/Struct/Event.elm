@@ -3,7 +3,7 @@ module Struct.Event exposing (Type(..), attempted)
 -- Elm -------------------------------------------------------------------------
 import Http
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Struct.Direction
 import Struct.Error
 import Struct.Location
@@ -19,23 +19,24 @@ type Type =
    | AnimationEnded
    | AttackWithoutMovingRequest
    | CharacterInfoRequested Int
+   | CharacterOrTileSelected Struct.Location.Ref
    | CharacterSelected Int
    | DebugLoadBattleRequest
    | DebugTeamSwitchRequest
    | DebugTestAnimation
    | DirectionRequested Struct.Direction.Type
    | Failed Struct.Error.Type
+   | GoToMainMenu
    | LookingForCharacter Int
    | None
+   | RequestedHelp Struct.HelpRequest.Type
    | ScaleChangeRequested Float
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
    | TabSelected Struct.UI.Tab
    | TileSelected Struct.Location.Ref
-   | CharacterOrTileSelected Struct.Location.Ref
    | TurnEnded
-   | RequestedHelp Struct.HelpRequest.Type
+   | UndoActionRequest
    | WeaponSwitchRequest
-   | GoToMainMenu
 
 attempted : (Result.Result err val) -> Type
 attempted act =

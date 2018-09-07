@@ -41,12 +41,13 @@ get_selected_character_html_contents =
 get_moved_character_html_contents : (List (Html.Html Struct.Event.Type))
 get_moved_character_html_contents =
    [
-      (get_header_html "Selecting a Target"),
+      (get_header_html "Selecting an Action"),
       (Html.text
          (
-            "You can now choose a target in range. Dashed tiles indicate"
-            ++ " where your character will not be able to defend themselves"
-            ++ " against counter attacks."
+            """You can now choose an action for this character. Either attack
+ a target in range by clicking twice on it, or switch weapons by using the menu
+ on the left. Dashes indicate tiles this character will be unable to defend
+ from. Crossed shields indicate the equivalent for the current selection."""
          )
       )
    ]
@@ -54,12 +55,27 @@ get_moved_character_html_contents =
 get_chose_target_html_contents : (List (Html.Html Struct.Event.Type))
 get_chose_target_html_contents =
    [
-      (get_header_html "Finalizing the Character's Turn"),
+      (get_header_html "End the Turn by an Attack"),
       (Html.text
          (
-            "If you are satisfied with your choices, you can end this"
-            ++ " character's turn and see the results unfold. Otherwise, click"
-            ++ " on the abort button to undo it all."
+            """A target for the attack has been selected. If you are satisfied
+with your choices, you can end this character's turn and see the results unfold.
+Otherwise, click on the "Undo" button to change the action, or the "Abort"
+button to start this turn over."""
+         )
+      )
+   ]
+
+get_switched_weapons_html_contents : (List (Html.Html Struct.Event.Type))
+get_switched_weapons_html_contents =
+   [
+      (get_header_html "End the Turn by Switching Weapons"),
+      (Html.text
+         (
+            """The character will switch weapons. If you are satisfied
+with your choices, you can end this character's turn and see the results unfold.
+Otherwise, click on the "Undo" button to change the action, or the "Abort"
+button to start this turn over."""
          )
       )
    ]
@@ -95,6 +111,9 @@ get_html_contents model =
 
       Struct.CharacterTurn.ChoseTarget ->
          (get_chose_target_html_contents)
+
+      Struct.CharacterTurn.SwitchedWeapons ->
+         (get_switched_weapons_html_contents)
 
       _ ->
          (get_default_html_contents)

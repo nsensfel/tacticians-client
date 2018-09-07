@@ -11,6 +11,8 @@ module Struct.Navigator exposing
       get_summary,
       clear_path,
       lock_path,
+      unlock_path,
+      lock_path_with_new_attack_ranges,
       try_adding_step,
       try_getting_path_to
    )
@@ -18,7 +20,7 @@ module Struct.Navigator exposing
 -- Elm -------------------------------------------------------------------------
 import Dict
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Struct.Location
 import Struct.Direction
 import Struct.Marker
@@ -32,8 +34,8 @@ type alias Type =
    {
       starting_location: Struct.Location.Type,
       movement_dist: Int,
-      attack_dist: Int,
       defense_dist: Int,
+      attack_dist: Int,
       path: Struct.Path.Type,
       locked_path: Bool,
       range_indicators:
@@ -67,7 +69,7 @@ new : (
       (Struct.Location.Type -> Int) ->
       Type
    )
-new start_loc mov_dist atk_dist def_dist cost_fun =
+new start_loc mov_dist def_dist atk_dist cost_fun =
    {
       starting_location = start_loc,
       movement_dist = mov_dist,
@@ -79,8 +81,8 @@ new start_loc mov_dist atk_dist def_dist cost_fun =
          (Struct.RangeIndicator.generate
             start_loc
             mov_dist
-            atk_dist
             def_dist
+            atk_dist
             (cost_fun)
          ),
       cost_fun = cost_fun
@@ -151,8 +153,36 @@ lock_path navigator =
          (Struct.RangeIndicator.generate
             (Struct.Path.get_current_location navigator.path)
             0
-            navigator.attack_dist
             navigator.defense_dist
+            navigator.attack_dist
+            (navigator.cost_fun)
+         ),
+      locked_path = True
+   }
+
+unlock_path : Type -> Type
+unlock_path navigator =
+   {navigator |
+      range_indicators =
+         (Struct.RangeIndicator.generate
+            navigator.starting_location
+            navigator.movement_dist
+            navigator.defense_dist
+            navigator.attack_dist
+            (navigator.cost_fun)
+         ),
+      locked_path = True
+   }
+
+lock_path_with_new_attack_ranges : Int -> Int -> Type -> Type
+lock_path_with_new_attack_ranges range_min range_max navigator =
+   {navigator |
+      range_indicators =
+         (Struct.RangeIndicator.generate
+            (Struct.Path.get_current_location navigator.path)
+            0
+            range_min
+            range_max
             (navigator.cost_fun)
          ),
       locked_path = True

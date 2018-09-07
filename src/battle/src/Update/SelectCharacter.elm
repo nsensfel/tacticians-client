@@ -41,8 +41,8 @@ get_character_navigator model char =
          (Struct.Statistics.get_movement_points
             (Struct.Character.get_statistics char)
          )
-         (Struct.Weapon.get_attack_range weapon)
          (Struct.Weapon.get_defense_range weapon)
+         (Struct.Weapon.get_attack_range weapon)
          (Struct.Map.get_movement_cost_function
             model.map
             (Struct.Character.get_location char)

@@ -2,7 +2,7 @@ module ElmModule.Update exposing (update)
 
 -- Elm -------------------------------------------------------------------------
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Struct.Event
 import Struct.Model
 
@@ -25,6 +25,7 @@ import Update.SetRequestedHelp
 import Update.SwitchTeam
 import Update.SwitchWeapon
 import Update.TestAnimation
+import Update.UndoAction
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -102,6 +103,9 @@ update event model =
 
       Struct.Event.AbortTurnRequest ->
          (Update.AbortTurn.apply_to new_model)
+
+      Struct.Event.UndoActionRequest ->
+         (Update.UndoAction.apply_to new_model)
 
       (Struct.Event.RequestedHelp help_request) ->
          (Update.SetRequestedHelp.apply_to new_model help_request)

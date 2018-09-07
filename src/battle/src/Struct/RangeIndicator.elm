@@ -309,7 +309,7 @@ generate : (
       (Struct.Location.Type -> Int) ->
       (Dict.Dict Struct.Location.Ref Type)
    )
-generate location max_dist atk_range def_range cost_fun =
+generate location max_dist def_range atk_range cost_fun =
    (search
       Dict.empty
       (Dict.insert

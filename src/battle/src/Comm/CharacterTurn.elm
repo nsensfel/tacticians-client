@@ -87,8 +87,8 @@ encode_actions model =
    of
       ((Just move), Nothing, Nothing) -> [move]
       ((Just move), Nothing, (Just attack)) -> [move, attack]
+      ((Just move), (Just switch_weapon), Nothing) -> [move, switch_weapon]
       (Nothing, (Just switch_weapon), Nothing) -> [switch_weapon]
-      (Nothing, (Just switch_weapon), (Just attack)) -> [switch_weapon, attack]
       (Nothing, Nothing, (Just attack)) -> [attack]
       _ -> []
 

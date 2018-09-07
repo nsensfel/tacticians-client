@@ -47,6 +47,13 @@ abort_button =
       [ (Html.text "Abort") ]
    )
 
+undo_button : (Html.Html Struct.Event.Type)
+undo_button =
+   (Html.button
+      [ (Html.Events.onClick Struct.Event.UndoActionRequest) ]
+      [ (Html.text "Undo") ]
+   )
+
 end_turn_button : String -> (Html.Html Struct.Event.Type)
 end_turn_button suffix =
    (Html.button
@@ -57,11 +64,19 @@ end_turn_button suffix =
       [ (Html.text ("End Turn" ++ suffix)) ]
    )
 
-inventory_button : (Html.Html Struct.Event.Type)
-inventory_button =
+inventory_button : Bool -> (Html.Html Struct.Event.Type)
+inventory_button go_prefix =
    (Html.button
       [ (Html.Events.onClick Struct.Event.WeaponSwitchRequest) ]
-      [ (Html.text "Switch Weapon") ]
+      [
+         (Html.text
+            (
+               if (go_prefix)
+               then ("Go & Switch Weapon")
+               else ("Switch Weapon")
+            )
+         )
+      ]
    )
 
 get_available_actions : (
@@ -73,20 +88,30 @@ get_available_actions char_turn =
       Struct.CharacterTurn.SelectedCharacter ->
          [
             (attack_button char_turn),
-            (inventory_button),
+            (inventory_button (has_a_path char_turn)),
             (end_turn_button " Doing Nothing"),
             (abort_button)
          ]
 
       Struct.CharacterTurn.MovedCharacter ->
          [
-            (end_turn_button " Without Attacking"),
+            (inventory_button False),
+            (end_turn_button " by Moving"),
+            (undo_button),
             (abort_button)
          ]
 
       Struct.CharacterTurn.ChoseTarget ->
          [
-            (end_turn_button " By Attacking"),
+            (end_turn_button " by Attacking"),
+            (undo_button),
+            (abort_button)
+         ]
+
+      Struct.CharacterTurn.SwitchedWeapons ->
+         [
+            (end_turn_button " by Switching Weapons"),
+            (undo_button),
             (abort_button)
          ]
 

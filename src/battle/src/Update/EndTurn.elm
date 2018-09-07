@@ -75,6 +75,13 @@ apply_to model =
       ) ->
          (make_it_so model char nav)
 
+      (
+         Struct.CharacterTurn.SwitchedWeapons,
+         (Just char),
+         (Just nav)
+      ) ->
+         (make_it_so model char nav)
+
       (Struct.CharacterTurn.SelectedCharacter, (Just char), (Just nav)) ->
          (make_it_so model char nav)
 
