@@ -23,12 +23,14 @@ import Array
 
 import Dict
 
+-- Shared ----------------------------------------------------------------------
+import Struct.Flags
+
 -- Battle ----------------------------------------------------------------------
 import Struct.Armor
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error
-import Struct.Flags
 import Struct.HelpRequest
 import Struct.Location
 import Struct.Map
@@ -46,6 +48,7 @@ import Util.Array
 --------------------------------------------------------------------------------
 type alias Type =
    {
+      flags: Struct.Flags.Type,
       help_request: Struct.HelpRequest.Type,
       animator: (Maybe Struct.TurnResultAnimator.Type),
       map: Struct.Map.Type,
@@ -80,6 +83,7 @@ new flags =
       maybe_battle_id = (Struct.Flags.maybe_get_param "id" flags)
       model =
          {
+            flags = flags,
             help_request = Struct.HelpRequest.None,
             animator = Nothing,
             map = (Struct.Map.empty),

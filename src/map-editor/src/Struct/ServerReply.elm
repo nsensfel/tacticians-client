@@ -2,7 +2,7 @@ module Struct.ServerReply exposing (Type(..))
 
 -- Elm -------------------------------------------------------------------------
 
--- Battlemap -------------------------------------------------------------------
+-- Map Editor ------------------------------------------------------------------
 import Struct.Map
 import Struct.Tile
 import Struct.TilePattern
@@ -13,6 +13,7 @@ import Struct.TilePattern
 
 type Type =
    Okay
+   | Disconnected
    | AddTile Struct.Tile.Type
    | AddTilePattern Struct.TilePattern.Type
    | SetMap Struct.Map.Type

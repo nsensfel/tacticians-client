@@ -9,9 +9,11 @@ module Struct.Model exposing
 
 -- Elm -------------------------------------------------------------------------
 
+-- Shared ----------------------------------------------------------------------
+import Struct.Flags
+
 -- Login -----------------------------------------------------------------------
 import Struct.Error
-import Struct.Flags
 import Struct.HelpRequest
 import Struct.UI
 
@@ -22,6 +24,7 @@ type alias Type =
    {
       help_request: Struct.HelpRequest.Type,
       error: (Maybe Struct.Error.Type),
+      flags: Struct.Flags.Type,
       username: String,
       password1: String,
       password2: String,
@@ -46,6 +49,7 @@ new flags =
       model =
          {
             help_request = Struct.HelpRequest.None,
+            flags = flags,
             error = Nothing,
             username = "",
             password1 = "",

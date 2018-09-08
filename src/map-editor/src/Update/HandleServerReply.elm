@@ -3,7 +3,13 @@ module Update.HandleServerReply exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Http
 
--- Map -------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
+import Action.Ports
+
+import Struct.Flags
+
+-- Map Editor ------------------------------------------------------------------
+import Constants.IO
 import Struct.Map
 import Struct.Error
 import Struct.Event
@@ -19,61 +25,75 @@ import Struct.TilePattern
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+disconnected : (
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+disconnected current_state =
+   let (model, cmds) = current_state in
+      (
+         model,
+         [
+            (Action.Ports.go_to
+               (
+                  Constants.IO.base_url
+                  ++ "/login/?action=disconnect&goto="
+                  ++
+                  (Http.encodeUri
+                     (
+                        "/map-editor/?"
+                        ++ (Struct.Flags.get_params_as_url model.flags)
+                     )
+                  )
+               )
+            )
+         ]
+      )
+
 add_tile : (
       Struct.Tile.Type ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 add_tile tl current_state =
-   case current_state of
-      (_, (Just _)) -> current_state
-      (model, _) -> ((Struct.Model.add_tile tl model), Nothing)
+   let (model, cmds) = current_state in
+      ((Struct.Model.add_tile tl model), cmds)
 
 add_tile_pattern : (
       Struct.TilePattern.Type ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 add_tile_pattern tp current_state =
-   case current_state of
-      (_, (Just _)) -> current_state
-      (model, _) ->
-         (
-            (Struct.Model.add_tile_pattern tp model),
-            Nothing
-         )
+   let (model, cmds) = current_state in
+      ((Struct.Model.add_tile_pattern tp model), cmds)
 
 set_map : (
       Struct.Map.Type ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 set_map map current_state =
-   case current_state of
-      (_, (Just _)) -> current_state
-      (model, _) ->
-         ( {model | map = (Struct.Map.solve_tiles model.tiles map)}, Nothing)
+   let (model, cmds) = current_state in
+      ({model | map = (Struct.Map.solve_tiles model.tiles map)}, cmds)
 
 refresh_map : (
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 refresh_map current_state =
-   case current_state of
-      (_, (Just _)) -> current_state
-      (model, _) ->
-         (
-            {model | map = (Struct.Map.solve_tiles model.tiles model.map)},
-            Nothing
-         )
+   let (model, cmds) = current_state in
+      ({model | map = (Struct.Map.solve_tiles model.tiles model.map)}, cmds)
 
 apply_command : (
       Struct.ServerReply.Type ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 apply_command command current_state =
    case command of
+      Struct.ServerReply.Disconnected -> (disconnected current_state)
+
       (Struct.ServerReply.AddTile tl) ->
          (add_tile tl current_state)
 
@@ -106,10 +126,16 @@ apply_to model query_result =
          )
 
       (Result.Ok commands) ->
-         case (List.foldl (apply_command) (model, Nothing) commands) of
-            (updated_model, Nothing) -> (updated_model, Cmd.none)
-            (_, (Just error)) ->
+         let
+            (new_model, elm_commands) =
+               (List.foldl (apply_command) (model, [Cmd.none]) commands)
+         in
+            (
+               new_model,
                (
-                  (Struct.Model.invalidate error model),
-                  Cmd.none
+                  case elm_commands of
+                     [] -> Cmd.none
+                     [cmd] -> cmd
+                     _ -> (Cmd.batch elm_commands)
                )
+            )

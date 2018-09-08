@@ -12,9 +12,11 @@ module Struct.Model exposing
 -- Elm -------------------------------------------------------------------------
 import Dict
 
--- Map -------------------------------------------------------------------
-import Struct.Error
+-- Shared ----------------------------------------------------------------------
 import Struct.Flags
+
+-- Map Editor ------------------------------------------------------------------
+import Struct.Error
 import Struct.HelpRequest
 import Struct.Map
 import Struct.Tile
@@ -27,6 +29,7 @@ import Struct.UI
 --------------------------------------------------------------------------------
 type alias Type =
    {
+      flags: Struct.Flags.Type,
       toolbox: Struct.Toolbox.Type,
       help_request: Struct.HelpRequest.Type,
       map: Struct.Map.Type,
@@ -53,6 +56,7 @@ new flags =
       maybe_map_id = (Struct.Flags.maybe_get_param "id" flags)
       model =
          {
+            flags = flags,
             toolbox = (Struct.Toolbox.default),
             help_request = Struct.HelpRequest.None,
             map = (Struct.Map.empty),

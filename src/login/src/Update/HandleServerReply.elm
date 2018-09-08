@@ -3,9 +3,10 @@ module Update.HandleServerReply exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Http
 
--- Map -------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
 import Action.Ports
 
+-- Login -----------------------------------------------------------------------
 import Struct.Error
 import Struct.Event
 import Struct.Model
@@ -21,46 +22,26 @@ import Struct.ServerReply
 set_session : (
       String ->
       String ->
-      (
-         Struct.Model.Type,
-         (Maybe Struct.Error.Type),
-         (List (Cmd Struct.Event.Type))
-      ) ->
-      (
-         Struct.Model.Type,
-         (Maybe Struct.Error.Type),
-         (List (Cmd Struct.Event.Type))
-      )
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 set_session pid stk current_state =
-   case current_state of
-      (_, (Just _), _) -> current_state
-
-      (model, _, cmd_list) ->
+   let (model, cmds) = current_state in
+      (
+         {model |
+            player_id = pid,
+            session_token = stk
+         },
          (
-            {model |
-               player_id = pid,
-               session_token = stk
-            },
-            Nothing,
-            (
-               (Action.Ports.store_new_session (pid, stk))
-               :: cmd_list
-            )
+            (Action.Ports.store_new_session (pid, stk))
+            :: cmds
          )
+      )
 
 apply_command : (
       Struct.ServerReply.Type ->
-      (
-         Struct.Model.Type,
-         (Maybe Struct.Error.Type),
-         (List (Cmd Struct.Event.Type))
-      ) ->
-      (
-         Struct.Model.Type,
-         (Maybe Struct.Error.Type),
-         (List (Cmd Struct.Event.Type))
-      )
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 apply_command command current_state =
    case command of
@@ -89,23 +70,16 @@ apply_to model query_result =
          )
 
       (Result.Ok commands) ->
-         (
-            case
-               (List.foldl
-                  (apply_command)
-                  (model, Nothing, [])
-                  commands
+         let
+            (new_model, elm_commands) =
+               (List.foldl (apply_command) (model, [Cmd.none]) commands)
+         in
+            (
+               new_model,
+               (
+                  case elm_commands of
+                     [] -> Cmd.none
+                     [cmd] -> cmd
+                     _ -> (Cmd.batch elm_commands)
                )
-            of
-               (updated_model, Nothing, cmds) ->
-                  (
-                     updated_model,
-                     (Cmd.batch cmds)
-                  )
-
-               (_, (Just error), _) ->
-                  (
-                     (Struct.Model.invalidate error model),
-                     Cmd.none
-                  )
-         )
+            )

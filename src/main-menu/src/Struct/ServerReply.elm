@@ -11,6 +11,7 @@ import Struct.Player
 
 type Type =
    Okay
+   | Disconnected
    | SetPlayer Struct.Player.Type
 
 --------------------------------------------------------------------------------

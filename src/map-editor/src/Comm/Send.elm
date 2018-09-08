@@ -30,6 +30,7 @@ internal_decoder reply_type =
       "add_tile_pattern" -> (Comm.AddTilePattern.decode)
       "set_map" -> (Comm.SetMap.decode)
       "okay" -> (Comm.Okay.decode)
+      "disconnected" -> (Json.Decode.succeed Struct.ServerReply.Disconnected)
       other ->
          (Json.Decode.fail
             (

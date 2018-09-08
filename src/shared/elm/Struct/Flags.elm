@@ -1,13 +1,14 @@
 module Struct.Flags exposing
    (
       Type,
-      maybe_get_param
+      maybe_get_param,
+      get_params_as_url
    )
 
 -- Elm -------------------------------------------------------------------------
 import List
 
--- Map -------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
 import Util.List
 
 --------------------------------------------------------------------------------
@@ -23,6 +24,11 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+param_as_url : (List String) -> String
+param_as_url param =
+   case param of
+      [name, value] -> (name ++ "=" ++ value)
+      _ -> ""
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -40,3 +46,13 @@ maybe_get_param param flags =
          case (List.tail a) of
             Nothing -> Nothing
             (Just b) -> (List.head b)
+
+get_params_as_url : Type -> String
+get_params_as_url flags =
+   (List.foldl
+      (\param -> \current_params ->
+         (current_params ++ "&" ++ (param_as_url param))
+      )
+      ""
+      flags.url_params
+   )

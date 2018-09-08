@@ -26,6 +26,7 @@ internal_decoder reply_type =
    case reply_type of
       "okay" -> (Comm.Okay.decode)
       "set_plr" -> (Comm.SetPlayer.decode)
+      "disconnected" -> (Json.Decode.succeed Struct.ServerReply.Disconnected)
       other ->
          (Json.Decode.fail
             (

@@ -11,7 +11,14 @@ import Http
 
 import Time
 
--- Map -------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
+import Action.Ports
+
+import Struct.Flags
+
+-- Battle ----------------------------------------------------------------------
+import Constants.IO
+
 import Struct.Armor
 import Struct.Map
 import Struct.Character
@@ -46,135 +53,151 @@ armor_getter model ref =
 
 -----------
 
+disconnected : (
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+disconnected current_state =
+   let (model, cmds) = current_state in
+      (
+         model,
+         [
+            (Action.Ports.go_to
+               (
+                  Constants.IO.base_url
+                  ++ "/login/?action=disconnect&goto="
+                  ++
+                  (Http.encodeUri
+                     (
+                        "/battle/?"
+                        ++ (Struct.Flags.get_params_as_url model.flags)
+                     )
+                  )
+               )
+            )
+         ]
+      )
+
 add_armor : (
       Struct.Armor.Type ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 add_armor ar current_state =
-   case current_state of
-      (_, (Just _)) -> current_state
-      (model, _) -> ((Struct.Model.add_armor ar model), Nothing)
+   let (model, cmds) = current_state in
+      ((Struct.Model.add_armor ar model), cmds)
 
 add_tile : (
       Struct.Tile.Type ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 add_tile tl current_state =
-   case current_state of
-      (_, (Just _)) -> current_state
-      (model, _) -> ((Struct.Model.add_tile tl model), Nothing)
+   let (model, cmds) = current_state in
+      ((Struct.Model.add_tile tl model), cmds)
 
 add_weapon : (
       Struct.Weapon.Type ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 add_weapon wp current_state =
-   case current_state of
-      (_, (Just _)) -> current_state
-      (model, _) -> ((Struct.Model.add_weapon wp model), Nothing)
+   let (model, cmds) = current_state in
+      ((Struct.Model.add_weapon wp model), cmds)
 
 add_character : (
       (Struct.Character.Type, Int, Int, Int) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 add_character char_and_refs current_state =
-   case current_state of
-      (_, (Just _)) -> current_state
-      (model, _) ->
-         let
-            (char, awp_ref, swp_ref, ar_ref) = char_and_refs
-            awp = (weapon_getter model awp_ref)
-            swp = (weapon_getter model swp_ref)
-            ar = (armor_getter model ar_ref)
-         in
-            (
-               (Struct.Model.add_character
-                  (Struct.Character.fill_missing_equipment_and_omnimods
-                     (Struct.Model.tile_omnimods_fun model)
-                     awp
-                     swp
-                     ar
-                     char
-                  )
-                  model
-               ),
-               Nothing
+   let
+      (model, cmds) = current_state
+      (char, awp_ref, swp_ref, ar_ref) = char_and_refs
+      awp = (weapon_getter model awp_ref)
+      swp = (weapon_getter model swp_ref)
+      ar = (armor_getter model ar_ref)
+   in
+      (
+         (Struct.Model.add_character
+            (Struct.Character.fill_missing_equipment_and_omnimods
+               (Struct.Model.tile_omnimods_fun model)
+               awp
+               swp
+               ar
+               char
             )
+            model
+         ),
+         cmds
+      )
 
 set_map : (
       Struct.Map.Type ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 set_map map current_state =
-   case current_state of
-      (_, (Just _)) -> current_state
-      (model, _) ->
-         (
-            {model |
-               map =
-                  (Struct.Map.solve_tiles model.tiles map)
-            },
-            Nothing
-         )
+   let (model, cmds) = current_state in
+      (
+         {model |
+            map = (Struct.Map.solve_tiles model.tiles map)
+         },
+         cmds
+      )
 
 add_to_timeline : (
       (List Struct.TurnResult.Type) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 add_to_timeline turn_results current_state =
-   case current_state of
-      (_, (Just _)) -> current_state
-
-      (model, _) ->
+   let (model, cmds) = current_state in
+      (
+         {model |
+            animator =
+               (Struct.TurnResultAnimator.maybe_new
+                  (List.reverse turn_results)
+                  False
+               ),
+            timeline =
+               (Array.append
+                  (Array.fromList turn_results)
+                  model.timeline
+               ),
+            ui =
+               (Struct.UI.set_displayed_tab
+                  Struct.UI.TimelineTab
+                  model.ui
+               )
+         },
          (
-            {model |
-               animator =
-                  (Struct.TurnResultAnimator.maybe_new
-                     (List.reverse turn_results)
-                     False
-                  ),
-               timeline =
-                  (Array.append
-                     (Array.fromList turn_results)
-                     model.timeline
-                  ),
-               ui =
-                  (Struct.UI.set_displayed_tab
-                     Struct.UI.TimelineTab
-                     model.ui
-                  )
-            },
-            Nothing
+            (Delay.after 1 Time.millisecond Struct.Event.AnimationEnded)
+            :: cmds
          )
+      )
 
 set_timeline : (
       (List Struct.TurnResult.Type) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 set_timeline turn_results current_state =
-   case current_state of
-      (_, (Just _)) -> current_state
-
-      (model, _) ->
-         (
-            {model | timeline = (Array.fromList turn_results)},
-            Nothing
-         )
+   let (model, cmds) = current_state in
+      (
+         {model | timeline = (Array.fromList turn_results)},
+         cmds
+      )
 
 apply_command : (
       Struct.ServerReply.Type ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type)) ->
-      (Struct.Model.Type, (Maybe Struct.Error.Type))
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 apply_command command current_state =
    case command of
+      Struct.ServerReply.Disconnected -> (disconnected current_state)
+
       (Struct.ServerReply.AddWeapon wp) ->
          (add_weapon wp current_state)
 
@@ -219,18 +242,15 @@ apply_to model query_result =
 
       (Result.Ok commands) ->
          let
-            new_model =
-               (
-                  case (List.foldl (apply_command) (model, Nothing) commands) of
-                     (updated_model, Nothing) -> updated_model
-                     (_, (Just error)) -> (Struct.Model.invalidate error model)
-               )
+            (new_model, elm_commands) =
+               (List.foldl (apply_command) (model, [Cmd.none]) commands)
          in
             (
                new_model,
-               if (new_model.animator == Nothing)
-               then
-                  Cmd.none
-               else
-                  (Delay.after 1 Time.millisecond Struct.Event.AnimationEnded)
+               (
+                  case elm_commands of
+                     [] -> Cmd.none
+                     [cmd] -> cmd
+                     _ -> (Cmd.batch elm_commands)
+               )
             )

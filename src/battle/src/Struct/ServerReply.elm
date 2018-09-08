@@ -2,7 +2,7 @@ module Struct.ServerReply exposing (Type(..))
 
 -- Elm -------------------------------------------------------------------------
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Struct.Armor
 import Struct.Map
 import Struct.Character
@@ -16,6 +16,7 @@ import Struct.Weapon
 
 type Type =
    Okay
+   | Disconnected
    | AddArmor Struct.Armor.Type
    | AddWeapon Struct.Weapon.Type
    | AddCharacter (Struct.Character.Type, Int, Int, Int)

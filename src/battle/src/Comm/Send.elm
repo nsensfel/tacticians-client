@@ -6,7 +6,7 @@ import Http
 import Json.Decode
 import Json.Encode
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Comm.AddArmor
 import Comm.AddChar
 import Comm.AddTile
@@ -36,6 +36,9 @@ internal_decoder reply_type =
       "set_map" -> (Comm.SetMap.decode)
       "turn_results" -> (Comm.TurnResults.decode)
       "set_timeline" -> (Comm.SetTimeline.decode)
+      "disconnected" -> (Json.Decode.succeed Struct.ServerReply.Disconnected)
+      "okay" -> (Json.Decode.succeed Struct.ServerReply.Okay)
+
       other ->
          (Json.Decode.fail
             (
