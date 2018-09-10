@@ -4,7 +4,11 @@ module ElmModule.View exposing (view)
 import Html
 import Html.Attributes
 
+-- Shared ----------------------------------------------------------------------
+import Util.Html
+
 -- Main Menu -------------------------------------------------------------------
+import Struct.Error
 import Struct.Event
 import Struct.Model
 import Struct.Player
@@ -49,6 +53,17 @@ view model =
                ),
                (View.MapListing.get_html (Struct.Player.get_maps model.player))
             ]
+         ),
+         (
+            case model.error of
+               Nothing -> (Util.Html.nothing)
+               (Just err) ->
+                  (Html.div
+                     []
+                     [
+                        (Html.text (Struct.Error.to_string err))
+                     ]
+                  )
          )
       ]
    )
