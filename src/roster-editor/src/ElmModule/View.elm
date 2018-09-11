@@ -2,21 +2,16 @@ module ElmModule.View exposing (view)
 
 -- Elm -------------------------------------------------------------------------
 import Html
-import Html.Lazy
 import Html.Attributes
 
--- Map -------------------------------------------------------------------
-import Constants.UI
-
+-- Roster Editor ---------------------------------------------------------------
 import Struct.Event
 import Struct.Model
 
-import View.MessageBoard
+import View.Controlled
+import View.CurrentTab
 import View.MainMenu
-import View.CharacterSelection
-import View.PortraitSelection
-import View.WeaponSelection
-import View.
+import View.MessageBoard
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------

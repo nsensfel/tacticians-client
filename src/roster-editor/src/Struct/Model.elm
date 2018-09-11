@@ -44,6 +44,7 @@ type alias Type =
       error: (Maybe Struct.Error.Type),
       player_id: String,
       roster_id: String,
+      edited_char: (Maybe Struct.Character.Type),
       session_token: String,
       ui: Struct.UI.Type
    }
@@ -75,6 +76,7 @@ new flags =
                   else flags.user_id
                ),
             session_token = flags.token,
+            edited_char = Nothing,
             ui = (Struct.UI.default)
          }
    in
