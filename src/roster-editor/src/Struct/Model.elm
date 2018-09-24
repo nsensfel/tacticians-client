@@ -59,40 +59,25 @@ type alias Type =
 --------------------------------------------------------------------------------
 new : Struct.Flags.Type -> Type
 new flags =
-   let
-      maybe_roster_id = (Struct.Flags.maybe_get_param "id" flags)
-      model =
-         {
-            flags = flags,
-            help_request = Struct.HelpRequest.None,
-            characters = (Array.empty),
-            weapons = (Dict.empty),
-            armors = (Dict.empty),
-            error = Nothing,
-            roster_id = "",
-            player_id =
-               (
-                  if (flags.user_id == "")
-                  then "0"
-                  else flags.user_id
-               ),
-            session_token = flags.token,
-            edited_char = Nothing,
-            inventory = (Struct.Inventory.empty),
-            ui = (Struct.UI.default)
-         }
-   in
-      case maybe_roster_id of
-         Nothing ->
-            (invalidate
-               (Struct.Error.new
-                  Struct.Error.Failure
-                  "Could not find roster id."
-               )
-               model
-            )
-
-         (Just id) -> {model | roster_id = id}
+   {
+      flags = flags,
+      help_request = Struct.HelpRequest.None,
+      characters = (Array.empty),
+      weapons = (Dict.empty),
+      armors = (Dict.empty),
+      error = Nothing,
+      roster_id = "",
+      player_id =
+         (
+            if (flags.user_id == "")
+            then "0"
+            else flags.user_id
+         ),
+      session_token = flags.token,
+      edited_char = Nothing,
+      inventory = (Struct.Inventory.empty),
+      ui = (Struct.UI.default)
+   }
 
 add_character : Struct.Character.Type -> Type -> Type
 add_character char model =
