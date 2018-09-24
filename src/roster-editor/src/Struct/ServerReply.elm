@@ -2,9 +2,10 @@ module Struct.ServerReply exposing (Type(..))
 
 -- Elm -------------------------------------------------------------------------
 
--- Character -------------------------------------------------------------------
+-- Roster Editor ---------------------------------------------------------------
 import Struct.Armor
 import Struct.Character
+import Struct.Inventory
 import Struct.Weapon
 
 --------------------------------------------------------------------------------
@@ -14,6 +15,7 @@ import Struct.Weapon
 type Type =
    Okay
    | Disconnected
+   | SetInventory Struct.Inventory.Type
    | AddArmor Struct.Armor.Type
    | AddWeapon Struct.Weapon.Type
    | AddCharacter (Struct.Character.Type, Int, Int, Int)

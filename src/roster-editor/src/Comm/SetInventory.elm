@@ -1,25 +1,24 @@
-module Update.SelectTab exposing (apply_to)
+module Comm.SetInventory exposing (decode)
+
 -- Elm -------------------------------------------------------------------------
+import Json.Decode
 
 -- Map -------------------------------------------------------------------
-import Struct.Model
-import Struct.Event
-import Struct.UI
+import Struct.Inventory
+import Struct.ServerReply
+
+--------------------------------------------------------------------------------
+-- TYPES -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+internal_decoder : Struct.Inventory.Type -> Struct.ServerReply.Type
+internal_decoder inv = (Struct.ServerReply.SetInventory inv)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : (
-      Struct.Model.Type ->
-      Struct.UI.Tab ->
-      (Struct.Model.Type, (Cmd Struct.Event.Type))
-   )
-apply_to model tab =
-   (
-      {model | ui = (Struct.UI.set_displayed_tab tab model.ui)},
-      Cmd.none
-   )
+decode : (Json.Decode.Decoder Struct.ServerReply.Type)
+decode = (Json.Decode.map (internal_decoder) (Struct.Inventory.decoder))

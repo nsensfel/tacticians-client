@@ -24,6 +24,7 @@ import Struct.Armor
 import Struct.Character
 import Struct.Error
 import Struct.HelpRequest
+import Struct.Inventory
 import Struct.Omnimods
 import Struct.UI
 import Struct.Weapon
@@ -44,6 +45,7 @@ type alias Type =
       player_id: String,
       roster_id: String,
       edited_char: (Maybe Struct.Character.Type),
+      inventory: Struct.Inventory.Type,
       session_token: String,
       ui: Struct.UI.Type
    }
@@ -76,6 +78,7 @@ new flags =
                ),
             session_token = flags.token,
             edited_char = Nothing,
+            inventory = (Struct.Inventory.empty),
             ui = (Struct.UI.default)
          }
    in

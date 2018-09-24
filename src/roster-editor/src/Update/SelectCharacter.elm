@@ -16,7 +16,11 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
+apply_to : (
+      Struct.Model.Type ->
+      Int ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
 apply_to model target_char_ix =
    -- TODO: store currently edited char, if it exists.
    -- Basically, there will be a marker on characters to tell if they've been

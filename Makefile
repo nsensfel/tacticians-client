@@ -1,7 +1,7 @@
 ################################################################################
 ## CONFIG ######################################################################
 ################################################################################
-MODULES ?= css global main-menu login map-editor battle asset
+MODULES ?= css global main-menu login roster-editor map-editor battle asset
 
 SRC_DIR = ${CURDIR}/src
 WWW_DIR = ${CURDIR}/www

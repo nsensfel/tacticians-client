@@ -29,7 +29,7 @@ get_html model =
             [(Html.Attributes.class "roster-editor-controlled")]
             [
                (Html.Lazy.lazy
-                  (View.CharacterCard.get_summary_html)
+                  (View.CharacterCard.get_full_html)
                   char
                )
             ]

@@ -10,6 +10,7 @@ import Json.Encode
 import Comm.AddArmor
 import Comm.AddChar
 import Comm.AddWeapon
+import Comm.SetInventory
 
 import Struct.Event
 import Struct.ServerReply
@@ -25,6 +26,7 @@ import Struct.Model
 internal_decoder : String -> (Json.Decode.Decoder Struct.ServerReply.Type)
 internal_decoder reply_type =
    case reply_type of
+      "set_inventory" -> (Comm.SetInventory.decode)
       "add_armor" -> (Comm.AddArmor.decode)
       "add_char" -> (Comm.AddChar.decode)
       "add_weapon" -> (Comm.AddWeapon.decode)

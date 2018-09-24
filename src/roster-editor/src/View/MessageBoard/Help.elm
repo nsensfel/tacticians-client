@@ -10,7 +10,6 @@ import Struct.HelpRequest
 import Struct.Model
 
 import View.MessageBoard.Help.Guide
-import View.MessageBoard.Help.Rank
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -30,8 +29,5 @@ get_html model =
          case model.help_request of
             Struct.HelpRequest.None ->
                (View.MessageBoard.Help.Guide.get_html_contents model)
-
-            (Struct.HelpRequest.HelpOnRank rank) ->
-               (View.MessageBoard.Help.Rank.get_html_contents rank)
       )
    )

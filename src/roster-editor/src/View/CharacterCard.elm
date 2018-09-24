@@ -1,7 +1,6 @@
 module View.CharacterCard exposing
    (
       get_minimal_html,
-      get_summary_html,
       get_full_html
    )
 
@@ -52,48 +51,18 @@ get_health_bar : (
    )
 get_health_bar char =
    let
-      current = (Struct.Character.get_sane_current_health char)
       max =
          (Struct.Statistics.get_max_health
             (Struct.Character.get_statistics char)
          )
    in
       (View.Gauge.get_html
-         ("HP: " ++ (toString current) ++ "/" ++ (toString max))
-         (100.0 * ((toFloat current)/(toFloat max)))
+         ("HP: " ++ (toString max))
+         100.0
          [(Html.Attributes.class "roster-character-card-health")]
          []
          []
       )
-
-get_rank_status : (
-      Struct.Character.Rank ->
-      (Html.Html Struct.Event.Type)
-   )
-get_rank_status rank =
-   (Html.div
-      [
-         (Html.Attributes.class "roster-character-card-status"),
-         (Html.Attributes.class "clickable"),
-         (Html.Events.onClick
-            (Struct.Event.RequestedHelp (Struct.HelpRequest.HelpOnRank rank))
-         ),
-         (Html.Attributes.class
-            (
-               case rank of
-                  Struct.Character.Commander ->
-                     "roster-character-card-commander-status"
-
-                  Struct.Character.Target ->
-                     "roster-character-card-target-status"
-
-                  Struct.Character.Optional -> ""
-            )
-         )
-      ]
-      [
-      ]
-   )
 
 get_statuses : (
       Struct.Character.Type ->
@@ -105,11 +74,6 @@ get_statuses char =
          (Html.Attributes.class "roster-character-card-statuses")
       ]
       [
-         (
-            case (Struct.Character.get_rank char) of
-               Struct.Character.Optional -> (Util.Html.nothing)
-               other -> (get_rank_status other)
-         )
       ]
    )
 

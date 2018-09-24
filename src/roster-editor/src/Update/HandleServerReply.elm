@@ -19,6 +19,7 @@ import Struct.Armor
 import Struct.Character
 import Struct.Error
 import Struct.Event
+import Struct.Inventory
 import Struct.Model
 import Struct.ServerReply
 import Struct.UI
@@ -88,6 +89,15 @@ add_weapon wp current_state =
    let (model, cmds) = current_state in
       ((Struct.Model.add_weapon wp model), cmds)
 
+set_inventory : (
+      Struct.Inventory.Type ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+set_inventory inv current_state =
+   let (model, cmds) = current_state in
+      ({model | inventory = inv}, cmds)
+
 add_character : (
       (Struct.Character.Type, Int, Int, Int) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
@@ -102,16 +112,7 @@ add_character char_and_refs current_state =
       ar = (armor_getter model ar_ref)
    in
       (
-         (Struct.Model.add_character
-            (Struct.Character.fill_missing_equipment_and_omnimods
-               (Struct.Model.tile_omnimods_fun model)
-               awp
-               swp
-               ar
-               char
-            )
-            model
-         ),
+         (Struct.Model.add_character char model),
          cmds
       )
 
@@ -126,6 +127,9 @@ apply_command command current_state =
 
       (Struct.ServerReply.AddWeapon wp) ->
          (add_weapon wp current_state)
+
+      (Struct.ServerReply.SetInventory inv) ->
+         (set_inventory inv current_state)
 
       (Struct.ServerReply.AddArmor ar) ->
          (add_armor ar current_state)

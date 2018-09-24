@@ -12,18 +12,32 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_menu_button_html : Struct.UI.Tab -> (Html.Html Struct.Event.Type)
-get_menu_button_html tab =
-   (Html.button
-      [ (Html.Events.onClick (Struct.Event.TabSelected tab)) ]
-      [ (Html.text (Struct.UI.to_string tab)) ]
-   )
-
 get_main_menu_button_html : (Html.Html Struct.Event.Type)
 get_main_menu_button_html =
    (Html.button
       [ (Html.Events.onClick Struct.Event.GoToMainMenu) ]
       [ (Html.text "Main Menu") ]
+   )
+
+get_characters_button_html : (Html.Html Struct.Event.Type)
+get_characters_button_html =
+   (Html.button
+      [ (Html.Events.onClick Struct.Event.GoToMainMenu) ]
+      [ (Html.text "Characters") ]
+   )
+
+get_reset_button_html : (Html.Html Struct.Event.Type)
+get_reset_button_html =
+   (Html.button
+      [ ]
+      [ (Html.text "Reset") ]
+   )
+
+get_save_button_html : (Html.Html Struct.Event.Type)
+get_save_button_html =
+   (Html.button
+      [ ]
+      [ (Html.text "Save") ]
    )
 
 --------------------------------------------------------------------------------
@@ -35,12 +49,10 @@ get_html =
       [
          (Html.Attributes.class "battle-main-menu")
       ]
-      (
-         (get_main_menu_button_html)
-         ::
-         (List.map
-            (get_menu_button_html)
-            (Struct.UI.get_all_tabs)
-         )
-      )
+      [
+         (get_main_menu_button_html),
+         (get_reset_button_html),
+         (get_characters_button_html),
+         (get_save_button_html)
+      ]
    )
