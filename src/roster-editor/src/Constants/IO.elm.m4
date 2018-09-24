@@ -7,4 +7,4 @@ roster_handler_url : String
 roster_handler_url = (base_url ++ "/handler/roster")
 
 roster_loading_handler : String
-roster_loading_handler = (map_handler_url ++ "/rst_load")
+roster_loading_handler = (roster_handler_url ++ "/rst_load")

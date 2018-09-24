@@ -1,14 +1,26 @@
-module View.MessageBoard exposing (get_html)
+module Struct.GlyphBoard exposing
+   (
+      Type,
+      Ref,
+      none
+   )
 
 -- Elm -------------------------------------------------------------------------
-import Html
 
 -- Roster Editor ---------------------------------------------------------------
-import Struct.Event
-import Struct.Model
+import Struct.Omnimods
 
-import View.MessageBoard.Error
-import View.MessageBoard.Help
+--------------------------------------------------------------------------------
+-- TYPES -----------------------------------------------------------------------
+--------------------------------------------------------------------------------
+type alias Type =
+   {
+      id : Int,
+      name : String,
+      omnimods : Struct.Omnimods.Type
+   }
+
+type alias Ref = Int
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -17,8 +29,10 @@ import View.MessageBoard.Help
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
-get_html model =
-   case (model.error) of
-      (Just error) -> (View.MessageBoard.Error.get_html model error)
-      Nothing -> (View.MessageBoard.Help.get_html model)
+none : Type
+none =
+   {
+      id = 0,
+      name = "None",
+      omnimods = (Struct.Omnimods.none)
+   }

@@ -3,13 +3,9 @@ module Update.HandleServerReply exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Array
 
-import Delay
-
 import Dict
 
 import Http
-
-import Time
 
 -- Shared ----------------------------------------------------------------------
 import Action.Ports

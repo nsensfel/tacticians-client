@@ -1,4 +1,4 @@
-module View.Controlled.CharacterCard exposing
+module View.CharacterCard exposing
    (
       get_minimal_html,
       get_summary_html,
@@ -15,10 +15,8 @@ import Html.Events
 -- Battle ----------------------------------------------------------------------
 import Struct.Armor
 import Struct.Character
-import Struct.CharacterTurn
 import Struct.Event
 import Struct.HelpRequest
-import Struct.Navigator
 import Struct.Omnimods
 import Struct.Statistics
 import Struct.Weapon
@@ -115,38 +113,8 @@ get_statuses char =
       ]
    )
 
-get_active_movement_bar : (
-      (Maybe Struct.Navigator.Type) ->
-      Struct.Character.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_active_movement_bar maybe_navigator char =
-   let
-      max =
-         (Struct.Statistics.get_movement_points
-            (Struct.Character.get_statistics char)
-         )
-      current =
-         case maybe_navigator of
-            (Just navigator) ->
-               (Struct.Navigator.get_remaining_points navigator)
-
-            Nothing ->
-               max
-   in
-      (View.Gauge.get_html
-         ("MP: " ++ (toString current) ++ "/" ++ (toString max))
-         (100.0 * ((toFloat current)/(toFloat max)))
-         [(Html.Attributes.class "roster-character-card-movement")]
-         []
-         []
-      )
-
-get_inactive_movement_bar : (
-      Struct.Character.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_inactive_movement_bar char =
+get_movement_bar : Struct.Character.Type -> (Html.Html Struct.Event.Type)
+get_movement_bar char =
    let
       max =
          (Struct.Statistics.get_movement_points
@@ -168,31 +136,6 @@ get_inactive_movement_bar char =
          []
          []
       )
-
-get_movement_bar : (
-      Struct.CharacterTurn.Type ->
-      Struct.Character.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_movement_bar char_turn char =
-   case (Struct.CharacterTurn.try_getting_active_character char_turn) of
-      (Just active_char) ->
-         if
-         (
-            (Struct.Character.get_index active_char)
-            ==
-            (Struct.Character.get_index char)
-         )
-         then
-            (get_active_movement_bar
-               (Struct.CharacterTurn.try_getting_navigator char_turn)
-               active_char
-            )
-         else
-            (get_inactive_movement_bar char)
-
-      Nothing ->
-         (get_inactive_movement_bar char)
 
 get_weapon_field_header : (
       Float ->
@@ -433,7 +376,7 @@ get_minimal_html char =
                   ]
                ),
                (get_health_bar char),
-               (get_inactive_movement_bar char),
+               (get_movement_bar char),
                (get_statuses char)
             ]
          )
@@ -473,7 +416,7 @@ get_full_html char =
                      ]
                   ),
                   (get_health_bar char),
-                  (get_inactive_movement_bar char),
+                  (get_movement_bar char),
                   (get_statuses char)
                ]
             ),

@@ -3,6 +3,7 @@ module Struct.Omnimods exposing
       Type,
       new,
       merge,
+      none,
       apply_to_attributes,
       apply_to_statistics,
       get_attack_damage,
@@ -101,6 +102,15 @@ new attribute_mods statistic_mods attack_mods defense_mods =
       statistics = (Dict.fromList statistic_mods),
       attack = (Dict.fromList attack_mods),
       defense = (Dict.fromList defense_mods)
+   }
+
+none : Type
+none =
+   {
+      attributes = (Dict.empty),
+      statistics = (Dict.empty),
+      attack = (Dict.empty),
+      defense = (Dict.empty)
    }
 
 merge : Type -> Type -> Type

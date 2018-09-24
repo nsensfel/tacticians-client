@@ -9,14 +9,13 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Map  ------------------------------------------------------------------
+-- Roster Editor ---------------------------------------------------------------
 import Constants.UI
 
 import Util.Html
 
 import Struct.Armor
 import Struct.Character
-import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.UI
@@ -75,16 +74,7 @@ get_focus_class model char =
    then
       (Html.Attributes.class "battle-character-selected")
    else
-      if
-      (
-         (Struct.CharacterTurn.try_getting_target model.char_turn)
-         ==
-         (Just (Struct.Character.get_index char))
-      )
-      then
-         (Html.Attributes.class "battle-character-targeted")
-      else
-         (Html.Attributes.class "")
+      (Html.Attributes.class "")
 
 get_icon_body_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_icon_body_html char =

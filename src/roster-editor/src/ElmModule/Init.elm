@@ -3,7 +3,7 @@ module ElmModule.Init exposing (init)
 -- Elm -------------------------------------------------------------------------
 
 -- Map -------------------------------------------------------------------
-import Comm.LoadBattle
+import Comm.LoadRoster
 
 import Struct.Event
 import Struct.Flags
@@ -21,7 +21,7 @@ init flags =
    let model = (Struct.Model.new flags) in
       (
          model,
-         (case (Comm.LoadBattle.try model) of
+         (case (Comm.LoadRoster.try model) of
             (Just cmd) -> cmd
             Nothing -> Cmd.none
          )

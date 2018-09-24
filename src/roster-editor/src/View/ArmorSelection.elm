@@ -1,14 +1,12 @@
-module View.MessageBoard exposing (get_html)
+module View.ArmorSelection exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html
+import Html.Attributes
 
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Event
 import Struct.Model
-
-import View.MessageBoard.Error
-import View.MessageBoard.Help
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -19,6 +17,9 @@ import View.MessageBoard.Help
 --------------------------------------------------------------------------------
 get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
-   case (model.error) of
-      (Just error) -> (View.MessageBoard.Error.get_html model error)
-      Nothing -> (View.MessageBoard.Help.get_html model)
+   (Html.div
+      [(Html.Attributes.class "roster-editor-armor-selection")]
+      [
+         (Html.text "Armor Selection")
+      ]
+   )

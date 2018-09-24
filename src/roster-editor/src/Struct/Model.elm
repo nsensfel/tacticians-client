@@ -22,7 +22,6 @@ import Struct.Flags
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Armor
 import Struct.Character
-import Struct.CharacterTurn
 import Struct.Error
 import Struct.HelpRequest
 import Struct.Omnimods

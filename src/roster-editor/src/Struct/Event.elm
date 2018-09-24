@@ -20,7 +20,6 @@ type Type =
    | RequestedHelp Struct.HelpRequest.Type
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
    | TabSelected Struct.UI.Tab
-   | TileSelected Struct.Location.Ref
 
 attempted : (Result.Result err val) -> Type
 attempted act =
