@@ -46,8 +46,8 @@ get_html : (Html.Html Struct.Event.Type)
 get_html =
    (Html.div
       [
-         (Html.Attributes.class "map-tabmenu-content"),
-         (Html.Attributes.class "map-tabmenu-tiles-tab")
+         (Html.Attributes.class "tabmenu-content"),
+         (Html.Attributes.class "tabmenu-tiles-tab")
       ]
       (List.map
          (get_icon_html)

@@ -22,8 +22,8 @@ get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    (Html.div
       [
-         (Html.Attributes.class "map-footer-tabmenu-content"),
-         (Html.Attributes.class "map-footer-tabmenu-content-status")
+         (Html.Attributes.class "tabmenu-content"),
+         (Html.Attributes.class "tabmenu-content-status")
       ]
       [
          (case (Struct.UI.get_previous_action model.ui) of

@@ -19,7 +19,7 @@ get_template_icon_html : Struct.Tile.Instance -> (Html.Html Struct.Event.Type)
 get_template_icon_html template =
    (Html.div
       [
-         (Html.Attributes.class "map-toolbox-template"),
+         (Html.Attributes.class "toolbox-template"),
          (Html.Attributes.class "map-tiled"),
          (Html.Attributes.class "map-tile"),
          (Html.Attributes.class "map-tile-variant-0")
@@ -53,7 +53,7 @@ get_mode_button current mode =
 get_modes_menu_html : Struct.Toolbox.Type -> (Html.Html Struct.Event.Type)
 get_modes_menu_html tb =
    (Html.div
-      [(Html.Attributes.class "map-toolbox-modes")]
+      [(Html.Attributes.class "toolbox-modes")]
       (List.map
          (get_mode_button (Struct.Toolbox.get_mode tb))
          (Struct.Toolbox.get_modes)
@@ -86,7 +86,7 @@ get_shape_button current shape =
 get_shapes_menu_html : Struct.Toolbox.Type -> (Html.Html Struct.Event.Type)
 get_shapes_menu_html tb =
    (Html.div
-      [(Html.Attributes.class "map-toolbox-shapes")]
+      [(Html.Attributes.class "toolbox-shapes")]
       (List.map
          (get_shape_button (Struct.Toolbox.get_shape tb))
          (Struct.Toolbox.get_shapes)
@@ -96,7 +96,7 @@ get_shapes_menu_html tb =
 get_others_menu_html : (Html.Html Struct.Event.Type)
 get_others_menu_html =
    (Html.div
-      [(Html.Attributes.class "map-toolbox-others")]
+      [(Html.Attributes.class "toolbox-others")]
       [
          (Html.button
             [(Html.Events.onClick Struct.Event.ClearSelectionRequested)]
@@ -115,7 +115,7 @@ get_others_menu_html =
 get_html : Struct.Toolbox.Type -> (Html.Html Struct.Event.Type)
 get_html tb =
    (Html.div
-      [(Html.Attributes.class "map-toolbox")]
+      [(Html.Attributes.class "toolbox")]
       [
          (get_template_icon_html (Struct.Toolbox.get_template tb)),
          (get_modes_menu_html tb),

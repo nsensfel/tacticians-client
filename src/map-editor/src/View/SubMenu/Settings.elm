@@ -30,8 +30,8 @@ get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    (Html.div
       [
-         (Html.Attributes.class "map-tabmenu-content"),
-         (Html.Attributes.class "map-tabmenu-settings-tab")
+         (Html.Attributes.class "tabmenu-content"),
+         (Html.Attributes.class "tabmenu-settings-tab")
       ]
       [
          (scale_button (0.75) "Zoom -"),

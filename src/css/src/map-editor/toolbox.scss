@@ -3,7 +3,7 @@
 
 @import 'constants';
 
-.map-toolbox
+.toolbox
 {
    left: 0;
    top: $BELOW-MAIN-MENU;
@@ -22,7 +22,7 @@
    justify-content: space-between;
 }
 
-.map-toolbox-actions
+.toolbox-actions
 {
    display: flex;
    flex-flow: row wrap;

@@ -42,7 +42,7 @@ get_html model =
    case (Struct.UI.try_getting_displayed_tab model.ui) of
       (Just tab) ->
          (Html.div
-            [(Html.Attributes.class "map-sub-menu")]
+            [(Html.Attributes.class "sub-menu")]
             [(get_inner_html model tab)]
          )
 

@@ -25,7 +25,7 @@ get_html : (
 get_html player_ix char =
    (Html.div
       [
-         (Html.Attributes.class "map-tabmenu-character-info")
+         (Html.Attributes.class "tabmenu-character-info")
       ]
       [
          (Html.text ("Focusing:")),
