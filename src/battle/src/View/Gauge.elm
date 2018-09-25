@@ -18,7 +18,7 @@ get_text_div: (
 get_text_div text extra_txt_attr =
    (Html.div
       (
-         [(Html.Attributes.class "battle-gauge-text")]
+         [(Html.Attributes.class "gauge-text")]
          ++ extra_txt_attr
       )
       [
@@ -41,7 +41,7 @@ get_bar_div percent extra_bar_attr =
                ]
             ),
             (Html.Attributes.class
-               "battle-gauge-bar"
+               "gauge-bar"
             )
          ]
          ++
@@ -66,7 +66,7 @@ get_html : (
 get_html text percent extra_div_attr extra_bar_attr extra_txt_attr =
    (Html.div
       (
-         [(Html.Attributes.class "battle-gauge")]
+         [(Html.Attributes.class "gauge")]
          ++ extra_div_attr
       )
       [

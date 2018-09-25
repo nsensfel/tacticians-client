@@ -1,4 +1,4 @@
-.battle-manual-controls
+.manual-controls
 {
    width: 96px;
    height: 96px;
@@ -10,7 +10,7 @@
    margin: auto;
 }
 
-.battle-manual-controls > div
+.manual-controls > div
 {
    width: 32px;
    height: 32px;
@@ -20,12 +20,12 @@
    opacity: 0.5;
 }
 
-.battle-manual-controls > div:hover
+.manual-controls > div:hover
 {
    opacity: 1;
 }
 
-.battle-manual-controls-go
+.manual-controls-go
 {
    margin: auto;
    width: 28px;
@@ -34,25 +34,25 @@
    grid-area: go;
 }
 
-.battle-manual-controls-up
+.manual-controls-up
 {
    transform: rotate(-90deg);
    grid-area: top;
 }
 
-.battle-manual-controls-down
+.manual-controls-down
 {
    transform: rotate(90deg);
    grid-area: bottom;
 }
 
-.battle-manual-controls-left
+.manual-controls-left
 {
    transform: rotate(180deg);
    grid-area: left;
 }
 
-.battle-manual-controls-right
+.manual-controls-right
 {
    grid-area: right;
 }

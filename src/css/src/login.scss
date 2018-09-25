@@ -1,5 +1,6 @@
 @import 'shared/colors';
 @import 'shared/shadows';
+@import 'shared/general-header';
 
 *
 {
@@ -21,8 +22,6 @@ body,
 {
    padding-bottom: 1em;
 }
-
-@import 'shared/general-header';
 
 main
 {

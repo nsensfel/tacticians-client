@@ -24,7 +24,7 @@ get_layer_html : (
 get_layer_html index border =
    (Html.div
       [
-         (Html.Attributes.class ("battle-tile-icon-f-" ++ (toString index))),
+         (Html.Attributes.class ("tile-icon-f-" ++ (toString index))),
          (Html.Attributes.style
             [
                (
@@ -52,7 +52,7 @@ get_content_html tile =
    (
       (Html.div
          [
-            (Html.Attributes.class "battle-tile-icon-bg"),
+            (Html.Attributes.class "tile-icon-bg"),
             (Html.Attributes.style
                [
                   (
@@ -73,7 +73,7 @@ get_content_html tile =
       (
          (Html.div
             [
-               (Html.Attributes.class "battle-tile-icon-dt"),
+               (Html.Attributes.class "tile-icon-dt"),
                (Html.Attributes.style
                   [
                      (
@@ -105,11 +105,11 @@ get_html tile =
    let tile_loc = (Struct.Tile.get_location tile) in
       (Html.div
          [
-            (Html.Attributes.class "battle-tile-icon"),
-            (Html.Attributes.class "battle-tiled"),
+            (Html.Attributes.class "tile-icon"),
+            (Html.Attributes.class "tiled"),
             (Html.Attributes.class
                (
-                  "battle-tile-variant-"
+                  "tile-variant-"
                   ++ (toString (Struct.Tile.get_local_variant_ix tile))
                )
             ),

@@ -1,4 +1,4 @@
-@import '../shared/colors';
+@import '../colors';
 
 @import 'constants';
 
@@ -21,4 +21,16 @@
 @mixin menu-background-color ()
 {
    background-color: $BROWN-3;
+}
+
+@mixin menu-panel ()
+{
+   position: absolute;
+   display: block;
+
+   @include menu-background-color();
+
+   @include menu-padding();
+
+   @include menu-border();
 }

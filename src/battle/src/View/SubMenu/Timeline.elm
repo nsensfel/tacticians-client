@@ -71,8 +71,8 @@ true_get_html : (
 true_get_html characters player_ix turn_results =
    (Html.div
       [
-         (Html.Attributes.class "battle-tabmenu-content"),
-         (Html.Attributes.class "battle-tabmenu-timeline-tab")
+         (Html.Attributes.class "tabmenu-content"),
+         (Html.Attributes.class "tabmenu-timeline-tab")
       ]
       (Array.toList
          (Array.map

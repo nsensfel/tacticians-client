@@ -47,7 +47,7 @@ get_empty_attack_html : (Html.Html Struct.Event.Type)
 get_empty_attack_html =
    (Html.div
       [
-         (Html.Attributes.class "battle-message-attack-text")
+         (Html.Attributes.class "message-attack-text")
       ]
       []
    )
@@ -65,7 +65,7 @@ get_attack_html attacker defender attack =
    in
       (Html.div
          [
-            (Html.Attributes.class "battle-message-attack-text")
+            (Html.Attributes.class "message-attack-text")
          ]
          [
             (Html.text
@@ -111,9 +111,9 @@ get_attack_animation_class : (
 get_attack_animation_class attack char =
    if (attack.critical)
    then
-      "battle-animated-portrait-attack-critical"
+      "animated-portrait-attack-critical"
    else
-      "battle-animated-portrait-attacks"
+      "animated-portrait-attacks"
 
 get_defense_animation_class : (
       Struct.Attack.Type ->
@@ -125,22 +125,22 @@ get_defense_animation_class attack char =
    then
       if (attack.precision == Struct.Attack.Miss)
       then
-         "battle-animated-portrait-dodges"
+         "animated-portrait-dodges"
       else
-         "battle-animated-portrait-undamaged"
+         "animated-portrait-undamaged"
    else if ((Struct.Character.get_current_health char) > 0)
    then
       if (attack.precision == Struct.Attack.Graze)
       then
-         "battle-animated-portrait-grazed-damage"
+         "animated-portrait-grazed-damage"
       else
-         "battle-animated-portrait-damaged"
+         "animated-portrait-damaged"
    else
       if (attack.precision == Struct.Attack.Graze)
       then
-         "battle-animated-portrait-grazed-death"
+         "animated-portrait-grazed-death"
       else
-         "battle-animated-portrait-dies"
+         "animated-portrait-dies"
 
 get_attacker_card : (
       (Maybe Struct.Attack.Type) ->
@@ -154,12 +154,12 @@ get_attacker_card maybe_attack char =
             if ((Struct.Character.get_current_health char) > 0)
             then
                [
-                  (Html.Attributes.class "battle-animated-portrait")
+                  (Html.Attributes.class "animated-portrait")
                ]
             else
                [
-                  (Html.Attributes.class "battle-animated-portrait-absent"),
-                  (Html.Attributes.class "battle-animated-portrait")
+                  (Html.Attributes.class "animated-portrait-absent"),
+                  (Html.Attributes.class "animated-portrait")
                ]
 
          (Just attack) ->
@@ -179,7 +179,7 @@ get_attacker_card maybe_attack char =
                         (get_attack_animation_class attack char)
                   )
                ),
-               (Html.Attributes.class "battle-animated-portrait")
+               (Html.Attributes.class "animated-portrait")
             ]
       )
       [
@@ -202,12 +202,12 @@ get_defender_card maybe_attack char =
             if ((Struct.Character.get_current_health char) > 0)
             then
                [
-                  (Html.Attributes.class "battle-animated-portrait")
+                  (Html.Attributes.class "animated-portrait")
                ]
             else
                [
-                  (Html.Attributes.class "battle-animated-portrait-absent"),
-                  (Html.Attributes.class "battle-animated-portrait")
+                  (Html.Attributes.class "animated-portrait-absent"),
+                  (Html.Attributes.class "animated-portrait")
                ]
 
          (Just attack) ->
@@ -227,7 +227,7 @@ get_defender_card maybe_attack char =
                         (get_defense_animation_class attack char)
                   )
                ),
-               (Html.Attributes.class "battle-animated-portrait")
+               (Html.Attributes.class "animated-portrait")
             ]
       )
       [
@@ -255,8 +255,8 @@ get_placeholder_html characters attacker_ix defender_ix maybe_attack =
       ((Just atkchar), (Just defchar)) ->
          (Html.div
             [
-               (Html.Attributes.class "battle-message-board"),
-               (Html.Attributes.class "battle-message-attack")
+               (Html.Attributes.class "message-board"),
+               (Html.Attributes.class "message-attack")
             ]
             (
                [

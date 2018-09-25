@@ -20,7 +20,7 @@ direction_button : (
 direction_button dir label =
    (Html.div
       [
-         (Html.Attributes.class ("battle-manual-controls-" ++ label)),
+         (Html.Attributes.class ("manual-controls-" ++ label)),
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
             (Struct.Event.DirectionRequested dir)
@@ -33,7 +33,7 @@ go_button : (Html.Html Struct.Event.Type)
 go_button =
    (Html.button
       [
-         (Html.Attributes.class "battle-manual-controls-go"),
+         (Html.Attributes.class "manual-controls-go"),
          (Html.Events.onClick Struct.Event.AttackWithoutMovingRequest)
       ]
       [
@@ -48,7 +48,7 @@ get_html : (Html.Html Struct.Event.Type)
 get_html =
    (Html.div
       [
-         (Html.Attributes.class "battle-manual-controls")
+         (Html.Attributes.class "manual-controls")
       ]
       [
          (direction_button Struct.Direction.Left "left"),

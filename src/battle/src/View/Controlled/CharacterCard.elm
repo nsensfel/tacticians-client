@@ -39,9 +39,9 @@ get_name : (
 get_name char =
    (Html.div
       [
-         (Html.Attributes.class "battle-info-card-name"),
-         (Html.Attributes.class "battle-info-card-text-field"),
-         (Html.Attributes.class "battle-character-card-name")
+         (Html.Attributes.class "info-card-name"),
+         (Html.Attributes.class "info-card-text-field"),
+         (Html.Attributes.class "character-card-name")
       ]
       [
          (Html.text (Struct.Character.get_name char))
@@ -63,7 +63,7 @@ get_health_bar char =
       (View.Gauge.get_html
          ("HP: " ++ (toString current) ++ "/" ++ (toString max))
          (100.0 * ((toFloat current)/(toFloat max)))
-         [(Html.Attributes.class "battle-character-card-health")]
+         [(Html.Attributes.class "character-card-health")]
          []
          []
       )
@@ -75,7 +75,7 @@ get_rank_status : (
 get_rank_status rank =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-card-status"),
+         (Html.Attributes.class "character-card-status"),
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
             (Struct.Event.RequestedHelp (Struct.HelpRequest.HelpOnRank rank))
@@ -84,10 +84,10 @@ get_rank_status rank =
             (
                case rank of
                   Struct.Character.Commander ->
-                     "battle-character-card-commander-status"
+                     "character-card-commander-status"
 
                   Struct.Character.Target ->
-                     "battle-character-card-target-status"
+                     "character-card-target-status"
 
                   Struct.Character.Optional -> ""
             )
@@ -104,7 +104,7 @@ get_statuses : (
 get_statuses char =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-card-statuses")
+         (Html.Attributes.class "character-card-statuses")
       ]
       [
          (
@@ -137,7 +137,7 @@ get_active_movement_bar maybe_navigator char =
       (View.Gauge.get_html
          ("MP: " ++ (toString current) ++ "/" ++ (toString max))
          (100.0 * ((toFloat current)/(toFloat max)))
-         [(Html.Attributes.class "battle-character-card-movement")]
+         [(Html.Attributes.class "character-card-movement")]
          []
          []
       )
@@ -164,7 +164,7 @@ get_inactive_movement_bar char =
             )
          )
          100.0
-         [(Html.Attributes.class "battle-character-card-movement")]
+         [(Html.Attributes.class "character-card-movement")]
          []
          []
       )
@@ -202,7 +202,7 @@ get_weapon_field_header : (
 get_weapon_field_header damage_multiplier weapon =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-card-header")
+         (Html.Attributes.class "character-card-header")
       ]
       [
          (Html.div
@@ -247,7 +247,7 @@ get_mod_html mod =
    in
       (Html.div
          [
-            (Html.Attributes.class "battle-info-card-mod")
+            (Html.Attributes.class "info-card-mod")
          ]
          [
             (Html.text
@@ -263,7 +263,7 @@ get_multiplied_mod_html multiplier mod =
    in
       (Html.div
          [
-            (Html.Attributes.class "battle-character-card-mod")
+            (Html.Attributes.class "character-card-mod")
          ]
          [
             (Html.text
@@ -285,13 +285,13 @@ get_weapon_details : (
 get_weapon_details omnimods damage_multiplier weapon =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-card-weapon")
+         (Html.Attributes.class "character-card-weapon")
       ]
       [
          (get_weapon_field_header damage_multiplier weapon),
          (Html.div
             [
-               (Html.Attributes.class "battle-info-card-omnimods-listing")
+               (Html.Attributes.class "info-card-omnimods-listing")
             ]
             (List.map
                (get_multiplied_mod_html damage_multiplier)
@@ -309,7 +309,7 @@ get_weapon_summary : (
 get_weapon_summary damage_multiplier weapon =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-card-weapon-summary")
+         (Html.Attributes.class "character-card-weapon-summary")
       ]
       [
          (get_weapon_field_header damage_multiplier weapon)
@@ -324,12 +324,12 @@ get_armor_details : (
 get_armor_details omnimods armor =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-card-armor")
+         (Html.Attributes.class "character-card-armor")
       ]
       [
          (Html.div
             [
-               (Html.Attributes.class "battle-character-card-armor-name")
+               (Html.Attributes.class "character-card-armor-name")
             ]
             [
                (Html.text (Struct.Armor.get_name armor))
@@ -337,7 +337,7 @@ get_armor_details omnimods armor =
          ),
          (Html.div
             [
-               (Html.Attributes.class "battle-info-card-omnimods-listing")
+               (Html.Attributes.class "info-card-omnimods-listing")
             ]
             (List.map
                (get_mod_html)
@@ -351,7 +351,7 @@ stat_name  : String -> (Html.Html Struct.Event.Type)
 stat_name name =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-card-stat-name")
+         (Html.Attributes.class "character-card-stat-name")
       ]
       [
          (Html.text name)
@@ -362,7 +362,7 @@ stat_val : Int -> Bool -> (Html.Html Struct.Event.Type)
 stat_val val perc =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-card-stat-val")
+         (Html.Attributes.class "character-card-stat-val")
       ]
       [
          (Html.text
@@ -388,7 +388,7 @@ get_relevant_stats : (
 get_relevant_stats stats =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-card-stats")
+         (Html.Attributes.class "character-card-stats")
       ]
       [
          (stat_name "Dodge"),
@@ -415,22 +415,22 @@ get_minimal_html : (
 get_minimal_html player_ix char =
    (Html.div
       [
-         (Html.Attributes.class "battle-info-card"),
-         (Html.Attributes.class "battle-info-card-minimal"),
-         (Html.Attributes.class "battle-character-card"),
-         (Html.Attributes.class "battle-character-card-minimal")
+         (Html.Attributes.class "info-card"),
+         (Html.Attributes.class "info-card-minimal"),
+         (Html.Attributes.class "character-card"),
+         (Html.Attributes.class "character-card-minimal")
       ]
       [
          (get_name char),
          (Html.div
             [
-               (Html.Attributes.class "battle-info-card-top"),
-               (Html.Attributes.class "battle-character-card-top")
+               (Html.Attributes.class "info-card-top"),
+               (Html.Attributes.class "character-card-top")
             ]
             [
                (Html.div
                   [
-                     (Html.Attributes.class "battle-info-card-picture")
+                     (Html.Attributes.class "info-card-picture")
                   ]
                   [
                      (View.Character.get_portrait_html player_ix char)
@@ -461,19 +461,19 @@ get_summary_html char_turn player_ix char =
    in
       (Html.div
          [
-            (Html.Attributes.class "battle-character-card")
+            (Html.Attributes.class "character-card")
          ]
          [
             (get_name char),
             (Html.div
                [
-                  (Html.Attributes.class "battle-info-card-top"),
-                  (Html.Attributes.class "battle-character-card-top")
+                  (Html.Attributes.class "info-card-top"),
+                  (Html.Attributes.class "character-card-top")
                ]
                [
                   (Html.div
                      [
-                        (Html.Attributes.class "battle-info-card-picture")
+                        (Html.Attributes.class "info-card-picture")
                      ]
                      [
                         (View.Character.get_portrait_html player_ix char)
@@ -508,20 +508,20 @@ get_full_html player_ix char =
    in
       (Html.div
          [
-            (Html.Attributes.class "battle-info-card"),
-            (Html.Attributes.class "battle-character-card")
+            (Html.Attributes.class "info-card"),
+            (Html.Attributes.class "character-card")
          ]
          [
             (get_name char),
             (Html.div
                [
-                  (Html.Attributes.class "battle-info-card-top"),
-                  (Html.Attributes.class "battle-character-card-top")
+                  (Html.Attributes.class "info-card-top"),
+                  (Html.Attributes.class "character-card-top")
                ]
                [
                   (Html.div
                      [
-                        (Html.Attributes.class "battle-info-card-picture")
+                        (Html.Attributes.class "info-card-picture")
                      ]
                      [
                         (View.Character.get_portrait_html player_ix char)

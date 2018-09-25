@@ -32,7 +32,7 @@ get_tiles_html : Struct.Map.Type -> (Html.Html Struct.Event.Type)
 get_tiles_html map =
    (Html.div
       [
-         (Html.Attributes.class "battle-tiles-layer"),
+         (Html.Attributes.class "tiles-layer"),
          (Html.Attributes.style
             [
                (
@@ -86,7 +86,7 @@ maybe_print_navigator interactive maybe_nav =
          (Just nav) ->
             (Html.div
                [
-                  (Html.Attributes.class ("battle-navigator" ++ name_suffix))
+                  (Html.Attributes.class ("navigator" ++ name_suffix))
                ]
                (View.Map.Navigator.get_html
                   (Struct.Navigator.get_summary nav)
@@ -105,7 +105,7 @@ get_characters_html : (
 get_characters_html model characters =
    (Html.div
       [
-         (Html.Attributes.class "battle-characters")
+         (Html.Attributes.class "characters")
       ]
       (List.map
          (View.Map.Character.get_html model)
@@ -123,7 +123,7 @@ get_html : (
 get_html model =
    (Html.div
       [
-         (Html.Attributes.class "battle-actual"),
+         (Html.Attributes.class "actual"),
          (Html.Attributes.style
             (
                if ((Struct.UI.get_zoom_level model.ui) == 1)

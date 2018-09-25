@@ -1,6 +1,6 @@
 @import '../../shared/colors';
 
-.battle-tabmenu-characters-tab
+.tabmenu-characters-tab
 {
    display: flex;
    flex-grow: 1;
@@ -8,14 +8,14 @@
    flex-wrap: wrap;
 }
 
-.battle-characters-element-active
+.characters-element-active
 {
    animation-name: brown-alarm-bg;
    animation-duration: 5s;
    animation-iteration-count: infinite;
 }
 
-.battle-characters-element
+.characters-element
 {
    flex: 2;
    margin: 0.5em 0.5em 0 0.5em;

@@ -63,7 +63,7 @@ get_html : (
 get_html model target_ref =
    (Html.div
       [
-         (Html.Attributes.class "battle-side-bar-targets")
+         (Html.Attributes.class "side-bar-targets")
       ]
       [(get_target_info_html model target_ref)]
    )

@@ -1,7 +1,9 @@
-@import 'constants';
-@import 'menu-mixins';
+@import '../shared/battleview/constants';
+@import '../shared/battleview/menu-mixins';
 
-.battle-container-centerer
+@import 'constants';
+
+.container-centerer
 {
    position: absolute;
 
@@ -13,7 +15,7 @@
    display: flex;
 }
 
-.battle-container
+.container
 {
    display: inline-block;
    max-height: 100%;
@@ -29,7 +31,7 @@
    @include menu-background-color();
 }
 
-.battle-actual
+.actual
 {
    display: inline-block;
    transform-origin: top left;
@@ -38,7 +40,7 @@
    position: relative;
 }
 
-.battle-tiled, .battle-tiled *
+.tiled, .tiled *
 {
    height: 32px;
    width: 32px;
@@ -47,31 +49,31 @@
    /* max-width: 32px; */
 }
 
-.battle-tile-icon, .battle-tile-icon *
+.tile-icon, .tile-icon *
 {
    z-index: 0;
    position: absolute;
    background-size: 400%;
 }
 
-.battle-path-icon-below-markers  {z-index: 1;}
-.battle-marker-icon              {z-index: 2;}
-.battle-path-icon-above-markers  {z-index: 3;}
-.battle-character-icon           {z-index: 4;}
+.path-icon-below-markers  {z-index: 1;}
+.marker-icon              {z-index: 2;}
+.path-icon-above-markers  {z-index: 3;}
+.character-icon           {z-index: 4;}
 
-.battle-marker-icon,
-.battle-character-icon,
-.battle-path-icon
+.marker-icon,
+.character-icon,
+.path-icon
 {
    position: absolute;
 }
 
-.battle-tiles-layer
+.tiles-layer
 {
    /*display: table; */
 }
 
-.battle-tiles-layer-row
+.tiles-layer-row
 {
   /* display: table-row; */
 }

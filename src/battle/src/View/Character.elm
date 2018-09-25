@@ -31,9 +31,9 @@ get_activation_level_class : (
 get_activation_level_class char =
    if (Struct.Character.is_enabled char)
    then
-      (Html.Attributes.class "battle-character-icon-enabled")
+      (Html.Attributes.class "character-icon-enabled")
    else
-      (Html.Attributes.class "battle-character-icon-disabled")
+      (Html.Attributes.class "character-icon-disabled")
 
 get_alliance_class : (
       Struct.Model.Type ->
@@ -43,9 +43,9 @@ get_alliance_class : (
 get_alliance_class model char =
    if ((Struct.Character.get_player_ix char) == model.player_ix)
    then
-      (Html.Attributes.class "battle-character-ally")
+      (Html.Attributes.class "character-ally")
    else
-      (Html.Attributes.class "battle-character-enemy")
+      (Html.Attributes.class "character-enemy")
 
 get_position_style : (
       Struct.Character.Type ->
@@ -73,7 +73,7 @@ get_focus_class model char =
       (Just (Struct.UI.SelectedCharacter (Struct.Character.get_index char)))
    )
    then
-      (Html.Attributes.class "battle-character-selected")
+      (Html.Attributes.class "character-selected")
    else
       if
       (
@@ -82,7 +82,7 @@ get_focus_class model char =
          (Just (Struct.Character.get_index char))
       )
       then
-         (Html.Attributes.class "battle-character-targeted")
+         (Html.Attributes.class "character-targeted")
       else
          (Html.Attributes.class "")
 
@@ -90,7 +90,7 @@ get_icon_body_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_icon_body_html char =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-icon-body"),
+         (Html.Attributes.class "character-icon-body"),
          (Html.Attributes.class
             (
                "asset-character-team-body-"
@@ -106,7 +106,7 @@ get_icon_head_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_icon_head_html char =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-icon-head"),
+         (Html.Attributes.class "character-icon-head"),
          (Html.Attributes.class
             ("asset-character-icon-" ++ (Struct.Character.get_icon_id char))
          )
@@ -123,8 +123,8 @@ get_icon_actual_html : (
 get_icon_actual_html model char =
       (Html.div
          [
-            (Html.Attributes.class "battle-tiled"),
-            (Html.Attributes.class "battle-character-icon"),
+            (Html.Attributes.class "tiled"),
+            (Html.Attributes.class "character-icon"),
             (get_activation_level_class char),
             (get_alliance_class model char),
             (get_position_style char),
@@ -144,7 +144,7 @@ get_portrait_body_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_portrait_body_html char =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-portrait-body"),
+         (Html.Attributes.class "character-portrait-body"),
          (Html.Attributes.class
             (
                "asset-character-portrait-"
@@ -160,7 +160,7 @@ get_portrait_armor_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_portrait_armor_html char =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-portrait-armor"),
+         (Html.Attributes.class "character-portrait-armor"),
          (Html.Attributes.class
             (
                "asset-armor-"
@@ -194,15 +194,15 @@ get_portrait_html viewer_ix char =
             (
                if ((Struct.Character.get_player_ix char) == viewer_ix)
                then
-                  "battle-character-ally"
+                  "character-ally"
                else
-                  "battle-character-enemy"
+                  "character-enemy"
             )
          ),
-         (Html.Attributes.class "battle-character-portrait"),
+         (Html.Attributes.class "character-portrait"),
          (Html.Attributes.class
             (
-               "battle-character-portrait-team-"
+               "character-portrait-team-"
                ++
                (toString (Struct.Character.get_player_ix char))
             )

@@ -32,8 +32,8 @@ get_html characters player_ix weapon_switch =
       (Just char) ->
          (Html.div
             [
-               (Html.Attributes.class "battle-timeline-element"),
-               (Html.Attributes.class "battle-timeline-weapon-switch")
+               (Html.Attributes.class "timeline-element"),
+               (Html.Attributes.class "timeline-weapon-switch")
             ]
             [
                (View.Character.get_portrait_html player_ix char),
@@ -49,8 +49,8 @@ get_html characters player_ix weapon_switch =
       _ ->
          (Html.div
             [
-               (Html.Attributes.class "battle-timeline-element"),
-               (Html.Attributes.class "battle-timeline-weapon-switch")
+               (Html.Attributes.class "timeline-element"),
+               (Html.Attributes.class "timeline-weapon-switch")
             ]
             [
                (Html.text "Error: Unknown character switched weapons")

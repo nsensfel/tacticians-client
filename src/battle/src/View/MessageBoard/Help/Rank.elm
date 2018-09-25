@@ -14,7 +14,7 @@ import Struct.Event
 get_guide_icon_html : (Html.Html Struct.Event.Type)
 get_guide_icon_html =
    (Html.div
-      [(Html.Attributes.class "battle-help-guide-icon")]
+      [(Html.Attributes.class "help-guide-icon")]
       []
    )
 
@@ -28,10 +28,10 @@ get_header_with_icon_html title rank_name =
          (Html.div
             [
                (Html.Attributes.class
-                  "battle-message-board-help-figure"
+                  "message-board-help-figure"
                ),
                (Html.Attributes.class
-                  ("battle-character-card-" ++ rank_name ++ "-status")
+                  ("character-card-" ++ rank_name ++ "-status")
                )
             ]
             []

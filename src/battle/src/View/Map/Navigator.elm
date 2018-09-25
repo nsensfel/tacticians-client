@@ -28,12 +28,10 @@ marker_get_html is_interactive (loc_ref, marker) =
    (Html.div
       (
          [
-            (Html.Attributes.class "battle-marker-icon"),
-            (Html.Attributes.class "battle-tiled"),
+            (Html.Attributes.class "marker-icon"),
+            (Html.Attributes.class "tiled"),
             (Html.Attributes.class
                (
-                  "battle-"
-                  ++
                   (
                      case marker of
                         Struct.Marker.CanGoToCanDefend -> "can-go-to-can-defend"
@@ -79,7 +77,7 @@ marker_get_html is_interactive (loc_ref, marker) =
                )
                then
                   [
-                     (Html.Attributes.class "battle-navigator-interactive"),
+                     (Html.Attributes.class "navigator-interactive"),
                      (Html.Attributes.class "clickable"),
                      (Html.Events.onClick
                         (Struct.Event.CharacterOrTileSelected loc_ref)
@@ -87,11 +85,11 @@ marker_get_html is_interactive (loc_ref, marker) =
                   ]
                else
                   [
-                     (Html.Attributes.class "battle-navigator-interactive")
+                     (Html.Attributes.class "navigator-interactive")
                   ]
             else
                [
-                  (Html.Attributes.class "battle-navigator-non-interactive"),
+                  (Html.Attributes.class "navigator-non-interactive"),
                   (Html.Events.onClick
                      (Struct.Event.CharacterOrTileSelected loc_ref)
                   )
@@ -123,20 +121,20 @@ path_node_get_html is_below_markers next_dir (curr_loc, curr_dir, curr_nodes) =
       (
          (Html.div
             [
-               (Html.Attributes.class "battle-path-icon"),
+               (Html.Attributes.class "path-icon"),
                (Html.Attributes.class
                   (
                      if (is_below_markers)
                      then
-                        "battle-path-icon-below-markers"
+                        "path-icon-below-markers"
                      else
-                        "battle-path-icon-above-markers"
+                        "path-icon-above-markers"
                   )
                ),
-               (Html.Attributes.class "battle-tiled"),
+               (Html.Attributes.class "tiled"),
                (Html.Attributes.class
                   (
-                     "battle-path-icon-"
+                     "path-icon-"
                      ++
                      (Struct.Direction.to_string curr_dir)
                      ++
@@ -185,12 +183,12 @@ mark_the_spot : (
 mark_the_spot loc origin_dir =
    (Html.div
       [
-         (Html.Attributes.class "battle-path-icon"),
-         (Html.Attributes.class "battle-path-icon-above-markers"),
-         (Html.Attributes.class "battle-tiled"),
+         (Html.Attributes.class "path-icon"),
+         (Html.Attributes.class "path-icon-above-markers"),
+         (Html.Attributes.class "tiled"),
          (Html.Attributes.class
             (
-               "battle-path-icon-mark"
+               "path-icon-mark"
                ++
                (Struct.Direction.to_string origin_dir)
             )

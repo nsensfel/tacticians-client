@@ -27,11 +27,11 @@ get_icon : (Struct.Tile.Instance -> (Html.Html Struct.Event.Type))
 get_icon tile =
    (Html.div
       [
-         (Html.Attributes.class "battle-tile-card-icon"),
-         (Html.Attributes.class "battle-info-card-picture"),
+         (Html.Attributes.class "tile-card-icon"),
+         (Html.Attributes.class "info-card-picture"),
          (Html.Attributes.class
             (
-               "battle-tile-variant-"
+               "tile-variant-"
                ++ (toString (Struct.Tile.get_local_variant_ix tile))
             )
          )
@@ -50,9 +50,9 @@ get_name model tile =
       (Just tile_type) ->
          (Html.div
             [
-               (Html.Attributes.class "battle-info-card-name"),
-               (Html.Attributes.class "battle-info-card-text-field"),
-               (Html.Attributes.class "battle-tile-card-name")
+               (Html.Attributes.class "info-card-name"),
+               (Html.Attributes.class "info-card-text-field"),
+               (Html.Attributes.class "tile-card-name")
             ]
             [
                (Html.text (Struct.Tile.get_name tile_type))
@@ -72,8 +72,8 @@ get_cost tile =
    in
       (Html.div
          [
-            (Html.Attributes.class "battle-info-card-text-field"),
-            (Html.Attributes.class "battle-tile-card-cost")
+            (Html.Attributes.class "info-card-text-field"),
+            (Html.Attributes.class "tile-card-cost")
          ]
          [
             (Html.text text)
@@ -87,8 +87,8 @@ get_location tile =
    in
       (Html.div
          [
-            (Html.Attributes.class "battle-info-card-text-field"),
-            (Html.Attributes.class "battle-tile-card-location")
+            (Html.Attributes.class "info-card-text-field"),
+            (Html.Attributes.class "tile-card-location")
          ]
          [
             (Html.text
@@ -110,7 +110,7 @@ get_mod_html mod =
    in
       (Html.div
          [
-            (Html.Attributes.class "battle-info-card-mod")
+            (Html.Attributes.class "info-card-mod")
          ]
          [
             (Html.text
@@ -123,7 +123,7 @@ get_omnimods_listing : (List (String, Int)) -> (Html.Html Struct.Event.Type)
 get_omnimods_listing mod_list =
    (Html.div
       [
-         (Html.Attributes.class "battle-info-card-omnimods-listing")
+         (Html.Attributes.class "info-card-omnimods-listing")
       ]
       (List.map (get_mod_html) mod_list)
    )
@@ -132,7 +132,7 @@ get_omnimods : Struct.Omnimods.Type -> (Html.Html Struct.Event.Type)
 get_omnimods omnimods =
    (Html.div
       [
-         (Html.Attributes.class "battle-info-card-omnimods")
+         (Html.Attributes.class "info-card-omnimods")
       ]
       [
          (Html.text "Attribute Modifiers"),
@@ -158,15 +158,15 @@ get_html model loc =
       (Just tile) ->
          (Html.div
             [
-               (Html.Attributes.class "battle-info-card"),
-               (Html.Attributes.class "battle-tile-card")
+               (Html.Attributes.class "info-card"),
+               (Html.Attributes.class "tile-card")
             ]
             [
                (get_name model tile),
                (Html.div
                   [
-                     (Html.Attributes.class "battle-info-card-top"),
-                     (Html.Attributes.class "battle-tile-card-top")
+                     (Html.Attributes.class "info-card-top"),
+                     (Html.Attributes.class "tile-card-top")
                   ]
                   [
                      (get_icon tile),

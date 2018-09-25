@@ -1,21 +1,17 @@
-@import 'constants';
-@import 'menu-mixins';
+@import '../shared/battleview/constants';
+@import '../shared/battleview/menu-mixins';
 
-.battle-controlled
+@import 'constants';
+
+.controlled
 {
-   position: absolute;
-   display: block;
+   @include menu-panel();
+
    left: 0;
    top: $BELOW-MAIN-MENU;
    bottom: $ABOVE-MESSAGE-BOARD;
 
    width: $CONTROLLED-MENU-WIDTH;
-
-   @include menu-background-color();
-
-   @include menu-padding();
-
-   @include menu-border();
 
    border-top-left-radius: 0;
    border-bottom-left-radius: 0;
@@ -26,7 +22,7 @@
    justify-content: space-between;
 }
 
-.battle-controlled-actions
+.controlled-actions
 {
    display: flex;
    flex-flow: row wrap;
@@ -35,7 +31,7 @@
    justify-content: center;
 }
 
-.battle-end-turn-button
+.end-turn-button
 {
    animation-name: reverse-brown-alarm-bg;
    animation-duration: 2s;

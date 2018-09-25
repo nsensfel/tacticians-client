@@ -24,7 +24,7 @@ get_character_element_html : (
 get_character_element_html player_ix char =
    (Html.div
       [
-         (Html.Attributes.class "battle-characters-element"),
+         (Html.Attributes.class "characters-element"),
          (
             if (Struct.Character.is_alive char)
             then
@@ -38,9 +38,9 @@ get_character_element_html player_ix char =
          (
             if (Struct.Character.is_enabled char)
             then
-               (Html.Attributes.class "battle-characters-element-active")
+               (Html.Attributes.class "characters-element-active")
             else
-               (Html.Attributes.class "battle-characters-element-inactive")
+               (Html.Attributes.class "characters-element-inactive")
          )
       ]
       [
@@ -59,8 +59,8 @@ get_html : (
 get_html characters player_ix =
    (Html.div
       [
-         (Html.Attributes.class "battle-tabmenu-content"),
-         (Html.Attributes.class "battle-tabmenu-characters-tab")
+         (Html.Attributes.class "tabmenu-content"),
+         (Html.Attributes.class "tabmenu-characters-tab")
       ]
       (List.map
          (get_character_element_html player_ix)

@@ -1,20 +1,20 @@
 @import "../shared/colors";
 @import "../shared/shadows";
 
-.battle-info-card
+.info-card
 {
    display: flex;
    flex-flow: column;
 }
 
-.battle-info-card-top
+.info-card-top
 {
    position: relative;
 
    margin-top: 0.5em;
 }
 
-.battle-info-card-picture
+.info-card-picture
 {
    top: 0;
    left: 0;
@@ -31,7 +31,7 @@
    display: inline-block;
 }
 
-.battle-info-card-text-field
+.info-card-text-field
 {
    display:flex;
    justify-content:center;
@@ -41,7 +41,7 @@
    width: 100%;
 }
 
-.battle-gauge
+.gauge
 {
    position: relative;
    border-radius: 5px;
@@ -50,7 +50,7 @@
    height: 2em;
 }
 
-.battle-gauge-text
+.gauge-text
 {
    position: absolute;
    top: 0;
@@ -65,7 +65,7 @@
    justify-content: center;
 }
 
-.battle-gauge-bar
+.gauge-bar
 {
    position: absolute;
    top: 0;
@@ -79,8 +79,8 @@
    transition: width 3s ease-in-out;
 }
 
-.battle-character-card-health,
-.battle-tile-card-cost
+.character-card-health,
+.tile-card-cost
 {
    position: absolute;
    left: 100px;
@@ -90,8 +90,8 @@
 }
 
 
-.battle-character-card-movement,
-.battle-tile-card-location
+.character-card-movement,
+.tile-card-location
 {
    position: absolute;
    left: 100px;

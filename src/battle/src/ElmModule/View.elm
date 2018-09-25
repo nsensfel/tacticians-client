@@ -39,12 +39,12 @@ view model =
          ),
          (Html.div
             [
-               (Html.Attributes.class "battle-container-centerer")
+               (Html.Attributes.class "container-centerer")
             ]
             [
                (Html.div
                   [
-                     (Html.Attributes.class "battle-container"),
+                     (Html.Attributes.class "container"),
                      (Html.Attributes.id Constants.UI.viewer_html_id)
                   ]
                   [(View.Map.get_html model)]

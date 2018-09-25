@@ -1,20 +1,18 @@
-@import 'constants';
-@import 'menu-mixins';
+@import '../shared/battleview/constants';
+@import '../shared/battleview/menu-mixins';
 
-.map-sub-menu
+@import 'constants';
+
+.sub-menu
 {
-   position: absolute;
+   @include menu-panel();
+
    right: 0;
    top: $BELOW-MAIN-MENU;
    bottom: $ABOVE-MESSAGE-BOARD;
 
    width: $SUB-MENU-WIDTH;
 
-   @include menu-background-color();
-
-   @include menu-padding();
-
-   @include menu-border();
    border-top-right-radius: 0;
    border-bottom-right-radius: 0;
    border-right: none;

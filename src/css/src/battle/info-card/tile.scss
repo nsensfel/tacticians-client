@@ -1,5 +1,5 @@
 
-.battle-tile-card-icon
+.tile-card-icon
 {
    position: relative;
    width: 80px;
@@ -7,7 +7,7 @@
    display: inline-block;
 }
 
-.battle-tile-card-icon *
+.tile-card-icon *
 {
    position: absolute;
 
@@ -16,7 +16,7 @@
    height: 80px;
 }
 
-.battle-tile-card-top
+.tile-card-top
 {
    margin:0.3em;
 }

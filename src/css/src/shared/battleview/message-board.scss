@@ -1,7 +1,7 @@
 @import 'constants';
 @import 'menu-mixins';
 
-.map-message-board
+.message-board
 {
    position: absolute;
    bottom: 0;
@@ -28,17 +28,6 @@
 
    overflow-y: auto;
 }
-
-/*
-.map-message-board
-{
-   background: $BROWN-4;
-   color: $BROWN-0;
-   line-height: 1.3em;
-   font-size: 1.2em;
-   text-shadow: none;
-}
-*/
 
 @import 'message-board/error';
 @import 'message-board/help';

@@ -1,88 +1,88 @@
-.battle-path-icon
+.path-icon
 {
    background-image: url("/asset/svg/arrows.svg");
    background-size: 96px 32px;
 }
 
-.battle-path-icon-UR,
-.battle-path-icon-LD,
-.battle-path-icon-RD,
-.battle-path-icon-UL,
-.battle-path-icon-LU,
-.battle-path-icon-DR,
-.battle-path-icon-DL,
-.battle-path-icon-RU
+.path-icon-UR,
+.path-icon-LD,
+.path-icon-RD,
+.path-icon-UL,
+.path-icon-LU,
+.path-icon-DR,
+.path-icon-DL,
+.path-icon-RU
 {
    /*** Default is -^ ***/
    background-position: 64px 0;
 }
 /*** DL/RU ***/
 
-.battle-path-icon-LU,
-.battle-path-icon-DR
+.path-icon-LU,
+.path-icon-DR
 {
    transform: rotate(90deg);
 }
 
-.battle-path-icon-RD,
-.battle-path-icon-UL
+.path-icon-RD,
+.path-icon-UL
 {
    /***  ***/
    transform: scale(1, -1);
 }
 
-.battle-path-icon-UR,
-.battle-path-icon-LD
+.path-icon-UR,
+.path-icon-LD
 {
    /*** <| ***/
    transform: rotate(180deg);
 }
 
-.battle-path-icon-RR,
-.battle-path-icon-LR,
-.battle-path-icon-RL,
-.battle-path-icon-LL
+.path-icon-RR,
+.path-icon-LR,
+.path-icon-RL,
+.path-icon-LL
 {
    background-position: 0 0;
 }
 
-.battle-path-icon-markN,
-.battle-path-icon-NU,
-.battle-path-icon-ND,
-.battle-path-icon-NL,
-.battle-path-icon-NR
+.path-icon-markN,
+.path-icon-NU,
+.path-icon-ND,
+.path-icon-NL,
+.path-icon-NR
 {
    display: none;
 }
 
-.battle-path-icon-UU,
-.battle-path-icon-UD,
-.battle-path-icon-DU,
-.battle-path-icon-DD
+.path-icon-UU,
+.path-icon-UD,
+.path-icon-DU,
+.path-icon-DD
 {
    background-position: 0 0;
    transform: rotate(90deg);
 }
 
-.battle-path-icon-markR,
-.battle-path-icon-markL,
-.battle-path-icon-markU,
-.battle-path-icon-markD
+.path-icon-markR,
+.path-icon-markL,
+.path-icon-markU,
+.path-icon-markD
 {
    background-position: 32px 0;
 }
 
-.battle-path-icon-markL
+.path-icon-markL
 {
    transform: rotate(180deg);
 }
 
-.battle-path-icon-markD
+.path-icon-markD
 {
    transform: rotate(90deg);
 }
 
-.battle-path-icon-markU
+.path-icon-markU
 {
    transform: rotate(-90deg);
 }

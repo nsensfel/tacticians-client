@@ -1,6 +1,6 @@
 @import "../../shared/colors";
 
-.battle-character-portrait
+.character-portrait
 {
    background-size: 100% 100%;
    width: 100px;
@@ -9,7 +9,7 @@
    cursor: pointer;
 }
 
-.battle-character-portrait *
+.character-portrait *
 {
    box-sizing: border-box;
    background-size: 100% 100%;
@@ -17,12 +17,12 @@
    height: inherit;
 }
 
-.battle-character-portrait-body
+.character-portrait-body
 {
    z-index: 1;
 }
 
-.battle-character-portrait-armor
+.character-portrait-armor
 {
    position: relative;
    z-index: 1;
@@ -30,16 +30,16 @@
    background-size: 200% 100%;
 }
 
-.battle-character-portrait-team-0 { background-color: rgba(57, 106, 177, 0.3); }
-.battle-character-portrait-team-1 { background-color: rgba(204, 37, 41, 0.3); }
-.battle-character-portrait-team-2 { background-color: rgba(62, 150, 81, 0.3); }
-.battle-character-portrait-team-3 { background-color: rgba(218, 124, 48, 0.3); }
-.battle-character-portrait-team-4 { background-color: rgba(83, 81, 84, 0.3); }
-.battle-character-portrait-team-5 { background-color: rgba(107, 76, 154, 0.3); }
-.battle-character-portrait-team-6 { background-color: rgba(127, 167, 169, 0.3); }
-.battle-character-portrait-team-7 { background-color: rgba(231, 167, 169, 0.3); }
+.character-portrait-team-0 { background-color: rgba(57, 106, 177, 0.3); }
+.character-portrait-team-1 { background-color: rgba(204, 37, 41, 0.3); }
+.character-portrait-team-2 { background-color: rgba(62, 150, 81, 0.3); }
+.character-portrait-team-3 { background-color: rgba(218, 124, 48, 0.3); }
+.character-portrait-team-4 { background-color: rgba(83, 81, 84, 0.3); }
+.character-portrait-team-5 { background-color: rgba(107, 76, 154, 0.3); }
+.character-portrait-team-6 { background-color: rgba(127, 167, 169, 0.3); }
+.character-portrait-team-7 { background-color: rgba(231, 167, 169, 0.3); }
 
-.battle-character-card-statuses
+.character-card-statuses
 {
    position: absolute;
    left: 100px;
@@ -49,35 +49,35 @@
    display: flex;
 }
 
-.battle-character-card-status
+.character-card-status
 {
    height: 1.5em;
    width: 1.5em;
    background-size: 100%;
 }
 
-.battle-character-card-target-status
+.character-card-target-status
 {
    background-image: url("/asset/svg/status/target.svg");
 }
 
-.battle-character-card-commander-status
+.character-card-commander-status
 {
    background-image: url("/asset/svg/status/commander.svg");
 }
 
-.battle-character-card-health > .battle-gauge-bar
+.character-card-health > .gauge-bar
 {
    background-color: $RED-3;
 }
 
-.battle-character-card-movement > .battle-gauge-bar
+.character-card-movement > .gauge-bar
 {
    background-color: $BLUE-3;
 }
 
-.battle-character-card-weapon,
-.battle-character-card-weapon-summary
+.character-card-weapon,
+.character-card-weapon-summary
 {
    display: grid;
 
@@ -87,17 +87,17 @@
    margin-top: 0.3em;
 }
 
-.battle-character-card-weapon
+.character-card-weapon
 {
    background-color: #6C5D53;
 }
 
-.battle-character-card-weapon-summary
+.character-card-weapon-summary
 {
    background-color: $BROWN-1;
 }
 
-.battle-character-card-armor
+.character-card-armor
 {
    display: grid;
    border-radius: 5px;
@@ -107,20 +107,20 @@
    margin-top: 0.3em;
 }
 
-.battle-character-card-armor-stats
+.character-card-armor-stats
 {
    display: flex;
    flex-direction: row;
    flex-wrap: wrap;
 }
 
-.battle-character-card-stats > *,
-.battle-character-card-armor-stats > *
+.character-card-stats > *,
+.character-card-armor-stats > *
 {
    width: 25%;
 }
 
-.battle-character-card-stats
+.character-card-stats
 {
    display: flex;
    flex-direction: row;

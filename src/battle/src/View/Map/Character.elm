@@ -36,7 +36,7 @@ get_animation_class model char =
                then
                   (Html.Attributes.class "")
                else
-                  (Html.Attributes.class "battle-character-selected")
+                  (Html.Attributes.class "character-selected")
 
             (Struct.TurnResultAnimator.TurnResult current_action) ->
                if
@@ -51,7 +51,7 @@ get_animation_class model char =
                   case current_action of
                      (Struct.TurnResult.Moved _) ->
                         (Html.Attributes.class
-                           "battle-animated-character-icon"
+                           "animated-character-icon"
                         )
 
                      _ -> (Html.Attributes.class "")
@@ -64,9 +64,9 @@ get_activation_level_class : (
 get_activation_level_class char =
    if (Struct.Character.is_enabled char)
    then
-      (Html.Attributes.class "battle-character-icon-enabled")
+      (Html.Attributes.class "character-icon-enabled")
    else
-      (Html.Attributes.class "battle-character-icon-disabled")
+      (Html.Attributes.class "character-icon-disabled")
 
 get_alliance_class : (
       Struct.Model.Type ->
@@ -76,9 +76,9 @@ get_alliance_class : (
 get_alliance_class model char =
    if ((Struct.Character.get_player_ix char) == model.player_ix)
    then
-      (Html.Attributes.class "battle-character-ally")
+      (Html.Attributes.class "character-ally")
    else
-      (Html.Attributes.class "battle-character-enemy")
+      (Html.Attributes.class "character-enemy")
 
 get_position_style : (
       Struct.Character.Type ->
@@ -106,7 +106,7 @@ get_focus_class model char =
       (Just (Struct.UI.SelectedCharacter (Struct.Character.get_index char)))
    )
    then
-      (Html.Attributes.class "battle-character-selected")
+      (Html.Attributes.class "character-selected")
    else
       if
       (
@@ -115,7 +115,7 @@ get_focus_class model char =
          (Just (Struct.Character.get_index char))
       )
       then
-         (Html.Attributes.class "battle-character-targeted")
+         (Html.Attributes.class "character-targeted")
       else
          (Html.Attributes.class "")
 
@@ -123,7 +123,7 @@ get_body_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_body_html char =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-icon-body"),
+         (Html.Attributes.class "character-icon-body"),
          (Html.Attributes.class
             (
                "asset-character-team-body-"
@@ -139,7 +139,7 @@ get_head_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_head_html char =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-icon-head"),
+         (Html.Attributes.class "character-icon-head"),
          (Html.Attributes.class
             ("asset-character-icon-" ++ (Struct.Character.get_icon_id char))
          )
@@ -154,7 +154,7 @@ get_banner_html char =
       Struct.Character.Commander ->
          (Html.div
             [
-               (Html.Attributes.class "battle-character-icon-banner"),
+               (Html.Attributes.class "character-icon-banner"),
                (Html.Attributes.class "asset-character-icon-commander-banner")
             ]
             [
@@ -164,7 +164,7 @@ get_banner_html char =
       Struct.Character.Target ->
          (Html.div
             [
-               (Html.Attributes.class "battle-character-icon-banner"),
+               (Html.Attributes.class "character-icon-banner"),
                (Html.Attributes.class "asset-character-icon-target-banner")
             ]
             [
@@ -181,8 +181,8 @@ get_actual_html : (
 get_actual_html model char =
       (Html.div
          [
-            (Html.Attributes.class "battle-tiled"),
-            (Html.Attributes.class "battle-character-icon"),
+            (Html.Attributes.class "tiled"),
+            (Html.Attributes.class "character-icon"),
             (get_animation_class model char),
             (get_activation_level_class char),
             (get_alliance_class model char),

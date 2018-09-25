@@ -18,7 +18,7 @@ get_header_html title =
       []
       [
          (Html.div
-            [(Html.Attributes.class "battle-help-guide-icon")]
+            [(Html.Attributes.class "help-guide-icon")]
             []
          ),
          (Html.text title)

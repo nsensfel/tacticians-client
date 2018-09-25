@@ -59,7 +59,7 @@ end_turn_button suffix =
    (Html.button
       [
          (Html.Events.onClick Struct.Event.TurnEnded),
-         (Html.Attributes.class "battle-end-turn-button")
+         (Html.Attributes.class "end-turn-button")
       ]
       [ (Html.text ("End Turn" ++ suffix)) ]
    )
@@ -129,7 +129,7 @@ get_html char_turn player_ix =
    of
       (Just char) ->
          (Html.div
-            [(Html.Attributes.class "battle-controlled")]
+            [(Html.Attributes.class "controlled")]
             [
                (View.Controlled.CharacterCard.get_summary_html
                   char_turn
@@ -149,7 +149,7 @@ get_html char_turn player_ix =
                      (Util.Html.nothing)
                ),
                (Html.div
-                  [(Html.Attributes.class "battle-controlled-actions")]
+                  [(Html.Attributes.class "controlled-actions")]
                   (get_available_actions char_turn)
                )
             ]

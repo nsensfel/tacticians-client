@@ -23,8 +23,8 @@ get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    (Html.div
       [
-         (Html.Attributes.class "battle-message-board"),
-         (Html.Attributes.class "battle-message-board-help")
+         (Html.Attributes.class "message-board"),
+         (Html.Attributes.class "message-board-help")
       ]
       (
          case model.help_request of

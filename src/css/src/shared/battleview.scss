@@ -1,0 +1,17 @@
+@import 'colors';
+@import 'shadows';
+
+*
+{
+   color: $GOLD-0;
+   @include text-shadow(1px, $BROWN-0, 0.5);
+}
+
+body
+{
+   background-color: $BROWN-2;
+}
+
+@import 'battleview/button';
+@import 'battleview/main-menu';
+@import 'battleview/message-board';

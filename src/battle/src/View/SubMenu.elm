@@ -56,7 +56,7 @@ get_html model =
    case (Struct.UI.try_getting_displayed_tab model.ui) of
       (Just tab) ->
          (Html.div
-            [(Html.Attributes.class "battle-sub-menu")]
+            [(Html.Attributes.class "sub-menu")]
             [(get_inner_html model tab)]
          )
 
@@ -66,7 +66,7 @@ get_html model =
                case (Array.get char_ref model.characters) of
                   (Just char) ->
                      (Html.div
-                        [(Html.Attributes.class "battle-sub-menu")]
+                        [(Html.Attributes.class "sub-menu")]
                         [
                            (Html.text "Targeting:"),
                            (Html.Lazy.lazy3

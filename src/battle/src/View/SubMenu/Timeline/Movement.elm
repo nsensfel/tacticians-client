@@ -32,8 +32,8 @@ get_html characters player_ix movement =
       (Just char) ->
          (Html.div
             [
-               (Html.Attributes.class "battle-timeline-element"),
-               (Html.Attributes.class "battle-timeline-movement")
+               (Html.Attributes.class "timeline-element"),
+               (Html.Attributes.class "timeline-movement")
             ]
             [
                (View.Character.get_portrait_html player_ix char),
@@ -53,8 +53,8 @@ get_html characters player_ix movement =
       _ ->
          (Html.div
             [
-               (Html.Attributes.class "battle-timeline-element"),
-               (Html.Attributes.class "battle-timeline-movement")
+               (Html.Attributes.class "timeline-element"),
+               (Html.Attributes.class "timeline-movement")
             ]
             [
                (Html.text "Error: Moving with unknown character")

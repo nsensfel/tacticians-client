@@ -1,7 +1,7 @@
 @import '../../shared/colors';
 @import '../../shared/shadows';
 
-.battle-timeline-element
+.timeline-element
 {
    margin: 0.5em 0.5em 0 0.5em;
    text-align: center;
@@ -12,7 +12,7 @@
    padding: 0.5em;
 }
 
-.battle-timeline-element .battle-character-portrait
+.timeline-element .character-portrait
 {
    display: inline-block;
    vertical-align: middle;
@@ -24,7 +24,7 @@
    @include box-shadow(1px, $BROWN-0, 1);
 }
 
-.battle-timeline-element .battle-character-portrait + *
+.timeline-element .character-portrait + *
 {
    margin-left: 1em;
 }
