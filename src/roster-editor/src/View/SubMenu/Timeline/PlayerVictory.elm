@@ -23,8 +23,8 @@ get_html : (
 get_html pvict =
    (Html.div
       [
-         (Html.Attributes.class "battle-timeline-element"),
-         (Html.Attributes.class "battle-timeline-player-victory")
+         (Html.Attributes.class "timeline-element"),
+         (Html.Attributes.class "timeline-player-victory")
       ]
       [
          (Html.text

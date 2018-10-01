@@ -47,7 +47,7 @@ get_html : (Html.Html Struct.Event.Type)
 get_html =
    (Html.div
       [
-         (Html.Attributes.class "battle-main-menu")
+         (Html.Attributes.class "main-menu")
       ]
       [
          (get_main_menu_button_html),

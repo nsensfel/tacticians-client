@@ -23,7 +23,7 @@ get_icon_body_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_icon_body_html char =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-icon-body"),
+         (Html.Attributes.class "character-icon-body"),
          (Html.Attributes.class "asset-character-team-body-0")
       ]
       [
@@ -34,7 +34,7 @@ get_icon_head_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_icon_head_html char =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-icon-head"),
+         (Html.Attributes.class "character-icon-head"),
          (Html.Attributes.class
             ("asset-character-icon-" ++ (Struct.Character.get_portrait_id char))
          )
@@ -47,7 +47,7 @@ get_portrait_body_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_portrait_body_html char =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-portrait-body"),
+         (Html.Attributes.class "character-portrait-body"),
          (Html.Attributes.class
             (
                "asset-character-portrait-"
@@ -63,7 +63,7 @@ get_portrait_armor_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_portrait_armor_html char =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-portrait-armor"),
+         (Html.Attributes.class "character-portrait-armor"),
          (Html.Attributes.class
             (
                "asset-armor-"
@@ -89,8 +89,8 @@ get_portrait_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_portrait_html char =
    (Html.div
       [
-         (Html.Attributes.class "battle-character-portrait"),
-         (Html.Attributes.class "battle-character-portrait-team-0")
+         (Html.Attributes.class "character-portrait"),
+         (Html.Attributes.class "character-portrait-team-0")
       ]
       [
          (get_portrait_body_html char),
@@ -102,8 +102,8 @@ get_icon_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_icon_html char =
    (Html.div
       [
-         (Html.Attributes.class "battle-tiled"),
-         (Html.Attributes.class "battle-character-icon"),
+         (Html.Attributes.class "tiled"),
+         (Html.Attributes.class "character-icon"),
          (Html.Attributes.class "clickable")
       ]
       [

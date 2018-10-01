@@ -26,7 +26,7 @@ get_title_html : (
 get_title_html attacker defender =
    (Html.div
       [
-         (Html.Attributes.class "battle-timeline-attack-title")
+         (Html.Attributes.class "timeline-attack-title")
       ]
       [
          (Html.text
@@ -135,8 +135,8 @@ get_html characters player_ix attack =
       ((Just atkchar), (Just defchar)) ->
          (Html.div
             [
-               (Html.Attributes.class "battle-timeline-element"),
-               (Html.Attributes.class "battle-timeline-attack")
+               (Html.Attributes.class "timeline-element"),
+               (Html.Attributes.class "timeline-attack")
             ]
             (
                [
@@ -155,8 +155,8 @@ get_html characters player_ix attack =
       _ ->
          (Html.div
             [
-               (Html.Attributes.class "battle-timeline-element"),
-               (Html.Attributes.class "battle-timeline-attack")
+               (Html.Attributes.class "timeline-element"),
+               (Html.Attributes.class "timeline-attack")
             ]
             [
                (Html.text "Error: Attack with unknown characters")

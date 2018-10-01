@@ -23,8 +23,8 @@ get_html : (
 get_html pturns =
    (Html.div
       [
-         (Html.Attributes.class "battle-timeline-element"),
-         (Html.Attributes.class "battle-timeline-turn-start")
+         (Html.Attributes.class "timeline-element"),
+         (Html.Attributes.class "timeline-turn-start")
       ]
       [
          (Html.text

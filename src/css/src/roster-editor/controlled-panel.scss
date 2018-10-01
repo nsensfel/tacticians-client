@@ -1,0 +1,23 @@
+@import '../shared/battleview/constants';
+@import '../shared/battleview/menu-mixins';
+
+@import 'constants';
+
+.controlled
+{
+   @include menu-panel();
+
+   right: 0;
+   top: $BELOW-MAIN-MENU;
+   bottom: $ABOVE-MESSAGE-BOARD;
+
+   width: $CONTROLLED-MENU-WIDTH;
+
+   border-top-right-radius: 0;
+   border-bottom-right-radius: 0;
+   border-right: none;
+
+   display: flex;
+   flex-flow: column;
+   justify-content: space-between;
+}

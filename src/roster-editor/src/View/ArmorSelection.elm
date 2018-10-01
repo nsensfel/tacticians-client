@@ -18,7 +18,10 @@ import Struct.Model
 get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    (Html.div
-      [(Html.Attributes.class "roster-editor-armor-selection")]
+      [
+         (Html.Attributes.class "selection-window"),
+         (Html.Attributes.class "armor-selection")
+      ]
       [
          (Html.text "Armor Selection")
       ]
