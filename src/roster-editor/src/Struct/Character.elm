@@ -42,7 +42,7 @@ type alias PartiallyDecoded =
       awp : Int,
       swp : Int,
       ar : Int,
-      gb : Int,
+      gb : String,
       gls : (List Int),
       current_omnimods : Struct.Omnimods.Type
    }
@@ -141,7 +141,7 @@ decoder =
          |> (Json.Decode.Pipeline.required "awp" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "swp" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "ar" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "gb" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "gb" Json.Decode.string)
          |> (Json.Decode.Pipeline.required
                "gls"
                (Json.Decode.list Json.Decode.int)
