@@ -26,7 +26,7 @@ get_html model =
       Nothing -> (Util.Html.nothing)
       (Just char) ->
          (Html.div
-            [(Html.Attributes.class "roster-editor-controlled")]
+            [(Html.Attributes.class "controlled")]
             [
                (Html.Lazy.lazy
                   (View.CharacterCard.get_full_html)

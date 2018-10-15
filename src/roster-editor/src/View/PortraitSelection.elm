@@ -20,7 +20,7 @@ get_html model =
    (Html.div
       [
          (Html.Attributes.class "selection-window"),
-         (Html.Attributes.class "roster-editor-portrait-selection")
+         (Html.Attributes.class "portrait-selection")
       ]
       [
          (Html.text "Portrait Selection")

@@ -20,7 +20,7 @@ get_html model =
    (Html.div
       [
          (Html.Attributes.class "selection-window"),
-         (Html.Attributes.class "roster-editor-glyph-management")
+         (Html.Attributes.class "glyph-management")
       ]
       [
          (Html.text "Glyph Management")

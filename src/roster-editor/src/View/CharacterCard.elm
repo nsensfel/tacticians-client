@@ -321,7 +321,12 @@ get_minimal_html char =
          (Html.Attributes.class "info-card"),
          (Html.Attributes.class "info-card-minimal"),
          (Html.Attributes.class "character-card"),
-         (Html.Attributes.class "character-card-minimal")
+         (Html.Attributes.class "character-card-minimal"),
+         (Html.Events.onClick
+            (Struct.Event.CharacterSelected
+               (Struct.Character.get_index char)
+            )
+         )
       ]
       [
          (get_name char),
