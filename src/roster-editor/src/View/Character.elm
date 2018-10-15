@@ -9,12 +9,9 @@ import Html
 import Html.Attributes
 
 -- Roster Editor ---------------------------------------------------------------
-import Util.Html
-
 import Struct.Armor
 import Struct.Character
 import Struct.Event
-import Struct.Model
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------

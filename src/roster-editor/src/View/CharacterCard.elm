@@ -11,17 +11,15 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Battle ----------------------------------------------------------------------
+-- Roster Editor ---------------------------------------------------------------
 import Struct.Armor
 import Struct.Character
 import Struct.Event
-import Struct.HelpRequest
 import Struct.Omnimods
 import Struct.Statistics
+import Struct.UI
 import Struct.Weapon
 import Struct.WeaponSet
-
-import Util.Html
 
 import View.Character
 import View.Gauge
@@ -192,8 +190,12 @@ get_weapon_details : (
 get_weapon_details omnimods damage_multiplier weapon =
    (Html.div
       [
-         (Html.Attributes.class "character-card-weapon")
-      ]
+         (Html.Attributes.class "character-card-weapon"),
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (Struct.Event.TabSelected Struct.UI.WeaponSelectionTab)
+         )
+     ]
       [
          (get_weapon_field_header damage_multiplier weapon),
          (Html.div
@@ -216,7 +218,11 @@ get_weapon_summary : (
 get_weapon_summary damage_multiplier weapon =
    (Html.div
       [
-         (Html.Attributes.class "character-card-weapon-summary")
+         (Html.Attributes.class "character-card-weapon-summary"),
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (Struct.Event.TabSelected Struct.UI.WeaponSelectionTab)
+         )
       ]
       [
          (get_weapon_field_header damage_multiplier weapon)
@@ -231,7 +237,11 @@ get_armor_details : (
 get_armor_details omnimods armor =
    (Html.div
       [
-         (Html.Attributes.class "character-card-armor")
+         (Html.Attributes.class "character-card-armor"),
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (Struct.Event.TabSelected Struct.UI.ArmorSelectionTab)
+         )
       ]
       [
          (Html.div
@@ -295,7 +305,11 @@ get_relevant_stats : (
 get_relevant_stats stats =
    (Html.div
       [
-         (Html.Attributes.class "character-card-stats")
+         (Html.Attributes.class "character-card-stats"),
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (Struct.Event.TabSelected Struct.UI.GlyphManagementTab)
+         )
       ]
       [
          (stat_name "Dodge"),
@@ -378,7 +392,13 @@ get_full_html char =
                [
                   (Html.div
                      [
-                        (Html.Attributes.class "info-card-picture")
+                        (Html.Attributes.class "info-card-picture"),
+                        (Html.Attributes.class "clickable"),
+                        (Html.Events.onClick
+                           (Struct.Event.TabSelected
+                              Struct.UI.PortraitSelectionTab
+                           )
+                        )
                      ]
                      [
                         (View.Character.get_portrait_html char)

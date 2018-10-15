@@ -23,9 +23,11 @@ import Struct.Flags
 import Struct.Armor
 import Struct.Character
 import Struct.Error
+import Struct.Glyph
+import Struct.GlyphBoard
 import Struct.HelpRequest
 import Struct.Inventory
-import Struct.Omnimods
+import Struct.Portrait
 import Struct.UI
 import Struct.Weapon
 
@@ -41,6 +43,9 @@ type alias Type =
       characters: (Array.Array Struct.Character.Type),
       weapons: (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type),
       armors: (Dict.Dict Struct.Armor.Ref Struct.Armor.Type),
+      glyphs: (Dict.Dict Struct.Glyph.Ref Struct.Glyph.Type),
+      glyph_boards: (Dict.Dict Struct.GlyphBoard.Ref Struct.GlyphBoard.Type),
+      portraits: (Dict.Dict Struct.Portrait.Ref Struct.Portrait.Type),
       error: (Maybe Struct.Error.Type),
       player_id: String,
       roster_id: String,
@@ -65,6 +70,9 @@ new flags =
       characters = (Array.empty),
       weapons = (Dict.empty),
       armors = (Dict.empty),
+      glyphs = (Dict.empty),
+      glyph_boards = (Dict.empty),
+      portraits = (Dict.empty),
       error = Nothing,
       roster_id = "",
       player_id =

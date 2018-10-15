@@ -1,4 +1,4 @@
-module Comm.Send exposing (try_sending)
+module Comm.Send exposing (try_sending, empty_request)
 
 -- Elm -------------------------------------------------------------------------
 import Http
@@ -30,6 +30,16 @@ internal_decoder reply_type =
       "add_armor" -> (Comm.AddArmor.decode)
       "add_char" -> (Comm.AddChar.decode)
       "add_weapon" -> (Comm.AddWeapon.decode)
+
+      -- TODO
+      "add_portrait" -> (Json.Decode.succeed Struct.ServerReply.Okay)
+
+      -- TODO
+      "add_glyph" -> (Json.Decode.succeed Struct.ServerReply.Okay)
+
+      -- TODO
+      "add_glyph_board" -> (Json.Decode.succeed Struct.ServerReply.Okay)
+
       "disconnected" -> (Json.Decode.succeed Struct.ServerReply.Disconnected)
       "okay" -> (Json.Decode.succeed Struct.ServerReply.Okay)
 
@@ -71,3 +81,17 @@ try_sending model recipient try_encoding_fun =
          )
 
       Nothing -> Nothing
+
+empty_request : (
+      Struct.Model.Type ->
+      String ->
+      (Cmd Struct.Event.Type)
+   )
+empty_request model recipient =
+   (Http.send
+      Struct.Event.ServerReplied
+      (Http.get
+         recipient
+         (Json.Decode.list (decode))
+      )
+   )

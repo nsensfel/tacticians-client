@@ -4,7 +4,6 @@ module Update.SelectCharacter exposing (apply_to)
 import Array
 
 -- Roster Editor ---------------------------------------------------------------
-import Struct.Character
 import Struct.Error
 import Struct.Event
 import Struct.Model

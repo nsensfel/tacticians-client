@@ -22,7 +22,11 @@ get_main_menu_button_html =
 get_characters_button_html : (Html.Html Struct.Event.Type)
 get_characters_button_html =
    (Html.button
-      [ (Html.Events.onClick Struct.Event.GoToMainMenu) ]
+      [
+         (Html.Events.onClick
+            (Struct.Event.TabSelected Struct.UI.CharacterSelectionTab)
+         )
+      ]
       [ (Html.text "Characters") ]
    )
 
