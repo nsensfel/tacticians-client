@@ -12,6 +12,7 @@ module Struct.Omnimods exposing
       get_statistics_mods,
       get_attack_mods,
       get_defense_mods,
+      get_all_mods,
       decoder
    )
 
@@ -188,3 +189,12 @@ get_attack_mods omnimods = (Dict.toList omnimods.attack)
 
 get_defense_mods : Type -> (List (String, Int))
 get_defense_mods omnimods = (Dict.toList omnimods.defense)
+
+get_all_mods : Type -> (List (String, Int))
+get_all_mods omnimods =
+   (
+      (get_attributes_mods omnimods)
+      ++ (get_statistics_mods omnimods)
+      ++ (get_attack_mods omnimods)
+      ++ (get_defense_mods omnimods)
+   )

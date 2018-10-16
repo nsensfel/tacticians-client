@@ -7,6 +7,9 @@ module Struct.Model exposing
       update_character_fun,
       add_weapon,
       add_armor,
+      add_portrait,
+      add_glyph,
+      add_glyph_board,
       invalidate,
       clear_error
    )
@@ -116,6 +119,39 @@ add_armor ar model =
             (Struct.Armor.get_id ar)
             ar
             model.armors
+         )
+   }
+
+add_portrait : Struct.Portrait.Type -> Type -> Type
+add_portrait pt model =
+   {model |
+      portraits =
+         (Dict.insert
+            (Struct.Portrait.get_id pt)
+            pt
+            model.portraits
+         )
+   }
+
+add_glyph : Struct.Glyph.Type -> Type -> Type
+add_glyph gl model =
+   {model |
+      glyphs =
+         (Dict.insert
+            (Struct.Glyph.get_id gl)
+            gl
+            model.glyphs
+         )
+   }
+
+add_glyph_board : Struct.GlyphBoard.Type -> Type -> Type
+add_glyph_board glb model =
+   {model |
+      glyph_boards =
+         (Dict.insert
+            (Struct.GlyphBoard.get_id glb)
+            glb
+            model.glyph_boards
          )
    }
 

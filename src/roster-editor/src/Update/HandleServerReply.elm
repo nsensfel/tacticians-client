@@ -17,8 +17,11 @@ import Struct.Armor
 import Struct.Character
 import Struct.Error
 import Struct.Event
+import Struct.Glyph
+import Struct.GlyphBoard
 import Struct.Inventory
 import Struct.Model
+import Struct.Portrait
 import Struct.ServerReply
 import Struct.Weapon
 
@@ -77,6 +80,33 @@ add_armor ar current_state =
    let (model, cmds) = current_state in
       ((Struct.Model.add_armor ar model), cmds)
 
+add_portrait : (
+      Struct.Portrait.Type ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+add_portrait pt current_state =
+   let (model, cmds) = current_state in
+      ((Struct.Model.add_portrait pt model), cmds)
+
+add_glyph : (
+      Struct.Glyph.Type ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+add_glyph gl current_state =
+   let (model, cmds) = current_state in
+      ((Struct.Model.add_glyph gl model), cmds)
+
+add_glyph_board : (
+      Struct.GlyphBoard.Type ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+add_glyph_board glb current_state =
+   let (model, cmds) = current_state in
+      ((Struct.Model.add_glyph_board glb model), cmds)
+
 add_weapon : (
       Struct.Weapon.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
@@ -130,6 +160,15 @@ apply_command command current_state =
 
       (Struct.ServerReply.AddArmor ar) ->
          (add_armor ar current_state)
+
+      (Struct.ServerReply.AddPortrait pt) ->
+         (add_portrait pt current_state)
+
+      (Struct.ServerReply.AddGlyph gl) ->
+         (add_glyph gl current_state)
+
+      (Struct.ServerReply.AddGlyphBoard glb) ->
+         (add_glyph_board glb current_state)
 
       (Struct.ServerReply.AddCharacter char) ->
          (add_character char current_state)

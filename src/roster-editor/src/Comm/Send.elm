@@ -9,6 +9,9 @@ import Json.Encode
 --- Roster Editor --------------------------------------------------------------
 import Comm.AddArmor
 import Comm.AddChar
+import Comm.AddGlyph
+import Comm.AddGlyphBoard
+import Comm.AddPortrait
 import Comm.AddWeapon
 import Comm.SetInventory
 
@@ -27,18 +30,14 @@ internal_decoder : String -> (Json.Decode.Decoder Struct.ServerReply.Type)
 internal_decoder reply_type =
    case reply_type of
       "set_inventory" -> (Comm.SetInventory.decode)
-      "add_armor" -> (Comm.AddArmor.decode)
+
       "add_char" -> (Comm.AddChar.decode)
+
+      "add_armor" -> (Comm.AddArmor.decode)
       "add_weapon" -> (Comm.AddWeapon.decode)
-
-      -- TODO
-      "add_portrait" -> (Json.Decode.succeed Struct.ServerReply.Okay)
-
-      -- TODO
-      "add_glyph" -> (Json.Decode.succeed Struct.ServerReply.Okay)
-
-      -- TODO
-      "add_glyph_board" -> (Json.Decode.succeed Struct.ServerReply.Okay)
+      "add_portrait" -> (Comm.AddPortrait.decode)
+      "add_glyph" -> (Comm.AddGlyph.decode)
+      "add_glyph_board" -> (Comm.AddGlyphBoard.decode)
 
       "disconnected" -> (Json.Decode.succeed Struct.ServerReply.Disconnected)
       "okay" -> (Json.Decode.succeed Struct.ServerReply.Okay)

@@ -3,7 +3,7 @@ module Comm.AddChar exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Map -------------------------------------------------------------------
+-- Roster Editor ---------------------------------------------------------------
 import Struct.Character
 import Struct.ServerReply
 

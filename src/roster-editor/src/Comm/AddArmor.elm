@@ -3,7 +3,7 @@ module Comm.AddArmor exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Map -------------------------------------------------------------------
+-- Roster Editor ---------------------------------------------------------------
 import Struct.Armor
 import Struct.ServerReply
 

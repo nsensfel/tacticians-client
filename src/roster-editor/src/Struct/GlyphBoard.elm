@@ -2,10 +2,16 @@ module Struct.GlyphBoard exposing
    (
       Type,
       Ref,
+      get_name,
+      get_id,
+      get_omnimods,
+      decoder,
       none
    )
 
 -- Elm -------------------------------------------------------------------------
+import Json.Decode
+import Json.Decode.Pipeline
 
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Omnimods
@@ -15,12 +21,12 @@ import Struct.Omnimods
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      id : Int,
+      id : String,
       name : String,
       omnimods : Struct.Omnimods.Type
    }
 
-type alias Ref = Int
+type alias Ref = String
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -29,10 +35,28 @@ type alias Ref = Int
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+get_id : Type -> String
+get_id g = g.id
+
+get_name : Type -> String
+get_name g = g.name
+
+get_omnimods : Type -> Struct.Omnimods.Type
+get_omnimods g = g.omnimods
+
+decoder : (Json.Decode.Decoder Type)
+decoder =
+   (Json.Decode.Pipeline.decode
+      Type
+      |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
+   )
+
 none : Type
 none =
    {
-      id = 0,
+      id = "",
       name = "None",
       omnimods = (Struct.Omnimods.none)
    }

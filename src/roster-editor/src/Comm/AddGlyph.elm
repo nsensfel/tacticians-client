@@ -1,10 +1,10 @@
-module Comm.AddWeapon exposing (decode)
+module Comm.AddGlyph exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
 -- Roster Editor ---------------------------------------------------------------
-import Struct.Weapon
+import Struct.Glyph
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------
@@ -14,11 +14,11 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-internal_decoder : Struct.Weapon.Type -> Struct.ServerReply.Type
-internal_decoder wp = (Struct.ServerReply.AddWeapon wp)
+internal_decoder : Struct.Glyph.Type -> Struct.ServerReply.Type
+internal_decoder gl = (Struct.ServerReply.AddGlyph gl)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.map (internal_decoder) (Struct.Weapon.decoder))
+decode = (Json.Decode.map (internal_decoder) (Struct.Glyph.decoder))
