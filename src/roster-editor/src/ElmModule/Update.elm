@@ -3,14 +3,24 @@ module ElmModule.Update exposing (update)
 -- Elm -------------------------------------------------------------------------
 
 -- Roster Editor ---------------------------------------------------------------
+import Struct.Armor
 import Struct.Event
+import Struct.Glyph
+import Struct.GlyphBoard
 import Struct.Model
+import Struct.Portrait
+import Struct.Weapon
 
 import Update.GoToMainMenu
 import Update.HandleServerReply
 import Update.SelectCharacter
 import Update.SelectTab
+import Update.SetArmor
+import Update.SetGlyph
+import Update.SetGlyphBoard
+import Update.SetPortrait
 import Update.SetRequestedHelp
+import Update.SetWeapon
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -52,3 +62,18 @@ update event model =
 
       Struct.Event.GoToMainMenu ->
          (Update.GoToMainMenu.apply_to new_model)
+
+      (Struct.Event.SelectedPortrait ref) ->
+         (Update.SetPortrait.apply_to new_model ref)
+
+      (Struct.Event.SelectedArmor ref) ->
+         (Update.SetArmor.apply_to new_model ref)
+
+      (Struct.Event.SelectedWeapon ref) ->
+         (Update.SetWeapon.apply_to new_model ref)
+
+      (Struct.Event.SelectedGlyph ref) ->
+         (Update.SetGlyph.apply_to new_model ref)
+
+      (Struct.Event.SelectedGlyphBoard ref) ->
+         (Update.SetGlyphBoard.apply_to new_model ref)
