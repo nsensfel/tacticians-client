@@ -2,7 +2,7 @@ module Struct.Portrait exposing
    (
       Type,
       Ref,
-      none,
+      default,
       get_id,
       get_name,
       get_body_id,
@@ -36,8 +36,8 @@ type alias Ref = String
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-none : Type
-none =
+default : Type
+default =
    {
       id = "cat",
       name = "Black Cat",

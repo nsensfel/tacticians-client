@@ -24,7 +24,7 @@ type Type =
    | AddGlyphBoard Struct.GlyphBoard.Type
    | AddPortrait Struct.Portrait.Type
    | AddWeapon Struct.Weapon.Type
-   | AddCharacter (Struct.Character.Type, Int, Int, Int)
+   | AddCharacter (Struct.Character.Type, String, Int, Int, Int)
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------

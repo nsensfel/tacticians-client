@@ -24,6 +24,7 @@ import Struct.Model
 import Struct.Portrait
 import Struct.ServerReply
 import Struct.Weapon
+import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -43,6 +44,16 @@ armor_getter model ref =
    case (Dict.get ref model.armors) of
       (Just w) -> w
       Nothing -> Struct.Armor.none
+
+portrait_getter : (
+      Struct.Model.Type ->
+      Struct.Portrait.Ref ->
+      Struct.Portrait.Type
+   )
+portrait_getter model ref =
+   case (Dict.get ref model.portraits) of
+      (Just w) -> w
+      Nothing -> Struct.Portrait.default
 
 -----------
 
@@ -126,20 +137,33 @@ set_inventory inv current_state =
       ({model | inventory = inv}, cmds)
 
 add_character : (
-      (Struct.Character.Type, Int, Int, Int) ->
+      (Struct.Character.Type, String, Int, Int, Int) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 add_character char_and_refs current_state =
    let
       (model, cmds) = current_state
-      (char, awp_ref, swp_ref, ar_ref) = char_and_refs
+      (char, prt_ref, awp_ref, swp_ref, ar_ref) = char_and_refs
+      prt = (portrait_getter model prt_ref)
       awp = (weapon_getter model awp_ref)
       swp = (weapon_getter model swp_ref)
       ar = (armor_getter model ar_ref)
    in
       (
-         (Struct.Model.add_character char model),
+         (Struct.Model.add_character
+            (Struct.Character.set_armor
+               ar
+               (Struct.Character.set_weapons
+                  (Struct.WeaponSet.new awp swp)
+                  (Struct.Character.set_portrait
+                     prt
+                     char
+                  )
+               )
+            )
+            model
+         ),
          cmds
       )
 

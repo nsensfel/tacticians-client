@@ -1,28 +1,41 @@
-module Comm.AddChar exposing (decode)
+module Update.SetGlyph exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
-import Json.Decode
+import Dict
 
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Character
-import Struct.ServerReply
-
---------------------------------------------------------------------------------
--- TYPES -----------------------------------------------------------------------
---------------------------------------------------------------------------------
+import Struct.Error
+import Struct.Event
+import Struct.Glyph
+import Struct.Model
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-internal_decoder : (
-      (Struct.Character.Type, String, Int, Int, Int) ->
-      Struct.ServerReply.Type
-   )
-internal_decoder char_and_refs = (Struct.ServerReply.AddCharacter char_and_refs)
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.map (internal_decoder) (Struct.Character.decoder))
+apply_to : (
+      Struct.Model.Type ->
+      Struct.Glyph.Ref ->
+      Int ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
+apply_to model ref index =
+   (
+      (
+         case (model.edited_char, (Dict.get ref model.glyphs)) of
+            ((Just char), (Just glyph)) ->
+               {model |
+                  edited_char =
+                     (Just
+                        (Struct.Character.set_glyph index glyph char)
+                     )
+               }
+
+            _ -> model
+      ),
+      Cmd.none
+   )
