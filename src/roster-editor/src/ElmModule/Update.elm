@@ -69,8 +69,8 @@ update event model =
       (Struct.Event.SelectedArmor ref) ->
          (Update.SetArmor.apply_to new_model ref)
 
-      (Struct.Event.SelectedWeapon (ref, is_main)) ->
-         (Update.SetWeapon.apply_to new_model ref is_main)
+      (Struct.Event.SelectedWeapon ref) ->
+         (Update.SetWeapon.apply_to new_model ref)
 
       (Struct.Event.SelectedGlyph (ref, index)) ->
          (Update.SetGlyph.apply_to new_model ref index)

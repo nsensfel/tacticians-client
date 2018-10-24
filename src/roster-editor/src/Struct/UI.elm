@@ -6,7 +6,8 @@ module Struct.UI exposing
       -- Tab
       get_displayed_tab,
       set_displayed_tab,
-      reset_displayed_tab
+      reset_displayed_tab,
+      is_selecting_main_weapon
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -26,7 +27,8 @@ type Tab =
 
 type alias Type =
    {
-      displayed_tab : Tab
+      displayed_tab : Tab,
+      is_selecting_main_weapon : Bool
    }
 
 --------------------------------------------------------------------------------
@@ -40,6 +42,7 @@ default : Type
 default =
    {
       displayed_tab = CharacterSelectionTab,
+      is_selecting_main_weapon = False
    }
 
 -- Tab -------------------------------------------------------------------------
@@ -51,3 +54,6 @@ set_displayed_tab tab ui = {ui | displayed_tab = tab}
 
 reset_displayed_tab : Type -> Type
 reset_displayed_tab ui = {ui | displayed_tab = CharacterSelectionTab}
+
+is_selecting_main_weapon : Type -> Bool
+is_selecting_main_weapon ui = ui.is_selecting_main_weapon

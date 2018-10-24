@@ -8,6 +8,7 @@ import Struct.Character
 import Struct.Error
 import Struct.Event
 import Struct.Model
+import Struct.UI
 import Struct.Weapon
 import Struct.WeaponSet
 
@@ -21,10 +22,9 @@ import Struct.WeaponSet
 apply_to : (
       Struct.Model.Type ->
       Struct.Weapon.Ref ->
-      Bool->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model ref is_main =
+apply_to model ref =
    (
       (
          case (model.edited_char, (Dict.get ref model.weapons)) of
@@ -34,7 +34,7 @@ apply_to model ref is_main =
                      (Just
                         (Struct.Character.set_weapons
                            (
-                              if (is_main)
+                              if (Struct.UI.is_selecting_main_weapon model.ui)
                               then
                                  (Struct.WeaponSet.set_active_weapon
                                     weapon

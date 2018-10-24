@@ -27,7 +27,7 @@ type Type =
    | TabSelected Struct.UI.Tab
 
    | SelectedArmor Struct.Armor.Ref
-   | SelectedGlyph Struct.Glyph.Ref
+   | SelectedGlyph (Struct.Glyph.Ref, Int)
    | SelectedGlyphBoard Struct.GlyphBoard.Ref
    | SelectedPortrait Struct.Portrait.Ref
    | SelectedWeapon Struct.Weapon.Ref

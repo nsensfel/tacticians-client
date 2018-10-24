@@ -5,6 +5,7 @@ import Dict
 
 import Html
 import Html.Attributes
+import Html.Events
 
 import List
 
@@ -21,8 +22,11 @@ get_portrait_html pt =
    (Html.div
       [
          (Html.Attributes.class "character-portrait-and-icon"),
-         (Html.Attributes.class "clickable")
-      ]
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (Struct.Event.SelectedPortrait (Struct.Portrait.get_id pt))
+         )
+     ]
       [
          (Html.div
             [

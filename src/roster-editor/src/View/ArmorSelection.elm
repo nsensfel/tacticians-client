@@ -5,6 +5,7 @@ import Dict
 
 import Html
 import Html.Attributes
+import Html.Events
 
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Armor
@@ -39,7 +40,10 @@ get_armor_html armor =
    (Html.div
       [
          (Html.Attributes.class "character-card-armor"),
-         (Html.Attributes.class "clickable")
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (Struct.Event.SelectedArmor (Struct.Armor.get_id armor))
+         )
       ]
       [
          (Html.div
