@@ -17,6 +17,23 @@
    border-left: none;
 
    display: flex;
-   flex-flow: column;
+   flex-flow: row;
+   flex-wrap: wrap;
    justify-content: space-between;
+}
+
+.selection-window-listing
+{
+   width: 100%;
+   height: calc(100% - 1em);
+   display: flex;
+   flex-flow: row wrap;
+   justify-content: space-between;
+   overflow-y: scroll;
+}
+
+.selection-window-listing > *
+{
+   width: 16em;
+   display: block;
 }

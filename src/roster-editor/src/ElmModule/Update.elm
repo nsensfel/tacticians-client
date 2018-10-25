@@ -3,13 +3,8 @@ module ElmModule.Update exposing (update)
 -- Elm -------------------------------------------------------------------------
 
 -- Roster Editor ---------------------------------------------------------------
-import Struct.Armor
 import Struct.Event
-import Struct.Glyph
-import Struct.GlyphBoard
 import Struct.Model
-import Struct.Portrait
-import Struct.Weapon
 
 import Update.GoToMainMenu
 import Update.HandleServerReply
