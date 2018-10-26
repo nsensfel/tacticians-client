@@ -27,12 +27,16 @@ get_html model =
          (Html.Attributes.class "selection-window"),
          (Html.Attributes.class "character-selection")
       ]
-      (
-         (Html.text "Character Selection")
-         ::
-         (List.map
-            (View.CharacterCard.get_minimal_html)
-            (Array.toList model.characters)
+      [
+         (Html.text "Character Selection"),
+         (Html.div
+            [
+               (Html.Attributes.class "selection-window-listing")
+            ]
+            (List.map
+               (View.CharacterCard.get_minimal_html)
+               (Array.toList model.characters)
+            )
          )
-      )
+      ]
    )
