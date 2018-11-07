@@ -17,7 +17,8 @@ module Struct.Character exposing
       set_glyph_board,
       get_glyphs,
       set_glyph,
-      decoder
+      decoder,
+      encode
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -25,6 +26,7 @@ import Array
 
 import Json.Decode
 import Json.Decode.Pipeline
+import Json.Encode
 
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Armor
@@ -205,4 +207,46 @@ decoder =
             )
          |> (Json.Decode.Pipeline.hardcoded (Struct.Omnimods.none))
       )
+   )
+
+encode : Type -> Json.Encode.Value
+encode char =
+   (Json.Encode.object
+      [
+         ("ix", (Json.Encode.int char.ix)),
+         ("nam", (Json.Encode.string char.name)),
+         ("prt", (Json.Encode.string (Struct.Portrait.get_id char.portrait))),
+         (
+            "awp",
+            (Json.Encode.int
+               (Struct.Weapon.get_id
+                  (Struct.WeaponSet.get_active_weapon char.weapons)
+               )
+            )
+         ),
+         (
+            "swp",
+            (Json.Encode.int
+               (Struct.Weapon.get_id
+                  (Struct.WeaponSet.get_active_weapon char.weapons)
+               )
+            )
+         ),
+         ("ar", (Json.Encode.int (Struct.Armor.get_id char.armor))),
+         (
+            "gb",
+            (Json.Encode.string (Struct.GlyphBoard.get_id char.glyph_board))
+         ),
+         (
+            "gls",
+            (Json.Encode.list
+               (Array.toList
+                  (Array.map
+                     ((Struct.Glyph.get_id) >> Json.Encode.string)
+                     char.glyphs
+                  )
+               )
+            )
+         )
+      ]
    )
