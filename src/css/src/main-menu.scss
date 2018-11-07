@@ -38,7 +38,8 @@ main > *
 }
 
 .main-menu-battle-listing,
-.main-menu-map-listing
+.main-menu-map-listing,
+.main-menu-roster
 {
    border-left: 2px solid $BROWN-1;
    border-right: 2px solid $BROWN-1;
@@ -51,6 +52,7 @@ main > *
 .main-menu-map-listing-body > *,
 .main-menu-map-listing-add-new,
 .main-menu-battle-listing-body > *,
+.main-menu-roster-options-body > *,
 .main-menu-battle-listing-add-new
 {
    padding: 0.3em;
@@ -58,12 +60,14 @@ main > *
 }
 
 .main-menu-map-listing-body a,
+.main-menu-roster-options-body a,
 .main-menu-battle-listing-body a
 {
    text-decoration: none;
 }
 
 .main-menu-map-listing-body > *,
+.main-menu-roster-options-body > *,
 .main-menu-battle-listing-body > *
 {
    background-color: $BROWN-0;
@@ -73,13 +77,15 @@ main > *
 }
 
 .main-menu-map-listing-body > *:hover,
+.main-menu-roster-options-body > *:hover,
 .main-menu-battle-listing-body > *:hover
 {
    background-color: $BROWN-1;
 }
 
 .main-menu-map-listing-header,
-.main-menu-battle-listing-header
+.main-menu-battle-listing-header,
+.main-menu-roster-header
 {
    font-size: 1.3em;
    font-variant: small-caps;
@@ -94,7 +100,8 @@ main > *
    background-color: $RED-2;
 }
 
-.main-menu-map-listing-header
+.main-menu-map-listing-header,
+.main-menu-roster-header
 {
    background-color: $GREEN-2;
 }

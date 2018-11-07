@@ -14,8 +14,9 @@ import Struct.Model
 import Struct.Player
 
 import View.BattleListing
-import View.MapListing
 import View.Header
+import View.MapListing
+import View.Roster
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -51,7 +52,8 @@ view model =
                   "main-menu-events"
                   (Struct.Player.get_events model.player)
                ),
-               (View.MapListing.get_html (Struct.Player.get_maps model.player))
+               (View.MapListing.get_html (Struct.Player.get_maps model.player)),
+               (View.Roster.get_html)
             ]
          ),
          (
