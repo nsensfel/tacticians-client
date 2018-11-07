@@ -192,9 +192,7 @@ get_weapon_details omnimods damage_multiplier weapon =
       [
          (Html.Attributes.class "character-card-weapon"),
          (Html.Attributes.class "clickable"),
-         (Html.Events.onClick
-            (Struct.Event.TabSelected Struct.UI.WeaponSelectionTab)
-         )
+         (Html.Events.onClick (Struct.Event.ClickedOnWeapon True))
      ]
       [
          (get_weapon_field_header damage_multiplier weapon),
@@ -220,9 +218,7 @@ get_weapon_summary damage_multiplier weapon =
       [
          (Html.Attributes.class "character-card-weapon-summary"),
          (Html.Attributes.class "clickable"),
-         (Html.Events.onClick
-            (Struct.Event.TabSelected Struct.UI.WeaponSelectionTab)
-         )
+         (Html.Events.onClick (Struct.Event.ClickedOnWeapon False))
       ]
       [
          (get_weapon_field_header damage_multiplier weapon)

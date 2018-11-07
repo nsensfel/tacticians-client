@@ -5,6 +5,7 @@ module ElmModule.Update exposing (update)
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Event
 import Struct.Model
+import Struct.UI
 
 import Update.GoToMainMenu
 import Update.HandleServerReply
@@ -48,6 +49,14 @@ update event model =
 
       (Struct.Event.TabSelected tab) ->
          (Update.SelectTab.apply_to new_model tab)
+
+      (Struct.Event.ClickedOnWeapon is_main) ->
+         (Update.SelectTab.apply_to
+            {model |
+               ui = (Struct.UI.set_is_selecting_main_weapon is_main model.ui)
+            }
+            Struct.UI.WeaponSelectionTab
+         )
 
       (Struct.Event.ServerReplied result) ->
          (Update.HandleServerReply.apply_to model result)
