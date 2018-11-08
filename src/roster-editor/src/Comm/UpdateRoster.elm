@@ -26,14 +26,23 @@ import Struct.Model
 try_encoding : Struct.Model.Type -> (Maybe Json.Encode.Value)
 try_encoding model =
    (Just
-      (Json.Encode.list
-         (List.map
-            (Struct.Character.encode)
-            (List.filter
-               (Struct.Character.get_was_edited)
-               (Array.toList model.characters)
+      (Json.Encode.object
+         [
+            ("stk", (Json.Encode.string model.session_token)),
+            ("pid", (Json.Encode.string model.player_id)),
+            (
+               "rst",
+               (Json.Encode.list
+                  (List.map
+                     (Struct.Character.encode)
+                     (List.filter
+                        (Struct.Character.get_was_edited)
+                        (Array.toList model.characters)
+                     )
+                  )
+               )
             )
-         )
+         ]
       )
    )
 
