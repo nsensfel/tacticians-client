@@ -196,7 +196,7 @@ get_was_edited : Type -> Bool
 get_was_edited char = char.was_edited
 
 set_was_edited : Bool -> Type -> Type
-set_was_edited val char = {char | was_edited = False}
+set_was_edited val char = {char | was_edited = val}
 
 decoder : (Json.Decode.Decoder (Type, String, Int, Int, Int))
 decoder =

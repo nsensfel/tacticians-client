@@ -21,11 +21,11 @@ apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 apply_to model =
    (
       {model |
-         characters = model.characters
---            (Array.map
- --              (Struct.Character.set_was_edited False)
-  --             model.characters
-   --         )
+         characters =
+            (Array.map
+               (Struct.Character.set_was_edited False)
+               model.characters
+            )
       },
       (case (Comm.UpdateRoster.try model) of
          (Just cmd) -> cmd

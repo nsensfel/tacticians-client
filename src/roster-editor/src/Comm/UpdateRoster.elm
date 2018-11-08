@@ -35,11 +35,10 @@ try_encoding model =
                (Json.Encode.list
                   (List.map
                      (Struct.Character.encode)
-                     (Array.toList model.characters)
-                    -- (List.filter
-                    --    (Struct.Character.get_was_edited)
-                    --    (Array.toList model.characters)
-                   --  )
+                     (List.filter
+                        (Struct.Character.get_was_edited)
+                        (Array.toList model.characters)
+                     )
                   )
                )
             )
