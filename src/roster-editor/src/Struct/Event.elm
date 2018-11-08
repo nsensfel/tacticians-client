@@ -26,6 +26,7 @@ type Type =
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
    | TabSelected Struct.UI.Tab
    | ClickedOnWeapon Bool
+   | SaveRequest
 
    | SelectedArmor Struct.Armor.Ref
    | SelectedGlyph (Struct.Glyph.Ref, Int)

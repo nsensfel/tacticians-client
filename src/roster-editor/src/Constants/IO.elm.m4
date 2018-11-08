@@ -9,6 +9,9 @@ roster_handler_url = (base_url ++ "/handler/roster")
 roster_loading_handler : String
 roster_loading_handler = (roster_handler_url ++ "/rst_load")
 
+roster_update_handler : String
+roster_update_handler = (roster_handler_url ++ "/rst_update")
+
 armors_data_url : String
 armors_data_url = (base_url ++ "/asset/data/armors.json")
 

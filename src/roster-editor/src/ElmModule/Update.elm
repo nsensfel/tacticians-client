@@ -11,6 +11,7 @@ import Update.GoToMainMenu
 import Update.HandleServerReply
 import Update.SelectCharacter
 import Update.SelectTab
+import Update.SendRoster
 import Update.SetArmor
 import Update.SetGlyph
 import Update.SetGlyphBoard
@@ -48,7 +49,19 @@ update event model =
          (Update.SelectCharacter.apply_to new_model char_id)
 
       (Struct.Event.TabSelected tab) ->
-         (Update.SelectTab.apply_to new_model tab)
+         (Update.SelectTab.apply_to
+            (
+               case tab of
+                  Struct.UI.CharacterSelectionTab ->
+                     (Struct.Model.save_character new_model)
+
+                  _ -> new_model
+            )
+            tab
+         )
+
+      Struct.Event.SaveRequest ->
+         (Update.SendRoster.apply_to (Struct.Model.save_character new_model))
 
       (Struct.Event.ClickedOnWeapon is_main) ->
          (Update.SelectTab.apply_to

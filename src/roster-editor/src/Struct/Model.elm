@@ -5,6 +5,7 @@ module Struct.Model exposing
       add_character,
       update_character,
       update_character_fun,
+      save_character,
       add_weapon,
       add_armor,
       add_portrait,
@@ -160,6 +161,21 @@ update_character ix new_val model =
    {model |
       characters = (Array.set ix new_val model.characters)
    }
+
+save_character : Type -> Type
+save_character model =
+   case model.edited_char of
+      Nothing -> model
+
+      (Just char) ->
+         {model |
+            characters =
+               (Array.set
+                  (Struct.Character.get_index char)
+                  (Struct.Character.set_was_edited True char)
+                  model.characters
+               )
+         }
 
 update_character_fun : (
       Int ->

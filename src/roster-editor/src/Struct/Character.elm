@@ -17,6 +17,8 @@ module Struct.Character exposing
       set_glyph_board,
       get_glyphs,
       set_glyph,
+      set_was_edited,
+      get_was_edited,
       decoder,
       encode
    )
@@ -66,7 +68,8 @@ type alias Type =
       armor : Struct.Armor.Type,
       glyph_board : Struct.GlyphBoard.Type,
       glyphs : (Array.Array Struct.Glyph.Type),
-      current_omnimods : Struct.Omnimods.Type
+      current_omnimods : Struct.Omnimods.Type,
+      was_edited : Bool
    }
 
 --------------------------------------------------------------------------------
@@ -91,7 +94,8 @@ finish_decoding add_char =
             armor = armor,
             glyph_board = glyph_board,
             glyphs = glyphs,
-            current_omnimods = add_char.current_omnimods
+            current_omnimods = add_char.current_omnimods,
+            was_edited = False
          }
    in
       (almost_char, add_char.prt, add_char.awp, add_char.swp, add_char.ar)
@@ -187,6 +191,12 @@ get_glyphs char = char.glyphs
 set_glyph : Int -> Struct.Glyph.Type -> Type -> Type
 set_glyph index glyph char =
    (refresh_omnimods {char | glyphs = (Array.set index glyph char.glyphs)})
+
+get_was_edited : Type -> Bool
+get_was_edited char = char.was_edited
+
+set_was_edited : Bool -> Type -> Type
+set_was_edited val char = {char | was_edited = False}
 
 decoder : (Json.Decode.Decoder (Type, String, Int, Int, Int))
 decoder =

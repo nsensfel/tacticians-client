@@ -33,14 +33,14 @@ get_characters_button_html =
 get_reset_button_html : (Html.Html Struct.Event.Type)
 get_reset_button_html =
    (Html.button
-      [ ]
+      [  ]
       [ (Html.text "Reset") ]
    )
 
 get_save_button_html : (Html.Html Struct.Event.Type)
 get_save_button_html =
    (Html.button
-      [ ]
+      [ (Html.Events.onClick Struct.Event.SaveRequest) ]
       [ (Html.text "Save") ]
    )
 
