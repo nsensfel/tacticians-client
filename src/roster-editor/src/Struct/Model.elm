@@ -72,8 +72,7 @@ add_character char_rec model =
    let index = (Struct.CharacterRecord.get_index char_rec) in
       {model |
          characters =
-            (Array.set
-               index
+            (Array.push
                (Struct.Character.new
                   index
                   (Struct.CharacterRecord.get_name char_rec)

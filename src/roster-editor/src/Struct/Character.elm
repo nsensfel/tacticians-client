@@ -110,56 +110,59 @@ new : (
       Type
    )
 new index name m_portrait m_main_wp m_sec_wp m_armor m_board m_glyphs =
-   {
-      ix = index,
-      name = name,
-      portrait =
-         (
-            case m_portrait of
-               (Just portrait) -> portrait
-               Nothing -> (Struct.Portrait.default)
-         ),
-      attributes = (Struct.Attributes.default),
-      statistics = (Struct.Statistics.new_raw (Struct.Attributes.default)),
-      weapons =
-         (Struct.WeaponSet.new
+   (refresh_omnimods
+      {
+         ix = index,
+         name = name,
+         portrait =
             (
-               case m_main_wp of
-                  (Just w) -> w
-                  Nothing -> (Struct.Weapon.default)
-            )
-            (
-               case m_sec_wp of
-                  (Just w) -> w
-                  Nothing -> (Struct.Weapon.default)
-            )
-         ),
-      armor =
-         (
-            case m_armor of
-               (Just armor) -> armor
-               Nothing -> (Struct.Armor.default)
-         ),
-      glyph_board =
-         (
-            case m_board of
-               (Just board) -> board
-               Nothing -> (Struct.GlyphBoard.default)
-         ),
-      glyphs =
-         (Array.fromList
-            (List.map
-               (\m_g ->
-                  case m_g of
-                     (Just g) -> g
-                     Nothing -> (Struct.Glyph.default)
+               case m_portrait of
+                  (Just portrait) -> portrait
+                  Nothing -> (Struct.Portrait.default)
+            ),
+         attributes = (Struct.Attributes.default),
+         statistics = (Struct.Statistics.new_raw (Struct.Attributes.default)),
+         weapons =
+            (Struct.WeaponSet.new
+               (
+                  case m_main_wp of
+                     (Just w) -> w
+                     Nothing -> (Struct.Weapon.default)
                )
-               m_glyphs
-            )
-         ),
-      current_omnimods = (Struct.Omnimods.none),
-      was_edited = False
-   }
+               (
+                  case m_sec_wp of
+                     (Just w) -> w
+                     Nothing -> (Struct.Weapon.default)
+               )
+            ),
+         armor =
+            (
+               case m_armor of
+                  (Just armor) -> armor
+                  Nothing -> (Struct.Armor.default)
+            ),
+         glyph_board =
+            (
+               case m_board of
+                  (Just board) -> board
+                  Nothing -> (Struct.GlyphBoard.default)
+            ),
+         glyphs =
+            (Array.fromList
+               (List.map
+                  (\m_g ->
+                     case m_g of
+                        (Just g) -> g
+                        Nothing -> (Struct.Glyph.default)
+                  )
+                  m_glyphs
+               )
+            ),
+         current_omnimods = (Struct.Omnimods.none),
+         was_edited = False
+      }
+   )
+
 get_index : Type -> Int
 get_index c = c.ix
 
