@@ -15,6 +15,7 @@ import Constants.IO
 
 import Struct.Armor
 import Struct.Character
+import Struct.CharacterRecord
 import Struct.Error
 import Struct.Event
 import Struct.Glyph
@@ -137,33 +138,14 @@ set_inventory inv current_state =
       ({model | inventory = inv}, cmds)
 
 add_character : (
-      (Struct.Character.Type, String, Int, Int, Int) ->
+      Struct.CharacterRecord.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-add_character char_and_refs current_state =
-   let
-      (model, cmds) = current_state
-      (char, prt_ref, awp_ref, swp_ref, ar_ref) = char_and_refs
-      prt = (portrait_getter model prt_ref)
-      awp = (weapon_getter model awp_ref)
-      swp = (weapon_getter model swp_ref)
-      ar = (armor_getter model ar_ref)
-   in
+add_character char current_state =
+   let (model, cmds) = current_state in
       (
-         (Struct.Model.add_character
-            (Struct.Character.set_armor
-               ar
-               (Struct.Character.set_weapons
-                  (Struct.WeaponSet.new awp swp)
-                  (Struct.Character.set_portrait
-                     prt
-                     char
-                  )
-               )
-            )
-            model
-         ),
+         (Struct.Model.add_character_record char model),
          cmds
       )
 
@@ -197,7 +179,12 @@ apply_command command current_state =
       (Struct.ServerReply.AddCharacter char) ->
          (add_character char current_state)
 
-      Struct.ServerReply.Okay -> current_state
+      Struct.ServerReply.Okay ->
+         let (model, cmds) = current_state in
+            (
+               (Struct.Model.enable_character_records model),
+               cmds
+            )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

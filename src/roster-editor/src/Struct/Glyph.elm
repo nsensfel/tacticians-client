@@ -5,6 +5,8 @@ module Struct.Glyph exposing
       get_name,
       get_id,
       get_omnimods,
+      none,
+      default,
       decoder
    )
 
@@ -51,3 +53,14 @@ decoder =
       |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
    )
+
+none : Type
+none =
+   {
+      id = "0",
+      name = "Empty",
+      omnimods = (Struct.Omnimods.none)
+   }
+
+default : Type
+default = (none)

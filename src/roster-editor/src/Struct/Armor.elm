@@ -8,6 +8,7 @@ module Struct.Armor exposing
       get_image_id,
       get_omnimods,
       decoder,
+      default,
       none
    )
 
@@ -68,3 +69,6 @@ decoder =
 
 none : Type
 none = (new 0 "None" (Struct.Omnimods.new [] [] [] []))
+
+default : Type
+default = (none)

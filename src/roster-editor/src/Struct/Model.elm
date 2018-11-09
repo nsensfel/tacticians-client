@@ -3,6 +3,7 @@ module Struct.Model exposing
       Type,
       new,
       add_character_record,
+      enable_character_records,
       update_character,
       update_character_fun,
       save_character,
@@ -17,6 +18,8 @@ module Struct.Model exposing
 
 -- Elm -------------------------------------------------------------------------
 import Array
+
+import List
 
 import Dict
 
@@ -103,6 +106,20 @@ add_character char_rec model =
             )
       }
 
+has_loaded_data : Type -> Bool
+has_loaded_data model =
+   (
+      ((Array.length model.characters) > 0)
+      ||
+      (
+         (model.portraits /= (Dict.empty))
+         && (model.weapons /= (Dict.empty))
+         && (model.armors /= (Dict.empty))
+         && (model.glyph_boards /= (Dict.empty))
+         && (model.glyphs /= (Dict.empty))
+      )
+   )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -134,9 +151,21 @@ new flags =
 
 add_character_record : Struct.CharacterRecord.Type -> Type -> Type
 add_character_record char model =
-   if (condition)
-   then {model | stalled_characters = (char :: model.stalled_characters)}
-   else (add_character char model)
+   if (has_loaded_data model)
+   then (add_character char model)
+   else {model | stalled_characters = (char :: model.stalled_characters)}
+
+enable_character_records : Type -> Type
+enable_character_records model =
+   if (has_loaded_data model)
+   then
+      (List.foldr
+         (add_character)
+         {model | stalled_characters = []}
+         model.stalled_characters
+      )
+   else
+      model
 
 add_weapon : Struct.Weapon.Type -> Type -> Type
 add_weapon wp model =

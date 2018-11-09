@@ -7,7 +7,8 @@ module Struct.GlyphBoard exposing
       get_omnimods,
       get_omnimods_with_glyphs,
       decoder,
-      none
+      none,
+      default
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -71,3 +72,6 @@ none =
       name = "None",
       omnimods = (Struct.Omnimods.none)
    }
+
+default : Type
+default = (none)

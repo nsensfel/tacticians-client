@@ -120,7 +120,7 @@ new index name m_portrait m_main_wp m_sec_wp m_armor m_board m_glyphs =
                Nothing -> (Struct.Portrait.default)
          ),
       attributes = (Struct.Attributes.default),
-      statistics = (Struct.Statistics.default),
+      statistics = (Struct.Statistics.new_raw (Struct.Attributes.default)),
       weapons =
          (Struct.WeaponSet.new
             (
@@ -155,7 +155,8 @@ new index name m_portrait m_main_wp m_sec_wp m_armor m_board m_glyphs =
                      Nothing -> (Struct.Glyph.default)
                )
                m_glyphs
-         )
+            )
+         ),
       current_omnimods = (Struct.Omnimods.none),
       was_edited = False
    }

@@ -24,6 +24,7 @@ import Json.Encode
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Armor
 import Struct.Attributes
+import Struct.Character
 import Struct.Glyph
 import Struct.GlyphBoard
 import Struct.Omnimods
@@ -44,7 +45,7 @@ type alias Type =
       secondary_weapon_id : Int,
       armor_id : Int,
       glyph_board_id : String,
-      glyph_ids : (List Int)
+      glyph_ids : (List String)
    }
 
 --------------------------------------------------------------------------------
@@ -75,7 +76,7 @@ get_armor_id char = char.armor_id
 get_glyph_board_id : Type -> String
 get_glyph_board_id char = char.glyph_board_id
 
-get_glyph_ids : Type -> (List Int)
+get_glyph_ids : Type -> (List String)
 get_glyph_ids char = char.glyph_ids
 
 from_character : Struct.Character.Type -> Type
@@ -107,7 +108,7 @@ from_character char =
 decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.Pipeline.decode
-      PartiallyDecoded
+      Type
       |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "prt" Json.Decode.string)
@@ -117,7 +118,7 @@ decoder =
       |> (Json.Decode.Pipeline.required "gb" Json.Decode.string)
       |> (Json.Decode.Pipeline.required
             "gls"
-            (Json.Decode.list Json.Decode.int)
+            (Json.Decode.list Json.Decode.string)
          )
    )
 
@@ -135,7 +136,8 @@ encode char =
          (
             "gls",
             (Json.Encode.list
-               (List.map (Json.Encode.string)
+               (List.map
+                  (Json.Encode.string)
                   char.glyph_ids
                )
             )

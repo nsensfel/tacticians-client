@@ -10,6 +10,7 @@ module Struct.Weapon exposing
       get_omnimods,
       get_damage_sum,
       decoder,
+      default,
       none
    )
 
@@ -96,4 +97,7 @@ decoder =
    )
 
 none : Type
-none = (new 0 "None" 0 0 (Struct.Omnimods.new [] [] [] []))
+none = (new 0 "None" 0 0 (Struct.Omnimods.none))
+
+default : Type
+default = (none)
