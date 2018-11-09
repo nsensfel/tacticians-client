@@ -1,6 +1,7 @@
 module Struct.Character exposing
    (
       Type,
+      new,
       get_index,
       get_name,
       set_name,
@@ -18,9 +19,7 @@ module Struct.Character exposing
       get_glyphs,
       set_glyph,
       set_was_edited,
-      get_was_edited,
-      decoder,
-      encode
+      get_was_edited
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -44,19 +43,6 @@ import Struct.WeaponSet
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-type alias PartiallyDecoded =
-   {
-      ix : Int,
-      nam : String,
-      prt : String,
-      awp : Int,
-      swp : Int,
-      ar : Int,
-      gb : String,
-      gls : (List Int),
-      current_omnimods : Struct.Omnimods.Type
-   }
-
 type alias Type =
    {
       ix : Int,
@@ -75,31 +61,6 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-finish_decoding : PartiallyDecoded -> (Type, String, Int, Int, Int)
-finish_decoding add_char =
-   let
-      weapon_set = (Struct.WeaponSet.new Struct.Weapon.none Struct.Weapon.none)
-      armor = Struct.Armor.none
-      glyph_board = Struct.GlyphBoard.none
-      glyphs = (Array.empty)
-      default_attributes = (Struct.Attributes.default)
-      almost_char =
-         {
-            ix = add_char.ix,
-            name = add_char.nam,
-            portrait = (Struct.Portrait.default),
-            attributes = default_attributes,
-            statistics = (Struct.Statistics.new_raw default_attributes),
-            weapons = weapon_set,
-            armor = armor,
-            glyph_board = glyph_board,
-            glyphs = glyphs,
-            current_omnimods = add_char.current_omnimods,
-            was_edited = False
-         }
-   in
-      (almost_char, add_char.prt, add_char.awp, add_char.swp, add_char.ar)
-
 refresh_omnimods : Type -> Type
 refresh_omnimods char =
    let
@@ -137,6 +98,67 @@ refresh_omnimods char =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+new : (
+      Int ->
+      String ->
+      (Maybe Struct.Portrait.Type) ->
+      (Maybe Struct.Weapon.Type) ->
+      (Maybe Struct.Weapon.Type) ->
+      (Maybe Struct.Armor.Type) ->
+      (Maybe Struct.GlyphBoard.Type) ->
+      (List (Maybe Struct.Glyph.Type)) ->
+      Type
+   )
+new index name m_portrait m_main_wp m_sec_wp m_armor m_board m_glyphs =
+   {
+      ix = index,
+      name = name,
+      portrait =
+         (
+            case m_portrait of
+               (Just portrait) -> portrait
+               Nothing -> (Struct.Portrait.default)
+         ),
+      attributes = (Struct.Attributes.default),
+      statistics = (Struct.Statistics.default),
+      weapons =
+         (Struct.WeaponSet.new
+            (
+               case m_main_wp of
+                  (Just w) -> w
+                  Nothing -> (Struct.Weapon.default)
+            )
+            (
+               case m_sec_wp of
+                  (Just w) -> w
+                  Nothing -> (Struct.Weapon.default)
+            )
+         ),
+      armor =
+         (
+            case m_armor of
+               (Just armor) -> armor
+               Nothing -> (Struct.Armor.default)
+         ),
+      glyph_board =
+         (
+            case m_board of
+               (Just board) -> board
+               Nothing -> (Struct.GlyphBoard.default)
+         ),
+      glyphs =
+         (Array.fromList
+            (List.map
+               (\m_g ->
+                  case m_g of
+                     (Just g) -> g
+                     Nothing -> (Struct.Glyph.default)
+               )
+               m_glyphs
+         )
+      current_omnimods = (Struct.Omnimods.none),
+      was_edited = False
+   }
 get_index : Type -> Int
 get_index c = c.ix
 
@@ -197,66 +219,3 @@ get_was_edited char = char.was_edited
 
 set_was_edited : Bool -> Type -> Type
 set_was_edited val char = {char | was_edited = val}
-
-decoder : (Json.Decode.Decoder (Type, String, Int, Int, Int))
-decoder =
-   (Json.Decode.map
-      (finish_decoding)
-      (Json.Decode.Pipeline.decode
-         PartiallyDecoded
-         |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required "prt" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required "awp" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "swp" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "ar" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "gb" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required
-               "gls"
-               (Json.Decode.list Json.Decode.int)
-            )
-         |> (Json.Decode.Pipeline.hardcoded (Struct.Omnimods.none))
-      )
-   )
-
-encode : Type -> Json.Encode.Value
-encode char =
-   (Json.Encode.object
-      [
-         ("ix", (Json.Encode.int char.ix)),
-         ("nam", (Json.Encode.string char.name)),
-         ("prt", (Json.Encode.string (Struct.Portrait.get_id char.portrait))),
-         (
-            "awp",
-            (Json.Encode.int
-               (Struct.Weapon.get_id
-                  (Struct.WeaponSet.get_active_weapon char.weapons)
-               )
-            )
-         ),
-         (
-            "swp",
-            (Json.Encode.int
-               (Struct.Weapon.get_id
-                  (Struct.WeaponSet.get_active_weapon char.weapons)
-               )
-            )
-         ),
-         ("ar", (Json.Encode.int (Struct.Armor.get_id char.armor))),
-         (
-            "gb",
-            (Json.Encode.string (Struct.GlyphBoard.get_id char.glyph_board))
-         ),
-         (
-            "gls",
-            (Json.Encode.list
-               (Array.toList
-                  (Array.map
-                     ((Struct.Glyph.get_id) >> Json.Encode.string)
-                     char.glyphs
-                  )
-               )
-            )
-         )
-      ]
-   )

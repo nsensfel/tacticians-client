@@ -4,7 +4,7 @@ module Struct.ServerReply exposing (Type(..))
 
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Armor
-import Struct.Character
+import Struct.CharacterRecord
 import Struct.Glyph
 import Struct.GlyphBoard
 import Struct.Inventory
@@ -24,7 +24,7 @@ type Type =
    | AddGlyphBoard Struct.GlyphBoard.Type
    | AddPortrait Struct.Portrait.Type
    | AddWeapon Struct.Weapon.Type
-   | AddCharacter (Struct.Character.Type, String, Int, Int, Int)
+   | AddCharacter Struct.CharacterRecord.Type
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------

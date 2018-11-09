@@ -2,7 +2,7 @@ module Struct.Model exposing
    (
       Type,
       new,
-      add_character,
+      add_character_record,
       update_character,
       update_character_fun,
       save_character,
@@ -26,6 +26,7 @@ import Struct.Flags
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Armor
 import Struct.Character
+import Struct.CharacterRecord
 import Struct.Error
 import Struct.Glyph
 import Struct.GlyphBoard
@@ -45,6 +46,7 @@ type alias Type =
       flags: Struct.Flags.Type,
       help_request: Struct.HelpRequest.Type,
       characters: (Array.Array Struct.Character.Type),
+      stalled_characters: (List Struct.CharacterRecord.Type),
       weapons: (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type),
       armors: (Dict.Dict Struct.Armor.Ref Struct.Armor.Type),
       glyphs: (Dict.Dict Struct.Glyph.Ref Struct.Glyph.Type),
@@ -62,6 +64,44 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+add_character : Struct.CharacterRecord.Type -> Type -> Type
+add_character char_rec model =
+   let index = (Struct.CharacterRecord.get_index char_rec) in
+      {model |
+         characters =
+            (Array.set
+               index
+               (Struct.Character.new
+                  index
+                  (Struct.CharacterRecord.get_name char_rec)
+                  (Dict.get
+                     (Struct.CharacterRecord.get_portrait_id char_rec)
+                     model.portraits
+                  )
+                  (Dict.get
+                     (Struct.CharacterRecord.get_main_weapon_id char_rec)
+                     model.weapons
+                  )
+                  (Dict.get
+                     (Struct.CharacterRecord.get_secondary_weapon_id char_rec)
+                     model.weapons
+                  )
+                  (Dict.get
+                     (Struct.CharacterRecord.get_armor_id char_rec)
+                     model.armors
+                  )
+                  (Dict.get
+                     (Struct.CharacterRecord.get_glyph_board_id char_rec)
+                     model.glyph_boards
+                  )
+                  (List.map
+                     (\e -> (Dict.get e model.glyphs))
+                     (Struct.CharacterRecord.get_glyph_ids char_rec)
+                  )
+               )
+               model.characters
+            )
+      }
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -72,6 +112,7 @@ new flags =
       flags = flags,
       help_request = Struct.HelpRequest.None,
       characters = (Array.empty),
+      stalled_characters = [],
       weapons = (Dict.empty),
       armors = (Dict.empty),
       glyphs = (Dict.empty),
@@ -91,15 +132,11 @@ new flags =
       ui = (Struct.UI.default)
    }
 
-add_character : Struct.Character.Type -> Type -> Type
-add_character char model =
-   {model |
-      characters =
-         (Array.push
-            char
-            model.characters
-         )
-   }
+add_character_record : Struct.CharacterRecord.Type -> Type -> Type
+add_character_record char model =
+   if (condition)
+   then {model | stalled_characters = (char :: model.stalled_characters)}
+   else (add_character char model)
 
 add_weapon : Struct.Weapon.Type -> Type -> Type
 add_weapon wp model =
