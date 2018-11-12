@@ -23,13 +23,10 @@ import Json.Encode
 
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Armor
-import Struct.Attributes
 import Struct.Character
 import Struct.Glyph
 import Struct.GlyphBoard
-import Struct.Omnimods
 import Struct.Portrait
-import Struct.Statistics
 import Struct.Weapon
 import Struct.WeaponSet
 

@@ -25,10 +25,6 @@ module Struct.Character exposing
 -- Elm -------------------------------------------------------------------------
 import Array
 
-import Json.Decode
-import Json.Decode.Pipeline
-import Json.Encode
-
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Armor
 import Struct.Attributes

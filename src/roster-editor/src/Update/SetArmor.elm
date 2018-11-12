@@ -6,7 +6,6 @@ import Dict
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Armor
 import Struct.Character
-import Struct.Error
 import Struct.Event
 import Struct.Model
 

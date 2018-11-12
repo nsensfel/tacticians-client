@@ -14,7 +14,6 @@ import Struct.Flags
 import Constants.IO
 
 import Struct.Armor
-import Struct.Character
 import Struct.CharacterRecord
 import Struct.Error
 import Struct.Event
@@ -25,7 +24,6 @@ import Struct.Model
 import Struct.Portrait
 import Struct.ServerReply
 import Struct.Weapon
-import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------

@@ -5,7 +5,6 @@ import Dict
 
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Character
-import Struct.Error
 import Struct.Event
 import Struct.Glyph
 import Struct.Model
