@@ -25,6 +25,7 @@ type Tab =
 -- | AccessorySelectionTab
    | WeaponSelectionTab
    | ArmorSelectionTab
+   | GlyphBoardSelectionTab
    | GlyphManagementTab
 
 type alias Type =

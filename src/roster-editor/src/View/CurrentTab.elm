@@ -8,11 +8,12 @@ import Struct.Event
 import Struct.Model
 import Struct.UI
 
+import View.ArmorSelection
 import View.CharacterSelection
+import View.GlyphManagement
+import View.GlyphBoardSelection
 import View.PortraitSelection
 import View.WeaponSelection
-import View.ArmorSelection
-import View.GlyphManagement
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -35,6 +36,9 @@ get_html model =
 
       Struct.UI.ArmorSelectionTab ->
          (View.ArmorSelection.get_html model)
+
+      Struct.UI.GlyphBoardSelectionTab ->
+         (View.GlyphBoardSelection.get_html model)
 
       Struct.UI.GlyphManagementTab ->
          (View.GlyphManagement.get_html model)

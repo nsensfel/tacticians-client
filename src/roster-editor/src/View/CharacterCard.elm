@@ -15,6 +15,7 @@ import Html.Events
 import Struct.Armor
 import Struct.Character
 import Struct.Event
+import Struct.GlyphBoard
 import Struct.Omnimods
 import Struct.Statistics
 import Struct.UI
@@ -260,6 +261,42 @@ get_armor_details omnimods armor =
       ]
    )
 
+get_glyph_board_details : (
+      Struct.GlyphBoard.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_glyph_board_details board =
+   (Html.div
+      [
+         (Html.Attributes.class "character-card-glyph-board"),
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (Struct.Event.TabSelected Struct.UI.GlyphBoardSelectionTab)
+         )
+      ]
+      [
+         (Html.div
+            [
+               (Html.Attributes.class "character-card-glyph-board-name")
+            ]
+            [
+               (Html.text (Struct.GlyphBoard.get_name board))
+            ]
+         ),
+         (Html.div
+            [
+               (Html.Attributes.class "info-card-omnimods-listing")
+            ]
+            (List.map
+               (get_mod_html)
+               (Struct.Omnimods.get_all_mods
+                  (Struct.GlyphBoard.get_omnimods board)
+               )
+            )
+         )
+      ]
+   )
+
 stat_name  : String -> (Html.Html Struct.Event.Type)
 stat_name name =
    (Html.div
@@ -407,6 +444,7 @@ get_full_html char =
             ),
             (get_weapon_details omnimods damage_modifier main_weapon),
             (get_armor_details omnimods armor),
+            (get_glyph_board_details (Struct.Character.get_glyph_board char)),
             (get_relevant_stats char_statistics),
             (get_weapon_summary damage_modifier secondary_weapon)
          ]

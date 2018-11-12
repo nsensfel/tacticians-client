@@ -28,6 +28,7 @@ type alias Type =
    {
       id : String,
       name : String,
+      slots : (List Int),
       omnimods : Struct.Omnimods.Type
    }
 
@@ -62,6 +63,10 @@ decoder =
       Type
       |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required
+            "slot"
+            (Json.Decode.list (Json.Decode.int))
+         )
       |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
    )
 
@@ -70,6 +75,7 @@ none =
    {
       id = "",
       name = "None",
+      slots = [],
       omnimods = (Struct.Omnimods.none)
    }
 
