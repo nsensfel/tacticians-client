@@ -203,7 +203,11 @@ set_glyph_board glyph_board char =
    (refresh_omnimods
       {char |
          glyph_board = glyph_board,
-         glyphs = (Array.empty)
+         glyphs =
+            (Array.repeat
+               (List.length (Struct.GlyphBoard.get_slots glyph_board))
+               (Struct.Glyph.none)
+            )
       }
    )
 

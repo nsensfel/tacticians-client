@@ -89,8 +89,16 @@ update event model =
       (Struct.Event.SelectedWeapon ref) ->
          (Update.SetWeapon.apply_to new_model ref)
 
-      (Struct.Event.SelectedGlyph (ref, index)) ->
-         (Update.SetGlyph.apply_to new_model ref index)
+      (Struct.Event.SelectedGlyph ref) ->
+         (Update.SetGlyph.apply_to new_model ref)
+
+      (Struct.Event.ClickedOnGlyph index) ->
+         (Update.SelectTab.apply_to
+            {model |
+               ui = (Struct.UI.set_glyph_slot index model.ui)
+            }
+            Struct.UI.GlyphSelectionTab
+         )
 
       (Struct.Event.SelectedGlyphBoard ref) ->
          (Update.SetGlyphBoard.apply_to new_model ref)

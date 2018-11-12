@@ -12,6 +12,7 @@ import View.ArmorSelection
 import View.CharacterSelection
 import View.GlyphManagement
 import View.GlyphBoardSelection
+import View.GlyphSelection
 import View.PortraitSelection
 import View.WeaponSelection
 
@@ -36,6 +37,9 @@ get_html model =
 
       Struct.UI.ArmorSelectionTab ->
          (View.ArmorSelection.get_html model)
+
+      Struct.UI.GlyphSelectionTab ->
+         (View.GlyphSelection.get_html model)
 
       Struct.UI.GlyphBoardSelectionTab ->
          (View.GlyphBoardSelection.get_html model)

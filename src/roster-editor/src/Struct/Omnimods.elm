@@ -13,6 +13,7 @@ module Struct.Omnimods exposing
       get_attack_mods,
       get_defense_mods,
       get_all_mods,
+      scale,
       decoder
    )
 
@@ -77,6 +78,9 @@ merge_mods a_mods b_mods =
       (Dict.empty)
    )
 
+scale_dict_value : Float -> String -> Int -> Int
+scale_dict_value modifier entry_name value =
+   (ceiling ((toFloat value) * modifier))
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -177,6 +181,16 @@ get_attack_damage dmg_modifier atk_omni def_omni =
          0
          atk_omni.attack
       )
+
+scale : Float -> Type -> Type
+scale multiplier omnimods =
+   {omnimods |
+      attributes = (Dict.map (scale_dict_value multiplier) omnimods.attributes),
+      statistics = (Dict.map (scale_dict_value multiplier) omnimods.statistics),
+      attack = (Dict.map (scale_dict_value multiplier) omnimods.attack),
+      defense =
+         (Dict.map (scale_dict_value multiplier) omnimods.defense)
+   }
 
 get_attributes_mods : Type -> (List (String, Int))
 get_attributes_mods omnimods = (Dict.toList omnimods.attributes)

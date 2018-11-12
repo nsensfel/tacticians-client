@@ -8,6 +8,7 @@ import Struct.Character
 import Struct.Event
 import Struct.Glyph
 import Struct.Model
+import Struct.UI
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -19,10 +20,9 @@ import Struct.Model
 apply_to : (
       Struct.Model.Type ->
       Struct.Glyph.Ref ->
-      Int ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model ref index =
+apply_to model ref =
    (
       (
          case (model.edited_char, (Dict.get ref model.glyphs)) of
@@ -30,7 +30,16 @@ apply_to model ref index =
                {model |
                   edited_char =
                      (Just
-                        (Struct.Character.set_glyph index glyph char)
+                        (Struct.Character.set_glyph
+                           (Struct.UI.get_glyph_slot model.ui)
+                           glyph
+                           char
+                        )
+                     ),
+                  ui =
+                     (Struct.UI.set_displayed_tab
+                        Struct.UI.GlyphManagementTab
+                        model.ui
                      )
                }
 

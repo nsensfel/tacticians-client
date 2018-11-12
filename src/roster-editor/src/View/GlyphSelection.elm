@@ -1,4 +1,4 @@
-module View.GlyphBoardSelection exposing (get_html)
+module View.GlyphSelection exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Dict
@@ -8,10 +8,10 @@ import Html.Attributes
 import Html.Events
 
 -- Roster Editor ---------------------------------------------------------------
-import Struct.GlyphBoard
 import Struct.Event
-import Struct.Model
+import Struct.Glyph
 import Struct.Omnimods
+import Struct.Model
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -32,35 +32,27 @@ get_mod_html mod =
          ]
       )
 
-get_glyph_board_html : Struct.GlyphBoard.Type -> (Html.Html Struct.Event.Type)
-get_glyph_board_html glyph_board =
+get_glyph_html : Struct.Glyph.Type -> (Html.Html Struct.Event.Type)
+get_glyph_html glyph  =
    (Html.div
       [
-         (Html.Attributes.class "character-card-glyph-board"),
+         (Html.Attributes.class "character-card-glyph"),
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
-            (Struct.Event.SelectedGlyphBoard
-               (Struct.GlyphBoard.get_id glyph_board)
+            (Struct.Event.SelectedGlyph
+               (Struct.Glyph.get_id glyph)
             )
          )
       ]
       [
+         (Html.text (Struct.Glyph.get_name glyph)),
          (Html.div
             [
-               (Html.Attributes.class "character-card-glyph-board-name")
-            ]
-            [
-               (Html.text (Struct.GlyphBoard.get_name glyph_board))
-            ]
-         ),
-         (Html.div
-            [
-               (Html.Attributes.class "info-card-omnimods-listing")
             ]
             (List.map
                (get_mod_html)
                (Struct.Omnimods.get_all_mods
-                  (Struct.GlyphBoard.get_omnimods glyph_board)
+                  (Struct.Glyph.get_omnimods glyph)
                )
             )
          )
@@ -75,15 +67,18 @@ get_html model =
    (Html.div
       [
          (Html.Attributes.class "selection-window"),
-         (Html.Attributes.class "glyph-board-selection")
+         (Html.Attributes.class "glyph-management")
       ]
       [
-         (Html.text "Glyph Board Selection"),
+         (Html.text "Glyph Selection"),
          (Html.div
             [
                (Html.Attributes.class "selection-window-listing")
             ]
-            (List.map (get_glyph_board_html) (Dict.values model.glyph_boards))
+            (List.map
+               (get_glyph_html)
+               (Dict.values model.glyphs)
+            )
          )
       ]
    )

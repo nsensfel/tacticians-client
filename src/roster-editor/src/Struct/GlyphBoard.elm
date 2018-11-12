@@ -4,6 +4,7 @@ module Struct.GlyphBoard exposing
       Ref,
       get_name,
       get_id,
+      get_slots,
       get_omnimods,
       get_omnimods_with_glyphs,
       decoder,
@@ -13,6 +14,8 @@ module Struct.GlyphBoard exposing
 
 -- Elm -------------------------------------------------------------------------
 import Array
+
+import List
 
 import Json.Decode
 import Json.Decode.Pipeline
@@ -47,6 +50,9 @@ get_id g = g.id
 get_name : Type -> String
 get_name g = g.name
 
+get_slots : Type -> (List Int)
+get_slots  g = g.slots
+
 get_omnimods : Type -> Struct.Omnimods.Type
 get_omnimods g = g.omnimods
 
@@ -55,7 +61,16 @@ get_omnimods_with_glyphs : (
       Type ->
       Struct.Omnimods.Type
    )
-get_omnimods_with_glyphs glyphs board = board.omnimods
+get_omnimods_with_glyphs glyphs board =
+   (List.foldl
+      (Struct.Omnimods.merge)
+      board.omnimods
+      (List.map2
+         (Struct.Omnimods.scale)
+         (List.map (\e -> ((toFloat e) / 100.0)) board.slots)
+         (List.map (Struct.Glyph.get_omnimods) (Array.toList glyphs))
+      )
+   )
 
 decoder : (Json.Decode.Decoder Type)
 decoder =
