@@ -58,9 +58,9 @@ type alias PartiallyDecoded =
       pla : Int,
       ena : Bool,
       dea : Bool,
-      awp : Int,
-      swp : Int,
-      ar : Int,
+      awp : Struct.Weapon.Ref,
+      swp : Struct.Weapon.Ref,
+      ar : Struct.Armor.Ref,
       omni : Struct.Omnimods.Type
    }
 
@@ -99,7 +99,15 @@ str_to_rank str =
       "c" -> Commander
       _ -> Optional
 
-finish_decoding : PartiallyDecoded -> (Type, Int, Int, Int)
+finish_decoding : (
+      PartiallyDecoded ->
+      (
+         Type,
+         Struct.Weapon.Ref,
+         Struct.Weapon.Ref,
+         Struct.Armor.Ref
+      )
+   )
 finish_decoding add_char =
    let
       weapon_set = (Struct.WeaponSet.new Struct.Weapon.none Struct.Weapon.none)
@@ -207,7 +215,14 @@ set_weapons weapons char =
       weapons = weapons
    }
 
-decoder : (Json.Decode.Decoder (Type, Int, Int, Int))
+decoder : (Json.Decode.Decoder
+      (
+         Type,
+         Struct.Weapon.Ref,
+         Struct.Weapon.Ref,
+         Struct.Armor.Ref
+      )
+   )
 decoder =
    (Json.Decode.map
       (finish_decoding)
@@ -223,9 +238,9 @@ decoder =
          |> (Json.Decode.Pipeline.required "pla" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "ena" Json.Decode.bool)
          |> (Json.Decode.Pipeline.required "dea" Json.Decode.bool)
-         |> (Json.Decode.Pipeline.required "awp" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "swp" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "ar" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "awp" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "swp" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "ar" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "pomni" Struct.Omnimods.decoder)
       )
    )

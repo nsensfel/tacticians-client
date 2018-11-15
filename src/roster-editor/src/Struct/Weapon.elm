@@ -26,7 +26,7 @@ import Struct.Omnimods
 --------------------------------------------------------------------------------
 type alias PartiallyDecoded =
    {
-      id : Int,
+      id : String,
       nam : String,
       rmi : Int,
       rma : Int,
@@ -35,7 +35,7 @@ type alias PartiallyDecoded =
 
 type alias Type =
    {
-      id : Int,
+      id : String,
       name : String,
       def_range : Int,
       atk_range : Int,
@@ -43,7 +43,7 @@ type alias Type =
       damage_sum : Int
    }
 
-type alias Ref = Int
+type alias Ref = String
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -52,7 +52,7 @@ type alias Ref = Int
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Int -> String -> Int -> Int -> Struct.Omnimods.Type -> Type
+new : String -> String -> Int -> Int -> Struct.Omnimods.Type -> Type
 new id name range_min range_max omnimods =
    {
       id = id,
@@ -63,7 +63,7 @@ new id name range_min range_max omnimods =
       damage_sum = (Struct.Omnimods.get_damage_sum omnimods)
    }
 
-get_id : Type -> Int
+get_id : Type -> String
 get_id wp = wp.id
 
 get_name : Type -> String
@@ -87,7 +87,7 @@ decoder =
       (\e -> {e | damage_sum = (Struct.Omnimods.get_damage_sum e.omnimods)})
       (Json.Decode.Pipeline.decode
          Type
-         |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
+         |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "rmi" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "rma" Json.Decode.int)
@@ -97,7 +97,7 @@ decoder =
    )
 
 none : Type
-none = (new 0 "None" 0 0 (Struct.Omnimods.none))
+none = (new "0" "None" 0 0 (Struct.Omnimods.none))
 
 default : Type
 default = (none)

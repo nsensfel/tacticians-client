@@ -17,14 +17,14 @@ type alias MapData =
    {
       w : Int,
       h : Int,
-      t : (List (List Int))
+      t : (List (List String))
    }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 deserialize_tile_borders : (
-      (List Int) ->
+      (List String) ->
       (List Struct.Tile.Border) ->
       (List Struct.Tile.Border)
    )
@@ -39,7 +39,12 @@ deserialize_tile_borders rem_ints current_borders =
 
       _ -> []
 
-deserialize_tile_instance : Int -> Int -> (List Int) -> Struct.Tile.Instance
+deserialize_tile_instance : (
+      Int ->
+      Int ->
+      (List String) ->
+      Struct.Tile.Instance
+   )
 deserialize_tile_instance map_width index t =
    case t of
       (a :: (b :: c)) ->
@@ -51,7 +56,7 @@ deserialize_tile_instance map_width index t =
             a
             b
             Constants.Movement.cost_when_out_of_bounds
-            -1
+            "-1"
             (deserialize_tile_borders c [])
          )
 
@@ -61,10 +66,10 @@ deserialize_tile_instance map_width index t =
                x = (index % map_width),
                y = (index // map_width)
             }
-            0
-            0
+            "0"
+            "0"
             Constants.Movement.cost_when_out_of_bounds
-            -1
+            "-1"
             []
          )
 
@@ -93,7 +98,7 @@ decode =
          (Json.Decode.field "h" Json.Decode.int)
          (Json.Decode.field
             "t"
-            (Json.Decode.list (Json.Decode.list Json.Decode.int))
+            (Json.Decode.list (Json.Decode.list Json.Decode.string))
          )
       )
    )

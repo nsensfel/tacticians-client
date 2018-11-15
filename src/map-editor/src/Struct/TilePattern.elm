@@ -1,11 +1,12 @@
 module Struct.TilePattern exposing
    (
       Type,
+      Actual,
       decoder,
       get_pattern_for,
       patterns_match,
       get_pattern,
-      get_variant,
+      get_variant_id,
       is_wild
    )
 
@@ -21,11 +22,13 @@ import Struct.Tile
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+type alias Actual = String
+
 type alias Type =
    {
-      v : Int,
+      v : Struct.Tile.VariantID,
       w : Bool,
-      p : String
+      p : Actual
    }
 
 --------------------------------------------------------------------------------
@@ -35,14 +38,14 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_pattern_for : Int -> (List Struct.Tile.Instance) -> String
+get_pattern_for : Struct.Tile.FamilyID -> (List Struct.Tile.Instance) -> Actual
 get_pattern_for source_fa neighborhood =
    (List.foldl
       (\t -> \acc ->
          let
             t_fa = (Struct.Tile.get_instance_family t)
          in
-            if ((t_fa == -1) || (t_fa == source_fa))
+            if ((t_fa == "-1") || (t_fa == source_fa))
             then (acc ++ "1")
             else (acc ++ "0")
       )
@@ -50,7 +53,7 @@ get_pattern_for source_fa neighborhood =
       neighborhood
    )
 
-patterns_match : String -> String -> Bool
+patterns_match : Actual -> Actual -> Bool
 patterns_match a b =
    case ((String.uncons a), (String.uncons b)) of
       (Nothing, _) -> True
@@ -61,11 +64,11 @@ patterns_match a b =
 
       (_, _) -> False
 
-get_pattern : Type -> String
+get_pattern : Type -> Actual
 get_pattern tp = tp.p
 
-get_variant : Type -> Int
-get_variant tp = tp.v
+get_variant_id : Type -> Struct.Tile.VariantID
+get_variant_id tp = tp.v
 
 is_wild : Type -> Bool
 is_wild tp = tp.w
@@ -74,7 +77,7 @@ decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.Pipeline.decode
       Type
-      |> (Json.Decode.Pipeline.required "v" (Json.Decode.int))
+      |> (Json.Decode.Pipeline.required "v" (Json.Decode.string))
       |> (Json.Decode.Pipeline.required "w" (Json.Decode.bool))
       |> (Json.Decode.Pipeline.required "p" (Json.Decode.string))
    )

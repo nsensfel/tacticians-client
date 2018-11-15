@@ -90,7 +90,7 @@ try_getting_tile_at loc map =
    then (Array.get (location_to_index loc map) map.content)
    else Nothing
 
-solve_tiles : (Dict.Dict Int Struct.Tile.Type) -> Type -> Type
+solve_tiles : (Dict.Dict Struct.Tile.Ref Struct.Tile.Type) -> Type -> Type
 solve_tiles tiles map =
    {map |
       content = (Array.map (Struct.Tile.solve_tile_instance tiles) map.content)

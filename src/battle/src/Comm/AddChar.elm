@@ -5,6 +5,8 @@ import Json.Decode
 
 -- Map -------------------------------------------------------------------
 import Struct.Character
+import Struct.Weapon
+import Struct.Armor
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------
@@ -16,7 +18,12 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 
 internal_decoder : (
-      (Struct.Character.Type, Int, Int, Int) ->
+      (
+         Struct.Character.Type,
+         Struct.Weapon.Ref,
+         Struct.Weapon.Ref,
+         Struct.Armor.Ref
+      ) ->
       Struct.ServerReply.Type
    )
 internal_decoder char_and_refs = (Struct.ServerReply.AddCharacter char_and_refs)

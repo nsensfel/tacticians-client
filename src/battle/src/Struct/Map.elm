@@ -120,7 +120,7 @@ get_movement_cost_function bmap start_loc char_list loc =
    else
       Constants.Movement.cost_when_out_of_bounds
 
-solve_tiles : (Dict.Dict Int Struct.Tile.Type) -> Type -> Type
+solve_tiles : (Dict.Dict Struct.Tile.Ref Struct.Tile.Type) -> Type -> Type
 solve_tiles tiles bmap =
    {bmap |
       content = (Array.map (Struct.Tile.solve_tile_instance tiles) bmap.content)
@@ -128,7 +128,7 @@ solve_tiles tiles bmap =
 
 get_omnimods_at : (
       Struct.Location.Type ->
-      (Dict.Dict Int Struct.Tile.Type) ->
+      (Dict.Dict Struct.Tile.Ref Struct.Tile.Type) ->
       Type ->
       Struct.Omnimods.Type
    )

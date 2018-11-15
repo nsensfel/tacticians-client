@@ -16,11 +16,11 @@ import Struct.Model
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Int ->
-      Int ->
+      String ->
+      String ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model main_class variant_ix =
+apply_to model main_class_id variant_id =
    (
       {model |
          toolbox =
@@ -29,10 +29,10 @@ apply_to model main_class variant_ix =
                   model.tiles
                   (Struct.Tile.new_instance
                      {x = 0, y = 0}
-                     main_class
-                     variant_ix
+                     main_class_id
+                     variant_id
                      0
-                     0
+                     "0"
                      []
                   )
                )

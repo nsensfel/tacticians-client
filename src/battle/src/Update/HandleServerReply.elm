@@ -106,7 +106,12 @@ add_weapon wp current_state =
       ((Struct.Model.add_weapon wp model), cmds)
 
 add_character : (
-      (Struct.Character.Type, Int, Int, Int) ->
+      (
+         Struct.Character.Type,
+         Struct.Weapon.Ref,
+         Struct.Weapon.Ref,
+         Struct.Armor.Ref
+      ) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )

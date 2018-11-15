@@ -32,9 +32,9 @@ get_layer_html index border =
                   (
                      "url("
                      ++ Constants.IO.tile_assets_url
-                     ++ (toString (Struct.Tile.get_border_type_id border))
+                     ++ (Struct.Tile.get_border_type_id border)
                      ++ "-f-"
-                     ++ (toString (Struct.Tile.get_border_variant_ix border))
+                     ++ (Struct.Tile.get_border_variant_id border)
                      ++ ".svg)"
                   )
                )
@@ -60,7 +60,7 @@ get_content_html tile =
                      (
                         "url("
                         ++ Constants.IO.tile_assets_url
-                        ++ (toString (Struct.Tile.get_type_id tile))
+                        ++ (Struct.Tile.get_type_id tile)
                         ++ "-bg.svg)"
                      )
                   )
@@ -81,9 +81,9 @@ get_content_html tile =
                         (
                            "url("
                            ++ Constants.IO.tile_assets_url
-                           ++ (toString (Struct.Tile.get_type_id tile))
+                           ++ (Struct.Tile.get_type_id tile)
                            ++ "-v-"
-                           ++ (toString (Struct.Tile.get_variant_ix tile))
+                           ++ (Struct.Tile.get_variant_id tile)
                            ++ ".svg)"
                         )
                      )

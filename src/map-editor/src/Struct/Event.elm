@@ -8,6 +8,7 @@ import Struct.Error
 import Struct.HelpRequest
 import Struct.Location
 import Struct.ServerReply
+import Struct.Tile
 import Struct.Toolbox
 import Struct.UI
 
@@ -25,7 +26,7 @@ type Type =
    | ModeRequested Struct.Toolbox.Mode
    | ShapeRequested Struct.Toolbox.Shape
    | ClearSelectionRequested
-   | TemplateRequested (Int, Int)
+   | TemplateRequested (Struct.Tile.Ref, Struct.Tile.VariantID)
    | PrettifySelectionRequested
    | SendMapUpdateRequested
    | GoToMainMenu

@@ -38,9 +38,9 @@ type alias Type =
       index : Int,
       name : String,
       portrait_id : String,
-      main_weapon_id : Int,
-      secondary_weapon_id : Int,
-      armor_id : Int,
+      main_weapon_id : String,
+      secondary_weapon_id : String,
+      armor_id : String,
       glyph_board_id : String,
       glyph_ids : (List String)
    }
@@ -61,13 +61,13 @@ get_name c = c.name
 get_portrait_id : Type -> String
 get_portrait_id c = c.portrait_id
 
-get_main_weapon_id : Type -> Int
+get_main_weapon_id : Type -> String
 get_main_weapon_id char = char.main_weapon_id
 
-get_secondary_weapon_id : Type -> Int
+get_secondary_weapon_id : Type -> String
 get_secondary_weapon_id char = char.secondary_weapon_id
 
-get_armor_id : Type -> Int
+get_armor_id : Type -> String
 get_armor_id char = char.armor_id
 
 get_glyph_board_id : Type -> String
@@ -109,9 +109,9 @@ decoder =
       |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "prt" Json.Decode.string)
-      |> (Json.Decode.Pipeline.required "awp" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "swp" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "ar" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "awp" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "swp" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "ar" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "gb" Json.Decode.string)
       |> (Json.Decode.Pipeline.required
             "gls"
@@ -126,9 +126,9 @@ encode char =
          ("ix", (Json.Encode.int char.index)),
          ("nam", (Json.Encode.string char.name)),
          ("prt", (Json.Encode.string char.portrait_id)),
-         ("awp", (Json.Encode.int char.main_weapon_id)),
-         ("swp", (Json.Encode.int char.secondary_weapon_id)),
-         ("ar", (Json.Encode.int char.armor_id)),
+         ("awp", (Json.Encode.string char.main_weapon_id)),
+         ("swp", (Json.Encode.string char.secondary_weapon_id)),
+         ("ar", (Json.Encode.string char.armor_id)),
          ("gb", (Json.Encode.string char.glyph_board_id)),
          (
             "gls",

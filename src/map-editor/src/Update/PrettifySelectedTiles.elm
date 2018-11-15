@@ -34,7 +34,11 @@ neighborhood_tile_instances loc map =
       (Struct.Location.get_full_neighborhood loc)
    )
 
-get_nigh_patterns : Int -> (List Struct.Tile.Instance) -> (List (Int, Int))
+get_nigh_patterns : (
+      Struct.Tile.FamilyID ->
+      (List Struct.Tile.Instance) ->
+      (List (Struct.Tile.FamilyID, Struct.Tile.Ref))
+   )
 get_nigh_patterns source_fm full_neighborhood =
    (Set.toList
       (List.foldl
@@ -61,7 +65,7 @@ get_nigh_patterns source_fm full_neighborhood =
 nigh_pattern_to_border : (
       Struct.Model.Type ->
       (List Struct.Tile.Instance) ->
-      (Int, Int) ->
+      (Struct.Tile.FamilyID, Struct.Tile.Ref) ->
       (Struct.Tile.Border)
    )
 nigh_pattern_to_border model full_neighborhood nigh_pattern =
@@ -82,11 +86,11 @@ nigh_pattern_to_border model full_neighborhood nigh_pattern =
                   model.wild_tile_patterns
                )
             of
-               Nothing -> (Struct.Tile.new_border 0 0)
+               Nothing -> (Struct.Tile.new_border "0" "0")
                (Just tp) ->
                   (Struct.Tile.new_border
                      tid
-                     (Struct.TilePattern.get_variant tp)
+                     (Struct.TilePattern.get_variant_id tp)
                   )
 
          (Just v) -> (Struct.Tile.new_border tid v)

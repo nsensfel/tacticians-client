@@ -25,8 +25,8 @@ import Struct.Tile
 encode_tile_border_values : Struct.Tile.Border -> (List Json.Encode.Value)
 encode_tile_border_values border =
    [
-      (Json.Encode.int (Struct.Tile.get_border_type_id border)),
-      (Json.Encode.int (Struct.Tile.get_border_variant_ix border))
+      (Json.Encode.string (Struct.Tile.get_border_type_id border)),
+      (Json.Encode.string (Struct.Tile.get_border_variant_id border))
    ]
 
 encode_tile_instance : Struct.Tile.Instance -> Json.Encode.Value
@@ -34,8 +34,8 @@ encode_tile_instance tile_inst =
    (Json.Encode.list
       (
          [
-            (Json.Encode.int (Struct.Tile.get_type_id tile_inst)),
-            (Json.Encode.int (Struct.Tile.get_variant_ix tile_inst))
+            (Json.Encode.string (Struct.Tile.get_type_id tile_inst)),
+            (Json.Encode.string (Struct.Tile.get_variant_id tile_inst))
          ]
          ++
          (List.concatMap

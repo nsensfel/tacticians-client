@@ -23,12 +23,12 @@ import Struct.Omnimods
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      id : Int,
+      id : String,
       name : String,
       omnimods : Struct.Omnimods.Type
    }
 
-type alias Ref = Int
+type alias Ref = String
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -37,7 +37,7 @@ type alias Ref = Int
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Int -> String -> Struct.Omnimods.Type -> Type
+new : String -> String -> Struct.Omnimods.Type -> Type
 new id name omnimods =
    {
       id = id,
@@ -61,10 +61,10 @@ decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.Pipeline.decode
       Type
-      |> (Json.Decode.Pipeline.required "id" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
    )
 
 none : Type
-none = (new 0 "None" (Struct.Omnimods.new [] [] [] []))
+none = (new "0" "None" (Struct.Omnimods.new [] [] [] []))

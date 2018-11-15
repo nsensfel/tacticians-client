@@ -33,7 +33,11 @@ type alias Type =
       toolbox: Struct.Toolbox.Type,
       help_request: Struct.HelpRequest.Type,
       map: Struct.Map.Type,
-      tile_patterns: (Dict.Dict String Int),
+      tile_patterns:
+         (Dict.Dict
+            Struct.TilePattern.Actual
+            Struct.Tile.VariantID
+         ),
       wild_tile_patterns: (List Struct.TilePattern.Type),
       tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
       error: (Maybe Struct.Error.Type),
@@ -107,7 +111,7 @@ add_tile_pattern tp model =
          tile_patterns =
             (Dict.insert
                (Struct.TilePattern.get_pattern tp)
-               (Struct.TilePattern.get_variant tp)
+               (Struct.TilePattern.get_variant_id tp)
                model.tile_patterns
             )
       }
