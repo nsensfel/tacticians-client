@@ -13,6 +13,7 @@ import Update.SelectCharacter
 import Update.SelectTab
 import Update.SendRoster
 import Update.SetArmor
+import Update.SetName
 import Update.SetGlyph
 import Update.SetGlyphBoard
 import Update.SetPortrait
@@ -62,6 +63,9 @@ update event model =
 
       Struct.Event.SaveRequest ->
          (Update.SendRoster.apply_to (Struct.Model.save_character new_model))
+
+      (Struct.Event.SetCharacterName name) ->
+         (Update.SetName.apply_to new_model name)
 
       (Struct.Event.ClickedOnWeapon is_main) ->
          (Update.SelectTab.apply_to

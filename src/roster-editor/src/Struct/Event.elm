@@ -29,6 +29,8 @@ type Type =
    | ClickedOnGlyph Int
    | SaveRequest
 
+   | SetCharacterName String
+
    | SelectedArmor Struct.Armor.Ref
    | SelectedGlyph Struct.Glyph.Ref
    | SelectedGlyphBoard Struct.GlyphBoard.Ref

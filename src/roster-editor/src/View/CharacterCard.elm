@@ -30,19 +30,34 @@ import View.Gauge
 --------------------------------------------------------------------------------
 get_name : (
       Struct.Character.Type ->
+      Bool ->
       (Html.Html Struct.Event.Type)
    )
-get_name char =
-   (Html.div
-      [
-         (Html.Attributes.class "info-card-name"),
-         (Html.Attributes.class "info-card-text-field"),
-         (Html.Attributes.class "character-card-name")
-      ]
-      [
-         (Html.text (Struct.Character.get_name char))
-      ]
-   )
+get_name char can_edit =
+   if can_edit
+   then
+      (Html.input
+         [
+            (Html.Attributes.class "info-card-name"),
+            (Html.Attributes.class "info-card-text-field"),
+            (Html.Attributes.class "character-card-name"),
+            (Html.Events.onInput Struct.Event.SetCharacterName),
+            (Html.Attributes.value (Struct.Character.get_name char))
+         ]
+         [
+         ]
+      )
+   else
+      (Html.div
+         [
+            (Html.Attributes.class "info-card-name"),
+            (Html.Attributes.class "info-card-text-field"),
+            (Html.Attributes.class "character-card-name")
+         ]
+         [
+            (Html.text (Struct.Character.get_name char))
+         ]
+      )
 
 get_health_bar : (
       Struct.Character.Type ->
@@ -376,7 +391,7 @@ get_minimal_html char =
          )
       ]
       [
-         (get_name char),
+         (get_name char False),
          (Html.div
             [
                (Html.Attributes.class "info-card-top"),
@@ -416,7 +431,7 @@ get_full_html char =
             (Html.Attributes.class "character-card")
          ]
          [
-            (get_name char),
+            (get_name char True),
             (Html.div
                [
                   (Html.Attributes.class "info-card-top"),
