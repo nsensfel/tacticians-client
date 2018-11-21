@@ -50,7 +50,7 @@ type alias GenericMod =
 generic_mods_decoder : (Json.Decode.Decoder (Dict.Dict String Int))
 generic_mods_decoder =
    (Json.Decode.map
-      (Dict.fromList)
+      ((Dict.fromList) >> (Dict.remove "none"))
       (Json.Decode.list
          (Json.Decode.map
             (\gm -> (gm.t, gm.v))

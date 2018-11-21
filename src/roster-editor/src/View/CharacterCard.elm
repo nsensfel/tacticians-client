@@ -13,6 +13,7 @@ import Html.Events
 
 -- Roster Editor ---------------------------------------------------------------
 import Struct.Armor
+import Struct.Attributes
 import Struct.Character
 import Struct.Event
 import Struct.GlyphBoard
@@ -297,17 +298,6 @@ get_glyph_board_details board =
             [
                (Html.text (Struct.GlyphBoard.get_name board))
             ]
-         ),
-         (Html.div
-            [
-               (Html.Attributes.class "info-card-omnimods-listing")
-            ]
-            (List.map
-               (get_mod_html)
-               (Struct.Omnimods.get_all_mods
-                  (Struct.GlyphBoard.get_omnimods board)
-               )
-            )
          )
       ]
    )
@@ -372,6 +362,36 @@ get_relevant_stats stats =
          (stat_val (Struct.Statistics.get_critical_hits stats) True)
       ]
    )
+
+get_attributes : (
+      Struct.Attributes.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_attributes atts =
+   (Html.div
+      [
+         (Html.Attributes.class "character-card-stats"),
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (Struct.Event.TabSelected Struct.UI.GlyphManagementTab)
+         )
+      ]
+      [
+         (stat_name "Con"),
+         (stat_val (Struct.Attributes.get_constitution atts) False),
+         (stat_name "Dex"),
+         (stat_val (Struct.Attributes.get_dexterity atts) False),
+         (stat_name "Int"),
+         (stat_val (Struct.Attributes.get_intelligence atts) False),
+         (stat_name "Min"),
+         (stat_val (Struct.Attributes.get_mind atts) False),
+         (stat_name "Spe"),
+         (stat_val (Struct.Attributes.get_speed atts) False),
+         (stat_name "Str"),
+         (stat_val (Struct.Attributes.get_strength atts) False)
+      ]
+   )
+
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -461,6 +481,7 @@ get_full_html char =
             (get_armor_details omnimods armor),
             (get_glyph_board_details (Struct.Character.get_glyph_board char)),
             (get_relevant_stats char_statistics),
+            (get_attributes (Struct.Character.get_attributes char)),
             (get_weapon_summary damage_modifier secondary_weapon)
          ]
       )
