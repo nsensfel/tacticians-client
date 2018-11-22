@@ -47,7 +47,10 @@ update event model =
          )
 
       (Struct.Event.CharacterSelected char_id) ->
-         (Update.SelectCharacter.apply_to new_model char_id)
+         (Update.SelectCharacter.apply_to
+            (Struct.Model.save_character new_model)
+            char_id
+         )
 
       (Struct.Event.TabSelected tab) ->
          (Update.SelectTab.apply_to
