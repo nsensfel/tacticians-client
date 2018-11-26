@@ -15,6 +15,7 @@ type Type =
    None
    | Failed Struct.Error.Type
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
+   | NewInvasion Int
    | TabSelected Struct.UI.Tab
 
 attempted : (Result.Result err val) -> Type

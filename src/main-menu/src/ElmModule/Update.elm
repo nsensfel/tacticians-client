@@ -37,5 +37,8 @@ update event model =
       (Struct.Event.ServerReplied result) ->
          (Update.HandleServerReply.apply_to model result)
 
+      (Struct.Event.NewInvasion ix) ->
+         (model, Cmd.none)
+
       (Struct.Event.TabSelected tab) ->
          (Update.SelectTab.apply_to new_model tab)

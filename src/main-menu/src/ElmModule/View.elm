@@ -14,6 +14,7 @@ import Struct.Model
 import Struct.Player
 
 import View.BattleListing
+import View.Invasions
 import View.Header
 import View.MapListing
 import View.Roster
@@ -42,9 +43,7 @@ view model =
                   "main-menu-campaigns"
                   (Struct.Player.get_campaigns model.player)
                ),
-               (View.BattleListing.get_html
-                  "Invasions"
-                  "main-menu-invasions"
+               (View.Invasions.get_html
                   (Struct.Player.get_invasions model.player)
                ),
                (View.BattleListing.get_html

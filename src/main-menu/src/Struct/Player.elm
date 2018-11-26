@@ -14,6 +14,8 @@ module Struct.Player exposing
    )
 
 -- Elm -------------------------------------------------------------------------
+import Array
+
 import Json.Decode
 import Json.Decode.Pipeline
 
@@ -30,7 +32,7 @@ type alias Type =
       name : String,
       maps : (List Struct.MapSummary.Type),
       campaigns : (List Struct.BattleSummary.Type),
-      invasions : (List Struct.BattleSummary.Type),
+      invasions : (Array.Array Struct.BattleSummary.Type),
       events : (List Struct.BattleSummary.Type),
       roster_id : String,
       inventory_id : String
@@ -55,7 +57,7 @@ get_maps t = t.maps
 get_campaigns : Type -> (List Struct.BattleSummary.Type)
 get_campaigns t = t.campaigns
 
-get_invasions : Type -> (List Struct.BattleSummary.Type)
+get_invasions : Type -> (Array.Array Struct.BattleSummary.Type)
 get_invasions t = t.invasions
 
 get_events : Type -> (List Struct.BattleSummary.Type)
@@ -83,7 +85,7 @@ decoder =
          )
       |> (Json.Decode.Pipeline.required
             "invs"
-            (Json.Decode.list Struct.BattleSummary.decoder)
+            (Json.Decode.array Struct.BattleSummary.decoder)
          )
       |> (Json.Decode.Pipeline.required
             "evts"
@@ -100,7 +102,7 @@ none =
       name = "Unknown",
       maps = [],
       campaigns = [],
-      invasions = [],
+      invasions = (Array.empty),
       events = [],
       roster_id = "",
       inventory_id = ""
