@@ -6,8 +6,8 @@ module ElmModule.Update exposing (update)
 import Struct.Event
 import Struct.Model
 
+import Update.HandleNewInvasion
 import Update.HandleServerReply
-import Update.SelectTab
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -38,7 +38,6 @@ update event model =
          (Update.HandleServerReply.apply_to model result)
 
       (Struct.Event.NewInvasion ix) ->
-         (model, Cmd.none)
+         (Update.HandleNewInvasion.apply_to new_model ix)
 
-      (Struct.Event.TabSelected tab) ->
-         (Update.SelectTab.apply_to new_model tab)
+      (Struct.Event.TabSelected tab) -> (model, Cmd.none)

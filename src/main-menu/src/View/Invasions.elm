@@ -40,6 +40,7 @@ get_invasion_html ix invasion =
          (Html.a
             [
                (Html.Events.onClick (Struct.Event.NewInvasion ix)),
+               (Html.Attributes.class "clickable"),
                invasion_type
             ]
             [

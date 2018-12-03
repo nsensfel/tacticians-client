@@ -1,10 +1,13 @@
 module Struct.BattleSummary exposing
    (
       Type,
+      InvasionCategory(..),
       get_id,
       get_name,
       get_last_edit,
       is_players_turn,
+      is_empty_slot,
+      get_invasion_category,
       decoder,
       none
    )
@@ -18,6 +21,11 @@ import Json.Decode.Pipeline
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+type InvasionCategory =
+   InvasionAttack
+   | InvasionDefend
+   | InvasionEither
+
 type alias Type =
    {
       id : String,
@@ -44,6 +52,17 @@ get_last_edit t = t.last_edit
 
 is_players_turn : Type -> Bool
 is_players_turn t = t.is_players_turn
+
+is_empty_slot : Type -> Bool
+is_empty_slot t = (t.id == "")
+
+get_invasion_category : Int -> InvasionCategory
+get_invasion_category ix =
+   if (ix < 3)
+   then InvasionAttack
+   else if (ix < 6)
+   then InvasionEither
+   else InvasionDefend
 
 decoder : (Json.Decode.Decoder Type)
 decoder =

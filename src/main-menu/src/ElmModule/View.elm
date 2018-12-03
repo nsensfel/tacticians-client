@@ -11,13 +11,9 @@ import Util.Html
 import Struct.Error
 import Struct.Event
 import Struct.Model
-import Struct.Player
 
-import View.BattleListing
-import View.Invasions
 import View.Header
-import View.MapListing
-import View.Roster
+import View.CurrentTab
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -34,27 +30,7 @@ view model =
       ]
       [
          (View.Header.get_html),
-         (Html.main_
-            [
-            ]
-            [
-               (View.BattleListing.get_html
-                  "Campaigns"
-                  "main-menu-campaigns"
-                  (Struct.Player.get_campaigns model.player)
-               ),
-               (View.Invasions.get_html
-                  (Struct.Player.get_invasions model.player)
-               ),
-               (View.BattleListing.get_html
-                  "Events"
-                  "main-menu-events"
-                  (Struct.Player.get_events model.player)
-               ),
-               (View.MapListing.get_html (Struct.Player.get_maps model.player)),
-               (View.Roster.get_html)
-            ]
-         ),
+         (View.CurrentTab.get_html model),
          (
             case model.error of
                Nothing -> (Util.Html.nothing)

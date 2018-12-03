@@ -1,9 +1,10 @@
-module Update.SelectTab exposing (apply_to)
+module Update.HandleNewInvasion exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 
--- Map -------------------------------------------------------------------
-import Struct.Model
+-- Main Menu -------------------------------------------------------------------
 import Struct.Event
+import Struct.InvasionRequest
+import Struct.Model
 import Struct.UI
 
 --------------------------------------------------------------------------------
@@ -15,18 +16,17 @@ import Struct.UI
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Struct.UI.Tab ->
+      Int ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model tab =
-   if ((Struct.UI.try_getting_displayed_tab model.ui) == (Just tab))
-   then
-      (
-         {model | ui = (Struct.UI.reset_displayed_tab model.ui)},
-         Cmd.none
-      )
-   else
-      (
-         {model | ui = (Struct.UI.set_displayed_tab tab model.ui)},
-         Cmd.none
-      )
+apply_to model ix =
+   (
+      {model |
+         ui =
+            (Struct.UI.set_action
+               (Struct.UI.NewInvasion (Struct.InvasionRequest.new ix))
+               model.ui
+            )
+      },
+      Cmd.none
+   )
