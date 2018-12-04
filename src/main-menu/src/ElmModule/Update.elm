@@ -40,4 +40,13 @@ update event model =
       (Struct.Event.NewInvasion ix) ->
          (Update.HandleNewInvasion.apply_to new_model ix)
 
+      (Struct.Event.InvasionSetSize size) ->
+         (Update.HandleNewInvasion.set_size new_model size)
+
+      (Struct.Event.InvasionSetCategory cat) ->
+         (Update.HandleNewInvasion.set_category new_model cat)
+
+      (Struct.Event.InvasionSetMap map_summary) ->
+         (Update.HandleNewInvasion.set_map new_model map_summary)
+
       (Struct.Event.TabSelected tab) -> (model, Cmd.none)

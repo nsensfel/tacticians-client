@@ -4,7 +4,10 @@ module Struct.Event exposing (Type(..), attempted)
 import Http
 
 -- Main Menu -------------------------------------------------------------------
+import Struct.BattleSummary
 import Struct.Error
+import Struct.InvasionRequest
+import Struct.MapSummary
 import Struct.ServerReply
 import Struct.UI
 
@@ -16,6 +19,9 @@ type Type =
    | Failed Struct.Error.Type
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
    | NewInvasion Int
+   | InvasionSetSize Struct.InvasionRequest.Size
+   | InvasionSetMap Struct.MapSummary.Type
+   | InvasionSetCategory Struct.BattleSummary.InvasionCategory
    | TabSelected Struct.UI.Tab
 
 attempted : (Result.Result err val) -> Type

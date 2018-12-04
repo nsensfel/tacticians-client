@@ -2,12 +2,12 @@ module View.Tab.NewInvasion exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html
-import Html.Attributes
+-- import Html.Attributes
+import Html.Events
 
 -- Main Menu -------------------------------------------------------------------
 import Struct.Event
 import Struct.Model
-import Struct.Player
 import Struct.UI
 import Struct.InvasionRequest
 import Struct.BattleSummary
@@ -21,15 +21,25 @@ select_category_html =
       [
       ]
       [
-         (Html.div
+         (Html.button
             [
+               (Html.Events.onClick
+                  (Struct.Event.InvasionSetCategory
+                     Struct.BattleSummary.InvasionAttack
+                  )
+               )
             ]
             [
                (Html.text "New Offensive")
             ]
          ),
-         (Html.div
+         (Html.button
             [
+               (Html.Events.onClick
+                  (Struct.Event.InvasionSetCategory
+                     Struct.BattleSummary.InvasionDefend
+                  )
+               )
             ]
             [
                (Html.text "New Defense")
@@ -44,22 +54,37 @@ select_size_html max_size =
       [
       ]
       [
-         (Html.div
+         (Html.button
             [
+               (Html.Events.onClick
+                  (Struct.Event.InvasionSetSize
+                     Struct.InvasionRequest.Small
+                  )
+               )
             ]
             [
                (Html.text "Small")
             ]
          ),
-         (Html.div
+         (Html.button
             [
+               (Html.Events.onClick
+                  (Struct.Event.InvasionSetSize
+                     Struct.InvasionRequest.Medium
+                  )
+               )
             ]
             [
                (Html.text "Medium")
             ]
          ),
-         (Html.div
+         (Html.button
             [
+               (Html.Events.onClick
+                  (Struct.Event.InvasionSetSize
+                     Struct.InvasionRequest.Large
+                  )
+               )
             ]
             [
                (Html.text "Large")

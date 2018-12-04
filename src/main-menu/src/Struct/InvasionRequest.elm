@@ -62,8 +62,8 @@ set_category cat ir = {ir | category = cat}
 get_size : Type -> (Maybe Size)
 get_size ir = ir.size
 
-set_size : (Maybe Size) -> Type -> Type
-set_size s ir = {ir | size = s}
+set_size : Size -> Type -> Type
+set_size s ir = {ir | size = (Just s)}
 
 get_map_id : Type -> String
 get_map_id ir = ir.map_id
