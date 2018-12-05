@@ -9,6 +9,8 @@ import Html
 import Html.Attributes
 
 -- Roster Editor ---------------------------------------------------------------
+import Util.Html
+
 import Struct.Armor
 import Struct.Character
 import Struct.Event
@@ -86,6 +88,21 @@ get_portrait_armor_html char =
       ]
    )
 
+get_battle_index_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
+get_battle_index_html char =
+   case (Struct.Character.get_battle_index char) of
+      -1 -> (Util.Html.nothing)
+      battle_ix ->
+         (Html.div
+            [
+               (Html.Attributes.class "character-portrait-battle-index"),
+               (Html.Attributes.class "clickable")
+            ]
+            [
+               (Html.text (toString battle_ix))
+            ]
+         )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -97,6 +114,7 @@ get_portrait_html char =
          (Html.Attributes.class "character-portrait-team-0")
       ]
       [
+         (get_battle_index_html char),
          (get_portrait_body_html char),
          (get_portrait_armor_html char)
       ]

@@ -3,6 +3,8 @@ module Struct.Character exposing
       Type,
       new,
       get_index,
+      get_battle_index,
+      set_battle_index,
       get_name,
       set_name,
       get_portrait,
@@ -42,6 +44,7 @@ import Struct.WeaponSet
 type alias Type =
    {
       ix : Int,
+      battle_ix : Int,
       name : String,
       portrait : Struct.Portrait.Type,
       attributes : Struct.Attributes.Type,
@@ -109,6 +112,7 @@ new index name m_portrait m_main_wp m_sec_wp m_armor m_board m_glyphs =
    (refresh_omnimods
       {
          ix = index,
+         battle_ix = -1,
          name = name,
          portrait =
             (
@@ -161,6 +165,12 @@ new index name m_portrait m_main_wp m_sec_wp m_armor m_board m_glyphs =
 
 get_index : Type -> Int
 get_index c = c.ix
+
+get_battle_index : Type -> Int
+get_battle_index c = c.battle_ix
+
+set_battle_index : Int -> Type -> Type
+set_battle_index battle_ix c = {c | battle_ix = battle_ix}
 
 get_name : Type -> String
 get_name c = c.name

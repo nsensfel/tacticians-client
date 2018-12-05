@@ -52,6 +52,13 @@ update event model =
             char_id
          )
 
+      (Struct.Event.ToggleCharacterBattleIndex char_id) ->
+         (new_model, Cmd.none)
+         -- (Update.ToggleCharacterBattleIndex.apply_to
+         --    (Struct.Model.save_character new_model)
+         --    char_id
+         -- )
+
       (Struct.Event.TabSelected tab) ->
          (Update.SelectTab.apply_to
             (

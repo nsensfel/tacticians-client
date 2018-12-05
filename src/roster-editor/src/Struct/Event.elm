@@ -20,6 +20,7 @@ import Struct.Weapon
 type Type =
    None
    | CharacterSelected Int
+   | ToggleCharacterBattleIndex Int
    | Failed Struct.Error.Type
    | GoToMainMenu
    | RequestedHelp Struct.HelpRequest.Type
