@@ -2,7 +2,7 @@ module View.Tab.NewInvasion exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html
--- import Html.Attributes
+import Html.Attributes
 import Html.Events
 
 -- Main Menu -------------------------------------------------------------------
@@ -114,9 +114,20 @@ get_actual_html inv_req =
                -- TODO: use roster size as upper limit.
                Nothing -> (select_size_html Struct.InvasionRequest.Large)
                _ ->
-                  -- TODO: Should not happen, let the user go ahead by providing
-                  -- a link.
-                  (Html.text "Error.")
+                  (Html.a
+                     [
+                        (Html.Attributes.href
+                           (
+                              "/roster-editor/"
+                              ++
+                              (Struct.InvasionRequest.get_url_params inv_req)
+                           )
+                        )
+                     ]
+                     [
+                        (Html.text "Select Characters")
+                     ]
+                  )
          )
       Struct.BattleSummary.InvasionDefend ->
          (
@@ -129,9 +140,22 @@ get_actual_html inv_req =
                         -- TODO: use min(RosterSize, MapSize) as upper limit.
                         (select_size_html Struct.InvasionRequest.Large)
                      _ ->
-                        -- TODO: Should not happen, let the user go ahead by
-                        -- providing a link.
-                        (Html.text "Error.")
+                        (Html.a
+                           [
+                              (Html.Attributes.href
+                                 (
+                                    "/roster-editor/"
+                                    ++
+                                    (Struct.InvasionRequest.get_url_params
+                                       inv_req
+                                    )
+                                 )
+                              )
+                           ]
+                           [
+                              (Html.text "Select Characters")
+                           ]
+                        )
          )
 
 --------------------------------------------------------------------------------

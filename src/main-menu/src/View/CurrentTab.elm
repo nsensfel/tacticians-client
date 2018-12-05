@@ -2,7 +2,7 @@ module View.CurrentTab exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html
-import Html.Attributes
+--import Html.Attributes
 
 -- Main Menu -------------------------------------------------------------------
 import Struct.Event

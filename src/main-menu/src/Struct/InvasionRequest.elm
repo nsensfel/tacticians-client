@@ -71,44 +71,30 @@ get_map_id ir = ir.map_id
 set_map_id : String -> Type -> Type
 set_map_id id ir = {ir | map_id = id}
 
-get_url_params : Type -> (Maybe String)
+get_url_params : Type -> String
 get_url_params ir =
-   case (ir.category, ir.size) of
-      (Struct.BattleSummary.InvasionEither, _) -> Nothing
-      (_, Nothing) -> Nothing
-      (Struct.BattleSummary.InvasionAttack, (Just size)) ->
-         (Just
-            (
-               "?m=a&ix="
-               ++ (toString ir.ix)
-               ++ "&s="
-               ++
-               (
-                  case size of
-                     Small -> "s"
-                     Medium -> "m"
-                     Large -> "l"
-               )
-            )
-         )
-
-      (Struct.BattleSummary.InvasionDefend, (Just size)) ->
+   (
+      "?ix="
+      ++ (toString ir.ix)
+      ++
+      (
+         case ir.category of
+            Struct.BattleSummary.InvasionEither -> ""
+            Struct.BattleSummary.InvasionAttack -> "&m=a"
+            Struct.BattleSummary.InvasionDefend -> "&m=d"
+      )
+      ++
+      (
+         case ir.size of
+            Nothing -> ""
+            (Just Small) -> "&s=s"
+            (Just Medium) -> "&s=m"
+            (Just Large) -> "&s=l"
+      )
+      ++
+      (
          if (ir.map_id == "")
-         then Nothing
-         else
-            (Just
-               (
-                  "?m=a&ix="
-                  ++ (toString ir.ix)
-                  ++ "&map_id="
-                  ++ ir.map_id
-                  ++ "&s="
-                  ++
-                  (
-                     case size of
-                        Small -> "s"
-                        Medium -> "m"
-                        Large -> "l"
-                  )
-               )
-            )
+         then ""
+         else ("&map_id=" ++ ir.map_id)
+      )
+   )
