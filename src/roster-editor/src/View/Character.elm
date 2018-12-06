@@ -7,6 +7,7 @@ module View.Character exposing
 -- Elm -------------------------------------------------------------------------
 import Html
 import Html.Attributes
+import Html.Events
 
 -- Roster Editor ---------------------------------------------------------------
 import Util.Html
@@ -111,7 +112,12 @@ get_portrait_html char =
    (Html.div
       [
          (Html.Attributes.class "character-portrait"),
-         (Html.Attributes.class "character-portrait-team-0")
+         (Html.Attributes.class "character-portrait-team-0"),
+         (Html.Events.onClick
+            (Struct.Event.ToggleCharacterBattleIndex
+               (Struct.Character.get_index char)
+            )
+         )
       ]
       [
          (get_battle_index_html char),

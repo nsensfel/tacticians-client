@@ -6,6 +6,7 @@ module Util.Array exposing
       indexed_search
    )
 
+import List
 import Array
 
 update : (
@@ -36,5 +37,18 @@ filter_first fun array =
 
 indexed_search : (t -> Bool) -> (Array.Array t) -> (Maybe (Int, t))
 indexed_search fun array =
-   -- TODO
-   Nothing
+   (List.foldl
+      (\v res ->
+         (
+            case res of
+               (Just e) -> res
+               Nothing ->
+                  let (index, value) = v in
+                     if (fun value)
+                     then (Just v)
+                     else Nothing
+         )
+      )
+      Nothing
+      (Array.toIndexedList array)
+   )
