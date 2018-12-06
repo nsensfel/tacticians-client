@@ -2,7 +2,8 @@ module Util.Array exposing
    (
       update,
       update_unsafe,
-      filter_first
+      filter_first,
+      indexed_search
    )
 
 import Array
@@ -32,3 +33,8 @@ update_unsafe index fun array =
 filter_first : (t -> Bool) -> (Array.Array t) -> (Maybe t)
 filter_first fun array =
    (Array.get 0 (Array.filter fun array))
+
+indexed_search : (t -> Bool) -> (Array.Array t) -> (Maybe (Int, t))
+indexed_search fun array =
+   -- TODO
+   Nothing

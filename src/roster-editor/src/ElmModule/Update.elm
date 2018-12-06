@@ -13,12 +13,13 @@ import Update.SelectCharacter
 import Update.SelectTab
 import Update.SendRoster
 import Update.SetArmor
-import Update.SetName
 import Update.SetGlyph
 import Update.SetGlyphBoard
+import Update.SetName
 import Update.SetPortrait
 import Update.SetRequestedHelp
 import Update.SetWeapon
+import Update.ToggleBattleIndex
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -53,11 +54,10 @@ update event model =
          )
 
       (Struct.Event.ToggleCharacterBattleIndex char_id) ->
-         (new_model, Cmd.none)
-         -- (Update.ToggleCharacterBattleIndex.apply_to
-         --    (Struct.Model.save_character new_model)
-         --    char_id
-         -- )
+         (Update.ToggleBattleIndex.apply_to
+            (Struct.Model.save_character new_model)
+            char_id
+         )
 
       (Struct.Event.TabSelected tab) ->
          (Update.SelectTab.apply_to
