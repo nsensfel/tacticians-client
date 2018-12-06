@@ -30,6 +30,13 @@
    background-size: 200% 100%;
 }
 
+.character-portrait-battle-index
+{
+   position: relative;
+   z-index: 2;
+   top: -200%;
+}
+
 .character-portrait-team-0 { background-color: rgba(57, 106, 177, 0.3); }
 .character-portrait-team-1 { background-color: rgba(204, 37, 41, 0.3); }
 .character-portrait-team-2 { background-color: rgba(62, 150, 81, 0.3); }

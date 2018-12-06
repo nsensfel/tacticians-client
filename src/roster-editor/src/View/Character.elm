@@ -120,9 +120,9 @@ get_portrait_html char =
          )
       ]
       [
-         (get_battle_index_html char),
          (get_portrait_body_html char),
-         (get_portrait_armor_html char)
+         (get_portrait_armor_html char),
+         (get_battle_index_html char)
       ]
    )
 
