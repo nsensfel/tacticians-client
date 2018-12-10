@@ -12,6 +12,9 @@ roster_loading_handler = (roster_handler_url ++ "/rst_load")
 roster_update_handler : String
 roster_update_handler = (roster_handler_url ++ "/rst_update")
 
+join_battle_handler : String
+join_battle_handler = (roster_handler_url ++ "/btl_join")
+
 armors_data_url : String
 armors_data_url = (base_url ++ "/asset/data/armors.json")
 

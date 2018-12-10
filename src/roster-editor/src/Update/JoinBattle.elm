@@ -1,17 +1,13 @@
-module ElmModule.View exposing (view)
+module Update.JoinBattle exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
-import Html
-import Html.Attributes
+--import Array
 
 -- Roster Editor ---------------------------------------------------------------
+import Comm.JoinBattle
+
 import Struct.Event
 import Struct.Model
-
-import View.Controlled
-import View.CurrentTab
-import View.MainMenu
-import View.MessageBoard
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -20,16 +16,13 @@ import View.MessageBoard
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-view : Struct.Model.Type -> (Html.Html Struct.Event.Type)
-view model =
-   (Html.div
-      [
-         (Html.Attributes.class "fullscreen-module")
-      ]
-      [
-         (View.MainMenu.get_html model),
-         (View.CurrentTab.get_html model),
-         (View.Controlled.get_html model),
-         (View.MessageBoard.get_html model)
-      ]
+apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
+apply_to model =
+   (
+      model,
+      (case (Comm.JoinBattle.try model) of
+         (Just cmd) -> cmd
+         Nothing -> Cmd.none
+      )
    )
+

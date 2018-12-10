@@ -2,6 +2,7 @@ module Struct.Flags exposing
    (
       Type,
       maybe_get_param,
+      force_get_param,
       get_params_as_url
    )
 
@@ -46,6 +47,12 @@ maybe_get_param param flags =
          case (List.tail a) of
             Nothing -> Nothing
             (Just b) -> (List.head b)
+
+force_get_param : String -> Type -> String
+force_get_param param flags =
+   case (maybe_get_param param flags) of
+      Nothing -> ""
+      (Just str) -> str
 
 get_params_as_url : Type -> String
 get_params_as_url flags =

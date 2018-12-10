@@ -22,11 +22,11 @@ remove_battle_index : (
 remove_battle_index model char index =
    {model |
       edited_char = Nothing,
-      used_indices =
+      battle_order =
          (Array.set
             (Struct.Character.get_battle_index char)
-            False
-            model.used_indices
+            -1
+            model.battle_order
          ),
       characters =
          (Array.set
@@ -43,12 +43,12 @@ give_battle_index : (
       Struct.Model.Type
    )
 give_battle_index model char index =
-   case (Util.Array.indexed_search (\e -> (not e)) model.used_indices) of
+   case (Util.Array.indexed_search (\e -> (e == -1)) model.battle_order) of
       Nothing -> model
       (Just (battle_index, _)) ->
          {model |
             edited_char = Nothing,
-            used_indices = (Array.set battle_index True model.used_indices),
+            battle_order = (Array.set battle_index index model.battle_order),
             characters =
                (Array.set
                   index

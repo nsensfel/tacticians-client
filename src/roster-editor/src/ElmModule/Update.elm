@@ -9,6 +9,7 @@ import Struct.UI
 
 import Update.GoToMainMenu
 import Update.HandleServerReply
+import Update.JoinBattle
 import Update.SelectCharacter
 import Update.SelectTab
 import Update.SendRoster
@@ -73,6 +74,9 @@ update event model =
 
       Struct.Event.SaveRequest ->
          (Update.SendRoster.apply_to (Struct.Model.save_character new_model))
+
+      Struct.Event.GoRequest ->
+         (Update.JoinBattle.apply_to (Struct.Model.save_character new_model))
 
       (Struct.Event.SetCharacterName name) ->
          (Update.SetName.apply_to new_model name)

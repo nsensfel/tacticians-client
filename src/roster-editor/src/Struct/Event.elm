@@ -29,6 +29,7 @@ type Type =
    | ClickedOnWeapon Bool
    | ClickedOnGlyph Int
    | SaveRequest
+   | GoRequest
 
    | SetCharacterName String
 

@@ -56,7 +56,7 @@ type alias Type =
       glyph_boards: (Dict.Dict Struct.GlyphBoard.Ref Struct.GlyphBoard.Type),
       portraits: (Dict.Dict Struct.Portrait.Ref Struct.Portrait.Type),
       error: (Maybe Struct.Error.Type),
-      used_indices: (Array.Array Bool),
+      battle_order: (Array.Array Int),
       player_id: String,
       roster_id: String,
       edited_char: (Maybe Struct.Character.Type),
@@ -143,7 +143,7 @@ new flags =
             then "0"
             else flags.user_id
          ),
-      used_indices =
+      battle_order =
          (Array.repeat
             (
                case (Struct.Flags.maybe_get_param "s" flags) of
@@ -153,7 +153,7 @@ new flags =
                   (Just "l") -> 24
                   (Just _) -> 0
             )
-            False
+            -1
          ),
       session_token = flags.token,
       edited_char = Nothing,
