@@ -6,6 +6,8 @@ import Http
 -- Shared ----------------------------------------------------------------------
 import Action.Ports
 
+import Util.Http
+
 -- Login -----------------------------------------------------------------------
 import Struct.Error
 import Struct.Event
@@ -63,7 +65,10 @@ apply_to model query_result =
       (Result.Err error) ->
          (
             (Struct.Model.invalidate
-               (Struct.Error.new Struct.Error.Networking (toString error))
+               (Struct.Error.new
+                  Struct.Error.Networking
+                  (Util.Http.error_to_string error)
+               )
                model
             ),
             Cmd.none

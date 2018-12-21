@@ -3,7 +3,10 @@ module Struct.Event exposing (Type(..), attempted)
 -- Elm -------------------------------------------------------------------------
 import Http
 
--- Map -------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
+import Util.Http
+
+-- Login -----------------------------------------------------------------------
 import Struct.Error
 import Struct.ServerReply
 import Struct.HelpRequest
@@ -34,4 +37,10 @@ attempted act =
    case act of
       (Result.Ok _) -> None
       (Result.Err msg) ->
-         (Failed (Struct.Error.new Struct.Error.Failure (toString msg)))
+         (Failed
+            (Struct.Error.new
+               Struct.Error.Failure
+               -- TODO: find a way to get some relevant text here.
+               "(text representation not implemented)"
+            )
+         )

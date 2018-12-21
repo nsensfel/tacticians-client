@@ -1,7 +1,7 @@
 module Update.HandleConnected exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
-import Http
+import Url
 
 -- Login -----------------------------------------------------------------------
 import Action.Ports
@@ -29,7 +29,7 @@ apply_to model =
                case (Struct.Flags.maybe_get_param "goto" model.flags) of
                   Nothing -> "/main-menu/"
                   (Just string) ->
-                     case (Http.decodeUri string) of
+                     case (Url.percentDecode string) of
                         Nothing -> "/main-menu/"
                         (Just "") -> "/main-menu/"
                         (Just url) -> url
