@@ -3,13 +3,18 @@ module Update.HandleServerReply exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Http
 
+import Url
+
 -- Shared ----------------------------------------------------------------------
 import Action.Ports
 
 import Struct.Flags
 
+import Util.Http
+
 -- Map Editor ------------------------------------------------------------------
 import Constants.IO
+
 import Struct.Map
 import Struct.Error
 import Struct.Event
@@ -39,7 +44,7 @@ disconnected current_state =
                   Constants.IO.base_url
                   ++ "/login/?action=disconnect&goto="
                   ++
-                  (Http.encodeUri
+                  (Url.percentEncode
                      (
                         "/map-editor/?"
                         ++ (Struct.Flags.get_params_as_url model.flags)
@@ -119,7 +124,10 @@ apply_to model query_result =
       (Result.Err error) ->
          (
             (Struct.Model.invalidate
-               (Struct.Error.new Struct.Error.Networking (toString error))
+               (Struct.Error.new
+                  Struct.Error.Networking
+                  (Util.Http.error_to_string error)
+               )
                model
             ),
             Cmd.none

@@ -9,7 +9,7 @@ import Html.Lazy
 
 import List
 
--- Map -------------------------------------------------------------------------
+-- Map Editor ------------------------------------------------------------------
 import Constants.UI
 
 import Struct.Event
@@ -33,32 +33,28 @@ get_tiles_html tb map =
       [
          (Html.Attributes.class "map-tiles-layer"),
          (Html.Attributes.style
-            [
-               (
-                  "width",
+            "width"
+            (
+               (String.fromInt
                   (
-                     (toString
-                        (
-                           (Struct.Map.get_width map)
-                           * Constants.UI.tile_size
-                        )
-                     )
-                     ++ "px"
-                  )
-               ),
-               (
-                  "height",
-                  (
-                     (toString
-                        (
-                           (Struct.Map.get_height map)
-                           * Constants.UI.tile_size
-                        )
-                     )
-                     ++ "px"
+                     (Struct.Map.get_width map)
+                     * Constants.UI.tile_size
                   )
                )
-            ]
+               ++ "px"
+            )
+         ),
+         (Html.Attributes.style
+            "height"
+            (
+               (String.fromInt
+                  (
+                     (Struct.Map.get_height map)
+                     * Constants.UI.tile_size
+                  )
+               )
+               ++ "px"
+            )
          )
       ]
       (List.map
@@ -79,21 +75,17 @@ get_html model =
       [
          (Html.Attributes.class "map-actual"),
          (Html.Attributes.style
+            "transform"
             (
                if ((Struct.UI.get_zoom_level model.ui) == 1)
-               then []
+               then ""
                else
-                  [
-                     (
-                        "transform",
-                        (
-                           "scale("
-                           ++
-                           (toString (Struct.UI.get_zoom_level model.ui))
-                           ++ ")"
-                        )
-                     )
-                  ]
+                  (
+                     "scale("
+                     ++
+                     (String.fromFloat (Struct.UI.get_zoom_level model.ui))
+                     ++ ")"
+                  )
             )
          )
       ]

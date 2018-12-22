@@ -75,7 +75,7 @@ is_wild tp = tp.w
 
 decoder : (Json.Decode.Decoder Type)
 decoder =
-   (Json.Decode.Pipeline.decode
+   (Json.Decode.succeed
       Type
       |> (Json.Decode.Pipeline.required "v" (Json.Decode.string))
       |> (Json.Decode.Pipeline.required "w" (Json.Decode.bool))

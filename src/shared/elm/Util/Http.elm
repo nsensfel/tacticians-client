@@ -11,12 +11,10 @@ error_to_string error =
       (Http.BadStatus response) ->
          (
             "The HTTP request failed: "
-            ++ (String.fromInt response.status.code)
-            ++ ", "
-            ++ response.status.message
+            ++ (String.fromInt response)
             ++ "."
          )
-      (Http.BadPayload string _) ->
+      (Http.BadBody string) ->
          (
             "Server response not understood:\""
             ++ string

@@ -207,13 +207,13 @@ get_border_variant_id tile_border = tile_border.variant_id
 
 get_local_variant_ix : Instance -> Int
 get_local_variant_ix tile_inst =
-   (
+   (modBy
       (noise_function
          tile_inst.location.x
          tile_inst.location.y
          tile_inst.crossing_cost
       )
-      % Constants.UI.local_variants_per_tile
+      Constants.UI.local_variants_per_tile
    )
 
 solve_tile_instance : (Dict.Dict Ref Type) -> Instance -> Instance
@@ -235,7 +235,7 @@ decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.map
       (finish_decoding)
-      (Json.Decode.Pipeline.decode
+      (Json.Decode.succeed
          PartiallyDecoded
          |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)

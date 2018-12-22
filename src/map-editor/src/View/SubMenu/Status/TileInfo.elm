@@ -30,7 +30,7 @@ get_icon tile =
          (Html.Attributes.class
             (
                "map-tile-variant-"
-               ++ (toString (Struct.Tile.get_local_variant_ix tile))
+               ++ (String.fromInt (Struct.Tile.get_local_variant_ix tile))
             )
          )
       ]
@@ -64,7 +64,7 @@ get_cost tile =
          then
             "Obstructed"
          else
-            ("Cost: " ++ (toString cost))
+            ("Cost: " ++ (String.fromInt cost))
    in
       (Html.div
          [
@@ -88,9 +88,9 @@ get_location tile =
             (Html.text
                (
                   "{x: "
-                  ++ (toString tile_location.x)
+                  ++ (String.fromInt tile_location.x)
                   ++ "; y: "
-                  ++ (toString tile_location.y)
+                  ++ (String.fromInt tile_location.y)
                   ++ "}"
                )
             )

@@ -81,7 +81,7 @@ dist loc_a loc_b =
 
 decoder : (Json.Decode.Decoder Type)
 decoder =
-   (Json.Decode.Pipeline.decode
+   (Json.Decode.succeed
       Type
       |> (Json.Decode.Pipeline.required "x" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "y" Json.Decode.int)

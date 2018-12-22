@@ -5,7 +5,7 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Battlemap -------------------------------------------------------------------
+-- Map Editor ------------------------------------------------------------------
 import Constants.UI
 import Constants.IO
 
@@ -25,21 +25,19 @@ get_layer_html : (
 get_layer_html index border =
    (Html.div
       [
-         (Html.Attributes.class ("map-tile-icon-f-" ++ (toString index))),
+         (Html.Attributes.class
+            ("map-tile-icon-f-" ++ (String.fromInt index))
+         ),
          (Html.Attributes.style
-            [
-               (
-                  "background-image",
-                  (
-                     "url("
-                     ++ Constants.IO.tile_assets_url
-                     ++ (Struct.Tile.get_border_type_id border)
-                     ++ "-f-"
-                     ++ (Struct.Tile.get_border_variant_id border)
-                     ++ ".svg)"
-                  )
-               )
-            ]
+            "background-image"
+            (
+               "url("
+               ++ Constants.IO.tile_assets_url
+               ++ (Struct.Tile.get_border_type_id border)
+               ++ "-f-"
+               ++ (Struct.Tile.get_border_variant_id border)
+               ++ ".svg)"
+            )
          )
       ]
       []
@@ -55,17 +53,13 @@ get_content_html tile =
          [
             (Html.Attributes.class "map-tile-icon-bg"),
             (Html.Attributes.style
-               [
-                  (
-                     "background-image",
-                     (
-                        "url("
-                        ++ Constants.IO.tile_assets_url
-                        ++ (Struct.Tile.get_type_id tile)
-                        ++ "-bg.svg)"
-                     )
-                  )
-               ]
+               "background-image"
+               (
+                  "url("
+                  ++ Constants.IO.tile_assets_url
+                  ++ (Struct.Tile.get_type_id tile)
+                  ++ "-bg.svg)"
+               )
             )
          ]
          []
@@ -76,19 +70,15 @@ get_content_html tile =
             [
                (Html.Attributes.class "map-tile-icon-dt"),
                (Html.Attributes.style
-                  [
-                     (
-                        "background-image",
-                        (
-                           "url("
-                           ++ Constants.IO.tile_assets_url
-                           ++ (Struct.Tile.get_type_id tile)
-                           ++ "-v-"
-                           ++ (Struct.Tile.get_variant_id tile)
-                           ++ ".svg)"
-                        )
-                     )
-                  ]
+                  "background-image"
+                  (
+                     "url("
+                     ++ Constants.IO.tile_assets_url
+                     ++ (Struct.Tile.get_type_id tile)
+                     ++ "-v-"
+                     ++ (Struct.Tile.get_variant_id tile)
+                     ++ ".svg)"
+                  )
                )
             ]
             []
@@ -127,7 +117,7 @@ get_html tb tile =
             (Html.Attributes.class
                (
                   "map-tile-variant-"
-                  ++ (toString (Struct.Tile.get_local_variant_ix tile))
+                  ++ (String.fromInt (Struct.Tile.get_local_variant_ix tile))
                )
             ),
             (Html.Attributes.class "clickable"),
@@ -135,16 +125,18 @@ get_html tb tile =
                (Struct.Event.TileSelected (Struct.Location.get_ref tile_loc))
             ),
             (Html.Attributes.style
-               [
-                  (
-                     "top",
-                     ((toString (tile_loc.y * Constants.UI.tile_size)) ++ "px")
-                  ),
-                  (
-                     "left",
-                     ((toString (tile_loc.x * Constants.UI.tile_size)) ++ "px")
-                  )
-               ]
+               "top"
+               (
+                  (String.fromInt (tile_loc.y * Constants.UI.tile_size))
+                  ++ "px"
+               )
+            ),
+            (Html.Attributes.style
+               "left"
+               (
+                  (String.fromInt (tile_loc.x * Constants.UI.tile_size))
+                  ++ "px"
+               )
             )
          ]
          (get_content_html tile)

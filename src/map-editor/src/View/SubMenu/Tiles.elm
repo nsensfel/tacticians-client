@@ -16,7 +16,7 @@ import View.Map.Tile
 --------------------------------------------------------------------------------
 get_icon_html : Int -> (Html.Html Struct.Event.Type)
 get_icon_html index =
-   let tile_id = (toString index) in
+   let tile_id = (String.fromInt index) in
       (Html.div
          [
             (Html.Attributes.class "map-tile"),

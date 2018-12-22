@@ -5,7 +5,7 @@ SRC_DIR ?= src
 WWW_DIR ?= www
 WWW_SCRIPT_DIR ?= $(WWW_DIR)/script
 
-ELM_CC ?= elm-make --warn
+ELM_CC ?= elm make --optimize
 
 MAIN_MODULE ?= $(SRC_DIR)/Main.elm
 
