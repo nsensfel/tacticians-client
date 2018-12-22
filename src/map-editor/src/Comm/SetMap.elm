@@ -50,7 +50,7 @@ deserialize_tile_instance map_width index t =
       (a :: (b :: c)) ->
          (Struct.Tile.new_instance
             {
-               x = (modBy index map_width),
+               x = (modBy map_width index),
                y = (index // map_width)
             }
             a
@@ -63,7 +63,7 @@ deserialize_tile_instance map_width index t =
       _ ->
          (Struct.Tile.new_instance
             {
-               x = (modBy index map_width),
+               x = (modBy map_width index),
                y = (index // map_width)
             }
             "0"
@@ -93,7 +93,8 @@ decode : (Json.Decode.Decoder Struct.ServerReply.Type)
 decode =
    (Json.Decode.map
       internal_decoder
-      (Json.Decode.map3 MapData
+      (Json.Decode.map3
+         MapData
          (Json.Decode.field "w" Json.Decode.int)
          (Json.Decode.field "h" Json.Decode.int)
          (Json.Decode.field
