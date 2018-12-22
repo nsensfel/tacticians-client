@@ -5,8 +5,9 @@ multiplayer turn-based strategy game.
 ## Getting Started
 
 ### Prerequisites
-* Elm
+* Elm 0.19
 * GNU make
+* Sass
 * Tacticians Online - Data
 * m4
 

@@ -1,7 +1,7 @@
 -- Elm ------------------------------------------------------------------------
-import Html
+import Browser
 
--- Map -------------------------------------------------------------------
+-- Main Menu -------------------------------------------------------------------
 import Struct.Model
 import Struct.Event
 import Struct.Flags
@@ -13,7 +13,7 @@ import ElmModule.Update
 
 main : (Program Struct.Flags.Type Struct.Model.Type Struct.Event.Type)
 main =
-   (Html.programWithFlags
+   (Browser.element
       {
          init = ElmModule.Init.init,
          view = ElmModule.View.view,

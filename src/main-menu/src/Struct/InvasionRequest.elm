@@ -75,7 +75,7 @@ get_url_params : Type -> String
 get_url_params ir =
    (
       "?ix="
-      ++ (toString ir.ix)
+      ++ (String.fromInt ir.ix)
       ++
       (
          case ir.category of

@@ -37,7 +37,7 @@ get_name t = t.name
 
 decoder : (Json.Decode.Decoder Type)
 decoder =
-   (Json.Decode.Pipeline.decode
+   (Json.Decode.succeed
       Type
       |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "nme" Json.Decode.string)
