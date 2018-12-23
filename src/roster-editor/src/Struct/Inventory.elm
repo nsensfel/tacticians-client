@@ -65,7 +65,7 @@ empty =
 decoder : (Json.Decode.Decoder Type)
 decoder =
    -- TODO
-   (Json.Decode.Pipeline.decode
+   (Json.Decode.succeed
       Type
       |> (Json.Decode.Pipeline.hardcoded (Set.empty))
       |> (Json.Decode.Pipeline.hardcoded (Set.empty))

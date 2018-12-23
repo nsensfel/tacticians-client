@@ -27,7 +27,7 @@ get_mod_html mod =
          ]
          [
             (Html.text
-               (category ++ ": " ++ (toString value))
+               (category ++ ": " ++ (String.fromInt value))
             )
          ]
       )

@@ -91,16 +91,18 @@ get_portrait_armor_html char =
 
 get_battle_index_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_battle_index_html char =
-   case (Struct.Character.get_battle_index char) of
-      -1 -> (Util.Html.nothing)
-      battle_ix ->
+   let battle_ix = (Struct.Character.get_battle_index char) in
+      if (battle_ix == -1)
+      then
+         (Util.Html.nothing)
+      else
          (Html.div
             [
                (Html.Attributes.class "character-portrait-battle-index"),
                (Html.Attributes.class "clickable")
             ]
             [
-               (Html.text (toString battle_ix))
+               (Html.text (String.fromInt battle_ix))
             ]
          )
 

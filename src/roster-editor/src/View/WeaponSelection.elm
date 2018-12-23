@@ -27,7 +27,7 @@ get_mod_html mod =
          ]
          [
             (Html.text
-               (category ++ ": " ++ (toString value))
+               (category ++ ": " ++ (String.fromInt value))
             )
          ]
       )
@@ -66,11 +66,19 @@ get_weapon_html weapon =
                         (
                            "~"
                            ++
-                           (toString (Struct.Weapon.get_damage_sum weapon))
+                           (String.fromInt
+                              (Struct.Weapon.get_damage_sum weapon)
+                           )
                            ++ " dmg @ ["
-                           ++ (toString (Struct.Weapon.get_defense_range weapon))
+                           ++
+                           (String.fromInt
+                              (Struct.Weapon.get_defense_range weapon)
+                           )
                            ++ ", "
-                           ++ (toString (Struct.Weapon.get_attack_range weapon))
+                           ++
+                           (String.fromInt
+                              (Struct.Weapon.get_attack_range weapon)
+                           )
                            ++ "]"
                         )
                      )

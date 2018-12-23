@@ -72,7 +72,7 @@ get_health_bar char =
          )
    in
       (View.Gauge.get_html
-         ("HP: " ++ (toString max))
+         ("HP: " ++ (String.fromInt max))
          100.0
          [(Html.Attributes.class "character-card-health")]
          []
@@ -104,7 +104,7 @@ get_movement_bar char =
          (
             "MP: "
             ++
-            (toString
+            (String.fromInt
                (Struct.Statistics.get_movement_points
                   (Struct.Character.get_statistics char)
                )
@@ -142,7 +142,7 @@ get_weapon_field_header damage_multiplier weapon =
                   (
                      "~"
                      ++
-                     (toString
+                     (String.fromInt
                         (ceiling
                            (
                               (toFloat (Struct.Weapon.get_damage_sum weapon))
@@ -151,9 +151,15 @@ get_weapon_field_header damage_multiplier weapon =
                         )
                      )
                      ++ " dmg @ ["
-                     ++ (toString (Struct.Weapon.get_defense_range weapon))
+                     ++
+                     (String.fromInt
+                        (Struct.Weapon.get_defense_range weapon)
+                     )
                      ++ ", "
-                     ++ (toString (Struct.Weapon.get_attack_range weapon))
+                     ++
+                     (String.fromInt
+                        (Struct.Weapon.get_attack_range weapon)
+                     )
                      ++ "]"
                   )
                )
@@ -173,7 +179,7 @@ get_mod_html mod =
          ]
          [
             (Html.text
-               (category ++ ": " ++ (toString value))
+               (category ++ ": " ++ (String.fromInt value))
             )
          ]
       )
@@ -192,7 +198,7 @@ get_multiplied_mod_html multiplier mod =
                (
                   category
                   ++ ": "
-                  ++ (toString (ceiling ((toFloat value) * multiplier)))
+                  ++ (String.fromInt (ceiling ((toFloat value) * multiplier)))
                )
             )
          ]
@@ -322,7 +328,7 @@ stat_val val perc =
       [
          (Html.text
             (
-               (toString val)
+               (String.fromInt val)
                ++
                (
                   if perc

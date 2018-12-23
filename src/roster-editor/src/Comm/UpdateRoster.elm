@@ -34,15 +34,13 @@ try_encoding model =
             (
                "rst",
                (Json.Encode.list
-                  (List.map
-                     (
-                        (Struct.CharacterRecord.from_character)
-                        >> (Struct.CharacterRecord.encode)
-                     )
-                     (List.filter
-                        (Struct.Character.get_was_edited)
-                        (Array.toList model.characters)
-                     )
+                  (
+                     (Struct.CharacterRecord.from_character)
+                     >> (Struct.CharacterRecord.encode)
+                  )
+                  (List.filter
+                     (Struct.Character.get_was_edited)
+                     (Array.toList model.characters)
                   )
                )
             )

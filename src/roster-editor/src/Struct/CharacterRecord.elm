@@ -104,7 +104,7 @@ from_character char =
 
 decoder : (Json.Decode.Decoder Type)
 decoder =
-   (Json.Decode.Pipeline.decode
+   (Json.Decode.succeed
       Type
       |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
@@ -133,10 +133,8 @@ encode char =
          (
             "gls",
             (Json.Encode.list
-               (List.map
-                  (Json.Encode.string)
-                  char.glyph_ids
-               )
+               (Json.Encode.string)
+               char.glyph_ids
             )
          )
       ]

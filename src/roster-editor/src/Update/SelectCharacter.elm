@@ -35,7 +35,7 @@ apply_to model target_char_ix =
                      Struct.Error.Programming
                      (
                         "Unknown character index selected \""
-                        ++ (toString target_char_ix)
+                        ++ (String.fromInt target_char_ix)
                         ++ "\"."
                      )
                   )

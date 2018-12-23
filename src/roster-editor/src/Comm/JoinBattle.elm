@@ -57,12 +57,10 @@ try_encoding model =
             (
                "r",
                (Json.Encode.array
-                  (Array.map
-                     (Json.Encode.int)
-                     (Array.filter
-                        (\e -> (e /= -1))
-                        model.battle_order
-                     )
+                  (Json.Encode.int)
+                  (Array.filter
+                     (\e -> (e /= -1))
+                     model.battle_order
                   )
                )
             )

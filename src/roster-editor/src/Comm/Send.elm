@@ -69,13 +69,16 @@ try_sending model recipient try_encoding_fun =
    case (try_encoding_fun model) of
       (Just serial) ->
          (Just
-            (Http.send
-               Struct.Event.ServerReplied
-               (Http.post
-                  recipient
-                  (Http.jsonBody serial)
-                  (Json.Decode.list (decode))
-               )
+            (Http.post
+               {
+                  url = recipient,
+                  body = (Http.jsonBody serial),
+                  expect =
+                     (Http.expectJson
+                        Struct.Event.ServerReplied
+                        (Json.Decode.list (decode))
+                     )
+               }
             )
          )
 
@@ -87,10 +90,13 @@ empty_request : (
       (Cmd Struct.Event.Type)
    )
 empty_request model recipient =
-   (Http.send
-      Struct.Event.ServerReplied
-      (Http.get
-         recipient
-         (Json.Decode.list (decode))
-      )
+   (Http.get
+      {
+         url = recipient,
+         expect =
+            (Http.expectJson
+               Struct.Event.ServerReplied
+               (Json.Decode.list (decode))
+            )
+      }
    )

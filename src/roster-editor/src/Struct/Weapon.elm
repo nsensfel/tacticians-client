@@ -85,7 +85,7 @@ decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.map
       (\e -> {e | damage_sum = (Struct.Omnimods.get_damage_sum e.omnimods)})
-      (Json.Decode.Pipeline.decode
+      (Json.Decode.succeed
          Type
          |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
