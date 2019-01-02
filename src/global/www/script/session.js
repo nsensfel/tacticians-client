@@ -83,9 +83,15 @@ function (session)
 tacticians_online.session.attach_to =
 function (app)
 {
-   app.ports.store_new_session.subscribe(
-      tacticians_online.session.store_new_session
-   );
+   if (app.ports.store_new_session !== undefined)
+   {
+      app.ports.store_new_session.subscribe(
+         tacticians_online.session.store_new_session
+      );
+   }
 
-   app.ports.reset_session.subscribe(tacticians_online.session.reset);
+   if (app.ports.reset_session !== undefined)
+   {
+      app.ports.reset_session.subscribe(tacticians_online.session.reset);
+   }
 }
