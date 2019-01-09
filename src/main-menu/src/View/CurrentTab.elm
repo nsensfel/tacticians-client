@@ -1,6 +1,8 @@
 module View.CurrentTab exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
+import Array
+
 import Html
 --import Html.Attributes
 
@@ -29,7 +31,7 @@ default_tab model =
          (View.BattleListing.get_html
             "Campaigns"
             "main-menu-campaigns"
-            (Struct.Player.get_campaigns model.player)
+            (Array.toList (Struct.Player.get_campaigns model.player))
          ),
          (View.Invasions.get_html
             (Struct.Player.get_invasions model.player)
@@ -37,9 +39,11 @@ default_tab model =
          (View.BattleListing.get_html
             "Events"
             "main-menu-events"
-            (Struct.Player.get_events model.player)
+            (Array.toList (Struct.Player.get_events model.player))
          ),
-         (View.MapListing.get_html (Struct.Player.get_maps model.player)),
+         (View.MapListing.get_html
+            (Array.toList (Struct.Player.get_maps model.player))
+         ),
          (View.Roster.get_html)
       ]
    )

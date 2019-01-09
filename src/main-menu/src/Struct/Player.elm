@@ -30,10 +30,10 @@ type alias Type =
    {
       id : String,
       name : String,
-      maps : (List Struct.MapSummary.Type),
-      campaigns : (List Struct.BattleSummary.Type),
+      maps : (Array.Array Struct.MapSummary.Type),
+      campaigns : (Array.Array Struct.BattleSummary.Type),
       invasions : (Array.Array Struct.BattleSummary.Type),
-      events : (List Struct.BattleSummary.Type),
+      events : (Array.Array Struct.BattleSummary.Type),
       roster_id : String,
       inventory_id : String
    }
@@ -51,16 +51,16 @@ get_id t = t.id
 get_username : Type -> String
 get_username t = t.name
 
-get_maps : Type -> (List Struct.MapSummary.Type)
+get_maps : Type -> (Array.Array Struct.MapSummary.Type)
 get_maps t = t.maps
 
-get_campaigns : Type -> (List Struct.BattleSummary.Type)
+get_campaigns : Type -> (Array.Array Struct.BattleSummary.Type)
 get_campaigns t = t.campaigns
 
 get_invasions : Type -> (Array.Array Struct.BattleSummary.Type)
 get_invasions t = t.invasions
 
-get_events : Type -> (List Struct.BattleSummary.Type)
+get_events : Type -> (Array.Array Struct.BattleSummary.Type)
 get_events t = t.events
 
 get_roster_id : Type -> String
@@ -77,11 +77,11 @@ decoder =
       |> (Json.Decode.Pipeline.required "nme" Json.Decode.string)
       |> (Json.Decode.Pipeline.required
             "maps"
-            (Json.Decode.list Struct.MapSummary.decoder)
+            (Json.Decode.array Struct.MapSummary.decoder)
          )
       |> (Json.Decode.Pipeline.required
             "cmps"
-            (Json.Decode.list Struct.BattleSummary.decoder)
+            (Json.Decode.array Struct.BattleSummary.decoder)
          )
       |> (Json.Decode.Pipeline.required
             "invs"
@@ -89,7 +89,7 @@ decoder =
          )
       |> (Json.Decode.Pipeline.required
             "evts"
-            (Json.Decode.list Struct.BattleSummary.decoder)
+            (Json.Decode.array Struct.BattleSummary.decoder)
          )
       |> (Json.Decode.Pipeline.required "rtid" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "ivid" Json.Decode.string)
@@ -100,10 +100,10 @@ none =
    {
       id = "",
       name = "Unknown",
-      maps = [],
-      campaigns = [],
+      maps = (Array.empty),
+      campaigns = (Array.empty),
       invasions = (Array.empty),
-      events = [],
+      events = (Array.empty),
       roster_id = "",
       inventory_id = ""
    }

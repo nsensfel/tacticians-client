@@ -28,6 +28,7 @@ type InvasionCategory =
 
 type alias Type =
    {
+      ix : Int,
       id : String,
       name : String,
       last_edit : String,
@@ -68,6 +69,7 @@ decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.succeed
       Type
+      |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "nme" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "ldt" Json.Decode.string)
@@ -77,6 +79,7 @@ decoder =
 none : Type
 none =
    {
+      ix = -1,
       id = "",
       name = "Unknown",
       last_edit = "Never",

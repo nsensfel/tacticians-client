@@ -18,6 +18,7 @@ import Json.Decode.Pipeline
 --------------------------------------------------------------------------------
 type alias Type =
    {
+      ix : Int,
       id : String,
       name : String
    }
@@ -38,7 +39,8 @@ get_name t = t.name
 decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.succeed
-      Type
+     Type
+      |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "nme" Json.Decode.string)
    )
@@ -46,6 +48,7 @@ decoder =
 none : Type
 none =
    {
+      ix = -1,
       id = "",
       name = "Unknown"
    }
