@@ -1,8 +1,8 @@
 module Action.Scroll exposing (to)
 
 -- Elm -------------------------------------------------------------------------
-import Dom
-import Dom.Scroll
+import Browser.Dom
+import Browser.Dom.Scroll
 
 import Task
 
@@ -25,9 +25,9 @@ tile_to_px ui t =
       * (toFloat Constants.UI.tile_size)
    )
 
-scroll_to_x : Int -> Struct.UI.Type -> (Task.Task Dom.Error ())
+scroll_to_x : Int -> Struct.UI.Type -> (Task.Task Browser.Dom.Error ())
 scroll_to_x x ui =
-   (Dom.Scroll.toX
+   (Browser.Dom.Scroll.toX
       Constants.UI.viewer_html_id
       (
          (tile_to_px ui x)
@@ -37,9 +37,9 @@ scroll_to_x x ui =
       )
    )
 
-scroll_to_y : Int -> Struct.UI.Type -> (Task.Task Dom.Error ())
+scroll_to_y : Int -> Struct.UI.Type -> (Task.Task Browser.Dom.Error ())
 scroll_to_y y ui =
-   (Dom.Scroll.toY
+   (Browser.Dom.Scroll.toY
       Constants.UI.viewer_html_id
       (
          (tile_to_px ui y)
@@ -52,7 +52,7 @@ scroll_to_y y ui =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-to : Struct.Location.Type -> Struct.UI.Type -> (Task.Task Dom.Error (List ()))
+to : Struct.Location.Type -> Struct.UI.Type -> (Task.Task Browser.Dom.Error (List ()))
 to loc ui =
    (Task.sequence
       [

@@ -1,4 +1,4 @@
-module View.Tab.NewInvasion exposing (get_html)
+module View.Tab.NewBattle exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html
@@ -9,7 +9,7 @@ import Html.Events
 import Struct.Event
 import Struct.Model
 import Struct.UI
-import Struct.InvasionRequest
+import Struct.BattleRequest
 import Struct.BattleSummary
 
 --------------------------------------------------------------------------------
@@ -24,8 +24,8 @@ select_category_html =
          (Html.button
             [
                (Html.Events.onClick
-                  (Struct.Event.InvasionSetCategory
-                     Struct.BattleSummary.InvasionAttack
+                  (Struct.Event.BattleSetCategory
+                     Struct.BattleSummary.BattleAttack
                   )
                )
             ]
@@ -36,8 +36,8 @@ select_category_html =
          (Html.button
             [
                (Html.Events.onClick
-                  (Struct.Event.InvasionSetCategory
-                     Struct.BattleSummary.InvasionDefend
+                  (Struct.Event.BattleSetCategory
+                     Struct.BattleSummary.BattleDefend
                   )
                )
             ]
@@ -48,7 +48,7 @@ select_category_html =
       ]
    )
 
-select_size_html : Struct.InvasionRequest.Size -> (Html.Html Struct.Event.Type)
+select_size_html : Struct.BattleRequest.Size -> (Html.Html Struct.Event.Type)
 select_size_html max_size =
    (Html.div
       [
@@ -57,8 +57,8 @@ select_size_html max_size =
          (Html.button
             [
                (Html.Events.onClick
-                  (Struct.Event.InvasionSetSize
-                     Struct.InvasionRequest.Small
+                  (Struct.Event.BattleSetSize
+                     Struct.BattleRequest.Small
                   )
                )
             ]
@@ -69,8 +69,8 @@ select_size_html max_size =
          (Html.button
             [
                (Html.Events.onClick
-                  (Struct.Event.InvasionSetSize
-                     Struct.InvasionRequest.Medium
+                  (Struct.Event.BattleSetSize
+                     Struct.BattleRequest.Medium
                   )
                )
             ]
@@ -81,8 +81,8 @@ select_size_html max_size =
          (Html.button
             [
                (Html.Events.onClick
-                  (Struct.Event.InvasionSetSize
-                     Struct.InvasionRequest.Large
+                  (Struct.Event.BattleSetSize
+                     Struct.BattleRequest.Large
                   )
                )
             ]
@@ -104,15 +104,19 @@ select_map_html =
    )
 
 
-get_actual_html : Struct.InvasionRequest.Type -> (Html.Html Struct.Event.Type)
-get_actual_html inv_req =
-   case (Struct.InvasionRequest.get_category inv_req) of
-      Struct.BattleSummary.InvasionEither -> (select_category_html)
-      Struct.BattleSummary.InvasionAttack ->
+get_actual_html : Struct.BattleRequest.Type -> (Html.Html Struct.Event.Type)
+get_actual_html battle_req =
+   case (Struct.BattleRequest.get_category battle_req) of
+      Struct.BattleSummary.Invasion ->
+
+      _ ->
+         case 
+      Struct.BattleSummary.Either -> (select_category_html)
+      Struct.BattleSummary.Attack ->
          (
-            case (Struct.InvasionRequest.get_size inv_req) of
+            case (Struct.BattleRequest.get_size battle_req) of
                -- TODO: use roster size as upper limit.
-               Nothing -> (select_size_html Struct.InvasionRequest.Large)
+               Nothing -> (select_size_html Struct.BattleRequest.Large)
                _ ->
                   (Html.a
                      [
@@ -120,7 +124,7 @@ get_actual_html inv_req =
                            (
                               "/roster-editor/"
                               ++
-                              (Struct.InvasionRequest.get_url_params inv_req)
+                              (Struct.BattleRequest.get_url_params battle_req)
                            )
                         )
                      ]
@@ -129,16 +133,16 @@ get_actual_html inv_req =
                      ]
                   )
          )
-      Struct.BattleSummary.InvasionDefend ->
+      Struct.BattleSummary.Defend ->
          (
-            case (Struct.InvasionRequest.get_map_id inv_req) of
+            case (Struct.BattleRequest.get_map_id battle_req) of
                -- FIXME: Requires model.
                "" -> (select_map_html)
                _ ->
-                  case (Struct.InvasionRequest.get_size inv_req) of
+                  case (Struct.BattleRequest.get_size battle_req) of
                      Nothing ->
                         -- TODO: use min(RosterSize, MapSize) as upper limit.
-                        (select_size_html Struct.InvasionRequest.Large)
+                        (select_size_html Struct.BattleRequest.Large)
                      _ ->
                         (Html.a
                            [
@@ -146,8 +150,8 @@ get_actual_html inv_req =
                                  (
                                     "/roster-editor/"
                                     ++
-                                    (Struct.InvasionRequest.get_url_params
-                                       inv_req
+                                    (Struct.BattleRequest.get_url_params
+                                       battle_req
                                     )
                                  )
                               )
@@ -168,5 +172,5 @@ get_html model =
          -- TODO: explain & let the user go back to the main menu.
          (Html.text "Error.")
 
-      (Struct.UI.NewInvasion inv_req) ->
-         (get_actual_html inv_req)
+      (Struct.UI.NewBattle battle_req) ->
+         (get_actual_html battle_req)

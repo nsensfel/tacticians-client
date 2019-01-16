@@ -1,13 +1,13 @@
-module Struct.InvasionRequest exposing
+module Struct.BattleRequest exposing
    (
       Type,
       Size(..),
       new,
       get_ix,
-      get_category,
+      get_mode,
       get_size,
       get_map_id,
-      set_category,
+      set_mode,
       set_size,
       set_map_id,
       get_url_params
@@ -29,7 +29,8 @@ type Size =
 type alias Type =
    {
       ix : Int,
-      category : Struct.BattleSummary.InvasionCategory,
+      mode : Struct.BattleSummary.Mode,
+      category : Struct.BattleSummary.Category,
       size : (Maybe Size),
       map_id : String
    }
@@ -41,11 +42,12 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Int -> Type
-new ix =
+new : Int -> Struct.BattleSummary.Category -> Type
+new ix category=
    {
       ix = ix,
-      category = (Struct.BattleSummary.get_invasion_category ix),
+      mode = Struct.BattleSummary.Either,
+      category = category,
       size = Nothing,
       map_id = ""
    }
@@ -53,11 +55,11 @@ new ix =
 get_ix : Type -> Int
 get_ix ir = ir.ix
 
-get_category : Type -> Struct.BattleSummary.InvasionCategory
-get_category ir = ir.category
+get_mode : Type -> Struct.BattleSummary.Mode
+get_mode ir = ir.mode
 
-set_category : Struct.BattleSummary.InvasionCategory -> Type -> Type
-set_category cat ir = {ir | category = cat}
+set_mode : Struct.BattleSummary.Mode -> Type -> Type
+set_mode mode ir = {ir | mode = mode}
 
 get_size : Type -> (Maybe Size)
 get_size ir = ir.size
@@ -74,27 +76,30 @@ set_map_id id ir = {ir | map_id = id}
 get_url_params : Type -> String
 get_url_params ir =
    (
-      "?ix="
+      "?six="
       ++ (String.fromInt ir.ix)
+      ++ "&cat="
       ++
       (
          case ir.category of
-            Struct.BattleSummary.InvasionEither -> ""
-            Struct.BattleSummary.InvasionAttack -> "&m=a"
-            Struct.BattleSummary.InvasionDefend -> "&m=d"
+            Struct.BattleSummary.Invasion -> "i"
+            Struct.BattleSummary.Event -> "e"
+            Struct.BattleSummary.Campaign -> "c"
       )
-      ++
+      ++ "&mod="
+      (
+         case ir.mode of
+            Struct.BattleSummary.Either -> "e"
+            Struct.BattleSummary.Attack -> "a"
+            Struct.BattleSummary.Defend -> "d"
+      )
+      ++ "&s="
       (
          case ir.size of
-            Nothing -> ""
-            (Just Small) -> "&s=s"
-            (Just Medium) -> "&s=m"
-            (Just Large) -> "&s=l"
+            (Just Medium) -> "m"
+            (Just Large) -> "l"
+            _ -> "s"
       )
-      ++
-      (
-         if (ir.map_id == "")
-         then ""
-         else ("&map_id=" ++ ir.map_id)
-      )
+      ++ "&map_id="
+      ir.map_id
    )

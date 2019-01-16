@@ -6,7 +6,7 @@ import Http
 -- Main Menu -------------------------------------------------------------------
 import Struct.BattleSummary
 import Struct.Error
-import Struct.InvasionRequest
+import Struct.BattleRequest
 import Struct.MapSummary
 import Struct.ServerReply
 import Struct.UI
@@ -18,10 +18,10 @@ type Type =
    None
    | Failed Struct.Error.Type
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
-   | NewInvasion Int
-   | InvasionSetSize Struct.InvasionRequest.Size
-   | InvasionSetMap Struct.MapSummary.Type
-   | InvasionSetCategory Struct.BattleSummary.InvasionCategory
+   | NewBattle (Int, Struct.BattleRequest.Category)
+   | BattleSetSize Struct.BattleRequest.Size
+   | BattleSetMap Struct.MapSummary.Type
+   | BattleSetMode Struct.BattleSummary.Mode
    | TabSelected Struct.UI.Tab
 
 attempted : (Result.Result err val) -> Type

@@ -15,18 +15,18 @@ module Struct.UI exposing
    )
 
 -- Main Menu -------------------------------------------------------------------
-import Struct.InvasionRequest
+import Struct.BattleRequest
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type Tab =
    DefaultTab
-   | NewInvasionTab
+   | NewBattleTab
 
 type Action =
    None
-   | NewInvasion Struct.InvasionRequest.Type
+   | NewBattle Struct.BattleRequest.Type
 
 type alias Type =
    {
@@ -53,7 +53,7 @@ get_current_tab : Type -> Tab
 get_current_tab ui =
    case ui.action of
       None -> ui.current_tab
-      (NewInvasion _) -> NewInvasionTab
+      (NewBattle _) -> NewBattleTab
 
 set_current_tab : Tab -> Type -> Type
 set_current_tab tab ui = {ui | current_tab = tab}
@@ -65,7 +65,7 @@ to_string : Tab -> String
 to_string tab =
    case tab of
       DefaultTab -> "Main Menu"
-      NewInvasionTab -> "New Invasion"
+      NewBattleTab -> "New Battle"
 
 get_action : Type -> Action
 get_action ui = ui.action

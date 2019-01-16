@@ -1,4 +1,4 @@
-module Update.HandleNewInvasion exposing
+module Update.HandleNewBattle exposing
    (
       apply_to,
       set_size,
@@ -10,7 +10,7 @@ module Update.HandleNewInvasion exposing
 -- Main Menu -------------------------------------------------------------------
 import Struct.BattleSummary
 import Struct.Event
-import Struct.InvasionRequest
+import Struct.BattleRequest
 import Struct.MapSummary
 import Struct.Model
 import Struct.UI
@@ -24,7 +24,7 @@ import Struct.UI
 --------------------------------------------------------------------------------
 set_size : (
       Struct.Model.Type ->
-      Struct.InvasionRequest.Size ->
+      Struct.BattleRequest.Size ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 set_size model size =
@@ -32,13 +32,13 @@ set_size model size =
       Struct.UI.None -> -- TODO: err
          (model, Cmd.none)
 
-      (Struct.UI.NewInvasion invasion) ->
+      (Struct.UI.NewBattle invasion) ->
          (
             {model |
                ui =
                   (Struct.UI.set_action
-                     (Struct.UI.NewInvasion
-                        (Struct.InvasionRequest.set_size size invasion)
+                     (Struct.UI.NewBattle
+                        (Struct.BattleRequest.set_size size invasion)
                      )
                      model.ui
                   )
@@ -48,7 +48,7 @@ set_size model size =
 
 set_category : (
       Struct.Model.Type ->
-      Struct.BattleSummary.InvasionCategory ->
+      Struct.BattleSummary.BattleCategory ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 set_category model category =
@@ -56,13 +56,13 @@ set_category model category =
       Struct.UI.None -> -- TODO: err
          (model, Cmd.none)
 
-      (Struct.UI.NewInvasion invasion) ->
+      (Struct.UI.NewBattle invasion) ->
          (
             {model |
                ui =
                   (Struct.UI.set_action
-                     (Struct.UI.NewInvasion
-                        (Struct.InvasionRequest.set_category category invasion)
+                     (Struct.UI.NewBattle
+                        (Struct.BattleRequest.set_category category invasion)
                      )
                      model.ui
                   )
@@ -80,17 +80,17 @@ set_map model map =
       Struct.UI.None -> -- TODO: err
          (model, Cmd.none)
 
-      (Struct.UI.NewInvasion invasion) ->
+      (Struct.UI.NewBattle invasion) ->
          (
             {model |
                ui =
                   (Struct.UI.set_action
-                     (Struct.UI.NewInvasion
-                        (Struct.InvasionRequest.set_map_id
+                     (Struct.UI.NewBattle
+                        (Struct.BattleRequest.set_map_id
                            ""
-                           (Struct.InvasionRequest.set_size
+                           (Struct.BattleRequest.set_size
                               -- TODO: get from map summary
-                              Struct.InvasionRequest.Small
+                              Struct.BattleRequest.Small
                               invasion
                            )
                         )
@@ -104,14 +104,15 @@ set_map model map =
 apply_to : (
       Struct.Model.Type ->
       Int ->
+      Struct.BattleSummary.Category ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model ix =
+apply_to model ix category =
    (
       {model |
          ui =
             (Struct.UI.set_action
-               (Struct.UI.NewInvasion (Struct.InvasionRequest.new ix))
+               (Struct.UI.NewBattle (Struct.BattleRequest.new ix category))
                model.ui
             )
       },
