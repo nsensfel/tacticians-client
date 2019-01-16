@@ -31,7 +31,7 @@ try_encoding model =
             ("stk", (Json.Encode.string model.session_token)),
             ("pid", (Json.Encode.string model.player_id)),
             (
-               "ix",
+               "six",
                (Json.Encode.string
                   (Struct.Flags.force_get_param "ix" model.flags)
                )
