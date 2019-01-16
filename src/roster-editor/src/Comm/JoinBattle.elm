@@ -33,13 +33,19 @@ try_encoding model =
             (
                "six",
                (Json.Encode.string
-                  (Struct.Flags.force_get_param "ix" model.flags)
+                  (Struct.Flags.force_get_param "six" model.flags)
                )
             ),
             (
-               "m",
+               "cat",
                (Json.Encode.string
-                  (Struct.Flags.force_get_param "m" model.flags)
+                  (Struct.Flags.force_get_param "cat" model.flags)
+               )
+            ),
+            (
+               "mod",
+               (Json.Encode.string
+                  (Struct.Flags.force_get_param "mod" model.flags)
                )
             ),
             (
