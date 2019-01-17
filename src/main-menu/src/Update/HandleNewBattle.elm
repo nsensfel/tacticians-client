@@ -112,7 +112,7 @@ set_map model map =
                   (Struct.UI.set_action
                      (Struct.UI.NewBattle
                         (Struct.BattleRequest.set_map_id
-                           ""
+                           (Struct.MapSummary.get_id map)
                            (Struct.BattleRequest.set_size
                               -- TODO: get from map summary
                               Struct.BattleRequest.Small

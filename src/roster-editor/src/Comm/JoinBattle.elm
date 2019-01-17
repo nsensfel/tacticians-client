@@ -32,8 +32,16 @@ try_encoding model =
             ("pid", (Json.Encode.string model.player_id)),
             (
                "six",
-               (Json.Encode.string
-                  (Struct.Flags.force_get_param "six" model.flags)
+               (Json.Encode.int
+                  (
+                     case
+                        (String.toInt
+                           (Struct.Flags.force_get_param "six" model.flags)
+                        )
+                     of
+                        (Just ix) -> ix
+                        _ -> -1
+                  )
                )
             ),
             (

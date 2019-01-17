@@ -118,7 +118,7 @@ decoder =
             "cat"
             (Json.Decode.map category_from_string (Json.Decode.string))
          )
-      |> (Json.Decode.Pipeline.required "ldt" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "dln" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "ipt" Json.Decode.bool)
       |> (Json.Decode.Pipeline.required "ipd" Json.Decode.bool)
    )
