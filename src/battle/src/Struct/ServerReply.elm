@@ -4,6 +4,7 @@ module Struct.ServerReply exposing (Type(..))
 
 -- Battle ----------------------------------------------------------------------
 import Struct.Armor
+import Struct.Portrait
 import Struct.Map
 import Struct.Character
 import Struct.Tile
@@ -18,6 +19,7 @@ type Type =
    Okay
    | Disconnected
    | AddArmor Struct.Armor.Type
+   | AddPortrait Struct.Portrait.Type
    | AddWeapon Struct.Weapon.Type
    | AddCharacter Struct.Character.TypeAndEquipmentRef
    | AddTile Struct.Tile.Type

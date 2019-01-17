@@ -7,10 +7,8 @@ module Struct.Character exposing
       get_player_ix,
       get_name,
       get_rank,
-      get_icon_id,
-      get_portrait_id,
+      get_portrait,
       get_armor,
-      get_armor_variation,
       get_current_health,
       get_current_omnimods,
       get_sane_current_health,
@@ -37,6 +35,7 @@ import Json.Decode.Pipeline
 
 -- Map -------------------------------------------------------------------
 import Struct.Armor
+import Struct.Portrait
 import Struct.Attributes
 import Struct.Location
 import Struct.Omnimods
@@ -52,7 +51,6 @@ type alias PartiallyDecoded =
       ix : Int,
       nam : String,
       rnk : String,
-      ico : String,
       prt : String,
       lc : Struct.Location.Type,
       hea : Int,
@@ -76,8 +74,7 @@ type alias Type =
       ix : Int,
       name : String,
       rank : Rank,
-      icon : String,
-      portrait : String,
+      portrait : Struct.Portrait.Type,
       location : Struct.Location.Type,
       health : Int,
       player_ix : Int,
@@ -96,7 +93,8 @@ type alias TypeAndEquipmentRef =
       char : Type,
       main_weapon_ref : String,
       secondary_weapon_ref : String,
-      armor_ref : String
+      armor_ref : String,
+      portrait_ref : String
    }
 
 --------------------------------------------------------------------------------
@@ -114,14 +112,14 @@ finish_decoding add_char =
    let
       weapon_set = (Struct.WeaponSet.new Struct.Weapon.none Struct.Weapon.none)
       armor = Struct.Armor.none
+      portrait = Struct.Portrait.none
       default_attributes = (Struct.Attributes.default)
       almost_char =
          {
             ix = add_char.ix,
             name = add_char.nam,
             rank = (str_to_rank add_char.rnk),
-            icon = add_char.ico,
-            portrait = add_char.prt,
+            portrait = portrait,
             location = add_char.lc,
             health = add_char.hea,
             attributes = default_attributes,
@@ -139,7 +137,8 @@ finish_decoding add_char =
          char = almost_char,
          main_weapon_ref = add_char.awp,
          secondary_weapon_ref = add_char.swp,
-         armor_ref = add_char.ar
+         armor_ref = add_char.ar,
+         portrait_ref = add_char.prt
       }
 
 --------------------------------------------------------------------------------
@@ -156,12 +155,6 @@ get_rank c = c.rank
 
 get_player_ix : Type -> Int
 get_player_ix c = c.player_ix
-
-get_icon_id : Type -> String
-get_icon_id c = c.icon
-
-get_portrait_id : Type -> String
-get_portrait_id c = c.portrait
 
 get_current_health : Type -> Int
 get_current_health c = c.health
@@ -208,13 +201,8 @@ get_weapons char = char.weapons
 get_armor : Type -> Struct.Armor.Type
 get_armor char = char.armor
 
-get_armor_variation : Type -> String
-get_armor_variation char =
-   case char.portrait of
-      -- Currently hardcoded to match crows from characters.css
-      "11" -> "1"
-      "4" -> "1"
-      _ -> "0"
+get_portrait : Type -> Struct.Portrait.Type
+get_portrait char = char.portrait
 
 set_weapons : Struct.WeaponSet.Type -> Type -> Type
 set_weapons weapons char =
@@ -231,7 +219,6 @@ decoder =
          |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "rnk" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required "ico" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "prt" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "lc" Struct.Location.decoder)
          |> (Json.Decode.Pipeline.required "hea" Json.Decode.int)
@@ -294,13 +281,14 @@ refresh_omnimods tile_omnimods_fun char =
 
 fill_missing_equipment_and_omnimods : (
       (Struct.Location.Type -> Struct.Omnimods.Type) ->
+      Struct.Portrait.Type ->
       Struct.Weapon.Type ->
       Struct.Weapon.Type ->
       Struct.Armor.Type ->
       Type ->
       Type
    )
-fill_missing_equipment_and_omnimods tile_omnimods_fun awp swp ar char =
+fill_missing_equipment_and_omnimods tile_omnimods_fun pt awp swp ar char =
    (set_current_health
       -- We just changed the omnimods, but already had the right health value
       char.health
@@ -308,7 +296,8 @@ fill_missing_equipment_and_omnimods tile_omnimods_fun awp swp ar char =
          (tile_omnimods_fun)
          {char |
             weapons = (Struct.WeaponSet.new awp swp),
-            armor = ar
+            armor = ar,
+            portrait = pt
          }
       )
    )

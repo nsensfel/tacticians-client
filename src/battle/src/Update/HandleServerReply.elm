@@ -24,11 +24,12 @@ import Util.Http
 import Constants.IO
 
 import Struct.Armor
-import Struct.Map
 import Struct.Character
 import Struct.Error
 import Struct.Event
+import Struct.Map
 import Struct.Model
+import Struct.Portrait
 import Struct.ServerReply
 import Struct.Tile
 import Struct.TurnResult
@@ -54,6 +55,16 @@ armor_getter model ref =
    case (Dict.get ref model.armors) of
       (Just w) -> w
       Nothing -> Struct.Armor.none
+
+portrait_getter : (
+      Struct.Model.Type ->
+      Struct.Portrait.Ref ->
+      Struct.Portrait.Type
+   )
+portrait_getter model ref =
+   case (Dict.get ref model.portraits) of
+      (Just w) -> w
+      Nothing -> Struct.Portrait.none
 
 -----------
 
@@ -91,6 +102,15 @@ add_armor ar current_state =
    let (model, cmds) = current_state in
       ((Struct.Model.add_armor ar model), cmds)
 
+add_portrait : (
+      Struct.Portrait.Type ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+add_portrait pt current_state =
+   let (model, cmds) = current_state in
+      ((Struct.Model.add_portrait pt model), cmds)
+
 add_tile : (
       Struct.Tile.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
@@ -120,11 +140,13 @@ add_character char_and_refs current_state =
       awp = (weapon_getter model char_and_refs.main_weapon_ref)
       swp = (weapon_getter model char_and_refs.secondary_weapon_ref)
       ar = (armor_getter model char_and_refs.armor_ref)
+      pt = (portrait_getter model char_and_refs.portrait_ref)
    in
       (
          (Struct.Model.add_character
             (Struct.Character.fill_missing_equipment_and_omnimods
                (Struct.Model.tile_omnimods_fun model)
+               pt
                awp
                swp
                ar
@@ -206,6 +228,9 @@ apply_command command current_state =
 
       (Struct.ServerReply.AddArmor ar) ->
          (add_armor ar current_state)
+
+      (Struct.ServerReply.AddPortrait pt) ->
+         (add_portrait pt current_state)
 
       (Struct.ServerReply.AddTile tl) ->
          (add_tile tl current_state)

@@ -8,6 +8,7 @@ import Json.Encode
 
 -- Battle ----------------------------------------------------------------------
 import Comm.AddArmor
+import Comm.AddPortrait
 import Comm.AddChar
 import Comm.AddTile
 import Comm.AddWeapon
@@ -32,6 +33,7 @@ internal_decoder reply_type =
       "add_tile" -> (Comm.AddTile.decode)
       "add_armor" -> (Comm.AddArmor.decode)
       "add_char" -> (Comm.AddChar.decode)
+      "add_portrait" -> (Comm.AddPortrait.decode)
       "add_weapon" -> (Comm.AddWeapon.decode)
       "set_map" -> (Comm.SetMap.decode)
       "turn_results" -> (Comm.TurnResults.decode)

@@ -19,6 +19,7 @@ import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
+import Struct.Portrait
 import Struct.UI
 
 --------------------------------------------------------------------------------
@@ -112,7 +113,13 @@ get_icon_head_html char =
       [
          (Html.Attributes.class "character-icon-head"),
          (Html.Attributes.class
-            ("asset-character-icon-" ++ (Struct.Character.get_icon_id char))
+            (
+               "asset-character-icon-"
+               ++
+               (Struct.Portrait.get_icon_id
+                  (Struct.Character.get_portrait char)
+               )
+            )
          )
       ]
       [
@@ -156,7 +163,7 @@ get_portrait_body_html char =
          (Html.Attributes.class
             (
                "asset-character-portrait-"
-               ++ (Struct.Character.get_portrait_id char)
+               ++ (Struct.Portrait.get_id (Struct.Character.get_portrait char))
             )
          )
       ]
@@ -179,7 +186,10 @@ get_portrait_armor_html char =
          (Html.Attributes.class
             (
                "asset-armor-variation-"
-               ++ (Struct.Character.get_armor_variation char)
+               ++
+               (Struct.Portrait.get_body_id
+                  (Struct.Character.get_portrait char)
+               )
             )
          )
       ]

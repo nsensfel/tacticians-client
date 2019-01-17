@@ -7,6 +7,7 @@ module Struct.Model exposing
       update_character_fun,
       add_weapon,
       add_armor,
+      add_portrait,
       add_tile,
       invalidate,
       initialize_animator,
@@ -35,6 +36,7 @@ import Struct.HelpRequest
 import Struct.Location
 import Struct.Map
 import Struct.Omnimods
+import Struct.Portrait
 import Struct.Tile
 import Struct.TurnResult
 import Struct.TurnResultAnimator
@@ -55,6 +57,7 @@ type alias Type =
       characters: (Array.Array Struct.Character.Type),
       weapons: (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type),
       armors: (Dict.Dict Struct.Armor.Ref Struct.Armor.Type),
+      portraits: (Dict.Dict Struct.Portrait.Ref Struct.Portrait.Type),
       tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
       error: (Maybe Struct.Error.Type),
       player_id: String,
@@ -90,6 +93,7 @@ new flags =
             characters = (Array.empty),
             weapons = (Dict.empty),
             armors = (Dict.empty),
+            portraits = (Dict.empty),
             tiles = (Dict.empty),
             error = Nothing,
             battle_id = "",
@@ -150,6 +154,17 @@ add_armor ar model =
          )
    }
 
+add_portrait : Struct.Portrait.Type -> Type -> Type
+add_portrait pt model =
+   {model |
+      portraits =
+         (Dict.insert
+            (Struct.Portrait.get_id pt)
+            pt
+            model.portraits
+         )
+   }
+
 add_tile : Struct.Tile.Type -> Type -> Type
 add_tile tl model =
    {model |
@@ -182,6 +197,7 @@ full_debug_reset model =
       characters = (Array.empty),
       weapons = (Dict.empty),
       armors = (Dict.empty),
+      portraits = (Dict.empty),
       tiles = (Dict.empty),
       error = Nothing,
       ui = (Struct.UI.default),
