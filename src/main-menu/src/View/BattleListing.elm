@@ -44,7 +44,7 @@ get_item_html item =
                (Html.Attributes.class "main-menu-battle-summary-date")
             ]
             [
-               (Html.text (Struct.BattleSummary.get_last_edit item))
+               (Html.text (Struct.BattleSummary.get_deadline item))
             ]
          )
       ]

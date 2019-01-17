@@ -5,9 +5,11 @@ module Struct.BattleRequest exposing
       new,
       get_ix,
       get_mode,
+      get_category,
       get_size,
       get_map_id,
       set_mode,
+      set_category,
       set_size,
       set_map_id,
       get_url_params
@@ -58,8 +60,14 @@ get_ix ir = ir.ix
 get_mode : Type -> Struct.BattleSummary.Mode
 get_mode ir = ir.mode
 
+get_category : Type -> Struct.BattleSummary.Category
+get_category ir = ir.category
+
 set_mode : Struct.BattleSummary.Mode -> Type -> Type
 set_mode mode ir = {ir | mode = mode}
+
+set_category : Struct.BattleSummary.Category -> Type -> Type
+set_category category ir = {ir | category = category}
 
 get_size : Type -> (Maybe Size)
 get_size ir = ir.size
@@ -87,6 +95,7 @@ get_url_params ir =
             Struct.BattleSummary.Campaign -> "c"
       )
       ++ "&mod="
+      ++
       (
          case ir.mode of
             Struct.BattleSummary.Either -> "e"
@@ -94,6 +103,7 @@ get_url_params ir =
             Struct.BattleSummary.Defend -> "d"
       )
       ++ "&s="
+      ++
       (
          case ir.size of
             (Just Medium) -> "m"
@@ -101,5 +111,5 @@ get_url_params ir =
             _ -> "s"
       )
       ++ "&map_id="
-      ir.map_id
+      ++ ir.map_id
    )

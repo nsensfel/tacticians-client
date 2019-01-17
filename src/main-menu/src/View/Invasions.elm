@@ -39,7 +39,9 @@ get_invasion_html ix invasion =
       then
          (Html.a
             [
-               (Html.Events.onClick (Struct.Event.NewInvasion ix)),
+               (Html.Events.onClick
+                  (Struct.Event.NewBattle (ix, Struct.BattleSummary.Invasion))
+               ),
                (Html.Attributes.class "clickable"),
                invasion_type
             ]
@@ -68,7 +70,7 @@ get_invasion_html ix invasion =
                      (Html.Attributes.class "main-menu-battle-summary-date")
                   ]
                   [
-                     (Html.text (Struct.BattleSummary.get_last_edit invasion))
+                     (Html.text (Struct.BattleSummary.get_deadline invasion))
                   ]
                )
             ]

@@ -6,7 +6,7 @@ module ElmModule.Update exposing (update)
 import Struct.Event
 import Struct.Model
 
-import Update.HandleNewInvasion
+import Update.HandleNewBattle
 import Update.HandleServerReply
 
 --------------------------------------------------------------------------------
@@ -37,16 +37,16 @@ update event model =
       (Struct.Event.ServerReplied result) ->
          (Update.HandleServerReply.apply_to model result)
 
-      (Struct.Event.NewInvasion ix) ->
-         (Update.HandleNewInvasion.apply_to new_model ix)
+      (Struct.Event.NewBattle (ix, category)) ->
+         (Update.HandleNewBattle.apply_to new_model ix category)
 
-      (Struct.Event.InvasionSetSize size) ->
-         (Update.HandleNewInvasion.set_size new_model size)
+      (Struct.Event.BattleSetSize size) ->
+         (Update.HandleNewBattle.set_size new_model size)
 
-      (Struct.Event.InvasionSetCategory cat) ->
-         (Update.HandleNewInvasion.set_category new_model cat)
+      (Struct.Event.BattleSetMode mode) ->
+         (Update.HandleNewBattle.set_mode new_model mode)
 
-      (Struct.Event.InvasionSetMap map_summary) ->
-         (Update.HandleNewInvasion.set_map new_model map_summary)
+      (Struct.Event.BattleSetMap map_summary) ->
+         (Update.HandleNewBattle.set_map new_model map_summary)
 
       (Struct.Event.TabSelected tab) -> (model, Cmd.none)

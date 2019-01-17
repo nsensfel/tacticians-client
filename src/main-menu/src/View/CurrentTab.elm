@@ -17,7 +17,7 @@ import View.Invasions
 import View.MapListing
 import View.Roster
 
-import View.Tab.NewInvasion
+import View.Tab.NewBattle
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -54,4 +54,4 @@ get_html : (Struct.Model.Type -> (Html.Html Struct.Event.Type))
 get_html model =
    case (Struct.UI.get_current_tab model.ui) of
       Struct.UI.DefaultTab -> (default_tab model)
-      Struct.UI.NewInvasionTab -> (View.Tab.NewInvasion.get_html model)
+      Struct.UI.NewBattleTab -> (View.Tab.NewBattle.get_html model)

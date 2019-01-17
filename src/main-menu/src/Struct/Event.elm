@@ -18,7 +18,7 @@ type Type =
    None
    | Failed Struct.Error.Type
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
-   | NewBattle (Int, Struct.BattleRequest.Category)
+   | NewBattle (Int, Struct.BattleSummary.Category)
    | BattleSetSize Struct.BattleRequest.Size
    | BattleSetMap Struct.MapSummary.Type
    | BattleSetMode Struct.BattleSummary.Mode

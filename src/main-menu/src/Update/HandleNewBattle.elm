@@ -3,6 +3,7 @@ module Update.HandleNewBattle exposing
       apply_to,
       set_size,
       set_category,
+      set_mode,
       set_map
    )
 -- Elm -------------------------------------------------------------------------
@@ -48,7 +49,7 @@ set_size model size =
 
 set_category : (
       Struct.Model.Type ->
-      Struct.BattleSummary.BattleCategory ->
+      Struct.BattleSummary.Category ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 set_category model category =
@@ -56,13 +57,37 @@ set_category model category =
       Struct.UI.None -> -- TODO: err
          (model, Cmd.none)
 
-      (Struct.UI.NewBattle invasion) ->
+      (Struct.UI.NewBattle battle) ->
          (
             {model |
                ui =
                   (Struct.UI.set_action
                      (Struct.UI.NewBattle
-                        (Struct.BattleRequest.set_category category invasion)
+                        (Struct.BattleRequest.set_category category battle)
+                     )
+                     model.ui
+                  )
+            },
+            Cmd.none
+         )
+
+set_mode : (
+      Struct.Model.Type ->
+      Struct.BattleSummary.Mode ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
+set_mode model mode =
+   case (Struct.UI.get_action model.ui) of
+      Struct.UI.None -> -- TODO: err
+         (model, Cmd.none)
+
+      (Struct.UI.NewBattle battle) ->
+         (
+            {model |
+               ui =
+                  (Struct.UI.set_action
+                     (Struct.UI.NewBattle
+                        (Struct.BattleRequest.set_mode mode battle)
                      )
                      model.ui
                   )
