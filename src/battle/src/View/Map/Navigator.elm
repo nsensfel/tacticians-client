@@ -56,11 +56,17 @@ marker_get_html is_interactive (loc_ref, marker) =
                      [
                         (
                            "top",
-                           ((toString (loc.y * Constants.UI.tile_size)) ++ "px")
+                           (
+                              (String.fromInt (loc.y * Constants.UI.tile_size))
+                              ++ "px"
+                           )
                         ),
                         (
                            "left",
-                           ((toString (loc.x * Constants.UI.tile_size)) ++ "px")
+                           (
+                              (String.fromInt (loc.x * Constants.UI.tile_size))
+                              ++ "px"
+                           )
                         )
                      ]
                )
@@ -151,7 +157,9 @@ path_node_get_html is_below_markers next_dir (curr_loc, curr_dir, curr_nodes) =
                      (
                         "top",
                         (
-                           (toString (curr_loc.y * Constants.UI.tile_size))
+                           (String.fromInt
+                              (curr_loc.y * Constants.UI.tile_size)
+                           )
                            ++
                            "px"
                         )
@@ -159,7 +167,9 @@ path_node_get_html is_below_markers next_dir (curr_loc, curr_dir, curr_nodes) =
                      (
                         "left",
                         (
-                           (toString (curr_loc.x * Constants.UI.tile_size))
+                           (String.fromInt
+                              (curr_loc.x * Constants.UI.tile_size)
+                           )
                            ++
                            "px"
                         )
@@ -200,11 +210,11 @@ mark_the_spot loc origin_dir =
             [
                (
                   "top",
-                  ((toString (loc.y * Constants.UI.tile_size)) ++ "px")
+                  ((String.fromInt (loc.y * Constants.UI.tile_size)) ++ "px")
                ),
                (
                   "left",
-                  ((toString (loc.x * Constants.UI.tile_size)) ++ "px")
+                  ((String.fromInt (loc.x * Constants.UI.tile_size)) ++ "px")
                )
             ]
          )

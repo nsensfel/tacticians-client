@@ -2,7 +2,6 @@ module Action.Scroll exposing (to)
 
 -- Elm -------------------------------------------------------------------------
 import Browser.Dom
-import Browser.Dom.Scroll
 
 import Task
 
@@ -25,38 +24,23 @@ tile_to_px ui t =
       * (toFloat Constants.UI.tile_size)
    )
 
-scroll_to_x : Int -> Struct.UI.Type -> (Task.Task Browser.Dom.Error ())
-scroll_to_x x ui =
-   (Browser.Dom.Scroll.toX
-      Constants.UI.viewer_html_id
-      (
-         (tile_to_px ui x)
-         - Constants.UI.half_viewer_min_width
-         -- center on that tile, not its top left corner
-         + ((tile_to_px ui 1) / 2.0)
-      )
-   )
-
-scroll_to_y : Int -> Struct.UI.Type -> (Task.Task Browser.Dom.Error ())
-scroll_to_y y ui =
-   (Browser.Dom.Scroll.toY
-      Constants.UI.viewer_html_id
-      (
-         (tile_to_px ui y)
-         - Constants.UI.half_viewer_min_height
-         -- center on that tile, not its top left corner
-         + ((tile_to_px ui 1) / 2.0)
-      )
-   )
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 to : Struct.Location.Type -> Struct.UI.Type -> (Task.Task Browser.Dom.Error (List ()))
 to loc ui =
-   (Task.sequence
-      [
-         (scroll_to_x loc.x ui),
-         (scroll_to_y loc.y ui)
-      ]
+   (Browser.Dom.setViewportOf
+      Constants.UI.viewer_html_id
+      (
+         (tile_to_px ui loc.x)
+         - Constants.UI.half_viewer_min_width
+         -- center on that tile, not its top left corner
+         + ((tile_to_px ui 1) / 2.0)
+      )
+      (
+         (tile_to_px ui loc.y)
+         - Constants.UI.half_viewer_min_height
+         -- center on that tile, not its top left corner
+         + ((tile_to_px ui 1) / 2.0)
+      )
    )

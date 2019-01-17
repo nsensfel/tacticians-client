@@ -30,7 +30,7 @@ get_html pdefeat =
          (Html.text
             (
                "Player "
-               ++ (toString pdefeat.player_index)
+               ++ (String.fromInt pdefeat.player_index)
                ++ " has been eliminated."
             )
          )

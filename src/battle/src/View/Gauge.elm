@@ -10,7 +10,7 @@ import Struct.Event
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_text_div: (
+get_text_div : (
       String ->
       List (Html.Attribute Struct.Event.Type) ->
       (Html.Html Struct.Event.Type)
@@ -26,7 +26,7 @@ get_text_div text extra_txt_attr =
       ]
    )
 
-get_bar_div: (
+get_bar_div : (
       Float ->
       List (Html.Attribute Struct.Event.Type) ->
       (Html.Html Struct.Event.Type)
@@ -37,7 +37,7 @@ get_bar_div percent extra_bar_attr =
          [
             (Html.Attributes.style
                [
-                  ("width", ((toString percent) ++ "%"))
+                  ("width", ((String.fromFloat percent) ++ "%"))
                ]
             ),
             (Html.Attributes.class

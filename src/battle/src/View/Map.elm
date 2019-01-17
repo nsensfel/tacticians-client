@@ -38,7 +38,7 @@ get_tiles_html map =
                (
                   "width",
                   (
-                     (toString
+                     (String.fromInt
                         (
                            (Struct.Map.get_width map)
                            * Constants.UI.tile_size
@@ -50,7 +50,7 @@ get_tiles_html map =
                (
                   "height",
                   (
-                     (toString
+                     (String.fromInt
                         (
                            (Struct.Map.get_height map)
                            * Constants.UI.tile_size
@@ -135,7 +135,9 @@ get_html model =
                         (
                            "scale("
                            ++
-                           (toString (Struct.UI.get_zoom_level model.ui))
+                           (String.fromFloat
+                              (Struct.UI.get_zoom_level model.ui)
+                           )
                            ++ ")"
                         )
                      )

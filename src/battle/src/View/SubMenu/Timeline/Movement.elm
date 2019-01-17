@@ -41,9 +41,9 @@ get_html characters player_ix movement =
                   (
                      (Struct.Character.get_name char)
                      ++ " moved to ("
-                     ++ (toString movement.destination.x)
+                     ++ (String.fromInt movement.destination.x)
                      ++ ", "
-                     ++ (toString movement.destination.y)
+                     ++ (String.fromInt movement.destination.y)
                      ++ ")."
                   )
                )

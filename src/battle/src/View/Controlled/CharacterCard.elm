@@ -61,7 +61,7 @@ get_health_bar char =
          )
    in
       (View.Gauge.get_html
-         ("HP: " ++ (toString current) ++ "/" ++ (toString max))
+         ("HP: " ++ (String.fromInt current) ++ "/" ++ (String.fromInt max))
          (100.0 * ((toFloat current)/(toFloat max)))
          [(Html.Attributes.class "character-card-health")]
          []
@@ -135,7 +135,7 @@ get_active_movement_bar maybe_navigator char =
                max
    in
       (View.Gauge.get_html
-         ("MP: " ++ (toString current) ++ "/" ++ (toString max))
+         ("MP: " ++ (String.fromInt current) ++ "/" ++ (String.fromInt max))
          (100.0 * ((toFloat current)/(toFloat max)))
          [(Html.Attributes.class "character-card-movement")]
          []
@@ -157,7 +157,7 @@ get_inactive_movement_bar char =
          (
             "MP: "
             ++
-            (toString
+            (String.fromInt
                (Struct.Statistics.get_movement_points
                   (Struct.Character.get_statistics char)
                )
@@ -220,7 +220,7 @@ get_weapon_field_header damage_multiplier weapon =
                   (
                      "~"
                      ++
-                     (toString
+                     (String.fromInt
                         (ceiling
                            (
                               (toFloat (Struct.Weapon.get_damage_sum weapon))
@@ -229,9 +229,10 @@ get_weapon_field_header damage_multiplier weapon =
                         )
                      )
                      ++ " dmg @ ["
-                     ++ (toString (Struct.Weapon.get_defense_range weapon))
+                     ++
+                     (String.fromInt (Struct.Weapon.get_defense_range weapon))
                      ++ ", "
-                     ++ (toString (Struct.Weapon.get_attack_range weapon))
+                     ++ (String.fromInt (Struct.Weapon.get_attack_range weapon))
                      ++ "]"
                   )
                )
@@ -251,7 +252,7 @@ get_mod_html mod =
          ]
          [
             (Html.text
-               (category ++ ": " ++ (toString value))
+               (category ++ ": " ++ (String.fromInt value))
             )
          ]
       )
@@ -270,7 +271,7 @@ get_multiplied_mod_html multiplier mod =
                (
                   category
                   ++ ": "
-                  ++ (toString (ceiling ((toFloat value) * multiplier)))
+                  ++ (String.fromInt (ceiling ((toFloat value) * multiplier)))
                )
             )
          ]
@@ -367,7 +368,7 @@ stat_val val perc =
       [
          (Html.text
             (
-               (toString val)
+               (String.fromInt val)
                ++
                (
                   if perc

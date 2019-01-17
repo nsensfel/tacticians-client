@@ -226,7 +226,7 @@ decoder : (Json.Decode.Decoder
 decoder =
    (Json.Decode.map
       (finish_decoding)
-      (Json.Decode.Pipeline.decode
+      (Json.Decode.succeed
          PartiallyDecoded
          |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)

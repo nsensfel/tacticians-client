@@ -30,7 +30,7 @@ get_html pturns =
          (Html.text
             (
                "Player "
-               ++ (toString pturns.player_index)
+               ++ (String.fromInt pturns.player_index)
                ++ "'s turn has started."
             )
          )

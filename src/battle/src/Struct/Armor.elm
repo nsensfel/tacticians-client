@@ -52,14 +52,14 @@ get_name : Type -> String
 get_name ar = ar.name
 
 get_image_id : Type -> String
-get_image_id ar = (toString ar.id)
+get_image_id ar = (String.fromInt ar.id)
 
 get_omnimods : Type -> Struct.Omnimods.Type
 get_omnimods ar = ar.omnimods
 
 decoder : (Json.Decode.Decoder Type)
 decoder =
-   (Json.Decode.Pipeline.decode
+   (Json.Decode.succeed
       Type
       |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)

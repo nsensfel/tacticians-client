@@ -56,7 +56,7 @@ get_effect_text attack =
             ""
          else
             (
-               ((toString attack.damage) ++ " damage")
+               ((String.fromInt attack.damage) ++ " damage")
                ++
                (
                   if (attack.critical)

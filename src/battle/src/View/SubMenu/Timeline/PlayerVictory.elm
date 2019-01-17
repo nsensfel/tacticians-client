@@ -30,7 +30,7 @@ get_html pvict =
          (Html.text
             (
                "Player "
-               ++ (toString pvict.player_index)
+               ++ (String.fromInt pvict.player_index)
                ++ " has won the map."
             )
          )

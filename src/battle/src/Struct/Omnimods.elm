@@ -51,7 +51,7 @@ generic_mods_decoder =
       (Json.Decode.list
          (Json.Decode.map
             (\gm -> (gm.t, gm.v))
-            (Json.Decode.Pipeline.decode
+            (Json.Decode.succeed
                GenericMod
                |> (Json.Decode.Pipeline.required "t" Json.Decode.string)
                |> (Json.Decode.Pipeline.required "v" Json.Decode.int)
@@ -80,7 +80,7 @@ merge_mods a_mods b_mods =
 --------------------------------------------------------------------------------
 decoder : (Json.Decode.Decoder Type)
 decoder =
-   (Json.Decode.Pipeline.decode
+   (Json.Decode.succeed
       Type
       |> (Json.Decode.Pipeline.required "attm" generic_mods_decoder)
       |> (Json.Decode.Pipeline.required "stam" generic_mods_decoder)

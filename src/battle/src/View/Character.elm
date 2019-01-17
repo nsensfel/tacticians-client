@@ -55,8 +55,14 @@ get_position_style char =
    let char_loc = (Struct.Character.get_location char) in
       (Html.Attributes.style
          [
-            ("top", ((toString (char_loc.y * Constants.UI.tile_size)) ++ "px")),
-            ("left", ((toString (char_loc.x * Constants.UI.tile_size)) ++ "px"))
+            (
+               "top",
+               ((String.fromInt (char_loc.y * Constants.UI.tile_size)) ++ "px")
+            ),
+            (
+               "left",
+               ((String.fromInt (char_loc.x * Constants.UI.tile_size)) ++ "px")
+            )
          ]
       )
 
@@ -94,7 +100,7 @@ get_icon_body_html char =
          (Html.Attributes.class
             (
                "asset-character-team-body-"
-               ++ (toString (Struct.Character.get_player_ix char))
+               ++ (String.fromInt (Struct.Character.get_player_ix char))
             )
          )
       ]
@@ -204,7 +210,7 @@ get_portrait_html viewer_ix char =
             (
                "character-portrait-team-"
                ++
-               (toString (Struct.Character.get_player_ix char))
+               (String.fromInt (Struct.Character.get_player_ix char))
             )
          ),
          (Html.Events.onClick

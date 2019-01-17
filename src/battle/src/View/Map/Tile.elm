@@ -24,7 +24,7 @@ get_layer_html : (
 get_layer_html index border =
    (Html.div
       [
-         (Html.Attributes.class ("tile-icon-f-" ++ (toString index))),
+         (Html.Attributes.class ("tile-icon-f-" ++ (String.fromInt index))),
          (Html.Attributes.style
             [
                (
@@ -110,7 +110,7 @@ get_html tile =
             (Html.Attributes.class
                (
                   "tile-variant-"
-                  ++ (toString (Struct.Tile.get_local_variant_ix tile))
+                  ++ (String.fromInt (Struct.Tile.get_local_variant_ix tile))
                )
             ),
             (Html.Attributes.class "clickable"),
@@ -121,11 +121,17 @@ get_html tile =
                [
                   (
                      "top",
-                     ((toString (tile_loc.y * Constants.UI.tile_size)) ++ "px")
+                     (
+                        (String.fromInt (tile_loc.y * Constants.UI.tile_size))
+                        ++ "px"
+                     )
                   ),
                   (
                      "left",
-                     ((toString (tile_loc.x * Constants.UI.tile_size)) ++ "px")
+                     (
+                        (String.fromInt (tile_loc.x * Constants.UI.tile_size))
+                        ++ "px"
+                     )
                   )
                ]
             )
