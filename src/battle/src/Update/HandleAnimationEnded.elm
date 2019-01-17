@@ -43,7 +43,7 @@ handle_char_focus model animator char_index =
                            model.ui
                         )
                      ),
-                     (Delay.after 2.0 Time.second Struct.Event.AnimationEnded)
+                     (Delay.after 2.0 Delay.Second Struct.Event.AnimationEnded)
                   ]
                )
             )
@@ -59,7 +59,7 @@ handle_char_focus model animator char_index =
                            model.ui
                         )
                      ),
-                     (Delay.after 0.3 Time.second Struct.Event.AnimationEnded)
+                     (Delay.after 0.3 Delay.Second Struct.Event.AnimationEnded)
                   ]
                )
             )
@@ -68,7 +68,7 @@ handle_char_focus model animator char_index =
       _ ->
          (
             model,
-            (Delay.after 1.0 Time.millisecond Struct.Event.AnimationEnded)
+            (Delay.after 1.0 Delay.Millisecond Struct.Event.AnimationEnded)
          )
 
 prepare_next_animation : (
@@ -84,7 +84,7 @@ prepare_next_animation model animator =
       (Struct.TurnResultAnimator.AttackSetup _) ->
          (
             model,
-            (Delay.after 1.0 Time.second Struct.Event.AnimationEnded)
+            (Delay.after 1.0 Delay.Second Struct.Event.AnimationEnded)
          )
 
       (Struct.TurnResultAnimator.TurnResult turn_result) ->
@@ -92,19 +92,19 @@ prepare_next_animation model animator =
             (Struct.TurnResult.Attacked _) ->
                (
                   model,
-                  (Delay.after 3.0 Time.second Struct.Event.AnimationEnded)
+                  (Delay.after 3.0 Delay.Second Struct.Event.AnimationEnded)
                )
 
             _ ->
                (
                   model,
-                  (Delay.after 0.1 Time.second Struct.Event.AnimationEnded)
+                  (Delay.after 0.1 Delay.Second Struct.Event.AnimationEnded)
                )
 
       _ ->
          (
             model,
-            (Delay.after 0.3 Time.second Struct.Event.AnimationEnded)
+            (Delay.after 0.3 Delay.Second Struct.Event.AnimationEnded)
          )
 
 --------------------------------------------------------------------------------

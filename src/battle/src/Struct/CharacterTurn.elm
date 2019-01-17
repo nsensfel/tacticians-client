@@ -17,10 +17,12 @@ module Struct.CharacterTurn exposing
       set_active_character_no_reset,
       set_navigator,
       try_getting_active_character,
-      try_getting_navigator
+      try_getting_navigator,
+      encode
    )
 
 -- Elm -------------------------------------------------------------------------
+import Json.Encode
 
 -- Battle ----------------------------------------------------------------------
 import Struct.Character
@@ -208,3 +210,33 @@ set_target target ct =
 
 try_getting_target : Type -> (Maybe Int)
 try_getting_target ct = ct.target
+
+encode : Type -> (Json.Encode.Value)
+encode ct =
+   (Json.Encode.object
+      [
+         (
+            "mov",
+            (Json.Encode.list
+               (
+                  (Json.Encode.string)
+                  <<
+                  (Struct.Direction.to_string)
+               )
+               (List.reverse (get_path ct))
+            )
+         ),
+         ("wps", (Json.Encode.bool ct.has_switched_weapons)),
+         (
+            "tar",
+            (Json.Encode.int
+               (
+                  case ct.target of
+                  Nothing -> -1
+                  (Just ix) -> ix
+               )
+            )
+         )
+      ]
+   )
+

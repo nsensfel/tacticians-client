@@ -23,5 +23,5 @@ apply_to : (
 apply_to model =
    (
       (Struct.Model.initialize_animator model),
-      (Delay.after 1 Time.millisecond Struct.Event.AnimationEnded)
+      (Delay.after 1 Delay.Millisecond Struct.Event.AnimationEnded)
    )

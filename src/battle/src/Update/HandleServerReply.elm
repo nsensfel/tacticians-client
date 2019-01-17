@@ -11,6 +11,8 @@ import Http
 
 import Time
 
+import Url
+
 -- Shared ----------------------------------------------------------------------
 import Action.Ports
 
@@ -69,7 +71,7 @@ disconnected current_state =
                   Constants.IO.base_url
                   ++ "/login/?action=disconnect&goto="
                   ++
-                  (Http.encodeUri
+                  (Url.percentEncode
                      (
                         "/battle/?"
                         ++ (Struct.Flags.get_params_as_url model.flags)
@@ -173,7 +175,7 @@ add_to_timeline turn_results current_state =
                )
          },
          (
-            (Delay.after 1 Time.millisecond Struct.Event.AnimationEnded)
+            (Delay.after 1 Delay.Millisecond Struct.Event.AnimationEnded)
             :: cmds
          )
       )

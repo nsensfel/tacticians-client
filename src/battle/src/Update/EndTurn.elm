@@ -64,22 +64,19 @@ apply_to model =
       (
          Struct.CharacterTurn.MovedCharacter,
          (Just char),
-         (Just nav)
-      ) ->
-         (make_it_so model char nav)
+         (Just nav)) ->
+            (make_it_so model char nav)
 
       (
          Struct.CharacterTurn.ChoseTarget,
          (Just char),
-         (Just nav)
-      ) ->
+         (Just nav)) ->
          (make_it_so model char nav)
 
       (
          Struct.CharacterTurn.SwitchedWeapons,
          (Just char),
-         (Just nav)
-      ) ->
+         (Just nav)) ->
          (make_it_so model char nav)
 
       (Struct.CharacterTurn.SelectedCharacter, (Just char), (Just nav)) ->
