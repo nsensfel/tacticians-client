@@ -61,14 +61,6 @@ get_html map_summaries =
                (Html.Attributes.class "main-menu-map-listing-body")
             ]
             (List.map (get_item_html) map_summaries)
-         ),
-         (Html.div
-            [
-               (Html.Attributes.class "main-menu-map-listing-add-new")
-            ]
-            [
-               (Html.text "New")
-            ]
          )
       ]
    )

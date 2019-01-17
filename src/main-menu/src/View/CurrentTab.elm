@@ -13,7 +13,6 @@ import Struct.Player
 import Struct.UI
 
 import View.BattleListing
-import View.Invasions
 import View.MapListing
 import View.Roster
 
@@ -33,8 +32,10 @@ default_tab model =
             "main-menu-campaigns"
             (Array.toList (Struct.Player.get_campaigns model.player))
          ),
-         (View.Invasions.get_html
-            (Struct.Player.get_invasions model.player)
+         (View.BattleListing.get_html
+            "Invasions"
+            "main-menu-invasions"
+            (Array.toList (Struct.Player.get_invasions model.player))
          ),
          (View.BattleListing.get_html
             "Events"

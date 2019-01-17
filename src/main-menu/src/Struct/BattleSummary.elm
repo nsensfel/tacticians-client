@@ -4,6 +4,7 @@ module Struct.BattleSummary exposing
       Category(..),
       Mode(..),
       get_id,
+      get_ix,
       get_name,
       get_mode,
       get_category,
@@ -69,6 +70,9 @@ category_from_string str =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+get_ix : Type -> Int
+get_ix t = t.ix
+
 get_id : Type -> String
 get_id t = t.id
 

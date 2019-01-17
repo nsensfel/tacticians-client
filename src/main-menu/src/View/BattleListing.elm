@@ -3,22 +3,27 @@ module View.BattleListing exposing (get_html)
 -- Elm -------------------------------------------------------------------------
 import Html
 import Html.Attributes
--- import Html.Events
+import Html.Events
 
--- Map -------------------------------------------------------------------
+
+-- Main Menu -------------------------------------------------------------------
 import Struct.BattleSummary
 import Struct.Event
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_item_html : Struct.BattleSummary.Type -> (Html.Html Struct.Event.Type)
-get_item_html item =
+get_link_html : Struct.BattleSummary.Type -> (Html.Html Struct.Event.Type)
+get_link_html item =
    (Html.a
       [
          (Html.Attributes.href
             (
-               "/battle/?id="
+               (
+                  if (Struct.BattleSummary.is_pending item)
+                  then "/pending_battle/?id="
+                  else "/battle/?id="
+               )
                ++ (Struct.BattleSummary.get_id item)
             )
          ),
@@ -50,6 +55,31 @@ get_item_html item =
       ]
    )
 
+get_create_button_html : Struct.BattleSummary.Type -> (Html.Html Struct.Event.Type)
+get_create_button_html item =
+   (Html.a
+      [
+         (Html.Events.onClick
+            (Struct.Event.NewBattle
+               (
+                  (Struct.BattleSummary.get_ix item),
+                  (Struct.BattleSummary.get_category item)
+               )
+            )
+         ),
+         (Html.Attributes.class "clickable")
+      ]
+      [
+         (Html.text "New Battle")
+      ]
+   )
+
+get_item_html : Struct.BattleSummary.Type -> (Html.Html Struct.Event.Type)
+get_item_html item =
+   if ((Struct.BattleSummary.get_id item) == "")
+   then (get_create_button_html item)
+   else (get_link_html item)
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -79,14 +109,6 @@ get_html name class battle_summaries =
                (Html.Attributes.class "main-menu-battle-listing-body")
             ]
             (List.map (get_item_html) battle_summaries)
-         ),
-         (Html.div
-            [
-               (Html.Attributes.class "main-menu-battle-listing-add-new")
-            ]
-            [
-               (Html.text "New")
-            ]
          )
       ]
    )
