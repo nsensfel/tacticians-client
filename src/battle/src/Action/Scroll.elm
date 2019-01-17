@@ -27,7 +27,7 @@ tile_to_px ui t =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-to : Struct.Location.Type -> Struct.UI.Type -> (Task.Task Browser.Dom.Error (List ()))
+to : Struct.Location.Type -> Struct.UI.Type -> (Task.Task Browser.Dom.Error ())
 to loc ui =
    (Browser.Dom.setViewportOf
       Constants.UI.viewer_html_id

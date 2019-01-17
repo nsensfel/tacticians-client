@@ -43,4 +43,10 @@ attempted act =
    case act of
       (Result.Ok _) -> None
       (Result.Err msg) ->
-         (Failed (Struct.Error.new Struct.Error.Failure (toString msg)))
+         (Failed
+            (Struct.Error.new
+               Struct.Error.Failure
+               -- TODO: find a way to get some relevant text here.
+               "(text representation not implemented)"
+            )
+         )

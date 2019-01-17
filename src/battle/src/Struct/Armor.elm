@@ -52,7 +52,7 @@ get_name : Type -> String
 get_name ar = ar.name
 
 get_image_id : Type -> String
-get_image_id ar = (String.fromInt ar.id)
+get_image_id ar = ar.id
 
 get_omnimods : Type -> Struct.Omnimods.Type
 get_omnimods ar = ar.omnimods

@@ -16,6 +16,8 @@ import Action.Ports
 
 import Struct.Flags
 
+import Util.Html
+
 -- Battle ----------------------------------------------------------------------
 import Constants.IO
 
@@ -239,7 +241,9 @@ apply_to model query_result =
       (Result.Err error) ->
          (
             (Struct.Model.invalidate
-               (Struct.Error.new Struct.Error.Networking (toString error))
+               (Struct.Error.new Struct.Error.Networking
+                  (Util.Http.error_to_string error)
+               )
                model
             ),
             Cmd.none

@@ -152,13 +152,13 @@ get_border_variant_id tile_border = tile_border.variant_id
 
 get_local_variant_ix : Instance -> Int
 get_local_variant_ix tile_inst =
-   (
+   (modBy
+      Constants.UI.local_variants_per_tile
       (noise_function
          tile_inst.location.x
          tile_inst.location.y
          tile_inst.crossing_cost
       )
-      % Constants.UI.local_variants_per_tile
    )
 
 get_omnimods : Type -> Struct.Omnimods.Type

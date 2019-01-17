@@ -19,13 +19,7 @@ type Type =
    | Disconnected
    | AddArmor Struct.Armor.Type
    | AddWeapon Struct.Weapon.Type
-   | AddCharacter
-      (
-         Struct.Character.Type,
-         Struct.Weapon.Ref,
-         Struct.Weapon.Ref,
-         Struct.Armor.Ref
-      )
+   | AddCharacter Struct.Character.TypeAndEquipmentRef
    | AddTile Struct.Tile.Type
    | SetMap Struct.Map.Type
    | TurnResults (List Struct.TurnResult.Type)

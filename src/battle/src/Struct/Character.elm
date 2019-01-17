@@ -2,6 +2,7 @@ module Struct.Character exposing
    (
       Type,
       Rank(..),
+      TypeAndEquipmentRef,
       get_index,
       get_player_ix,
       get_name,
@@ -64,6 +65,7 @@ type alias PartiallyDecoded =
       omni : Struct.Omnimods.Type
    }
 
+
 type Rank =
    Optional
    | Target
@@ -89,6 +91,14 @@ type alias Type =
       permanent_omnimods : Struct.Omnimods.Type
    }
 
+type alias TypeAndEquipmentRef =
+   {
+      char : Type,
+      main_weapon_ref : String,
+      secondary_weapon_ref : String,
+      armor_ref : String
+   }
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -99,15 +109,7 @@ str_to_rank str =
       "c" -> Commander
       _ -> Optional
 
-finish_decoding : (
-      PartiallyDecoded ->
-      (
-         Type,
-         Struct.Weapon.Ref,
-         Struct.Weapon.Ref,
-         Struct.Armor.Ref
-      )
-   )
+finish_decoding : PartiallyDecoded -> TypeAndEquipmentRef
 finish_decoding add_char =
    let
       weapon_set = (Struct.WeaponSet.new Struct.Weapon.none Struct.Weapon.none)
@@ -133,7 +135,12 @@ finish_decoding add_char =
             permanent_omnimods = add_char.omni
          }
    in
-      (almost_char, add_char.awp, add_char.swp, add_char.ar)
+      {
+         char = almost_char,
+         main_weapon_ref = add_char.awp,
+         secondary_weapon_ref = add_char.swp,
+         armor_ref = add_char.ar
+      }
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -215,14 +222,7 @@ set_weapons weapons char =
       weapons = weapons
    }
 
-decoder : (Json.Decode.Decoder
-      (
-         Type,
-         Struct.Weapon.Ref,
-         Struct.Weapon.Ref,
-         Struct.Armor.Ref
-      )
-   )
+decoder : (Json.Decode.Decoder TypeAndEquipmentRef)
 decoder =
    (Json.Decode.map
       (finish_decoding)

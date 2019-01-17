@@ -18,12 +18,7 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 
 internal_decoder : (
-      (
-         Struct.Character.Type,
-         Struct.Weapon.Ref,
-         Struct.Weapon.Ref,
-         Struct.Armor.Ref
-      ) ->
+      Struct.Character.TypeAndEquipementRef ->
       Struct.ServerReply.Type
    )
 internal_decoder char_and_refs = (Struct.ServerReply.AddCharacter char_and_refs)

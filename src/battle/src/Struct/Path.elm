@@ -94,25 +94,27 @@ try_backtracking_to path dir location =
    of
       (
          (Just (prev_dir_head, prev_dir_tail)),
-         (Just (prev_pts_head, prev_pts_tail))
-      ) ->
-         if (prev_dir_head == (Struct.Direction.opposite_of dir))
-         then
-            (Just
-               {path |
-                  current_location = location,
-                  visited_locations =
-                     (Set.remove
-                        (Struct.Location.get_ref location)
-                        path.visited_locations
-                     ),
-                  previous_directions = prev_dir_tail,
-                  previous_points = prev_pts_tail,
-                  remaining_points = prev_pts_head
-               }
-            )
-         else
-            Nothing
+         (Just (prev_pts_head, prev_pts_tail))) ->
+         -- Does not compile in Elm 0.19 if I put the closing paren on this line
+         (
+            if (prev_dir_head == (Struct.Direction.opposite_of dir))
+            then
+               (Just
+                  {path |
+                     current_location = location,
+                     visited_locations =
+                        (Set.remove
+                           (Struct.Location.get_ref location)
+                           path.visited_locations
+                        ),
+                     previous_directions = prev_dir_tail,
+                     previous_points = prev_pts_tail,
+                     remaining_points = prev_pts_head
+                  }
+               )
+            else
+               Nothing
+         )
 
       (_, _) ->
          Nothing
