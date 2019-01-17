@@ -45,7 +45,7 @@ deserialize_tile_instance map_width index t =
       (a :: (b :: c)) ->
          (Struct.Tile.new_instance
             {
-               x = (index % map_width),
+               x = (modBy map_width index),
                y = (index // map_width)
             }
             a
@@ -57,7 +57,7 @@ deserialize_tile_instance map_width index t =
       _ ->
          (Struct.Tile.new_instance
             {
-               x = (index % map_width),
+               x = (modBy map_width index),
                y = (index // map_width)
             }
             "0"

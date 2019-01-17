@@ -36,9 +36,8 @@ get_bar_div percent extra_bar_attr =
       (
          [
             (Html.Attributes.style
-               [
-                  ("width", ((String.fromFloat percent) ++ "%"))
-               ]
+               "width"
+               ((String.fromFloat percent) ++ "%")
             ),
             (Html.Attributes.class
                "gauge-bar"

@@ -26,19 +26,15 @@ get_layer_html index border =
       [
          (Html.Attributes.class ("tile-icon-f-" ++ (String.fromInt index))),
          (Html.Attributes.style
-            [
-               (
-                  "background-image",
-                  (
-                     "url("
-                     ++ Constants.IO.tile_assets_url
-                     ++ (Struct.Tile.get_border_type_id border)
-                     ++ "-f-"
-                     ++ (Struct.Tile.get_border_variant_id border)
-                     ++ ".svg)"
-                  )
-               )
-            ]
+            "background-image"
+            (
+               "url("
+               ++ Constants.IO.tile_assets_url
+               ++ (Struct.Tile.get_border_type_id border)
+               ++ "-f-"
+               ++ (Struct.Tile.get_border_variant_id border)
+               ++ ".svg)"
+            )
          )
       ]
       []
@@ -54,17 +50,13 @@ get_content_html tile =
          [
             (Html.Attributes.class "tile-icon-bg"),
             (Html.Attributes.style
-               [
-                  (
-                     "background-image",
-                     (
-                        "url("
-                        ++ Constants.IO.tile_assets_url
-                        ++ (Struct.Tile.get_type_id tile)
-                        ++ "-bg.svg)"
-                     )
-                  )
-               ]
+               "background-image"
+               (
+                  "url("
+                  ++ Constants.IO.tile_assets_url
+                  ++ (Struct.Tile.get_type_id tile)
+                  ++ "-bg.svg)"
+               )
             )
          ]
          []
@@ -75,19 +67,15 @@ get_content_html tile =
             [
                (Html.Attributes.class "tile-icon-dt"),
                (Html.Attributes.style
-                  [
-                     (
-                        "background-image",
-                        (
-                           "url("
-                           ++ Constants.IO.tile_assets_url
-                           ++ (Struct.Tile.get_type_id tile)
-                           ++ "-v-"
-                           ++ (Struct.Tile.get_variant_id tile)
-                           ++ ".svg)"
-                        )
-                     )
-                  ]
+                  "background-image"
+                  (
+                     "url("
+                     ++ Constants.IO.tile_assets_url
+                     ++ (Struct.Tile.get_type_id tile)
+                     ++ "-v-"
+                     ++ (Struct.Tile.get_variant_id tile)
+                     ++ ".svg)"
+                  )
                )
             ]
             []
@@ -118,22 +106,18 @@ get_html tile =
                (Struct.Event.TileSelected (Struct.Location.get_ref tile_loc))
             ),
             (Html.Attributes.style
-               [
-                  (
-                     "top",
-                     (
-                        (String.fromInt (tile_loc.y * Constants.UI.tile_size))
-                        ++ "px"
-                     )
-                  ),
-                  (
-                     "left",
-                     (
-                        (String.fromInt (tile_loc.x * Constants.UI.tile_size))
-                        ++ "px"
-                     )
-                  )
-               ]
+               "top"
+               (
+                  (String.fromInt (tile_loc.y * Constants.UI.tile_size))
+                  ++ "px"
+               )
+            ),
+            (Html.Attributes.style
+               "left"
+               (
+                  (String.fromInt (tile_loc.x * Constants.UI.tile_size))
+                  ++ "px"
+               )
             )
          ]
          (get_content_html tile)

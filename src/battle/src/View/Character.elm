@@ -49,22 +49,20 @@ get_alliance_class model char =
 
 get_position_style : (
       Struct.Character.Type ->
-      (Html.Attribute Struct.Event.Type)
+      (List (Html.Attribute Struct.Event.Type))
    )
 get_position_style char =
    let char_loc = (Struct.Character.get_location char) in
-      (Html.Attributes.style
-         [
-            (
-               "top",
-               ((String.fromInt (char_loc.y * Constants.UI.tile_size)) ++ "px")
-            ),
-            (
-               "left",
-               ((String.fromInt (char_loc.x * Constants.UI.tile_size)) ++ "px")
-            )
-         ]
-      )
+      [
+         (Html.Attributes.style
+            "top"
+            ((String.fromInt (char_loc.y * Constants.UI.tile_size)) ++ "px")
+         ),
+         (Html.Attributes.style
+            "left"
+            ((String.fromInt (char_loc.x * Constants.UI.tile_size)) ++ "px")
+         )
+      ]
 
 get_focus_class : (
       Struct.Model.Type ->
@@ -128,18 +126,22 @@ get_icon_actual_html : (
    )
 get_icon_actual_html model char =
       (Html.div
-         [
-            (Html.Attributes.class "tiled"),
-            (Html.Attributes.class "character-icon"),
-            (get_activation_level_class char),
-            (get_alliance_class model char),
-            (get_position_style char),
-            (get_focus_class model char),
-            (Html.Attributes.class "clickable"),
-            (Html.Events.onClick
-               (Struct.Event.CharacterSelected (Struct.Character.get_index char))
-            )
-         ]
+         (
+            [
+               (Html.Attributes.class "tiled"),
+               (Html.Attributes.class "character-icon"),
+               (get_activation_level_class char),
+               (get_alliance_class model char),
+               (get_focus_class model char),
+               (Html.Attributes.class "clickable"),
+               (Html.Events.onClick
+                  (Struct.Event.CharacterSelected
+                     (Struct.Character.get_index char)
+                  )
+               )
+            ]
+            ++ (get_position_style char)
+         )
          [
             (get_icon_body_html char),
             (get_icon_head_html char)

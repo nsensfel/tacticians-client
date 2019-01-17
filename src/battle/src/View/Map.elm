@@ -34,32 +34,28 @@ get_tiles_html map =
       [
          (Html.Attributes.class "tiles-layer"),
          (Html.Attributes.style
-            [
-               (
-                  "width",
+            "width"
+            (
+               (String.fromInt
                   (
-                     (String.fromInt
-                        (
-                           (Struct.Map.get_width map)
-                           * Constants.UI.tile_size
-                        )
-                     )
-                     ++ "px"
-                  )
-               ),
-               (
-                  "height",
-                  (
-                     (String.fromInt
-                        (
-                           (Struct.Map.get_height map)
-                           * Constants.UI.tile_size
-                        )
-                     )
-                     ++ "px"
+                     (Struct.Map.get_width map)
+                     * Constants.UI.tile_size
                   )
                )
-            ]
+               ++ "px"
+            )
+         ),
+         (Html.Attributes.style
+            "height"
+            (
+               (String.fromInt
+                  (
+                     (Struct.Map.get_height map)
+                     * Constants.UI.tile_size
+                  )
+               )
+               ++ "px"
+            )
          )
       ]
       (List.map
@@ -124,25 +120,21 @@ get_html model =
    (Html.div
       [
          (Html.Attributes.class "actual"),
-         (Html.Attributes.style
-            (
-               if ((Struct.UI.get_zoom_level model.ui) == 1)
-               then []
-               else
-                  [
-                     (
-                        "transform",
-                        (
-                           "scale("
-                           ++
-                           (String.fromFloat
-                              (Struct.UI.get_zoom_level model.ui)
-                           )
-                           ++ ")"
-                        )
+         (
+            if ((Struct.UI.get_zoom_level model.ui) == 1)
+            then (Html.Attributes.style "" "")
+            else
+               (Html.Attributes.style
+                  "transform"
+                  (
+                     "scale("
+                     ++
+                     (String.fromFloat
+                        (Struct.UI.get_zoom_level model.ui)
                      )
-                  ]
-            )
+                     ++ ")"
+                  )
+               )
          )
       ]
       [

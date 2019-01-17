@@ -16,7 +16,7 @@ import Action.Ports
 
 import Struct.Flags
 
-import Util.Html
+import Util.Http
 
 -- Battle ----------------------------------------------------------------------
 import Constants.IO
@@ -108,22 +108,16 @@ add_weapon wp current_state =
       ((Struct.Model.add_weapon wp model), cmds)
 
 add_character : (
-      (
-         Struct.Character.Type,
-         Struct.Weapon.Ref,
-         Struct.Weapon.Ref,
-         Struct.Armor.Ref
-      ) ->
+      Struct.Character.TypeAndEquipmentRef ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 add_character char_and_refs current_state =
    let
       (model, cmds) = current_state
-      (char, awp_ref, swp_ref, ar_ref) = char_and_refs
-      awp = (weapon_getter model awp_ref)
-      swp = (weapon_getter model swp_ref)
-      ar = (armor_getter model ar_ref)
+      awp = (weapon_getter model char_and_refs.main_weapon_ref)
+      swp = (weapon_getter model char_and_refs.secondary_weapon_ref)
+      ar = (armor_getter model char_and_refs.armor_ref)
    in
       (
          (Struct.Model.add_character
@@ -132,7 +126,7 @@ add_character char_and_refs current_state =
                awp
                swp
                ar
-               char
+               char_and_refs.char
             )
             model
          ),

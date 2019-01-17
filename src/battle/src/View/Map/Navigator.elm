@@ -25,6 +25,7 @@ marker_get_html : (
       (Html.Html Struct.Event.Type)
    )
 marker_get_html is_interactive (loc_ref, marker) =
+   let loc = (Struct.Location.from_ref loc_ref) in
    (Html.div
       (
          [
@@ -49,27 +50,12 @@ marker_get_html is_interactive (loc_ref, marker) =
                )
             ),
             (Html.Attributes.style
-               (
-                  let
-                     loc = (Struct.Location.from_ref loc_ref)
-                  in
-                     [
-                        (
-                           "top",
-                           (
-                              (String.fromInt (loc.y * Constants.UI.tile_size))
-                              ++ "px"
-                           )
-                        ),
-                        (
-                           "left",
-                           (
-                              (String.fromInt (loc.x * Constants.UI.tile_size))
-                              ++ "px"
-                           )
-                        )
-                     ]
-               )
+               "top"
+               ((String.fromInt (loc.y * Constants.UI.tile_size)) ++ "px")
+            ),
+            (Html.Attributes.style
+               "left"
+               ((String.fromInt (loc.x * Constants.UI.tile_size)) ++ "px")
             )
          ]
          ++
@@ -153,28 +139,24 @@ path_node_get_html is_below_markers next_dir (curr_loc, curr_dir, curr_nodes) =
                   )
                ),
                (Html.Attributes.style
-                  [
-                     (
-                        "top",
-                        (
-                           (String.fromInt
-                              (curr_loc.y * Constants.UI.tile_size)
-                           )
-                           ++
-                           "px"
-                        )
-                     ),
-                     (
-                        "left",
-                        (
-                           (String.fromInt
-                              (curr_loc.x * Constants.UI.tile_size)
-                           )
-                           ++
-                           "px"
-                        )
+                  "top"
+                  (
+                     (String.fromInt
+                        (curr_loc.y * Constants.UI.tile_size)
                      )
-                  ]
+                     ++
+                     "px"
+                  )
+               ),
+               (Html.Attributes.style
+                  "left"
+                  (
+                     (String.fromInt
+                        (curr_loc.x * Constants.UI.tile_size)
+                     )
+                     ++
+                     "px"
+                  )
                )
             ]
             [
@@ -207,16 +189,12 @@ mark_the_spot loc origin_dir =
             (Struct.Event.CharacterOrTileSelected (Struct.Location.get_ref loc))
          ),
          (Html.Attributes.style
-            [
-               (
-                  "top",
-                  ((String.fromInt (loc.y * Constants.UI.tile_size)) ++ "px")
-               ),
-               (
-                  "left",
-                  ((String.fromInt (loc.x * Constants.UI.tile_size)) ++ "px")
-               )
-            ]
+            "top"
+            ((String.fromInt (loc.y * Constants.UI.tile_size)) ++ "px")
+         ),
+         (Html.Attributes.style
+            "left"
+            ((String.fromInt (loc.x * Constants.UI.tile_size)) ++ "px")
          )
       ]
       [
