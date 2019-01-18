@@ -1,36 +1,27 @@
-module Struct.ServerReply exposing (Type(..))
+module Comm.GoTo exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
+import Json.Decode
 
--- Roster Editor ---------------------------------------------------------------
-import Struct.Armor
-import Struct.CharacterRecord
-import Struct.Glyph
-import Struct.GlyphBoard
-import Struct.Inventory
-import Struct.Portrait
-import Struct.Weapon
+-- ??? -------------------------------------------------------------------------
+import Struct.ServerReply
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-type Type =
-   Okay
-   | Disconnected
-   | GoTo String
-   | SetInventory Struct.Inventory.Type
-   | AddArmor Struct.Armor.Type
-   | AddGlyph Struct.Glyph.Type
-   | AddGlyphBoard Struct.GlyphBoard.Type
-   | AddPortrait Struct.Portrait.Type
-   | AddWeapon Struct.Weapon.Type
-   | AddCharacter Struct.CharacterRecord.Type
-
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+internal_decoder : String -> Struct.ServerReply.Type
+internal_decoder url = (Struct.ServerReply.GoTo url)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+decode : (Json.Decode.Decoder Struct.ServerReply.Type)
+decode =
+   (Json.Decode.map
+      (internal_decoder)
+      (Json.Decode.field "url" (Json.Decode.string))
+   )

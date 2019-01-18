@@ -13,6 +13,7 @@ import Comm.AddGlyph
 import Comm.AddGlyphBoard
 import Comm.AddPortrait
 import Comm.AddWeapon
+import Comm.GoTo
 import Comm.SetInventory
 
 import Struct.Event
@@ -40,6 +41,7 @@ internal_decoder reply_type =
       "add_glyph_board" -> (Comm.AddGlyphBoard.decode)
 
       "disconnected" -> (Json.Decode.succeed Struct.ServerReply.Disconnected)
+      "goto" -> (Comm.GoTo.decode)
       "okay" -> (Json.Decode.succeed Struct.ServerReply.Okay)
 
       other ->

@@ -84,6 +84,20 @@ disconnected current_state =
          ]
       )
 
+goto : (
+      String ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+goto url current_state =
+   let (model, cmds) = current_state in
+      (
+         model,
+         [
+            (Action.Ports.go_to (Constants.IO.base_url ++ "/" ++ url))
+         ]
+      )
+
 add_armor : (
       Struct.Armor.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
@@ -159,6 +173,8 @@ apply_command command current_state =
    case command of
       Struct.ServerReply.Disconnected -> (disconnected current_state)
 
+      (Struct.ServerReply.GoTo url) -> (goto url current_state)
+
       (Struct.ServerReply.AddWeapon wp) ->
          (add_weapon wp current_state)
 
@@ -179,6 +195,7 @@ apply_command command current_state =
 
       (Struct.ServerReply.AddCharacter char) ->
          (add_character char current_state)
+
 
       Struct.ServerReply.Okay ->
          let (model, cmds) = current_state in
