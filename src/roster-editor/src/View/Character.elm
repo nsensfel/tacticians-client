@@ -109,18 +109,31 @@ get_battle_index_html char =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_portrait_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
-get_portrait_html char =
+get_portrait_html : (
+      Struct.Character.Type ->
+      Bool ->
+      (Html.Html Struct.Event.Type)
+   )
+get_portrait_html char click_to_toggle =
    (Html.div
-      [
-         (Html.Attributes.class "character-portrait"),
-         (Html.Attributes.class "character-portrait-team-0"),
-         (Html.Events.onClick
-            (Struct.Event.ToggleCharacterBattleIndex
-               (Struct.Character.get_index char)
-            )
-         )
-      ]
+      (
+         [
+            (Html.Attributes.class "character-portrait"),
+            (Html.Attributes.class "character-portrait-team-0")
+         ]
+         ++
+         if (click_to_toggle)
+         then
+            [
+               (Html.Events.onClick
+                  (Struct.Event.ToggleCharacterBattleIndex
+                     (Struct.Character.get_index char)
+                  )
+               )
+            ]
+         else
+            []
+      )
       [
          (get_portrait_body_html char),
          (get_portrait_armor_html char),

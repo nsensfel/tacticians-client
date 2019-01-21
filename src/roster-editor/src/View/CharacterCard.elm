@@ -429,7 +429,7 @@ get_minimal_html char =
                      (Html.Attributes.class "info-card-picture")
                   ]
                   [
-                     (View.Character.get_portrait_html char)
+                     (View.Character.get_portrait_html char True)
                   ]
                ),
                (get_health_bar char),
@@ -475,7 +475,7 @@ get_full_html char =
                         )
                      ]
                      [
-                        (View.Character.get_portrait_html char)
+                        (View.Character.get_portrait_html char False)
                      ]
                   ),
                   (get_health_bar char),
