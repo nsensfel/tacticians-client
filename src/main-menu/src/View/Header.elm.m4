@@ -30,6 +30,7 @@ navigation_html =
    (Html.nav
       []
       [
+         (link_html "/main-menu" "Main Menu" True),
          (link_html "/about.html" "About" True),
          (link_html "/news/" "News" False),
          (link_html "/community/" "Community" False),
