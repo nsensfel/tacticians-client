@@ -13,10 +13,9 @@
     height="16mm"
     viewBox="0 0 16 16"
     version="1.1"
-    shape-rendering="optimizeQuality"
     id="svg8"
     inkscape:version="0.92.2 2405546, 2018-03-11"
-    sodipodi:docname="impact.svg">
+    sodipodi:docname="precision.svg">
    <defs
        id="defs2" />
    <sodipodi:namedview
@@ -26,9 +25,9 @@
        borderopacity="1.0"
        inkscape:pageopacity="0.0"
        inkscape:pageshadow="2"
-       inkscape:zoom="4"
-       inkscape:cx="-10.7734"
-       inkscape:cy="25.7162"
+       inkscape:zoom="8.00001"
+       inkscape:cx="15.8856"
+       inkscape:cy="23.2951"
        inkscape:document-units="mm"
        inkscape:current-layer="layer1"
        showgrid="false"
@@ -49,7 +48,7 @@
             <dc:format>image/svg+xml</dc:format>
             <dc:type
                 rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-            <dc:title />
+            <dc:title></dc:title>
          </cc:Work>
       </rdf:RDF>
    </metadata>
@@ -58,17 +57,30 @@
        inkscape:groupmode="layer"
        id="layer1"
        transform="translate(0,-281)">
-      <path
-          style="fill:#e9ddaf;stroke:#483e37;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;paint-order:markers stroke fill"
-          d="M 3.42859,295.015 8.75638,284.06 11.0373,285.152 5.70952,296.108 C 4.75663,296.129 3.8601,296.037 3.42859,295.015 Z"
-          id="rect844-2"
-          inkscape:connector-curvature="0"
-          sodipodi:nodetypes="ccccc" />
-      <path
-          style="fill:#e9ddaf;stroke:#483e37;stroke-linecap:round;stroke-linejoin:round;paint-order:markers stroke fill;stroke-width:0.5"
-          d="M 5.46581,282.893 C 8.5171,281.802 12.0689,285.495 13.2724,283.923 L 13.5962,283.5 14.4224,284.666 12.4606,289.246 11.1636,288.663 C 11.1636,288.663 11.5506,288.326 11.3558,287.912 9.81856,284.646 2.60214,284.238 2.60214,284.238 2.60214,284.238 4.0437,283.401 5.46581,282.893 Z"
-          id="rect844"
-          inkscape:connector-curvature="0"
-          sodipodi:nodetypes="ssccccscs" />
+      <ellipse
+          style="fill:#e9ddaf;stroke:#483e37;stroke-width:0.5;stroke-linecap:square;paint-order:markers stroke fill"
+          id="path916"
+          cx="8"
+          cy="289"
+          rx="7.14888"
+          ry="7.14887" />
+      <circle
+          r="5.79333"
+          style="fill:#483e37;stroke-width:0.569091;stroke-linecap:square;paint-order:markers stroke fill"
+          id="path916-2"
+          cx="8"
+          cy="289" />
+      <circle
+          r="4.15624"
+          style="fill:#e9ddaf;stroke-width:0.408275;stroke-linecap:square;paint-order:markers stroke fill"
+          id="path916-2-9"
+          cx="8"
+          cy="289" />
+      <circle
+          r="2.05611"
+          style="fill:#483e37;stroke-width:0.201975;stroke-linecap:square;paint-order:markers stroke fill"
+          id="path916-2-2"
+          cx="8"
+          cy="289" />
    </g>
 </svg>

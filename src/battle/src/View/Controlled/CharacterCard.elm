@@ -267,12 +267,16 @@ get_multiplied_mod_html multiplier mod =
             (Html.Attributes.class "character-card-mod")
          ]
          [
+            (Html.div
+               [
+                  (Html.Attributes.class "omnimod-icon"),
+                  (Html.Attributes.class ("omnimod-icon-" ++ category))
+               ]
+               [
+               ]
+            ),
             (Html.text
-               (
-                  category
-                  ++ ": "
-                  ++ (String.fromInt (ceiling ((toFloat value) * multiplier)))
-               )
+               (String.fromInt (ceiling ((toFloat value) * multiplier)))
             )
          ]
       )

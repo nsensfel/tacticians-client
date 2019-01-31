@@ -15,6 +15,7 @@
     version="1.1"
     id="svg8"
     inkscape:version="0.92.2 2405546, 2018-03-11"
+    shape-rendering="optimizeQuality"
     sodipodi:docname="piercing.svg">
    <defs
        id="defs2" />
@@ -26,7 +27,7 @@
        inkscape:pageopacity="0.0"
        inkscape:pageshadow="2"
        inkscape:zoom="8"
-       inkscape:cx="-3.29987"
+       inkscape:cx="-7.3203"
        inkscape:cy="28.2475"
        inkscape:document-units="mm"
        inkscape:current-layer="layer1"
@@ -58,13 +59,13 @@
        id="layer1"
        transform="translate(0,-281)">
       <path
-          style="fill:#000000;stroke:#ffffff;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;paint-order:markers stroke fill"
+          style="fill:#e9ddaf;stroke:#483e37;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;paint-order:markers stroke fill"
           d="M 1.95385,296.232 11.3059,286.862 10.3474,285.905 0.995413,295.276 C 1.12337,295.683 1.46692,296.198 1.95385,296.232 Z"
           id="rect844-2"
           inkscape:connector-curvature="0"
           sodipodi:nodetypes="ccccc" />
       <path
-          style="fill:#000000;stroke:#ffffff;stroke-width:0.5;stroke-linecap:round;paint-order:markers stroke fill"
+          style="fill:#e9ddaf;stroke:#483e37;stroke-width:0.5;stroke-linecap:round;paint-order:markers stroke fill"
           d="M 14.7376,282.465 C 14.2486,284.298 9.60463,287.86 8.44599,292.198 7.83002,289.912 7.30467,289.386 5.01651,288.776 9.34759,287.61 12.8369,282.977 14.7376,282.465 Z"
           id="path883"
           inkscape:connector-curvature="0"

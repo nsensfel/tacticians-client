@@ -1,0 +1,29 @@
+.omnimod-icon
+{
+   display: inline-block;
+   height: 1em;
+   width: 1em;
+   background-size: 100%;
+   background-repeat: no-repeat;
+   vertical-align: middle;
+}
+
+.omnimod-icon-dmg
+{
+   background-image: url(/asset/svg/damage_type/damage.svg);
+}
+
+.omnimod-icon-slh
+{
+   background-image: url(/asset/svg/damage_type/slash.svg);
+}
+
+.omnimod-icon-blu
+{
+   background-image: url(/asset/svg/damage_type/impact.svg);
+}
+
+.omnimod-icon-pie
+{
+   background-image: url(/asset/svg/damage_type/piercing.svg);
+}
