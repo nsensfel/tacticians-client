@@ -26,10 +26,10 @@
        inkscape:pageopacity="0.0"
        inkscape:pageshadow="2"
        inkscape:zoom="5.65685"
-       inkscape:cx="9.84385"
+       inkscape:cx="10.551"
        inkscape:cy="23.4269"
        inkscape:document-units="mm"
-       inkscape:current-layer="layer1"
+       inkscape:current-layer="g991"
        showgrid="false"
        inkscape:snap-global="false"
        inkscape:snap-bbox="true"
@@ -48,7 +48,7 @@
             <dc:format>image/svg+xml</dc:format>
             <dc:type
                 rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-            <dc:title></dc:title>
+            <dc:title />
          </cc:Work>
       </rdf:RDF>
    </metadata>
@@ -65,18 +65,18 @@
              inkscape:connector-curvature="0"
              id="path967"
              d="M 6.50847,288.72 4.26666,284.2 C 3.86853,283.397 1.97312,285.161 2.38644,285.791 L 5.3514,290.311 Z"
-             style="fill:#e9ddaf;stroke:#483e37;stroke-width:0.5" />
+             style="fill:#e9ddaf;stroke:#483e37;stroke-width:0.5;paint-order:markers stroke fill" />
          <path
              sodipodi:nodetypes="sssssssss"
              id="path916-9"
              d="M 4.00465,291.445 C 4.95946,295.104 9.15118,296.002 13.3146,294.86 15.9508,294.137 13.9596,290.816 12.1638,288.038 12.0896,287.924 12.1912,287.457 12.1765,287.323 12.0687,286.345 10.9203,286.129 10.59,285.518 10.4316,285.225 10.5145,284.39 10.1837,284.048 9.82702,283.679 8.84485,283.762 8.84234,284.217 8.8332,285.876 8.45976,284.924 8.01705,284.92 4.17942,284.885 3.04055,287.751 4.00465,291.445 Z"
-             style="fill:#e9ddaf;stroke:#483e37;stroke-linecap:square;paint-order:markers stroke fill"
+             style="fill:#e9ddaf;stroke:#483e37;stroke-linecap:square;paint-order:markers stroke fill;stroke-width:0.5"
              inkscape:connector-curvature="0" />
          <path
              sodipodi:nodetypes="cssscsscsssscssssc"
              id="path916-9-9"
              d="M 8.38818,286.543 C 7.90014,285.224 8.33566,285.636 7.8144,284.694 7.60086,284.309 9.0286,282.457 11.5943,283.786 12.0207,284.007 12.028,283.47 11.8197,283.066 11.7244,282.881 11.3633,282.693 10.9996,282.589 10.8567,282.548 10.9562,281.718 10.7884,281.688 10.5933,281.653 10.3845,281.624 10.1691,281.603 10.0634,281.592 9.83924,282.378 9.73126,282.37 9.11759,282.325 8.7847,282.351 8.2816,282.383 8.15188,282.391 7.78966,281.678 7.66368,281.692 7.21842,281.744 7.08425,281.74 6.75245,281.868 6.54236,281.948 7.09052,282.651 6.96032,282.761 6.87374,282.834 6.69084,283.146 6.43894,283.349 6.0382,283.344 5.616,283.198 5.52674,283.43 5.32917,283.943 5.44939,283.632 5.30493,283.949 5.14581,284.298 6.32265,284.405 6.26088,284.639 6.20692,284.844 6.19073,285.675 6.45748,286.158 6.79759,286.774 6.78429,286.619 7.271,287.203"
-             style="fill:#e9ddaf;stroke:#483e37;stroke-linejoin:round;paint-order:markers stroke fill"
+             style="fill:#e9ddaf;stroke:#483e37;stroke-linejoin:round;paint-order:markers stroke fill;stroke-width:0.5"
              inkscape:connector-curvature="0" />
          <path
              sodipodi:nodetypes="ccccccccccccc"
