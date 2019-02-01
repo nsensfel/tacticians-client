@@ -26,9 +26,15 @@ get_mod_html mod =
             (Html.Attributes.class "info-card-mod")
          ]
          [
-            (Html.text
-               (category ++ ": " ++ (String.fromInt value))
-            )
+            (Html.div
+               [
+                  (Html.Attributes.class "omnimod-icon"),
+                  (Html.Attributes.class ("omnimod-icon-" ++ category))
+               ]
+               [
+               ]
+            ),
+            (Html.text (String.fromInt value))
          ]
       )
 
@@ -60,29 +66,34 @@ get_weapon_html weapon =
                ),
                (Html.div
                   [
+                     (Html.Attributes.class "omnimod-icon"),
+                     (Html.Attributes.class "omnimod-icon-dmg")
                   ]
                   [
-                     (Html.text
-                        (
-                           "~"
-                           ++
-                           (String.fromInt
-                              (Struct.Weapon.get_damage_sum weapon)
-                           )
-                           ++ " dmg @ ["
-                           ++
-                           (String.fromInt
-                              (Struct.Weapon.get_defense_range weapon)
-                           )
-                           ++ ", "
-                           ++
-                           (String.fromInt
-                              (Struct.Weapon.get_attack_range weapon)
-                           )
-                           ++ "]"
-                        )
-                     )
                   ]
+               ),
+               (Html.text
+                  (String.fromInt (Struct.Weapon.get_damage_sum weapon))
+               ),
+               (Html.div
+                  [
+                     (Html.Attributes.class "omnimod-icon"),
+                     (Html.Attributes.class "omnimod-icon-range")
+                  ]
+                  [
+                  ]
+               ),
+               (Html.text
+                  (
+                     (String.fromInt
+                        (Struct.Weapon.get_defense_range weapon)
+                     )
+                     ++ "-"
+                     ++
+                     (String.fromInt
+                        (Struct.Weapon.get_attack_range weapon)
+                     )
+                  )
                )
             ]
          ),
