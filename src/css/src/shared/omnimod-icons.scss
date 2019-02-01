@@ -1,8 +1,8 @@
 .omnimod-icon
 {
    display: inline-block;
-   height: 1em;
-   width: 1em;
+   height: 1.5em;
+   width: 1.5em;
    background-size: 100%;
    background-repeat: no-repeat;
    vertical-align: middle;
@@ -11,6 +11,10 @@
 .omnimod-icon-dmg
 {
    background-image: url(/asset/svg/damage_type/damage.svg);
+}
+.omnimod-icon-range
+{
+   background-image: url(/asset/svg/damage_type/accuracy.svg);
 }
 
 .omnimod-icon-slh
@@ -26,4 +30,49 @@
 .omnimod-icon-pie
 {
    background-image: url(/asset/svg/damage_type/piercing.svg);
+}
+
+.omnimod-icon-pary
+{
+   background-image: url(/asset/svg/damage_type/parry.svg);
+}
+
+.omnimod-icon-accu
+{
+   background-image: url(/asset/svg/damage_type/accuracy2.svg);
+}
+
+.omnimod-icon-dhit
+{
+   background-image: url(/asset/svg/damage_type/2hits.svg);
+}
+
+.omnimod-icon-con
+{
+   background-image: url(/asset/svg/damage_type/constitution.svg);
+}
+
+.omnimod-icon-dex
+{
+   background-image: url(/asset/svg/damage_type/dexterity.svg);
+}
+
+.omnimod-icon-int
+{
+   background-image: url(/asset/svg/damage_type/intelligence.svg);
+}
+
+.omnimod-icon-min
+{
+   background-image: url(/asset/svg/damage_type/mind.svg);
+}
+
+.omnimod-icon-spe
+{
+   background-image: url(/asset/svg/damage_type/speed.svg);
+}
+
+.omnimod-icon-str
+{
+   background-image: url(/asset/svg/damage_type/strength.svg);
 }

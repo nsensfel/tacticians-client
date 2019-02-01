@@ -138,29 +138,42 @@ get_weapon_field_header damage_multiplier weapon =
             [
             ]
             [
+               (Html.div
+                  [
+                     (Html.Attributes.class "omnimod-icon"),
+                     (Html.Attributes.class "omnimod-icon-dmg")
+                  ]
+                  [
+                  ]
+               ),
                (Html.text
-                  (
-                     "~"
-                     ++
-                     (String.fromInt
-                        (ceiling
-                           (
-                              (toFloat (Struct.Weapon.get_damage_sum weapon))
-                              * damage_multiplier
-                           )
+                  (String.fromInt
+                     (ceiling
+                        (
+                           (toFloat (Struct.Weapon.get_damage_sum weapon))
+                           * damage_multiplier
                         )
                      )
-                     ++ " dmg @ ["
-                     ++
+                  )
+               ),
+               (Html.div
+                  [
+                     (Html.Attributes.class "omnimod-icon"),
+                     (Html.Attributes.class "omnimod-icon-range")
+                  ]
+                  [
+                  ]
+               ),
+               (Html.text
+                  (
                      (String.fromInt
                         (Struct.Weapon.get_defense_range weapon)
                      )
-                     ++ ", "
+                     ++ "-"
                      ++
                      (String.fromInt
                         (Struct.Weapon.get_attack_range weapon)
                      )
-                     ++ "]"
                   )
                )
             ]
@@ -178,9 +191,15 @@ get_mod_html mod =
             (Html.Attributes.class "info-card-mod")
          ]
          [
-            (Html.text
-               (category ++ ": " ++ (String.fromInt value))
-            )
+            (Html.div
+               [
+                  (Html.Attributes.class "omnimod-icon"),
+                  (Html.Attributes.class ("omnimod-icon-" ++ category))
+               ]
+               [
+               ]
+            ),
+            (Html.text (String.fromInt value))
          ]
       )
 
@@ -316,10 +335,10 @@ stat_name  : String -> (Html.Html Struct.Event.Type)
 stat_name name =
    (Html.div
       [
-         (Html.Attributes.class "character-card-stat-name")
+         (Html.Attributes.class "omnimod-icon"),
+         (Html.Attributes.class ("omnimod-icon-" ++ name))
       ]
       [
-         (Html.text name)
       ]
    )
 
@@ -360,15 +379,15 @@ get_relevant_stats stats =
          )
       ]
       [
-         (stat_name "Dodge"),
+         (stat_name "dodg"),
          (stat_val (Struct.Statistics.get_dodges stats) True),
-         (stat_name "Parry"),
+         (stat_name "pary"),
          (stat_val (Struct.Statistics.get_parries stats) True),
-         (stat_name "Accu."),
+         (stat_name "accu"),
          (stat_val (Struct.Statistics.get_accuracy stats) False),
-         (stat_name "2xHit"),
+         (stat_name "dhit"),
          (stat_val (Struct.Statistics.get_double_hits stats) True),
-         (stat_name "Crit."),
+         (stat_name "crit"),
          (stat_val (Struct.Statistics.get_critical_hits stats) True)
       ]
    )
@@ -387,18 +406,18 @@ get_attributes atts =
          )
       ]
       [
-         (stat_name "Con"),
+         (stat_name "con"),
          (stat_val (Struct.Attributes.get_constitution atts) False),
-         (stat_name "Dex"),
+         (stat_name "str"),
+         (stat_val (Struct.Attributes.get_strength atts) False),
+         (stat_name "dex"),
          (stat_val (Struct.Attributes.get_dexterity atts) False),
-         (stat_name "Int"),
-         (stat_val (Struct.Attributes.get_intelligence atts) False),
-         (stat_name "Min"),
-         (stat_val (Struct.Attributes.get_mind atts) False),
-         (stat_name "Spe"),
+         (stat_name "spe"),
          (stat_val (Struct.Attributes.get_speed atts) False),
-         (stat_name "Str"),
-         (stat_val (Struct.Attributes.get_strength atts) False)
+         (stat_name "int"),
+         (stat_val (Struct.Attributes.get_intelligence atts) False),
+         (stat_name "min"),
+         (stat_val (Struct.Attributes.get_mind atts) False)
       ]
    )
 
