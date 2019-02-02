@@ -13,6 +13,8 @@ import Struct.Event
 import Struct.Model
 import Struct.Omnimods
 
+import View.Omnimods
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -53,16 +55,9 @@ get_glyph_board_html glyph_board =
                (Html.text (Struct.GlyphBoard.get_name glyph_board))
             ]
          ),
-         (Html.div
-            [
-               (Html.Attributes.class "info-card-omnimods-listing")
-            ]
-            (List.map
-               (get_mod_html)
-               (Struct.Omnimods.get_all_mods
-                  (Struct.GlyphBoard.get_omnimods glyph_board)
-               )
-            )
+         (View.Omnimods.get_html
+            1.0
+            (Struct.GlyphBoard.get_omnimods glyph_board)
          )
       ]
    )

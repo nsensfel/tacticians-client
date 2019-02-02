@@ -13,6 +13,7 @@ import Struct.Model
 import Struct.Weapon
 import Struct.Omnimods
 
+import View.Omnimods
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -97,15 +98,7 @@ get_weapon_html weapon =
                )
             ]
          ),
-         (Html.div
-            [
-               (Html.Attributes.class "info-card-omnimods-listing")
-            ]
-            (List.map
-               (get_mod_html)
-               (Struct.Omnimods.get_all_mods (Struct.Weapon.get_omnimods weapon))
-            )
-         )
+         (View.Omnimods.get_html 1.0 (Struct.Weapon.get_omnimods weapon))
       ]
    )
 

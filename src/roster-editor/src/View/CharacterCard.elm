@@ -25,6 +25,7 @@ import Struct.WeaponSet
 
 import View.Character
 import View.Gauge
+import View.Omnimods
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -228,12 +229,11 @@ get_multiplied_mod_html multiplier mod =
       )
 
 get_weapon_details : (
-      Struct.Omnimods.Type ->
       Float ->
       Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_details omnimods damage_multiplier weapon =
+get_weapon_details damage_multiplier weapon =
    (Html.div
       [
          (Html.Attributes.class "character-card-weapon"),
@@ -242,14 +242,9 @@ get_weapon_details omnimods damage_multiplier weapon =
      ]
       [
          (get_weapon_field_header damage_multiplier weapon),
-         (Html.div
-            [
-               (Html.Attributes.class "info-card-omnimods-listing")
-            ]
-            (List.map
-               (get_multiplied_mod_html damage_multiplier)
-               (Struct.Omnimods.get_attack_mods omnimods)
-            )
+         (View.Omnimods.get_html
+            damage_multiplier
+            (Struct.Weapon.get_omnimods weapon)
          )
       ]
    )
@@ -272,11 +267,10 @@ get_weapon_summary damage_multiplier weapon =
    )
 
 get_armor_details : (
-      Struct.Omnimods.Type ->
       Struct.Armor.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_armor_details omnimods armor =
+get_armor_details armor =
    (Html.div
       [
          (Html.Attributes.class "character-card-armor"),
@@ -294,15 +288,7 @@ get_armor_details omnimods armor =
                (Html.text (Struct.Armor.get_name armor))
             ]
          ),
-         (Html.div
-            [
-               (Html.Attributes.class "info-card-omnimods-listing")
-            ]
-            (List.map
-               (get_mod_html)
-               (Struct.Omnimods.get_defense_mods omnimods)
-            )
-         )
+         (View.Omnimods.get_html 1.0 (Struct.Armor.get_omnimods armor))
       ]
    )
 
@@ -327,7 +313,8 @@ get_glyph_board_details board =
             [
                (Html.text (Struct.GlyphBoard.get_name board))
             ]
-         )
+         ),
+         (View.Omnimods.get_html 1.0 (Struct.GlyphBoard.get_omnimods board))
       ]
    )
 
@@ -472,7 +459,6 @@ get_full_html char =
       damage_modifier = (Struct.Statistics.get_damage_modifier char_statistics)
       secondary_weapon = (Struct.WeaponSet.get_secondary_weapon weapon_set)
       armor = (Struct.Character.get_armor char)
-      omnimods = (Struct.Character.get_current_omnimods char)
    in
       (Html.div
          [
@@ -506,8 +492,8 @@ get_full_html char =
                   (get_statuses char)
                ]
             ),
-            (get_weapon_details omnimods damage_modifier main_weapon),
-            (get_armor_details omnimods armor),
+            (get_weapon_details damage_modifier main_weapon),
+            (get_armor_details armor),
             (get_glyph_board_details (Struct.Character.get_glyph_board char)),
             (get_relevant_stats char_statistics),
             (get_attributes (Struct.Character.get_attributes char)),

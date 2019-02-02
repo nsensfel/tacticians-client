@@ -13,6 +13,8 @@ import Struct.Glyph
 import Struct.Omnimods
 import Struct.Model
 
+import View.Omnimods
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -46,16 +48,7 @@ get_glyph_html glyph  =
       ]
       [
          (Html.text (Struct.Glyph.get_name glyph)),
-         (Html.div
-            [
-            ]
-            (List.map
-               (get_mod_html)
-               (Struct.Omnimods.get_all_mods
-                  (Struct.Glyph.get_omnimods glyph)
-               )
-            )
-         )
+         (View.Omnimods.get_html 1.0 (Struct.Glyph.get_omnimods glyph))
       ]
    )
 

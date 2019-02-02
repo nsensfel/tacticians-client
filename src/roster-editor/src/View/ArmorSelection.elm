@@ -13,6 +13,7 @@ import Struct.Event
 import Struct.Model
 import Struct.Omnimods
 
+import View.Omnimods
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -54,15 +55,7 @@ get_armor_html armor =
                (Html.text (Struct.Armor.get_name armor))
             ]
          ),
-         (Html.div
-            [
-               (Html.Attributes.class "info-card-omnimods-listing")
-            ]
-            (List.map
-               (get_mod_html)
-               (Struct.Omnimods.get_all_mods (Struct.Armor.get_omnimods armor))
-            )
-         )
+         (View.Omnimods.get_html 1.0 (Struct.Armor.get_omnimods armor))
       ]
    )
 

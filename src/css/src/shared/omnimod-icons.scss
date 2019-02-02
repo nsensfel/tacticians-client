@@ -33,6 +33,33 @@
    background-image: url(/asset/svg/damage_type/piercing.svg);
 }
 
+.omnimod-defense-mods .omnimod-icon-slh
+{
+   background-image:
+      url(/asset/svg/damage_type/slash.svg),
+      url(/asset/svg/damage_type/shield.svg)
+   ;
+   background-size: 1em, 1.5em;
+}
+
+.omnimod-defense-mods .omnimod-icon-blu
+{
+   background-image:
+      url(/asset/svg/damage_type/impact.svg),
+      url(/asset/svg/damage_type/shield.svg)
+   ;
+   background-size: 1em, 1.5em;
+}
+
+.omnimod-defense-mods .omnimod-icon-pie
+{
+   background-image:
+      url(/asset/svg/damage_type/piercing.svg),
+      url(/asset/svg/damage_type/shield.svg)
+   ;
+   background-size: 1em, 1.5em;
+}
+
 .omnimod-icon-dodg
 {
    background-image: url(/asset/svg/damage_type/dodge.svg);
