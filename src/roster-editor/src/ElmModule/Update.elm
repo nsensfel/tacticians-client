@@ -20,6 +20,7 @@ import Update.SetName
 import Update.SetPortrait
 import Update.SetRequestedHelp
 import Update.SetWeapon
+import Update.SwitchWeapons
 import Update.ToggleBattleIndex
 
 --------------------------------------------------------------------------------
@@ -81,13 +82,8 @@ update event model =
       (Struct.Event.SetCharacterName name) ->
          (Update.SetName.apply_to new_model name)
 
-      (Struct.Event.ClickedOnWeapon is_main) ->
-         (Update.SelectTab.apply_to
-            {model |
-               ui = (Struct.UI.set_is_selecting_main_weapon is_main model.ui)
-            }
-            Struct.UI.WeaponSelectionTab
-         )
+      (Struct.Event.SwitchWeapons) ->
+         (Update.SwitchWeapons.apply_to new_model)
 
       (Struct.Event.ServerReplied result) ->
          (Update.HandleServerReply.apply_to model result)

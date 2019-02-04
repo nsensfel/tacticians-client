@@ -98,7 +98,7 @@ get_weapon_html weapon =
                )
             ]
          ),
-         (View.Omnimods.get_html 1.0 (Struct.Weapon.get_omnimods weapon))
+         (View.Omnimods.get_html (Struct.Weapon.get_omnimods weapon))
       ]
    )
 

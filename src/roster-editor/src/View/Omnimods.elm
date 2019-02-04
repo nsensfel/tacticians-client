@@ -1,5 +1,6 @@
 module View.Omnimods exposing
    (
+      get_html_for_main_weapon,
       get_html
    )
 
@@ -66,8 +67,12 @@ get_multiplied_mod_html multiplier mod =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : Float -> Struct.Omnimods.Type -> (Html.Html Struct.Event.Type)
-get_html attack_multiplier omnimods =
+get_html_for_main_weapon : (
+      Float ->
+      Struct.Omnimods.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_html_for_main_weapon attack_multiplier omnimods =
    (Html.div
       [
          (Html.Attributes.class "omnimod-listing")
@@ -79,6 +84,52 @@ get_html attack_multiplier omnimods =
             ]
             (List.map
                (get_multiplied_mod_html attack_multiplier)
+               (Struct.Omnimods.get_attack_mods omnimods)
+            )
+         ),
+         (Html.div
+            [
+               (Html.Attributes.class "omnimod-defense-mods")
+            ]
+            (List.map
+               (get_mod_html)
+               (Struct.Omnimods.get_defense_mods omnimods)
+            )
+         ),
+         (Html.div
+            [
+               (Html.Attributes.class "omnimod-attribute-mods")
+            ]
+            (List.map
+               (get_mod_html)
+               (Struct.Omnimods.get_attributes_mods omnimods)
+            )
+         ),
+         (Html.div
+            [
+               (Html.Attributes.class "omnimod-statistics-mods")
+            ]
+            (List.map
+               (get_mod_html)
+               (Struct.Omnimods.get_statistics_mods omnimods)
+            )
+         )
+      ]
+   )
+
+get_html : Struct.Omnimods.Type -> (Html.Html Struct.Event.Type)
+get_html omnimods =
+   (Html.div
+      [
+         (Html.Attributes.class "omnimod-listing")
+      ]
+      [
+         (Html.div
+            [
+               (Html.Attributes.class "omnimod-attack-mods")
+            ]
+            (List.map
+               (get_mod_html)
                (Struct.Omnimods.get_attack_mods omnimods)
             )
          ),

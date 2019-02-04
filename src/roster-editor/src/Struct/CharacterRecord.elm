@@ -28,7 +28,6 @@ import Struct.Glyph
 import Struct.GlyphBoard
 import Struct.Portrait
 import Struct.Weapon
-import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -78,9 +77,6 @@ get_glyph_ids char = char.glyph_ids
 
 from_character : Struct.Character.Type -> Type
 from_character char =
-   let
-      weapons = (Struct.Character.get_weapons char)
-   in
    {
       index = (Struct.Character.get_index char),
       name = (Struct.Character.get_name char),
@@ -88,9 +84,9 @@ from_character char =
          (Struct.Portrait.get_id (Struct.Character.get_portrait char)),
       armor_id = (Struct.Armor.get_id (Struct.Character.get_armor char)),
       main_weapon_id =
-         (Struct.Weapon.get_id (Struct.WeaponSet.get_active_weapon weapons)),
+         (Struct.Weapon.get_id (Struct.Character.get_primary_weapon char)),
       secondary_weapon_id =
-         (Struct.Weapon.get_id (Struct.WeaponSet.get_secondary_weapon weapons)),
+         (Struct.Weapon.get_id (Struct.Character.get_secondary_weapon char)),
       glyph_board_id =
          (Struct.GlyphBoard.get_id (Struct.Character.get_glyph_board char)),
       glyph_ids =

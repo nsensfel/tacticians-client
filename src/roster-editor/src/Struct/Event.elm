@@ -26,7 +26,6 @@ type Type =
    | RequestedHelp Struct.HelpRequest.Type
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
    | TabSelected Struct.UI.Tab
-   | ClickedOnWeapon Bool
    | ClickedOnGlyph Int
    | SaveRequest
    | GoRequest
@@ -38,6 +37,8 @@ type Type =
    | SelectedGlyphBoard Struct.GlyphBoard.Ref
    | SelectedPortrait Struct.Portrait.Ref
    | SelectedWeapon Struct.Weapon.Ref
+
+   | SwitchWeapons
 
 attempted : (Result.Result err val) -> Type
 attempted act =

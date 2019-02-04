@@ -48,7 +48,7 @@ get_glyph_html glyph  =
       ]
       [
          (Html.text (Struct.Glyph.get_name glyph)),
-         (View.Omnimods.get_html 1.0 (Struct.Glyph.get_omnimods glyph))
+         (View.Omnimods.get_html (Struct.Glyph.get_omnimods glyph))
       ]
    )
 

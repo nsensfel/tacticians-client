@@ -1,4 +1,4 @@
-module Update.SetWeapon exposing (apply_to)
+module Update.SwitchWeapons exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
 import Dict
@@ -19,29 +19,18 @@ import Struct.Weapon
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Struct.Weapon.Ref ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model ref =
+apply_to model =
    (
       (
-         case (model.edited_char, (Dict.get ref model.weapons)) of
-            ((Just char), (Just weapon)) ->
+         case model.edited_char of
+            (Just char) ->
                {model |
                   edited_char =
                      (Just
-                        (
-                           if (Struct.Character.get_is_using_secondary char)
-                           then
-                              (Struct.Character.set_secondary_weapon
-                                 weapon
-                                 char
-                              )
-                           else
-                              (Struct.Character.set_primary_weapon
-                                 weapon
-                                 char
-                              )
+                        (Struct.Character.switch_weapons
+                           char
                         )
                      )
                }

@@ -21,7 +21,6 @@ import Struct.Omnimods
 import Struct.Statistics
 import Struct.UI
 import Struct.Weapon
-import Struct.WeaponSet
 
 import View.Character
 import View.Gauge
@@ -231,40 +230,39 @@ get_multiplied_mod_html multiplier mod =
 get_weapon_details : (
       Float ->
       Struct.Weapon.Type ->
+      Bool ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_details damage_multiplier weapon =
-   (Html.div
-      [
-         (Html.Attributes.class "character-card-weapon"),
-         (Html.Attributes.class "clickable"),
-         (Html.Events.onClick (Struct.Event.ClickedOnWeapon True))
-     ]
-      [
-         (get_weapon_field_header damage_multiplier weapon),
-         (View.Omnimods.get_html
-            damage_multiplier
-            (Struct.Weapon.get_omnimods weapon)
-         )
-      ]
-   )
-
-get_weapon_summary : (
-      Float ->
-      Struct.Weapon.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_weapon_summary damage_multiplier weapon =
-   (Html.div
-      [
-         (Html.Attributes.class "character-card-weapon-summary"),
-         (Html.Attributes.class "clickable"),
-         (Html.Events.onClick (Struct.Event.ClickedOnWeapon False))
-      ]
-      [
-         (get_weapon_field_header damage_multiplier weapon)
-      ]
-   )
+get_weapon_details damage_multiplier weapon is_active_wp =
+   if (is_active_wp)
+   then
+      (Html.div
+         [
+            (Html.Attributes.class "character-card-weapon"),
+            (Html.Attributes.class "clickable"),
+            (Html.Events.onClick
+               (Struct.Event.TabSelected Struct.UI.WeaponSelectionTab)
+            )
+        ]
+         [
+            (get_weapon_field_header damage_multiplier weapon),
+            (View.Omnimods.get_html_for_main_weapon
+               damage_multiplier
+               (Struct.Weapon.get_omnimods weapon)
+            )
+         ]
+      )
+   else
+      (Html.div
+         [
+            (Html.Attributes.class "character-card-weapon-summary"),
+            (Html.Attributes.class "clickable"),
+            (Html.Events.onClick (Struct.Event.SwitchWeapons))
+         ]
+         [
+            (get_weapon_field_header damage_multiplier weapon)
+         ]
+      )
 
 get_armor_details : (
       Struct.Armor.Type ->
@@ -288,7 +286,7 @@ get_armor_details armor =
                (Html.text (Struct.Armor.get_name armor))
             ]
          ),
-         (View.Omnimods.get_html 1.0 (Struct.Armor.get_omnimods armor))
+         (View.Omnimods.get_html (Struct.Armor.get_omnimods armor))
       ]
    )
 
@@ -314,7 +312,7 @@ get_glyph_board_details board =
                (Html.text (Struct.GlyphBoard.get_name board))
             ]
          ),
-         (View.Omnimods.get_html 1.0 (Struct.GlyphBoard.get_omnimods board))
+         (View.Omnimods.get_html (Struct.GlyphBoard.get_omnimods board))
       ]
    )
 
@@ -453,11 +451,9 @@ get_minimal_html char =
 get_full_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_full_html char =
    let
-      weapon_set = (Struct.Character.get_weapons char)
-      main_weapon = (Struct.WeaponSet.get_active_weapon weapon_set)
+      is_using_secondary = (Struct.Character.get_is_using_secondary char)
       char_statistics = (Struct.Character.get_statistics char)
       damage_modifier = (Struct.Statistics.get_damage_modifier char_statistics)
-      secondary_weapon = (Struct.WeaponSet.get_secondary_weapon weapon_set)
       armor = (Struct.Character.get_armor char)
    in
       (Html.div
@@ -492,11 +488,19 @@ get_full_html char =
                   (get_statuses char)
                ]
             ),
-            (get_weapon_details damage_modifier main_weapon),
+            (get_weapon_details
+               damage_modifier
+               (Struct.Character.get_primary_weapon char)
+               (not is_using_secondary)
+            ),
             (get_armor_details armor),
             (get_glyph_board_details (Struct.Character.get_glyph_board char)),
             (get_relevant_stats char_statistics),
             (get_attributes (Struct.Character.get_attributes char)),
-            (get_weapon_summary damage_modifier secondary_weapon)
+            (get_weapon_details
+               damage_modifier
+               (Struct.Character.get_secondary_weapon char)
+               is_using_secondary
+            )
          ]
       )

@@ -55,7 +55,7 @@ get_armor_html armor =
                (Html.text (Struct.Armor.get_name armor))
             ]
          ),
-         (View.Omnimods.get_html 1.0 (Struct.Armor.get_omnimods armor))
+         (View.Omnimods.get_html (Struct.Armor.get_omnimods armor))
       ]
    )
 

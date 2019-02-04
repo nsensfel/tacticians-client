@@ -55,10 +55,7 @@ get_glyph_board_html glyph_board =
                (Html.text (Struct.GlyphBoard.get_name glyph_board))
             ]
          ),
-         (View.Omnimods.get_html
-            1.0
-            (Struct.GlyphBoard.get_omnimods glyph_board)
-         )
+         (View.Omnimods.get_html (Struct.GlyphBoard.get_omnimods glyph_board))
       ]
    )
 

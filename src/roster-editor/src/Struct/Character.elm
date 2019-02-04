@@ -14,14 +14,18 @@ module Struct.Character exposing
       get_current_omnimods,
       get_attributes,
       get_statistics,
-      get_weapons,
-      set_weapons,
+      get_primary_weapon,
+      set_primary_weapon,
+      get_secondary_weapon,
+      set_secondary_weapon,
+      get_is_using_secondary,
       get_glyph_board,
       set_glyph_board,
       get_glyphs,
       set_glyph,
       set_was_edited,
-      get_was_edited
+      get_was_edited,
+      switch_weapons
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -36,7 +40,6 @@ import Struct.Omnimods
 import Struct.Portrait
 import Struct.Statistics
 import Struct.Weapon
-import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -49,7 +52,9 @@ type alias Type =
       portrait : Struct.Portrait.Type,
       attributes : Struct.Attributes.Type,
       statistics : Struct.Statistics.Type,
-      weapons : Struct.WeaponSet.Type,
+      primary_weapon : Struct.Weapon.Type,
+      secondary_weapon : Struct.Weapon.Type,
+      is_using_secondary : Bool,
       armor : Struct.Armor.Type,
       glyph_board : Struct.GlyphBoard.Type,
       glyphs : (Array.Array Struct.Glyph.Type),
@@ -67,7 +72,11 @@ refresh_omnimods char =
          (Struct.Omnimods.merge
             (Struct.Omnimods.merge
                (Struct.Weapon.get_omnimods
-                  (Struct.WeaponSet.get_active_weapon char.weapons)
+                  (
+                     if (char.is_using_secondary)
+                     then char.secondary_weapon
+                     else char.primary_weapon
+                  )
                )
                (Struct.Armor.get_omnimods char.armor)
             )
@@ -122,19 +131,18 @@ new index name m_portrait m_main_wp m_sec_wp m_armor m_board m_glyphs =
             ),
          attributes = (Struct.Attributes.default),
          statistics = (Struct.Statistics.new_raw (Struct.Attributes.default)),
-         weapons =
-            (Struct.WeaponSet.new
+         primary_weapon =
                (
                   case m_main_wp of
                      (Just w) -> w
                      Nothing -> (Struct.Weapon.default)
-               )
+               ),
+         secondary_weapon =
                (
                   case m_sec_wp of
                      (Just w) -> w
                      Nothing -> (Struct.Weapon.default)
-               )
-            ),
+               ),
          armor =
             (
                case m_armor of
@@ -158,6 +166,7 @@ new index name m_portrait m_main_wp m_sec_wp m_armor m_board m_glyphs =
                   m_glyphs
                )
             ),
+         is_using_secondary = False,
          current_omnimods = (Struct.Omnimods.none),
          was_edited = False
       }
@@ -193,11 +202,20 @@ get_attributes char = char.attributes
 get_statistics : Type -> Struct.Statistics.Type
 get_statistics char = char.statistics
 
-get_weapons : Type -> Struct.WeaponSet.Type
-get_weapons char = char.weapons
+get_primary_weapon : Type -> Struct.Weapon.Type
+get_primary_weapon char = char.primary_weapon
 
-set_weapons : Struct.WeaponSet.Type -> Type -> Type
-set_weapons weapons char = (refresh_omnimods {char | weapons = weapons})
+set_primary_weapon : Struct.Weapon.Type -> Type -> Type
+set_primary_weapon wp char = (refresh_omnimods {char | primary_weapon = wp})
+
+get_secondary_weapon : Type -> Struct.Weapon.Type
+get_secondary_weapon char = char.secondary_weapon
+
+set_secondary_weapon : Struct.Weapon.Type -> Type -> Type
+set_secondary_weapon wp char = (refresh_omnimods {char | secondary_weapon = wp})
+
+get_is_using_secondary : Type -> Bool
+get_is_using_secondary char = char.is_using_secondary
 
 get_armor : Type -> Struct.Armor.Type
 get_armor char = char.armor
@@ -233,3 +251,9 @@ get_was_edited char = char.was_edited
 
 set_was_edited : Bool -> Type -> Type
 set_was_edited val char = {char | was_edited = val}
+
+switch_weapons : Type -> Type
+switch_weapons char =
+   (refresh_omnimods
+      {char | is_using_secondary = (not char.is_using_secondary)}
+   )
