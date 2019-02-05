@@ -114,3 +114,23 @@
 {
    background-image: url(/asset/svg/damage_type/strength.svg);
 }
+
+.omnimod-icon-mheal
+{
+   background-image: url(/asset/svg/damage_type/mhealth.svg);
+}
+
+.omnimod-icon-mpts
+{
+   background-image: url(/asset/svg/damage_type/mmovpts.svg);
+}
+
+.omnimod-icon-negative
+{
+   filter: hue-rotate(310deg);
+}
+
+.omnimod-icon-positive
+{
+   filter: hue-rotate(30deg);
+}

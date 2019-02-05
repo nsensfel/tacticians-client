@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+    width="16mm"
+    height="16mm"
+    viewBox="0 0 16 16"
+    version="1.1"
+    id="svg8"
+    inkscape:version="0.92.2 2405546, 2018-03-11"
+    sodipodi:docname="mhealth.svg">
+   <defs
+       id="defs2" />
+   <sodipodi:namedview
+       id="base"
+       pagecolor="#ffffff"
+       bordercolor="#666666"
+       borderopacity="1.0"
+       inkscape:pageopacity="0.0"
+       inkscape:pageshadow="2"
+       inkscape:zoom="0.25"
+       inkscape:cx="-65.1747"
+       inkscape:cy="-240.869"
+       inkscape:document-units="mm"
+       inkscape:current-layer="layer1"
+       showgrid="false"
+       inkscape:snap-global="false"
+       inkscape:snap-bbox="true"
+       inkscape:bbox-nodes="false"
+       inkscape:window-width="1678"
+       inkscape:window-height="1029"
+       inkscape:window-x="1"
+       inkscape:window-y="516"
+       inkscape:window-maximized="0"
+       inkscape:pagecheckerboard="true" />
+   <metadata
+       id="metadata5">
+      <rdf:RDF>
+         <cc:Work
+             rdf:about="">
+            <dc:format>image/svg+xml</dc:format>
+            <dc:type
+                rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+            <dc:title />
+         </cc:Work>
+      </rdf:RDF>
+   </metadata>
+   <g
+       inkscape:label="Layer 1"
+       inkscape:groupmode="layer"
+       id="layer1"
+       transform="translate(0,-281)">
+      <rect
+          style="fill:#a02c2c;stroke:#483e37;stroke-width:1.460989;stroke-linejoin:round;paint-order:markers stroke fill"
+          id="rect1053"
+          width="12.8239"
+          height="14.3045"
+          x="1.58805"
+          y="281.848"
+          rx="2.92198"
+          ry="0.973994" />
+      <g
+          aria-label="HP"
+          style="font-size:7.577653px;font-family:Georgia;-inkscape-font-specification:Georgia;letter-spacing:0px;word-spacing:0px;fill:#e9ddaf;stroke:#483e37;stroke-width:0.189441"
+          id="text1057">
+         <path
+             d="M 8.3404,291.625 H 6.16109 V 291.362 Q 6.24989,291.355 6.41639,291.34 6.58659,291.325 6.64949,291.296 6.76049,291.251 6.81229,291.162 6.86409,291.07 6.86409,290.926 V 289.057 H 4.39617 V 290.885 Q 4.39617,291.014 4.43687,291.103 4.48127,291.192 4.60707,291.259 4.66997,291.292 4.82908,291.325 4.99188,291.359 5.08438,291.362 V 291.625 H 2.90506 V 291.362 Q 2.99386,291.355 3.16036,291.34 3.33057,291.325 3.39347,291.296 3.50447,291.251 3.55627,291.162 3.60807,291.07 3.60807,290.926 V 287.137 Q 3.60807,287.018 3.55997,286.922 3.51187,286.822 3.39347,286.767 3.29357,286.719 3.14926,286.682 3.00866,286.645 2.90506,286.637 V 286.375 H 5.08438 V 286.637 Q 4.98078,286.641 4.82908,286.671 4.68107,286.7 4.60707,286.726 4.48127,286.771 4.43687,286.874 4.39617,286.978 4.39617,287.1 V 288.728 H 6.86409 V 287.137 Q 6.86409,287.018 6.81599,286.922 6.76789,286.822 6.64949,286.767 6.54959,286.719 6.40529,286.682 6.26469,286.645 6.16109,286.637 V 286.375 H 8.3404 V 286.637 Q 8.2368,286.641 8.0851,286.671 7.9371,286.7 7.8631,286.726 7.7373,286.771 7.6929,286.874 7.6522,286.978 7.6522,287.1 V 290.885 Q 7.6522,291.014 7.6929,291.103 7.7373,291.192 7.8631,291.259 7.926,291.292 8.0851,291.325 8.2479,291.359 8.3404,291.362 Z"
+             style="-inkscape-font-specification:Georgia"
+             id="path2053" />
+         <path
+             d="M 13.0949,287.67 Q 13.0949,288.08 12.9321,288.399 12.773,288.713 12.4881,288.92 12.2069,289.127 11.8702,289.224 11.5335,289.32 11.1561,289.32 H 10.5678 V 290.911 Q 10.5678,291.04 10.6085,291.14 10.6529,291.236 10.7861,291.288 10.8527,291.314 11.0192,291.336 11.1894,291.359 11.33,291.362 V 291.625 H 9.07671 V 291.362 Q 9.16551,291.355 9.33201,291.336 9.50221,291.318 9.56881,291.288 9.67981,291.24 9.72791,291.148 9.77971,291.055 9.77971,290.911 V 287.122 Q 9.77971,286.993 9.74271,286.889 9.70571,286.785 9.56881,286.734 9.42821,286.685 9.28761,286.667 9.15071,286.645 9.05081,286.637 V 286.375 H 11.4484 Q 12.181,286.375 12.6361,286.73 13.0949,287.081 13.0949,287.67 Z M 11.9701,288.565 Q 12.0959,288.387 12.1366,288.199 12.1773,288.006 12.1773,287.855 12.1773,287.644 12.1255,287.425 12.0774,287.207 11.9553,287.044 11.8258,286.87 11.6149,286.774 11.404,286.678 11.0895,286.678 H 10.5678 V 288.998 H 10.9452 Q 11.3448,288.998 11.5927,288.876 11.8443,288.75 11.9701,288.565 Z"
+             style="-inkscape-font-specification:Georgia"
+             id="path2055" />
+      </g>
+   </g>
+</svg>

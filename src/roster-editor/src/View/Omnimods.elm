@@ -1,6 +1,6 @@
 module View.Omnimods exposing
    (
-      get_html_for_main_weapon,
+      get_html_with_modifier,
       get_html
    )
 
@@ -31,7 +31,12 @@ get_mod_html mod =
             (Html.div
                [
                   (Html.Attributes.class "omnimod-icon"),
-                  (Html.Attributes.class ("omnimod-icon-" ++ category))
+                  (Html.Attributes.class ("omnimod-icon-" ++ category)),
+                  (
+                     if (value < 0)
+                     then (Html.Attributes.class "omnimod-icon-negative")
+                     else (Html.Attributes.class "omnimod-icon-positive")
+                  )
                ]
                [
                ]
@@ -53,13 +58,23 @@ get_multiplied_mod_html multiplier mod =
             (Html.div
                [
                   (Html.Attributes.class "omnimod-icon"),
-                  (Html.Attributes.class ("omnimod-icon-" ++ category))
+                  (Html.Attributes.class ("omnimod-icon-" ++ category)),
+                  (
+                     if (value < 0)
+                     then (Html.Attributes.class "omnimod-icon-negative")
+                     else (Html.Attributes.class "omnimod-icon-positive")
+                  )
                ]
                [
                ]
             ),
             (Html.text
-               (String.fromInt (ceiling ((toFloat value) * multiplier)))
+               (
+                  (String.fromInt value)
+                  ++ " ("
+                  ++(String.fromInt (ceiling ((toFloat value) * multiplier)))
+                  ++ ")"
+               )
             )
          ]
       )
@@ -67,12 +82,12 @@ get_multiplied_mod_html multiplier mod =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html_for_main_weapon : (
+get_html_with_modifier : (
       Float ->
       Struct.Omnimods.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_html_for_main_weapon attack_multiplier omnimods =
+get_html_with_modifier attack_multiplier omnimods =
    (Html.div
       [
          (Html.Attributes.class "omnimod-listing")

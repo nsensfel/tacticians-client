@@ -246,7 +246,7 @@ get_weapon_details damage_multiplier weapon is_active_wp =
         ]
          [
             (get_weapon_field_header damage_multiplier weapon),
-            (View.Omnimods.get_html_for_main_weapon
+            (View.Omnimods.get_html_with_modifier
                damage_multiplier
                (Struct.Weapon.get_omnimods weapon)
             )
@@ -265,10 +265,11 @@ get_weapon_details damage_multiplier weapon is_active_wp =
       )
 
 get_armor_details : (
+      Float ->
       Struct.Armor.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_armor_details armor =
+get_armor_details damage_modifier armor =
    (Html.div
       [
          (Html.Attributes.class "character-card-armor"),
@@ -286,15 +287,19 @@ get_armor_details armor =
                (Html.text (Struct.Armor.get_name armor))
             ]
          ),
-         (View.Omnimods.get_html (Struct.Armor.get_omnimods armor))
+         (View.Omnimods.get_html_with_modifier
+            damage_modifier
+            (Struct.Armor.get_omnimods armor)
+         )
       ]
    )
 
 get_glyph_board_details : (
+      Float ->
       Struct.GlyphBoard.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_glyph_board_details board =
+get_glyph_board_details damage_modifier board =
    (Html.div
       [
          (Html.Attributes.class "character-card-glyph-board"),
@@ -312,7 +317,10 @@ get_glyph_board_details board =
                (Html.text (Struct.GlyphBoard.get_name board))
             ]
          ),
-         (View.Omnimods.get_html (Struct.GlyphBoard.get_omnimods board))
+         (View.Omnimods.get_html_with_modifier
+            damage_modifier
+            (Struct.GlyphBoard.get_omnimods board)
+         )
       ]
    )
 
@@ -493,8 +501,14 @@ get_full_html char =
                (Struct.Character.get_primary_weapon char)
                (not is_using_secondary)
             ),
-            (get_armor_details armor),
-            (get_glyph_board_details (Struct.Character.get_glyph_board char)),
+            (get_armor_details
+               damage_modifier
+               armor
+            ),
+            (get_glyph_board_details
+               damage_modifier
+               (Struct.Character.get_glyph_board char)
+            ),
             (get_relevant_stats char_statistics),
             (get_attributes (Struct.Character.get_attributes char)),
             (get_weapon_details
