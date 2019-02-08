@@ -7,11 +7,15 @@ import Html
 import Html.Attributes
 import Html.Events
 
+-- Shared ----------------------------------------------------------------------
+import Util.Html
+
 -- Roster Editor ---------------------------------------------------------------
+import Struct.Character
 import Struct.Event
 import Struct.Model
-import Struct.Weapon
 import Struct.Omnimods
+import Struct.Weapon
 
 import View.Omnimods
 --------------------------------------------------------------------------------
@@ -107,21 +111,44 @@ get_weapon_html weapon =
 --------------------------------------------------------------------------------
 get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
-   (Html.div
-      [
-         (Html.Attributes.class "selection-window"),
-         (Html.Attributes.class "weapon-selection")
-      ]
-      [
-         (Html.text "Weapon Selection"),
-         (Html.div
-            [
-               (Html.Attributes.class "selection-window-listing")
-            ]
-            (List.map
-               (get_weapon_html)
-               (Dict.values model.weapons)
+   case model.edited_char of
+      Nothing -> (Util.Html.nothing)
+      (Just char) ->
+         let
+            is_selecting_secondary =
+               (Struct.Character.get_is_using_secondary char)
+         in
+            (Html.div
+               [
+                  (Html.Attributes.class "selection-window"),
+                  (Html.Attributes.class "weapon-selection")
+               ]
+               [
+                  (Html.text
+                     (
+                        if (is_selecting_secondary)
+                        then "Secondary Weapon Selection"
+                        else "Primary Weapon Selection"
+                     )
+                  ),
+                  (Html.div
+                     [
+                        (Html.Attributes.class "selection-window-listing")
+                     ]
+                     (List.map
+                        (get_weapon_html)
+                        (List.filter
+                           (\e ->
+                              (not
+                                 (
+                                    is_selecting_secondary
+                                    && (Struct.Weapon.get_is_primary e)
+                                 )
+                              )
+                           )
+                           (Dict.values model.weapons)
+                        )
+                     )
+                  )
+               ]
             )
-         )
-      ]
-   )

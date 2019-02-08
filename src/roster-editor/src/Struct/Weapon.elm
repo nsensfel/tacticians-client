@@ -2,9 +2,9 @@ module Struct.Weapon exposing
    (
       Type,
       Ref,
-      new,
       get_id,
       get_name,
+      get_is_primary,
       get_attack_range,
       get_defense_range,
       get_omnimods,
@@ -24,19 +24,11 @@ import Struct.Omnimods
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-type alias PartiallyDecoded =
-   {
-      id : String,
-      nam : String,
-      rmi : Int,
-      rma : Int,
-      omni : String
-   }
-
 type alias Type =
    {
       id : String,
       name : String,
+      is_primary : Bool,
       def_range : Int,
       atk_range : Int,
       omnimods : Struct.Omnimods.Type,
@@ -52,22 +44,14 @@ type alias Ref = String
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : String -> String -> Int -> Int -> Struct.Omnimods.Type -> Type
-new id name range_min range_max omnimods =
-   {
-      id = id,
-      name = name,
-      def_range = range_min,
-      atk_range = range_max,
-      omnimods = omnimods,
-      damage_sum = (Struct.Omnimods.get_damage_sum omnimods)
-   }
-
 get_id : Type -> String
 get_id wp = wp.id
 
 get_name : Type -> String
 get_name wp = wp.name
+
+get_is_primary : Type -> Bool
+get_is_primary wp = wp.is_primary
 
 get_attack_range : Type -> Int
 get_attack_range wp = wp.atk_range
@@ -89,6 +73,7 @@ decoder =
          Type
          |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+         |> (Json.Decode.Pipeline.required "pri" Json.Decode.bool)
          |> (Json.Decode.Pipeline.required "rmi" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "rma" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
@@ -97,7 +82,16 @@ decoder =
    )
 
 none : Type
-none = (new "0" "None" 0 0 (Struct.Omnimods.none))
+none =
+   {
+      id = "",
+      name = "None",
+      is_primary = False,
+      def_range = 0,
+      atk_range = 0,
+      omnimods = (Struct.Omnimods.none),
+      damage_sum = 0
+   }
 
 default : Type
 default = (none)
