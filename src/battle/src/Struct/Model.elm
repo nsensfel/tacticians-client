@@ -57,11 +57,11 @@ type alias Type =
       animator: (Maybe Struct.TurnResultAnimator.Type),
       map: Struct.Map.Type,
       characters: (Array.Array Struct.Character.Type),
+      players: (Array.Array Struct.Player.Type),
       weapons: (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type),
       armors: (Dict.Dict Struct.Armor.Ref Struct.Armor.Type),
       portraits: (Dict.Dict Struct.Portrait.Ref Struct.Portrait.Type),
       tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
-      players: (Dict.Dict Struct.Player.Ref Struct.Player.Type),
       error: (Maybe Struct.Error.Type),
       player_id: String,
       battle_id: String,
@@ -98,7 +98,7 @@ new flags =
             armors = (Dict.empty),
             portraits = (Dict.empty),
             tiles = (Dict.empty),
-            players = (Dict.empty),
+            players = (Array.empty),
             error = Nothing,
             battle_id = "",
             player_id =
@@ -173,8 +173,7 @@ add_player : Struct.Player.Type -> Type -> Type
 add_player pl model =
    {model |
       players =
-         (Dict.insert
-            (Struct.Player.get_index pl)
+         (Array.push
             pl
             model.players
          )
@@ -224,6 +223,19 @@ initialize_animator : Type -> Type
 initialize_animator model =
    let
       timeline_list = (Array.toList model.timeline)
+      (characters, players) =
+         (List.foldr
+            (\event (pcharacters, pplayers) ->
+               (Struct.TurnResult.apply_inverse_step
+                  (tile_omnimods_fun model)
+                  event
+                  pcharacters
+                  pplayers
+               )
+            )
+            (model.characters, model.players)
+            timeline_list
+         )
    in
       {model |
          animator =
@@ -232,14 +244,8 @@ initialize_animator model =
                True
             ),
          ui = (Struct.UI.default),
-         characters =
-            (List.foldr
-               (Struct.TurnResult.apply_inverse_to_characters
-                  (tile_omnimods_fun model)
-               )
-               model.characters
-               timeline_list
-            )
+         characters = characters,
+         players = players
       }
 
 move_animator_to_next_step : Type -> Type
@@ -257,20 +263,22 @@ apply_animator_step model =
    case model.animator of
       Nothing -> model
       (Just animator) ->
-         {model |
-            characters =
-               case
-                  (Struct.TurnResultAnimator.get_current_animation animator)
-               of
-                  (Struct.TurnResultAnimator.TurnResult turn_result) ->
-                     (Struct.TurnResult.apply_step_to_characters
+         case (Struct.TurnResultAnimator.get_current_animation animator) of
+            (Struct.TurnResultAnimator.TurnResult turn_result) ->
+               let
+                  (characters, players) =
+                     (Struct.TurnResult.apply_step
                         (tile_omnimods_fun model)
                         turn_result
                         model.characters
+                        model.players
                      )
-
-                  _ -> model.characters
-         }
+               in
+                  {model |
+                     characters = characters,
+                     players = players
+                  }
+            _ -> model
 
 update_character : Int -> Struct.Character.Type -> Type -> Type
 update_character ix new_val model =

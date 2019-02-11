@@ -11,9 +11,8 @@ module Struct.TurnResult exposing
       get_actor_index,
       get_attack_defender_index,
       maybe_get_attack_next_step,
-      apply_to_characters,
-      apply_inverse_to_characters,
-      apply_step_to_characters,
+      apply_inverse_step,
+      apply_step,
       maybe_remove_step,
       decoder
    )
@@ -23,12 +22,16 @@ import Array
 
 import Json.Decode
 
+-- Shared ----------------------------------------------------------------------
+import Util.Array
+
 -- Battle ----------------------------------------------------------------------
 import Struct.Attack
 import Struct.Character
 import Struct.Direction
 import Struct.Location
 import Struct.Omnimods
+import Struct.Player
 import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
@@ -45,7 +48,9 @@ type alias Attack =
    {
       attacker_index : Int,
       defender_index : Int,
-      sequence : (List Struct.Attack.Type)
+      sequence : (List Struct.Attack.Type),
+      attacker_luck : Int,
+      defender_luck : Int
    }
 
 type alias WeaponSwitch =
@@ -79,149 +84,205 @@ type Type =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_movement_to_character : (
-      Movement ->
+apply_movement_step : (
       (Struct.Location.Type -> Struct.Omnimods.Type) ->
-      Struct.Character.Type ->
-      Struct.Character.Type
+      Movement ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Player.Type) ->
+      (
+         (Array.Array Struct.Character.Type),
+         (Array.Array Struct.Player.Type)
+      )
    )
-apply_movement_to_character movement tile_omnimods char =
-   (Struct.Character.refresh_omnimods
-      (tile_omnimods)
-      (Struct.Character.set_location movement.destination char)
+apply_movement_step tile_omnimods movement characters players =
+   (
+      (Util.Array.update_unsafe
+         movement.character_index
+         (\char ->
+            case (List.head movement.path) of
+               (Just dir) ->
+                  (Struct.Character.set_location
+                     (Struct.Location.neighbor
+                        dir
+                        (Struct.Character.get_location char)
+                     )
+                     char
+                  )
+
+               Nothing ->
+                  (Struct.Character.refresh_omnimods (tile_omnimods) char)
+         )
+         characters
+      ),
+      players
    )
 
-apply_movement_step_to_character : (
-      Movement ->
+apply_inverse_movement_step : (
       (Struct.Location.Type -> Struct.Omnimods.Type) ->
-      Struct.Character.Type ->
-      Struct.Character.Type
+      Movement ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Player.Type) ->
+      (
+         (Array.Array Struct.Character.Type),
+         (Array.Array Struct.Player.Type)
+      )
    )
-apply_movement_step_to_character movement tile_omnimods char =
-   case (List.head movement.path) of
-      (Just dir) ->
-         (Struct.Character.set_location
-            (Struct.Location.neighbor dir (Struct.Character.get_location char))
-            char
+apply_inverse_movement_step tile_omnimods movement characters players =
+   (
+      (Util.Array.update_unsafe
+         movement.character_index
+         (\char ->
+            (Struct.Character.refresh_omnimods
+               (tile_omnimods)
+               (Struct.Character.set_location
+                  (List.foldr
+                     (Struct.Location.neighbor)
+                     (movement.destination)
+                     (List.map (Struct.Direction.opposite_of) movement.path)
+                  )
+                  char
+               )
+            )
+         )
+         characters
+      ),
+      players
+   )
+
+apply_switched_weapon : (
+      (Struct.Location.Type -> Struct.Omnimods.Type) ->
+      WeaponSwitch ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Player.Type) ->
+      (
+         (Array.Array Struct.Character.Type),
+         (Array.Array Struct.Player.Type)
+      )
+   )
+apply_switched_weapon tile_omnimods weapon_switch characters players =
+   (
+      (Util.Array.update_unsafe
+         weapon_switch.character_index
+         (\char ->
+            (Struct.Character.refresh_omnimods
+               (tile_omnimods)
+               (Struct.Character.set_weapons
+                  (Struct.WeaponSet.switch_weapons
+                     (Struct.Character.get_weapons char)
+                  )
+                  char
+               )
+            )
+         )
+         characters
+      ),
+      players
+   )
+
+apply_player_defeat : (
+      PlayerDefeat ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Player.Type) ->
+      (
+         (Array.Array Struct.Character.Type),
+         (Array.Array Struct.Player.Type)
+      )
+   )
+apply_player_defeat pdefeat characters players =
+   (
+      (Array.map
+         (\c ->
+            (
+               if ((Struct.Character.get_player_ix c) == pdefeat.player_index)
+               then (Struct.Character.set_defeated True c)
+               else c
+            )
+         )
+         characters
+      ),
+      players
+   )
+
+apply_inverse_player_defeat : (
+      PlayerDefeat ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Player.Type) ->
+      (
+         (Array.Array Struct.Character.Type),
+         (Array.Array Struct.Player.Type)
+      )
+   )
+apply_inverse_player_defeat pdefeat characters players =
+   (
+      (Array.map
+         (\c ->
+            (
+               if ((Struct.Character.get_player_ix c) == pdefeat.player_index)
+               then (Struct.Character.set_defeated False c)
+               else c
+            )
+         )
+         characters
+      ),
+      players
+   )
+
+apply_attack_step : (
+      Attack ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Player.Type) ->
+      (
+         (Array.Array Struct.Character.Type),
+         (Array.Array Struct.Player.Type)
+      )
+   )
+apply_attack_step attack characters players =
+   case (List.head attack.sequence) of
+      (Just attack_step) ->
+         (
+            (Struct.Attack.apply_to_characters
+               attack.attacker_index
+               attack.defender_index
+               attack_step
+               characters
+            ),
+            players
          )
 
       Nothing ->
-         (Struct.Character.refresh_omnimods (tile_omnimods) char)
-
-apply_inverse_movement_to_character : (
-      Movement ->
-      (Struct.Location.Type -> Struct.Omnimods.Type) ->
-      Struct.Character.Type ->
-      Struct.Character.Type
-   )
-apply_inverse_movement_to_character movement tile_omnimods char =
-   (Struct.Character.refresh_omnimods
-      (tile_omnimods)
-      (Struct.Character.set_location
-         (List.foldr
-            (Struct.Location.neighbor)
-            (movement.destination)
-            (List.map (Struct.Direction.opposite_of) movement.path)
+         (
+            characters,
+            (Util.Array.update_unsafe
+               attack.attacker_index
+               (Struct.Player.set_luck attack.attacker_luck)
+               (Util.Array.update_unsafe
+                  attack.defender_index
+                  (Struct.Player.set_luck attack.defender_luck)
+                  players
+               )
+            )
          )
-         char
-      )
-   )
 
-apply_weapon_switch_to_character : (
-      (Struct.Location.Type -> Struct.Omnimods.Type) ->
-      Struct.Character.Type ->
-      Struct.Character.Type
-   )
-apply_weapon_switch_to_character tile_omnimods char =
-   (Struct.Character.refresh_omnimods
-      (tile_omnimods)
-      (Struct.Character.set_weapons
-         (Struct.WeaponSet.switch_weapons
-            (Struct.Character.get_weapons char)
-         )
-         char
-      )
-   )
-
-apply_attack_to_characters : (
+apply_inverse_attack : (
       Attack ->
       (Array.Array Struct.Character.Type) ->
-      (Array.Array Struct.Character.Type)
-   )
-apply_attack_to_characters attack characters =
-   (List.foldl
-      (Struct.Attack.apply_to_characters
-         attack.attacker_index
-         attack.defender_index
+      (Array.Array Struct.Player.Type) ->
+      (
+         (Array.Array Struct.Character.Type),
+         (Array.Array Struct.Player.Type)
       )
-      characters
-      attack.sequence
    )
-
-apply_player_defeat_to_characters : (
-      PlayerDefeat ->
-      (Array.Array Struct.Character.Type) ->
-      (Array.Array Struct.Character.Type)
-   )
-apply_player_defeat_to_characters pdefeat characters =
-   (Array.map
-      (\c ->
-         (
-            if ((Struct.Character.get_player_ix c) == pdefeat.player_index)
-            then (Struct.Character.set_defeated True c)
-            else c
-         )
-      )
-      characters
-   )
-
-apply_inverse_player_defeat_to_characters : (
-      PlayerDefeat ->
-      (Array.Array Struct.Character.Type) ->
-      (Array.Array Struct.Character.Type)
-   )
-apply_inverse_player_defeat_to_characters pdefeat characters =
-   (Array.map
-      (\c ->
-         (
-            if ((Struct.Character.get_player_ix c) == pdefeat.player_index)
-            then (Struct.Character.set_defeated False c)
-            else c
-         )
-      )
-      characters
-   )
-
-apply_attack_step_to_characters : (
-      Attack ->
-      (Array.Array Struct.Character.Type) ->
-      (Array.Array Struct.Character.Type)
-   )
-apply_attack_step_to_characters attack characters =
-   case (List.head attack.sequence) of
-      (Just attack_step) ->
-         (Struct.Attack.apply_to_characters
+apply_inverse_attack attack characters players =
+   (
+      (List.foldr
+         (Struct.Attack.apply_inverse_to_characters
             attack.attacker_index
             attack.defender_index
-            attack_step
-            characters
          )
-
-      Nothing -> characters
-
-apply_inverse_attack_to_characters : (
-      Attack ->
-      (Array.Array Struct.Character.Type) ->
-      (Array.Array Struct.Character.Type)
-   )
-apply_inverse_attack_to_characters attack characters =
-   (List.foldr
-      (Struct.Attack.apply_inverse_to_characters
-         attack.attacker_index
-         attack.defender_index
-      )
-      characters
-      attack.sequence
+         characters
+         attack.sequence
+      ),
+      players
    )
 
 movement_decoder : (Json.Decode.Decoder Movement)
@@ -229,26 +290,19 @@ movement_decoder =
    (Json.Decode.map3
       Movement
       (Json.Decode.field "ix" Json.Decode.int)
-      (Json.Decode.field
-         "p"
-         (Json.Decode.list (Struct.Direction.decoder))
-      )
-      (Json.Decode.field
-         "nlc"
-         (Struct.Location.decoder)
-      )
+      (Json.Decode.field "p" (Json.Decode.list (Struct.Direction.decoder)))
+      (Json.Decode.field "nlc" (Struct.Location.decoder))
    )
 
 attack_decoder : (Json.Decode.Decoder Attack)
 attack_decoder =
-   (Json.Decode.map3
+   (Json.Decode.map5
       Attack
       (Json.Decode.field "aix" Json.Decode.int)
       (Json.Decode.field "dix" Json.Decode.int)
-      (Json.Decode.field
-         "seq"
-         (Json.Decode.list (Struct.Attack.decoder))
-      )
+      (Json.Decode.field "seq" (Json.Decode.list (Struct.Attack.decoder)))
+      (Json.Decode.field "alk" Json.Decode.int)
+      (Json.Decode.field "dlk" Json.Decode.int)
    )
 
 weapon_switch_decoder : (Json.Decode.Decoder WeaponSwitch)
@@ -353,142 +407,111 @@ maybe_remove_attack_step attack =
             )
          )
 
+apply_player_victory : (
+      PlayerVictory ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Player.Type) ->
+      (
+         (Array.Array Struct.Character.Type),
+         (Array.Array Struct.Player.Type)
+      )
+   )
+apply_player_victory player_victory characters players =
+   (
+      characters,
+      players
+   )
+
+apply_player_turn_started : (
+      PlayerTurnStart ->
+      (Array.Array Struct.Character.Type) ->
+      (Array.Array Struct.Player.Type) ->
+      (
+         (Array.Array Struct.Character.Type),
+         (Array.Array Struct.Player.Type)
+      )
+   )
+apply_player_turn_started player_defeat characters players =
+   (
+      characters,
+      players
+   )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to_characters : (
+apply_step : (
       (Struct.Location.Type -> Struct.Omnimods.Type) ->
       Type ->
       (Array.Array Struct.Character.Type) ->
-      (Array.Array Struct.Character.Type)
+      (Array.Array Struct.Player.Type) ->
+      (
+         (Array.Array Struct.Character.Type),
+         (Array.Array Struct.Player.Type)
+      )
    )
-apply_to_characters tile_omnimods turn_result characters =
+apply_step tile_omnimods turn_result characters players =
    case turn_result of
       (Moved movement) ->
-         case (Array.get movement.character_index characters) of
-            (Just char) ->
-               (Array.set
-                  movement.character_index
-                  (apply_movement_to_character movement (tile_omnimods) char)
-                  characters
-               )
-
-            Nothing ->
-               characters
+         (apply_movement_step (tile_omnimods) movement characters players)
 
       (SwitchedWeapon weapon_switch) ->
-         case (Array.get weapon_switch.character_index characters) of
-            (Just char) ->
-               (Array.set
-                  weapon_switch.character_index
-                  (apply_weapon_switch_to_character (tile_omnimods) char)
-                  characters
-               )
-
-            Nothing ->
-               characters
+         (apply_switched_weapon
+            (tile_omnimods)
+            weapon_switch
+            characters
+            players
+         )
 
       (Attacked attack) ->
-         (apply_attack_to_characters attack characters)
+         (apply_attack_step attack characters players)
 
-      (PlayerWon pvict) -> characters
+      (PlayerWon pvict) ->
+         (apply_player_victory pvict characters players)
 
       (PlayerLost pdefeat) ->
-         (apply_player_defeat_to_characters pdefeat characters)
+         (apply_player_defeat pdefeat characters players)
 
-      (PlayerTurnStarted pturns) -> characters
+      (PlayerTurnStarted pturns) ->
+         (apply_player_turn_started pturns characters players)
 
-apply_step_to_characters : (
+apply_inverse_step : (
       (Struct.Location.Type -> Struct.Omnimods.Type) ->
       Type ->
       (Array.Array Struct.Character.Type) ->
-      (Array.Array Struct.Character.Type)
+      (Array.Array Struct.Player.Type) ->
+      (
+         (Array.Array Struct.Character.Type),
+         (Array.Array Struct.Player.Type)
+      )
    )
-apply_step_to_characters tile_omnimods turn_result characters =
+apply_inverse_step tile_omnimods turn_result characters players =
    case turn_result of
       (Moved movement) ->
-         case (Array.get movement.character_index characters) of
-            (Just char) ->
-               (Array.set
-                  movement.character_index
-                  (apply_movement_step_to_character
-                     movement
-                     (tile_omnimods)
-                     char
-                  )
-                  characters
-               )
-
-            Nothing ->
-               characters
+         (apply_inverse_movement_step
+            (tile_omnimods)
+            movement
+            characters
+            players
+         )
 
       (SwitchedWeapon weapon_switch) ->
-         case (Array.get weapon_switch.character_index characters) of
-            (Just char) ->
-               (Array.set
-                  weapon_switch.character_index
-                  (apply_weapon_switch_to_character (tile_omnimods) char)
-                  characters
-               )
-
-            Nothing ->
-               characters
+         (apply_switched_weapon
+            (tile_omnimods)
+            weapon_switch
+            characters
+            players
+         )
 
       (Attacked attack) ->
-         (apply_attack_step_to_characters attack characters)
+         (apply_inverse_attack attack characters players)
 
-      (PlayerWon pvict) -> characters
-
-      (PlayerLost pdefeat) ->
-         (apply_player_defeat_to_characters pdefeat characters)
-
-      (PlayerTurnStarted pturns) -> characters
-
-apply_inverse_to_characters : (
-      (Struct.Location.Type -> Struct.Omnimods.Type) ->
-      Type ->
-      (Array.Array Struct.Character.Type) ->
-      (Array.Array Struct.Character.Type)
-   )
-apply_inverse_to_characters tile_omnimods turn_result characters =
-   case turn_result of
-      (Moved movement) ->
-         case (Array.get movement.character_index characters) of
-            (Just char) ->
-               (Array.set
-                  movement.character_index
-                  (apply_inverse_movement_to_character
-                     movement
-                     (tile_omnimods)
-                     char
-                  )
-                  characters
-               )
-
-            Nothing ->
-               characters
-
-      (SwitchedWeapon weapon_switch) ->
-         case (Array.get weapon_switch.character_index characters) of
-            (Just char) ->
-               (Array.set
-                  weapon_switch.character_index
-                  (apply_weapon_switch_to_character (tile_omnimods) char)
-                  characters
-               )
-
-            Nothing ->
-               characters
-
-      (Attacked attack) ->
-         (apply_inverse_attack_to_characters attack characters)
-
-      (PlayerWon pvict) -> characters
+      (PlayerWon pvict) -> (characters, players)
 
       (PlayerLost pdefeat) ->
-         (apply_inverse_player_defeat_to_characters pdefeat characters)
+         (apply_inverse_player_defeat pdefeat characters players)
 
-      (PlayerTurnStarted pturns) -> characters
+      (PlayerTurnStarted pturns) -> (characters, players)
 
 decoder : (Json.Decode.Decoder Type)
 decoder =
