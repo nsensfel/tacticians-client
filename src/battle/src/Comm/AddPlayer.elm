@@ -1,38 +1,24 @@
-module Struct.ServerReply exposing (Type(..))
+module Comm.AddPlayer exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
+import Json.Decode
 
 -- Battle ----------------------------------------------------------------------
-import Struct.Armor
-import Struct.Portrait
 import Struct.Player
-import Struct.Map
-import Struct.Character
-import Struct.Tile
-import Struct.TurnResult
-import Struct.Weapon
+import Struct.ServerReply
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-type Type =
-   Okay
-   | Disconnected
-   | AddArmor Struct.Armor.Type
-   | AddPortrait Struct.Portrait.Type
-   | AddPlayer Struct.Player.Type
-   | AddWeapon Struct.Weapon.Type
-   | AddCharacter Struct.Character.TypeAndEquipmentRef
-   | AddTile Struct.Tile.Type
-   | SetMap Struct.Map.Type
-   | TurnResults (List Struct.TurnResult.Type)
-   | SetTimeline (List Struct.TurnResult.Type)
-
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+internal_decoder : Struct.Player.Type -> Struct.ServerReply.Type
+internal_decoder pl = (Struct.ServerReply.AddPlayer pl)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+decode : (Json.Decode.Decoder Struct.ServerReply.Type)
+decode = (Json.Decode.map (internal_decoder) (Struct.Player.decoder))

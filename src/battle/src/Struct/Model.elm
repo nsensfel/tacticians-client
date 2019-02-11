@@ -8,6 +8,7 @@ module Struct.Model exposing
       add_weapon,
       add_armor,
       add_portrait,
+      add_player,
       add_tile,
       invalidate,
       initialize_animator,
@@ -40,6 +41,7 @@ import Struct.Portrait
 import Struct.Tile
 import Struct.TurnResult
 import Struct.TurnResultAnimator
+import Struct.Player
 import Struct.UI
 import Struct.Weapon
 
@@ -59,6 +61,7 @@ type alias Type =
       armors: (Dict.Dict Struct.Armor.Ref Struct.Armor.Type),
       portraits: (Dict.Dict Struct.Portrait.Ref Struct.Portrait.Type),
       tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
+      players: (Dict.Dict Struct.Player.Ref Struct.Player.Type),
       error: (Maybe Struct.Error.Type),
       player_id: String,
       battle_id: String,
@@ -95,6 +98,7 @@ new flags =
             armors = (Dict.empty),
             portraits = (Dict.empty),
             tiles = (Dict.empty),
+            players = (Dict.empty),
             error = Nothing,
             battle_id = "",
             player_id =
@@ -162,6 +166,17 @@ add_portrait pt model =
             (Struct.Portrait.get_id pt)
             pt
             model.portraits
+         )
+   }
+
+add_player : Struct.Player.Type -> Type -> Type
+add_player pl model =
+   {model |
+      players =
+         (Dict.insert
+            (Struct.Player.get_index pl)
+            pl
+            model.players
          )
    }
 

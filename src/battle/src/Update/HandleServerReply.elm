@@ -24,6 +24,7 @@ import Util.Http
 import Constants.IO
 
 import Struct.Armor
+import Struct.Player
 import Struct.Character
 import Struct.Error
 import Struct.Event
@@ -129,6 +130,15 @@ add_weapon wp current_state =
    let (model, cmds) = current_state in
       ((Struct.Model.add_weapon wp model), cmds)
 
+add_player : (
+      Struct.Player.Type ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+add_player pl current_state =
+   let (model, cmds) = current_state in
+      ((Struct.Model.add_player pl model), cmds)
+
 add_character : (
       Struct.Character.TypeAndEquipmentRef ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
@@ -231,6 +241,9 @@ apply_command command current_state =
 
       (Struct.ServerReply.AddPortrait pt) ->
          (add_portrait pt current_state)
+
+      (Struct.ServerReply.AddPlayer pl) ->
+         (add_player pl current_state)
 
       (Struct.ServerReply.AddTile tl) ->
          (add_tile tl current_state)
