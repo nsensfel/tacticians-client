@@ -29,7 +29,7 @@ get_inner_html model tab =
          (View.SubMenu.Status.get_html model)
 
       Struct.UI.TilesTab ->
-         (View.SubMenu.Tiles.get_html)
+         (View.SubMenu.Tiles.get_html model)
 
       Struct.UI.SettingsTab ->
          (View.SubMenu.Settings.get_html model)

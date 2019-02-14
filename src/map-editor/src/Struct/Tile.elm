@@ -9,6 +9,7 @@ module Struct.Tile exposing
       new,
       clone_instance,
       new_instance,
+      default_instance,
       new_border,
       error_tile_instance,
       get_id,
@@ -135,6 +136,17 @@ new_border type_id variant_id =
       type_id = type_id,
       variant_id = variant_id
    }
+
+default_instance : Type -> Instance
+default_instance tile =
+   (new_instance
+      {x = 0, y = 0}
+      tile.id
+      "0"
+      tile.crossing_cost
+      tile.family
+      []
+   )
 
 new_instance : (
       Struct.Location.Type ->
