@@ -13,7 +13,7 @@
     version="1.1"
     viewBox="0 0 128 128"
     width="128mm"
-    sodipodi:docname="0.svg"
+    sodipodi:docname="background.svg"
     inkscape:version="0.92.2 2405546, 2018-03-11">
    <defs
        id="rmid-defs2" />
@@ -21,14 +21,14 @@
        bordercolor="#666666"
        borderopacity="1.0"
        id="rmid-base"
-       pagecolor="#000000"
+       pagecolor="#ffffff"
        showgrid="true"
        showguides="false"
-       inkscape:current-layer="rmid-details"
-       inkscape:cx="-494.893"
-       inkscape:cy="322.369"
+       inkscape:current-layer="rmid-background"
+       inkscape:cx="148.554"
+       inkscape:cy="184.104"
        inkscape:document-units="mm"
-       inkscape:pageopacity="0"
+       inkscape:pageopacity="0.0"
        inkscape:pageshadow="2"
        inkscape:snap-global="false"
        inkscape:window-height="1029"
@@ -36,17 +36,13 @@
        inkscape:window-width="1678"
        inkscape:window-x="1"
        inkscape:window-y="516"
-       inkscape:zoom="0.3"
-       inkscape:pagecheckerboard="false">
+       inkscape:zoom="1.2">
       <inkscape:grid
           id="rmid-grid882"
           spacingx="31.999999"
           spacingy="31.999999"
           type="xygrid"
-          units="mm"
-          dotted="false"
-          color="#3f3fff"
-          opacity="0.619608" />
+          units="mm" />
    </sodipodi:namedview>
    <metadata
        id="rmid-metadata5">
@@ -61,14 +57,130 @@
       </rdf:RDF>
    </metadata>
    <g
-       id="rmid-details"
+       id="rmid-background"
        inkscape:groupmode="layer"
-       inkscape:label="rmid-details"
+       inkscape:label="rmid-background"
        sodipodi:insensitive="true">
+      <g
+          id="0_rmid-base"
+          style="fill:#da7c30">
+         <rect
+             height="32"
+             id="rmid-0_greenbg"
+             style="stroke-width:3.1368;stroke-linejoin:bevel"
+             width="32"
+             x="0"
+             y="0" />
+      </g>
+      <use
+          height="100%"
+          id="rmid-0b00"
+          width="100%"
+          x="32"
+          y="0"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b01"
+          width="100%"
+          x="64"
+          y="0"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b02"
+          width="100%"
+          x="96"
+          y="0"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b10"
+          width="100%"
+          x="0"
+          y="32"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b11"
+          width="100%"
+          x="32"
+          y="32"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b12"
+          width="100%"
+          x="64"
+          y="32"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b13"
+          width="100%"
+          x="96"
+          y="32"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b20"
+          width="100%"
+          x="0"
+          y="64"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b21"
+          width="100%"
+          x="32"
+          y="64"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b22"
+          width="100%"
+          x="64"
+          y="64"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b23"
+          width="100%"
+          x="96"
+          y="64"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b30"
+          width="100%"
+          x="0"
+          y="96"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b31"
+          width="100%"
+          x="32"
+          y="96"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b32"
+          width="100%"
+          x="64"
+          y="96"
+          xlink:href="#0_rmid-base" />
+      <use
+          height="100%"
+          id="rmid-0b33"
+          width="100%"
+          x="96"
+          y="96"
+          xlink:href="#0_rmid-base" />
       <g
           id="g2104"
           style="paint-order:markers stroke fill"
-          transform="translate(5.76858,2.02682)">
+          transform="translate(5.76857,2.02674)">
          <path
              sodipodi:nodetypes="ccccc"
              inkscape:connector-curvature="0"
@@ -84,13 +196,13 @@
       </g>
       <path
           style="fill:#ffeeaa;stroke:#000000;stroke-width:0.15;paint-order:markers stroke fill"
-          d="M 6.09704,9.6601 C 6.01987,8.2951 6.13308,6.7743 4.49851,6.6836 5.64738,6.6697 6.45474,6.1094 6.86874,4.9197 6.74974,6.1331 7.02734,6.9001 8.08144,6.7938 6.80014,7.0409 6.35974,8.249 6.09704,9.6601 Z"
+          d="M 6.09704,9.66004 C 6.01987,8.29503 6.13308,6.77423 4.4985,6.68353 5.64738,6.66964 6.45474,6.10933 6.86874,4.91963 6.74974,6.13303 7.02734,6.90004 8.08144,6.79373 6.80014,7.04082 6.35974,8.24893 6.09704,9.66004 Z"
           id="path2085-0"
           inkscape:connector-curvature="0"
           sodipodi:nodetypes="ccccc" />
       <path
           style="fill:#e9afaf;stroke:#000000;stroke-width:0.15;paint-order:markers stroke fill"
-          d="M 26.2225,16.5532 C 25.3207,15.5256 24.8038,15.7462 23.4604,16.6817 24.3568,15.963 25.1437,15.1896 24.7369,13.9974 25.3907,15.0265 26.8536,14.4674 27.6184,13.7343 26.7613,14.7183 25.5601,15.2798 26.2225,16.5532 Z"
+          d="M 26.2225,16.5532 C 25.3207,15.5255 24.8038,15.7462 23.4603,16.6816 24.3568,15.963 25.1437,15.1895 24.7369,13.9973 25.3907,15.0264 26.8535,14.4673 27.6184,13.7342 26.7613,14.7182 25.5601,15.2797 26.2225,16.5532 Z"
           id="path2085-0-3"
           inkscape:connector-curvature="0"
           sodipodi:nodetypes="ccccc" />
@@ -116,7 +228,7 @@
           y="0"
           xlink:href="#path2085-0-3"
           id="use2175"
-          transform="translate(32.1169,-9.90011)"
+          transform="translate(32.117,-9.90011)"
           width="100%"
           height="100%" />
       <use
@@ -124,7 +236,7 @@
           y="0"
           xlink:href="#path2085-0"
           id="use2177"
-          transform="translate(46.1485,19.6443)"
+          transform="translate(46.1486,19.6443)"
           width="100%"
           height="100%" />
       <g
@@ -155,7 +267,7 @@
           y="0"
           xlink:href="#g2228"
           id="use2230"
-          transform="translate(31.8051,12.7844)"
+          transform="translate(31.805,12.7844)"
           width="100%"
           height="100%" />
       <use
@@ -163,7 +275,7 @@
           y="0"
           xlink:href="#g2228"
           id="use2232"
-          transform="translate(9.67206,24.3291)"
+          transform="translate(9.67206,24.329)"
           width="100%"
           height="100%" />
       <use
@@ -171,7 +283,7 @@
           y="0"
           xlink:href="#use2232"
           id="use2234"
-          transform="translate(40.3783,32.5563)"
+          transform="translate(40.3783,32.5562)"
           width="100%"
           height="100%" />
       <use
@@ -185,7 +297,7 @@
       <g
           style="paint-order:markers stroke fill"
           id="use2238"
-          transform="translate(65.2391,22.2488)">
+          transform="translate(65.2389,22.2487)">
          <path
              style="fill:#decd87;stroke:#000000;stroke-width:0.15"
              d="M 7.27603,27.2378 C 7.49461,24.3652 7.93912,21.299 6.17359,20.1271 9.67002,19.189 10.8014,17.2771 11.8511,15.3316 11.5488,18.276 12.2611,19.8252 13.1189,21.1744 10.4402,22.1986 8.34084,24.0128 7.27603,27.2378 Z"
@@ -210,7 +322,7 @@
       <g
           id="use2246"
           style="fill:#e9afaf"
-          transform="translate(-68.3064,30.6652)">
+          transform="translate(-68.3066,30.6651)">
          <path
              style="fill:#de8787;stroke:#000000;stroke-width:0.15;paint-order:markers stroke fill"
              d="M 73.291,15.0123 C 74.4198,11.7469 82.4866,9.7912 84.4258,8.01135 82.7285,11.345 75.4603,13.5133 73.291,15.0123 Z"
@@ -228,14 +340,14 @@
           sodipodi:nodetypes="ccccc"
           inkscape:connector-curvature="0"
           id="use2248"
-          d="M 41.742,74.483 C 41.6649,73.118 41.7781,71.5972 40.1435,71.5065 41.2924,71.4926 42.0997,70.9323 42.5137,69.7426 42.3947,70.956 42.6723,71.723 43.7264,71.6167 42.4451,71.8638 42.0047,73.0719 41.742,74.483 Z"
+          d="M 41.7421,74.483 C 41.6648,73.118 41.7781,71.5972 40.1435,71.5065 41.2923,71.4927 42.0998,70.9323 42.5136,69.7425 42.3945,70.9559 42.6724,71.7229 43.7265,71.6168 42.4451,71.8639 42.0045,73.072 41.7421,74.483 Z"
           style="fill:#b7c8be;stroke:#000000;stroke-width:0.15;paint-order:markers stroke fill" />
       <use
           x="0"
           y="0"
           xlink:href="#path2085-0-3"
           id="use2293"
-          transform="translate(65.481,1.71498)"
+          transform="translate(65.4809,1.71499)"
           width="100%"
           height="100%" />
       <use
@@ -243,7 +355,7 @@
           y="0"
           xlink:href="#use2246"
           id="use2295"
-          transform="translate(75.9268,14.4994)"
+          transform="translate(75.9267,14.4994)"
           width="100%"
           height="100%" />
       <use
@@ -251,7 +363,7 @@
           y="0"
           xlink:href="#path2085-0"
           id="use2297"
-          transform="translate(49.8904,47.2399)"
+          transform="translate(49.8904,47.24)"
           width="100%"
           height="100%" />
       <use
@@ -259,7 +371,7 @@
           y="0"
           xlink:href="#g2244"
           id="use2299"
-          transform="translate(-23.8538,59.4007)"
+          transform="translate(-23.8538,59.4008)"
           width="100%"
           height="100%" />
       <use
@@ -275,7 +387,7 @@
           y="0"
           xlink:href="#use2240"
           id="use2303"
-          transform="translate(15.4348,24.3215)"
+          transform="translate(15.4348,24.3216)"
           width="100%"
           height="100%" />
       <use
@@ -283,7 +395,7 @@
           y="0"
           xlink:href="#use2297"
           id="use2305"
-          transform="translate(-9.35443,26.0365)"
+          transform="translate(-9.35445,26.0366)"
           width="100%"
           height="100%" />
       <use
@@ -291,7 +403,7 @@
           y="0"
           xlink:href="#g2104"
           id="use2307"
-          transform="translate(4.3654,27.7515)"
+          transform="translate(4.36539,27.7516)"
           width="100%"
           height="100%" />
       <use
@@ -299,7 +411,7 @@
           y="0"
           xlink:href="#g2228"
           id="use2309"
-          transform="translate(-30.246,41.1595)"
+          transform="translate(-30.2461,41.1594)"
           width="100%"
           height="100%" />
       <use
@@ -315,7 +427,7 @@
           y="0"
           xlink:href="#use2177"
           id="use2313"
-          transform="translate(-25.1011,30.7137)"
+          transform="translate(-25.1011,30.7136)"
           width="100%"
           height="100%" />
       <use
@@ -331,7 +443,7 @@
           y="0"
           xlink:href="#use2315"
           id="use2317"
-          transform="translate(-30.0901,33.9878)"
+          transform="translate(-30.09,33.9878)"
           width="100%"
           height="100%" />
       <use
@@ -339,7 +451,7 @@
           y="0"
           xlink:href="#use2317"
           id="use2319"
-          transform="translate(13.2521,35.235)"
+          transform="translate(13.2521,35.2351)"
           width="100%"
           height="100%" />
       <use
@@ -355,7 +467,7 @@
           y="0"
           xlink:href="#use2236"
           id="use2323"
-          transform="translate(-47.5517,-7.01583)"
+          transform="translate(-47.5517,-7.01581)"
           width="100%"
           height="100%" />
       <use
@@ -363,7 +475,7 @@
           y="0"
           xlink:href="#use2238"
           id="use2325"
-          transform="translate(-50.5139,35.7028)"
+          transform="translate(-50.514,35.7029)"
           width="100%"
           height="100%" />
       <use
@@ -371,7 +483,7 @@
           y="0"
           xlink:href="#use2175"
           id="use2327"
-          transform="translate(47.3958,6.3922)"
+          transform="translate(47.3959,6.3922)"
           width="100%"
           height="100%" />
       <use
@@ -379,7 +491,7 @@
           y="0"
           xlink:href="#path2085-0"
           id="use2329"
-          transform="translate(111.785,0.935443)"
+          transform="translate(111.785,0.935445)"
           width="100%"
           height="100%" />
       <use
@@ -395,7 +507,7 @@
           y="0"
           xlink:href="#use2309"
           id="use2333"
-          transform="translate(4.2095,25.7247)"
+          transform="translate(4.20949,25.7247)"
           width="100%"
           height="100%" />
       <use
@@ -403,7 +515,7 @@
           y="0"
           xlink:href="#use2305"
           id="use2335"
-          transform="translate(35.0791,-40.38)"
+          transform="translate(35.079,-40.3799)"
           width="100%"
           height="100%" />
       <use
@@ -411,7 +523,7 @@
           y="0"
           xlink:href="#use2335"
           id="use2337"
-          transform="translate(-9.51034,-3.11814)"
+          transform="translate(-9.51035,-3.11814)"
           width="100%"
           height="100%" />
       <use
@@ -427,7 +539,7 @@
           y="0"
           xlink:href="#path2085-0"
           id="use2341"
-          transform="translate(30.7137,38.0414)"
+          transform="translate(30.7136,38.0415)"
           width="100%"
           height="100%" />
       <use
@@ -435,7 +547,7 @@
           y="0"
           xlink:href="#use2246"
           id="use2343"
-          transform="rotate(71.2586,-35.9889,78.2072)"
+          transform="rotate(71.2586,-35.9888,78.207)"
           width="100%"
           height="100%" />
       <use
@@ -443,7 +555,7 @@
           y="0"
           xlink:href="#use2236"
           id="use2345"
-          transform="translate(-47.084,4.67722)"
+          transform="translate(-47.0839,4.67722)"
           width="100%"
           height="100%" />
       <use
@@ -451,7 +563,7 @@
           y="0"
           xlink:href="#use2299"
           id="use2347"
-          transform="rotate(121.877,59.6442,77.6654)"
+          transform="rotate(121.877,59.6441,77.6654)"
           width="100%"
           height="100%" />
       <use
@@ -459,7 +571,7 @@
           y="0"
           xlink:href="#use2325"
           id="use2349"
-          transform="rotate(-55.9279,65.5116,22.3065)"
+          transform="rotate(-55.9279,65.5114,22.3064)"
           width="100%"
           height="100%" />
       <use
@@ -477,7 +589,7 @@
           y="0"
           xlink:href="#use2248"
           id="use2353"
-          transform="rotate(126.867,60.6099,80.5659)"
+          transform="rotate(126.867,60.61,80.5658)"
           width="100%"
           height="100%" />
       <use
@@ -493,7 +605,7 @@
           y="0"
           xlink:href="#use2299"
           id="use2357"
-          transform="rotate(-70.4467,77.482,91.3455)"
+          transform="rotate(-70.4467,77.4817,91.3454)"
           width="100%"
           height="100%" />
       <use
@@ -501,7 +613,7 @@
           y="0"
           xlink:href="#use2343"
           id="use2359"
-          transform="rotate(-50.7156,48.7446,72.6511)"
+          transform="rotate(-50.7156,48.7446,72.651)"
           width="100%"
           height="100%" />
       <use
@@ -509,7 +621,7 @@
           y="0"
           xlink:href="#use2325"
           id="use2361"
-          transform="translate(15.2789,40.6918)"
+          transform="translate(15.2789,40.6919)"
           width="100%"
           height="100%" />
       <use
@@ -517,7 +629,7 @@
           y="0"
           xlink:href="#use2297"
           id="use2363"
-          transform="translate(45.5249,-5.14497)"
+          transform="translate(45.525,-5.14498)"
           width="100%"
           height="100%" />
       <use
@@ -525,7 +637,7 @@
           y="0"
           xlink:href="#use2240"
           id="use2365"
-          transform="translate(79.2009,-7.63945)"
+          transform="translate(79.2009,-7.63941)"
           width="100%"
           height="100%" />
       <use
@@ -541,7 +653,7 @@
           y="0"
           xlink:href="#use2367"
           id="use2369"
-          transform="translate(-9.35446,4.20949)"
+          transform="translate(-9.35445,4.20949)"
           width="100%"
           height="100%" />
       <use
@@ -549,7 +661,7 @@
           y="0"
           xlink:href="#use2369"
           id="use2371"
-          transform="translate(-2.80633,-7.6394)"
+          transform="translate(-2.80633,-7.63941)"
           width="100%"
           height="100%" />
       <use
@@ -565,7 +677,7 @@
           y="0"
           xlink:href="#use2248"
           id="use2375"
-          transform="translate(70.3142,-16.6821)"
+          transform="translate(70.3141,-16.6821)"
           width="100%"
           height="100%" />
       <use
@@ -573,7 +685,7 @@
           y="0"
           xlink:href="#use2319"
           id="use2377"
-          transform="translate(66.5724,3.74177)"
+          transform="translate(66.5723,3.74176)"
           width="100%"
           height="100%" />
       <use
@@ -581,7 +693,7 @@
           y="0"
           xlink:href="#use2315"
           id="use2379"
-          transform="translate(34.7673,74.2118)"
+          transform="translate(34.7673,74.2119)"
           width="100%"
           height="100%" />
       <use
@@ -589,7 +701,7 @@
           y="0"
           xlink:href="#use2353"
           id="use2381"
-          transform="translate(5.14494,47.8635)"
+          transform="translate(5.14493,47.8634)"
           width="100%"
           height="100%" />
       <use
@@ -597,7 +709,7 @@
           y="0"
           xlink:href="#use2353"
           id="use2383"
-          transform="translate(31.3374,5.45675)"
+          transform="translate(31.3375,5.45674)"
           width="100%"
           height="100%" />
       <use
@@ -605,7 +717,7 @@
           y="0"
           xlink:href="#use2305"
           id="use2385"
-          transform="translate(57.5298,11.3812)"
+          transform="translate(57.5297,11.3812)"
           width="100%"
           height="100%" />
       <use
@@ -637,7 +749,7 @@
           y="0"
           xlink:href="#use2357"
           id="use2393"
-          transform="translate(52.073,12.6285)"
+          transform="translate(52.0729,12.6285)"
           width="100%"
           height="100%" />
       <use
@@ -645,7 +757,7 @@
           y="0"
           xlink:href="#use2335"
           id="use2395"
-          transform="translate(40.0682,77.7977)"
+          transform="translate(40.0682,77.7978)"
           width="100%"
           height="100%" />
       <use
@@ -653,7 +765,7 @@
           y="0"
           xlink:href="#use2387"
           id="use2397"
-          transform="translate(1.40317,22.6065)"
+          transform="translate(1.40318,22.6065)"
           width="100%"
           height="100%" />
       <use
@@ -661,7 +773,7 @@
           y="0"
           xlink:href="#use2236"
           id="use2399"
-          transform="translate(39.7563,1.09135)"
+          transform="translate(39.7563,1.09136)"
           width="100%"
           height="100%" />
    </g>
