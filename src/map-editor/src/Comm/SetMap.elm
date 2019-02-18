@@ -17,7 +17,8 @@ type alias MapData =
    {
       w : Int,
       h : Int,
-      t : (List (List String))
+      t : (List (List String)),
+      m : (Dict.Dict String (List Struct.Location.Type))
    }
 
 --------------------------------------------------------------------------------

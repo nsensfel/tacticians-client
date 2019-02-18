@@ -25,9 +25,9 @@ import Struct.Location
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      width: Int,
-      height: Int,
-      content: (Array.Array Struct.Tile.Instance)
+      width : Int,
+      height : Int,
+      content : (Array.Array Struct.Tile.Instance)
    }
 
 --------------------------------------------------------------------------------
