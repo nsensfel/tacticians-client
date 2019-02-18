@@ -4,7 +4,9 @@ module Struct.Location exposing (..)
 import Json.Decode
 import Json.Decode.Pipeline
 
--- Battlemap -------------------------------------------------------------------
+import Json.Encode
+
+-- Map Editor ------------------------------------------------------------------
 import Struct.Direction
 
 --------------------------------------------------------------------------------
@@ -85,4 +87,13 @@ decoder =
       Type
       |> (Json.Decode.Pipeline.required "x" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "y" Json.Decode.int)
+   )
+
+encode : Type -> Json.Encode.Value
+encode loc =
+   (Json.Encode.object
+      [
+         ( "x", (Json.Encode.int loc.x) ),
+         ( "y", (Json.Encode.int loc.y) )
+      ]
    )

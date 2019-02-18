@@ -5,7 +5,7 @@ import Dict
 
 import Json.Decode
 
--- Map -------------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
 import Constants.Movement
 
 import Struct.Map

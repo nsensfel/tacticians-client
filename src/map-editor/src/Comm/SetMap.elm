@@ -1,12 +1,15 @@
 module Comm.SetMap exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
+import Dict
+
 import Json.Decode
 
 -- Map -------------------------------------------------------------------------
 import Constants.Movement
 
 import Struct.Map
+import Struct.MapMarker
 import Struct.ServerReply
 import Struct.Tile
 
@@ -18,7 +21,7 @@ type alias MapData =
       w : Int,
       h : Int,
       t : (List (List String)),
-      m : (Dict.Dict String (List Struct.Location.Type))
+      m : (Dict.Dict String Struct.MapMarker.Type)
    }
 
 --------------------------------------------------------------------------------
@@ -94,13 +97,19 @@ decode : (Json.Decode.Decoder Struct.ServerReply.Type)
 decode =
    (Json.Decode.map
       internal_decoder
-      (Json.Decode.map3
-         MapData
+      (Json.Decode.map4 MapData
          (Json.Decode.field "w" Json.Decode.int)
          (Json.Decode.field "h" Json.Decode.int)
          (Json.Decode.field
             "t"
             (Json.Decode.list (Json.Decode.list Json.Decode.string))
+         )
+         (Json.Decode.field
+            "m"
+            (Json.Decode.map
+               (Dict.fromList)
+               (Json.Decode.keyValuePairs (Struct.MapMarker.decoder))
+            )
          )
       )
    )
