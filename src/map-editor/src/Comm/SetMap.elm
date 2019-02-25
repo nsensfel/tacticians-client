@@ -12,17 +12,11 @@ import Struct.Map
 import Struct.MapMarker
 import Struct.ServerReply
 import Struct.Tile
+import Struct.TileInstance
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-type alias MapData =
-   {
-      w : Int,
-      h : Int,
-      t : (List (List String)),
-      m : (Dict.Dict String Struct.MapMarker.Type)
-   }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -77,39 +71,12 @@ deserialize_tile_instance map_width index t =
             []
          )
 
-internal_decoder : MapData -> Struct.ServerReply.Type
-internal_decoder map_data =
-   (Struct.ServerReply.SetMap
-      (Struct.Map.new
-         map_data.w
-         map_data.h
-         (List.indexedMap
-            (deserialize_tile_instance map_data.w)
-            map_data.t
-         )
-      )
-   )
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 decode : (Json.Decode.Decoder Struct.ServerReply.Type)
 decode =
    (Json.Decode.map
-      internal_decoder
-      (Json.Decode.map4 MapData
-         (Json.Decode.field "w" Json.Decode.int)
-         (Json.Decode.field "h" Json.Decode.int)
-         (Json.Decode.field
-            "t"
-            (Json.Decode.list (Json.Decode.list Json.Decode.string))
-         )
-         (Json.Decode.field
-            "m"
-            (Json.Decode.map
-               (Dict.fromList)
-               (Json.Decode.keyValuePairs (Struct.MapMarker.decoder))
-            )
-         )
-      )
+      (\map -> (Struct.ServerReply.SetMap map))
+      (Struct.Map.decoder)
    )

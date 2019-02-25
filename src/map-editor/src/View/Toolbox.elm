@@ -5,9 +5,10 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Struct.Battlemap -------------------------------------------------------------------
+-- Map Editor ------------------------------------------------------------------
 import Struct.Event
 import Struct.Tile
+import Struct.TileInstance
 import Struct.Toolbox
 
 import View.Map.Tile
@@ -15,7 +16,10 @@ import View.Map.Tile
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_template_icon_html : Struct.Tile.Instance -> (Html.Html Struct.Event.Type)
+get_template_icon_html : (
+      Struct.TileInstance.Type ->
+      (Html.Html Struct.Event.Type)
+   )
 get_template_icon_html template =
    (Html.div
       [

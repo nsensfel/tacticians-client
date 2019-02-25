@@ -21,10 +21,10 @@ module Struct.Toolbox exposing
 
 -- Elm -------------------------------------------------------------------------
 
--- Battlemap -------------------------------------------------------------------
+-- Map Editor ------------------------------------------------------------------
 import Struct.Location
 import Struct.Map
-import Struct.Tile
+import Struct.TileInstance
 
 import Util.List
 
@@ -33,7 +33,7 @@ import Util.List
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      template : Struct.Tile.Instance,
+      template : Struct.TileInstance.Type,
       mode : Mode,
       shape : Shape,
       selection : (List Struct.Location.Type),
@@ -67,7 +67,7 @@ apply_mode_to loc (tb, map) =
                tb,
                (Struct.Map.set_tile_to
                   loc
-                  (Struct.Tile.clone_instance loc tb.template)
+                  (Struct.TileInstance.clone loc tb.template)
                   map
                )
             )
@@ -137,14 +137,14 @@ get_filled_tiles selection map loc =
       Nothing -> []
       (Just target) ->
          let
-            target_class_id = (Struct.Tile.get_type_id target)
+            target_class_id = (Struct.TileInstance.get_class_id target)
             map_match_fun =
                (\e ->
                   (case (Struct.Map.try_getting_tile_at e map) of
                      Nothing -> False
                      (Just t) ->
                         (
-                           (Struct.Tile.get_type_id t)
+                           (Struct.TileInstance.get_class_id t)
                            == target_class_id
                         )
                   )
@@ -185,14 +185,14 @@ get_square_tiles corner map new_loc =
 default : Type
 default =
    {
-      template = (Struct.Tile.error_tile_instance 0 0),
+      template = (Struct.TileInstance.error 0 0),
       mode = Draw,
       shape = Simple,
       selection = [],
       square_corner = Nothing
    }
 
-get_template : Type -> Struct.Tile.Instance
+get_template : Type -> Struct.TileInstance.Type
 get_template tb = tb.template
 
 get_mode : Type -> Mode
@@ -220,7 +220,7 @@ get_shapes =
 get_selection : Type -> (List Struct.Location.Type)
 get_selection tb = tb.selection
 
-set_template : Struct.Tile.Instance -> Type -> Type
+set_template : Struct.TileInstance.Type -> Type -> Type
 set_template template tb =
    {tb |
       template = template,
