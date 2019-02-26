@@ -18,7 +18,7 @@ import Dict
 import Json.Decode
 import Json.Decode.Pipeline
 
--- Battlemap -------------------------------------------------------------------
+-- Map Editor ------------------------------------------------------------------
 import Constants.UI
 import Constants.Movement
 
