@@ -15,6 +15,7 @@ import Struct.Location
 import Struct.Omnimods
 import Struct.Model
 import Struct.Tile
+import Struct.TileInstance
 
 import Util.Html
 
@@ -23,7 +24,7 @@ import View.Map.Tile
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_icon : (Struct.Tile.Instance -> (Html.Html Struct.Event.Type))
+get_icon : (Struct.TileInstance.Type -> (Html.Html Struct.Event.Type))
 get_icon tile =
    (Html.div
       [
@@ -32,7 +33,10 @@ get_icon tile =
          (Html.Attributes.class
             (
                "tile-variant-"
-               ++ (String.fromInt (Struct.Tile.get_local_variant_ix tile))
+               ++
+               (String.fromInt
+                  (Struct.TileInstance.get_local_variant_ix tile)
+               )
             )
          )
       ]
@@ -41,13 +45,13 @@ get_icon tile =
 
 get_name : (
       Struct.Model.Type ->
-      Struct.Tile.Instance ->
+      Struct.TileInstance.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_name model tile =
-   case (Dict.get (Struct.Tile.get_type_id tile) model.tiles) of
+get_name model tile_inst =
+   case (Dict.get (Struct.TileInstance.get_class_id tile_inst) model.tiles) of
       Nothing -> (Util.Html.nothing)
-      (Just tile_type) ->
+      (Just tile) ->
          (Html.div
             [
                (Html.Attributes.class "info-card-name"),
@@ -55,14 +59,14 @@ get_name model tile =
                (Html.Attributes.class "tile-card-name")
             ]
             [
-               (Html.text (Struct.Tile.get_name tile_type))
+               (Html.text (Struct.Tile.get_name tile))
             ]
          )
 
-get_cost : Struct.Tile.Instance -> (Html.Html Struct.Event.Type)
-get_cost tile =
+get_cost : Struct.TileInstance.Type -> (Html.Html Struct.Event.Type)
+get_cost tile_inst =
    let
-      cost = (Struct.Tile.get_instance_cost tile)
+      cost = (Struct.TileInstance.get_cost tile_inst)
       text =
          if (cost > Constants.Movement.max_points)
          then
@@ -80,10 +84,10 @@ get_cost tile =
          ]
       )
 
-get_location : Struct.Tile.Instance -> (Html.Html Struct.Event.Type)
-get_location tile =
+get_location : Struct.TileInstance.Type -> (Html.Html Struct.Event.Type)
+get_location tile_inst =
    let
-      tile_location = (Struct.Tile.get_location tile)
+      tile_location = (Struct.TileInstance.get_location tile_inst)
    in
       (Html.div
          [

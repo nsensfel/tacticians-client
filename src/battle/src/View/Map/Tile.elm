@@ -11,14 +11,14 @@ import Constants.IO
 
 import Struct.Event
 import Struct.Location
-import Struct.Tile
+import Struct.TileInstance
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_layer_html : (
       Int ->
-      Struct.Tile.Border ->
+      Struct.TileInstance.Border ->
       (Html.Html Struct.Event.Type)
    )
 get_layer_html index border =
@@ -30,9 +30,9 @@ get_layer_html index border =
             (
                "url("
                ++ Constants.IO.tile_assets_url
-               ++ (Struct.Tile.get_border_type_id border)
+               ++ (Struct.TileInstance.get_border_class_id border)
                ++ "-f-"
-               ++ (Struct.Tile.get_border_variant_id border)
+               ++ (Struct.TileInstance.get_border_variant_id border)
                ++ ".svg)"
             )
          )
@@ -43,7 +43,10 @@ get_layer_html index border =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_content_html : Struct.Tile.Instance -> (List (Html.Html Struct.Event.Type))
+get_content_html : (
+      Struct.TileInstance.Type ->
+      (List (Html.Html Struct.Event.Type))
+   )
 get_content_html tile =
    (
       (Html.div
@@ -54,7 +57,7 @@ get_content_html tile =
                (
                   "url("
                   ++ Constants.IO.tile_assets_url
-                  ++ (Struct.Tile.get_type_id tile)
+                  ++ (Struct.TileInstance.get_class_id tile)
                   ++ "-bg.svg)"
                )
             )
@@ -71,9 +74,9 @@ get_content_html tile =
                   (
                      "url("
                      ++ Constants.IO.tile_assets_url
-                     ++ (Struct.Tile.get_type_id tile)
+                     ++ (Struct.TileInstance.get_class_id tile)
                      ++ "-v-"
-                     ++ (Struct.Tile.get_variant_id tile)
+                     ++ (Struct.TileInstance.get_variant_id tile)
                      ++ ".svg)"
                   )
                )
@@ -83,14 +86,14 @@ get_content_html tile =
          ::
          (List.indexedMap
             (get_layer_html)
-            (Struct.Tile.get_borders tile)
+            (Struct.TileInstance.get_borders tile)
          )
       )
    )
 
-get_html : Struct.Tile.Instance -> (Html.Html Struct.Event.Type)
+get_html : Struct.TileInstance.Type -> (Html.Html Struct.Event.Type)
 get_html tile =
-   let tile_loc = (Struct.Tile.get_location tile) in
+   let tile_loc = (Struct.TileInstance.get_location tile) in
       (Html.div
          [
             (Html.Attributes.class "tile-icon"),
@@ -98,7 +101,10 @@ get_html tile =
             (Html.Attributes.class
                (
                   "tile-variant-"
-                  ++ (String.fromInt (Struct.Tile.get_local_variant_ix tile))
+                  ++
+                  (String.fromInt
+                     (Struct.TileInstance.get_local_variant_ix tile)
+                  )
                )
             ),
             (Html.Attributes.class "clickable"),

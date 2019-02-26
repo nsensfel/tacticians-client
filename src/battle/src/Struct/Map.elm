@@ -9,13 +9,16 @@ module Struct.Map exposing
       get_movement_cost_function,
       solve_tiles,
       try_getting_tile_at,
-      get_omnimods_at
+      get_omnimods_at,
+      decoder
    )
 
 -- Elm -------------------------------------------------------------------------
 import Array
 
 import Dict
+
+import Json.Decode
 
 -- Battle ----------------------------------------------------------------------
 import Constants.Movement
@@ -24,15 +27,18 @@ import Struct.Character
 import Struct.Location
 import Struct.Omnimods
 import Struct.Tile
+import Struct.TileInstance
+import Struct.MapMarker
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      width: Int,
-      height: Int,
-      content: (Array.Array Struct.Tile.Instance)
+      width : Int,
+      height : Int,
+      content : (Array.Array Struct.TileInstance.Type),
+      markers : (Dict.Dict String Struct.MapMarker.Type)
    }
 
 --------------------------------------------------------------------------------
@@ -60,32 +66,36 @@ get_width bmap = bmap.width
 get_height : Type -> Int
 get_height bmap = bmap.height
 
-get_tiles : Type -> (Array.Array Struct.Tile.Instance)
-get_tiles bmap = bmap.content
+get_tiles : Type -> (Array.Array Struct.TileInstance.Type)
+get_tiles map = map.content
 
 empty : Type
 empty =
    {
       width = 0,
       height = 0,
-      content = (Array.empty)
+      content = (Array.empty),
+      markers = (Dict.empty)
    }
 
-new : Int -> Int -> (List Struct.Tile.Instance) -> Type
+new : Int -> Int -> (List Struct.TileInstance.Type) -> Type
 new width height tiles =
    {
       width = width,
       height = height,
-      content = (Array.fromList tiles)
+      content = (Array.fromList tiles),
+      markers = (Dict.empty)
    }
 
 try_getting_tile_at : (
       Struct.Location.Type ->
       Type ->
-      (Maybe Struct.Tile.Instance)
+      (Maybe Struct.TileInstance.Type)
    )
-try_getting_tile_at loc bmap =
-   (Array.get (location_to_index loc bmap) bmap.content)
+try_getting_tile_at loc map =
+   if (has_location loc map)
+   then (Array.get (location_to_index loc map) map.content)
+   else Nothing
 
 get_movement_cost_function : (
       Type ->
@@ -114,17 +124,11 @@ get_movement_cost_function bmap start_loc char_list loc =
             then
                Constants.Movement.cost_when_occupied_tile
             else
-               (Struct.Tile.get_instance_cost tile)
+               (Struct.TileInstance.get_cost tile)
 
          Nothing -> Constants.Movement.cost_when_out_of_bounds
    else
       Constants.Movement.cost_when_out_of_bounds
-
-solve_tiles : (Dict.Dict Struct.Tile.Ref Struct.Tile.Type) -> Type -> Type
-solve_tiles tiles bmap =
-   {bmap |
-      content = (Array.map (Struct.Tile.solve_tile_instance tiles) bmap.content)
-   }
 
 get_omnimods_at : (
       Struct.Location.Type ->
@@ -136,6 +140,43 @@ get_omnimods_at loc tiles_solver map =
    case (try_getting_tile_at loc map) of
       Nothing -> (Struct.Omnimods.new [] [] [] [])
       (Just tile_inst) ->
-         case (Dict.get (Struct.Tile.get_type_id tile_inst) tiles_solver) of
+         case
+            (Dict.get (Struct.TileInstance.get_class_id tile_inst) tiles_solver)
+         of
             Nothing -> (Struct.Omnimods.new [] [] [] [])
             (Just tile) -> (Struct.Tile.get_omnimods tile)
+
+solve_tiles : (Dict.Dict Struct.Tile.Ref Struct.Tile.Type) -> Type -> Type
+solve_tiles tiles map =
+   {map |
+      content = (Array.map (Struct.TileInstance.solve tiles) map.content)
+   }
+
+decoder : (Json.Decode.Decoder Type)
+decoder =
+   (Json.Decode.andThen
+      (\width ->
+         (Json.Decode.map4
+            Type
+            (Json.Decode.field "w" Json.Decode.int)
+            (Json.Decode.field "h" Json.Decode.int)
+            (Json.Decode.field
+               "t"
+               (Json.Decode.map
+                  (Array.indexedMap
+                     (Struct.TileInstance.set_location_from_index width)
+                  )
+                  (Json.Decode.array (Struct.TileInstance.decoder))
+               )
+            )
+            (Json.Decode.field
+               "m"
+               (Json.Decode.map
+                  (Dict.fromList)
+                  (Json.Decode.keyValuePairs (Struct.MapMarker.decoder))
+               )
+            )
+         )
+      )
+      (Json.Decode.field "w" Json.Decode.int)
+   )

@@ -1,18 +1,11 @@
 module Comm.SetMap exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
-import Dict
-
 import Json.Decode
 
 -- Map -------------------------------------------------------------------------
-import Constants.Movement
-
 import Struct.Map
-import Struct.MapMarker
 import Struct.ServerReply
-import Struct.Tile
-import Struct.TileInstance
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
