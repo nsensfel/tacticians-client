@@ -13,7 +13,7 @@ import Comm.Send
 import Struct.Event
 import Struct.Map
 import Struct.Model
-import Struct.Tile
+import Struct.TileInstance
 
 --------------------------------------------------------------------------------
 -- TYPES ------------------------------------------------------------------------
@@ -22,30 +22,6 @@ import Struct.Tile
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-encode_tile_border_values : Struct.Tile.Border -> (List String)
-encode_tile_border_values border =
-   [
-      (Struct.Tile.get_border_type_id border),
-      (Struct.Tile.get_border_variant_id border)
-   ]
-
-encode_tile_instance : Struct.Tile.Instance -> Json.Encode.Value
-encode_tile_instance tile_inst =
-   (Json.Encode.list
-      (Json.Encode.string)
-      (
-         [
-            (Struct.Tile.get_type_id tile_inst),
-            (Struct.Tile.get_variant_id tile_inst)
-         ]
-         ++
-         (List.concatMap
-            (encode_tile_border_values)
-            (Struct.Tile.get_borders tile_inst)
-         )
-      )
-   )
-
 encode_map : Struct.Model.Type -> (Maybe Json.Encode.Value)
 encode_map model =
    (Just
@@ -59,7 +35,7 @@ encode_map model =
             (
                "t",
                (Json.Encode.list
-                  (encode_tile_instance)
+                  (Struct.TileInstance.encode)
                   (Array.toList (Struct.Map.get_tiles model.map))
                )
             )

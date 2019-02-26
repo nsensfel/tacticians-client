@@ -11,6 +11,7 @@ import Html.Events
 import Struct.Event
 import Struct.Model
 import Struct.Tile
+import Struct.TileInstance
 
 import View.Map.Tile
 
@@ -32,7 +33,7 @@ get_icon_html (ref, tile) =
             (Struct.Event.TemplateRequested ((Struct.Tile.get_id tile), "0"))
          )
       ]
-      (View.Map.Tile.get_content_html (Struct.Tile.default_instance tile))
+      (View.Map.Tile.get_content_html (Struct.TileInstance.default tile))
    )
 
 --------------------------------------------------------------------------------

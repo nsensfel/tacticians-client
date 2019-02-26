@@ -3,18 +3,29 @@ module Struct.TileInstance exposing
       Type,
       Border,
       clone,
+      get_location,
       get_class_id,
       get_family,
+      get_cost,
       default,
+      set_borders,
+      get_borders,
       new_border,
+      get_variant_id,
+      get_border_variant_id,
+      get_border_class_id,
+      get_local_variant_ix,
       error,
       solve,
       set_location_from_index,
-      decoder
+      decoder,
+      encode
    )
 
 -- Elm -------------------------------------------------------------------------
 import Dict
+
+import Json.Encode
 
 import Json.Decode
 import Json.Decode.Pipeline
@@ -34,7 +45,7 @@ type alias Type =
       location : Struct.Location.Type,
       crossing_cost : Int,
       family : Struct.Tile.FamilyID,
-      type_id : Struct.Tile.Ref,
+      class_id : Struct.Tile.Ref,
       variant_id : Struct.Tile.VariantID,
       triggers : (List String),
       borders : (List Border)
@@ -42,7 +53,7 @@ type alias Type =
 
 type alias Border =
    {
-      type_id : Struct.Tile.Ref,
+      class_id : Struct.Tile.Ref,
       variant_id : Struct.Tile.VariantID
    }
 
@@ -74,9 +85,9 @@ clone : Struct.Location.Type -> Type -> Type
 clone loc inst = {inst | location = loc}
 
 new_border : Struct.Tile.Ref -> Struct.Tile.VariantID -> Border
-new_border type_id variant_id =
+new_border class_id variant_id =
    {
-      type_id = type_id,
+      class_id = class_id,
       variant_id = variant_id
    }
 
@@ -84,7 +95,7 @@ default : Struct.Tile.Type -> Type
 default tile =
    {
       location = {x = 0, y = 0},
-      type_id = (Struct.Tile.get_id tile),
+      class_id = (Struct.Tile.get_id tile),
       variant_id = "0",
       crossing_cost = (Struct.Tile.get_cost tile),
       family = (Struct.Tile.get_family tile),
@@ -96,7 +107,7 @@ error : Int -> Int -> Type
 error x y =
    {
       location = {x = x, y = y},
-      type_id = "0",
+      class_id = "0",
       variant_id = "0",
       family = "0",
       crossing_cost = Constants.Movement.cost_when_out_of_bounds,
@@ -105,7 +116,7 @@ error x y =
    }
 
 get_class_id : Type -> Struct.Tile.Ref
-get_class_id inst = inst.type_id
+get_class_id inst = inst.class_id
 
 get_cost : Type -> Int
 get_cost inst = inst.crossing_cost
@@ -141,7 +152,7 @@ get_local_variant_ix tile_inst =
 
 solve : (Dict.Dict Struct.Tile.Ref Struct.Tile.Type) -> Type -> Type
 solve tiles tile_inst =
-   case (Dict.get tile_inst.type_id tiles) of
+   case (Dict.get tile_inst.class_id tiles) of
       (Just tile) ->
          {tile_inst |
             crossing_cost = (Struct.Tile.get_cost tile),
@@ -165,7 +176,7 @@ list_to_borders list borders =
       (a :: (b :: c)) ->
          (list_to_borders
             c
-            ({ type_id = a, variant_id = b } :: borders)
+            ({ class_id = a, variant_id = b } :: borders)
          )
       _ -> (List.reverse borders)
 
@@ -197,8 +208,8 @@ decoder =
       (Json.Decode.field "b" (Json.Decode.list (Json.Decode.string)))
    )
 
-get_border_type_id : Border -> Struct.Tile.Ref
-get_border_type_id tile_border = tile_border.type_id
+get_border_class_id : Border -> Struct.Tile.Ref
+get_border_class_id tile_border = tile_border.class_id
 
 set_location_from_index : Int -> Int -> Type -> Type
 set_location_from_index map_width index tile_inst =
@@ -209,3 +220,38 @@ set_location_from_index map_width index tile_inst =
                y = (index // map_width)
             }
    }
+
+encode : Type -> Json.Encode.Value
+encode tile_inst =
+   (Json.Encode.object
+      [
+         (
+            "b",
+            (Json.Encode.list
+               (Json.Encode.string)
+               (
+                  tile_inst.class_id
+                  ::
+                  (
+                     tile_inst.variant_id
+                     ::
+                     (List.concatMap
+                        (\border ->
+                           [
+                              border.class_id,
+                              border.variant_id
+                           ]
+                        )
+                        tile_inst.borders
+                     )
+                  )
+               )
+            )
+         ),
+         (
+            "t",
+            (Json.Encode.list (Json.Encode.string) tile_inst.triggers)
+         )
+      ]
+   )
+

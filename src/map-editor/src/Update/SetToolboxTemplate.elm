@@ -1,6 +1,7 @@
 module Update.SetToolboxTemplate exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
+import Dict
 
 -- Map Editor ------------------------------------------------------------------
 import Struct.Event

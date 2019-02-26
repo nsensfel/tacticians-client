@@ -23,7 +23,7 @@ import Util.List
 neighborhood_tile_instances : (
       Struct.Location.Type ->
       Struct.Map.Type ->
-      (List Struct.Tile.Instance)
+      (List Struct.TileInstance.Type)
    )
 neighborhood_tile_instances loc map =
    (List.map

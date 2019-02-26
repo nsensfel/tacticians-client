@@ -11,7 +11,6 @@ import Constants.IO
 
 import Struct.Event
 import Struct.Location
-import Struct.Tile
 import Struct.TileInstance
 import Struct.Toolbox
 
@@ -20,7 +19,7 @@ import Struct.Toolbox
 --------------------------------------------------------------------------------
 get_layer_html : (
       Int ->
-      Struct.TileInstancec.Border ->
+      Struct.TileInstance.Border ->
       (Html.Html Struct.Event.Type)
    )
 get_layer_html index border =
@@ -90,7 +89,7 @@ get_content_html tile =
          ::
          (List.indexedMap
             (get_layer_html)
-            (Struct.Tile.get_borders tile)
+            (Struct.TileInstance.get_borders tile)
          )
       )
    )

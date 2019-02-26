@@ -16,8 +16,9 @@ import List
 import Json.Decode
 import Json.Decode.Pipeline
 
--- Battlemap -------------------------------------------------------------------
+-- Map Editor ------------------------------------------------------------------
 import Struct.Tile
+import Struct.TileInstance
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -38,12 +39,16 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_pattern_for : Struct.Tile.FamilyID -> (List Struct.Tile.Instance) -> Actual
+get_pattern_for : (
+      Struct.Tile.FamilyID ->
+      (List Struct.TileInstance.Type) ->
+      Actual
+   )
 get_pattern_for source_fa neighborhood =
    (List.foldl
       (\t -> \acc ->
          let
-            t_fa = (Struct.Tile.get_instance_family t)
+            t_fa = (Struct.TileInstance.get_family t)
          in
             if ((t_fa == "-1") || (t_fa == source_fa))
             then (acc ++ "1")
