@@ -5,6 +5,7 @@ module Struct.Map exposing
       new,
       get_width,
       get_height,
+      get_markers,
       get_tiles,
       set_tile_to,
       solve_tiles,
@@ -63,6 +64,9 @@ get_height map = map.height
 
 get_tiles : Type -> (Array.Array Struct.TileInstance.Type)
 get_tiles map = map.content
+
+get_markers : Type -> (Dict.Dict String Struct.MapMarker.Type)
+get_markers map = map.markers
 
 set_tile_to : Struct.Location.Type -> Struct.TileInstance.Type -> Type -> Type
 set_tile_to loc tile_inst map =

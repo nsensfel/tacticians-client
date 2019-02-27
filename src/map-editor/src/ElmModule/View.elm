@@ -32,10 +32,7 @@ view model =
       ]
       [
          (View.MainMenu.get_html),
-         (Html.Lazy.lazy
-            (View.Toolbox.get_html)
-            model.toolbox
-         ),
+         (View.Toolbox.get_html model),
          (Html.div
             [
                (Html.Attributes.class "map-container-centerer")
