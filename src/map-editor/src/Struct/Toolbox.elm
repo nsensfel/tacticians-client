@@ -44,6 +44,8 @@ type Mode =
    Draw
    | RemoveSelection
    | AddSelection
+   | Focus
+   | Sample
 
 type Shape =
    Simple
@@ -93,6 +95,16 @@ apply_mode_to loc (tb, map) =
             ),
             map
          )
+
+      Focus -> (tb, map)
+
+      Sample ->
+         -- TODO: template = tile at location.
+         (
+            tb,
+            map
+         )
+
 get_filled_tiles_internals : (
       (Struct.Location.Type -> Bool) ->
       (List Struct.Location.Type) ->
@@ -203,19 +215,25 @@ get_modes =
    [
       Draw,
       AddSelection,
-      RemoveSelection
+      RemoveSelection,
+      Focus,
+      Sample
    ]
 
 get_shape : Type -> Shape
 get_shape tb = tb.shape
 
-get_shapes : (List Shape)
-get_shapes =
-   [
-      Simple,
-      Fill,
-      Square
-   ]
+get_shapes : Mode -> (List Shape)
+get_shapes mode =
+   case mode of
+      Focus -> [Simple]
+      Sample -> [Simple]
+      _ ->
+         [
+            Simple,
+            Fill,
+            Square
+         ]
 
 get_selection : Type -> (List Struct.Location.Type)
 get_selection tb = tb.selection
@@ -231,7 +249,13 @@ set_mode : Mode -> Type -> Type
 set_mode mode tb =
    {tb |
       mode = mode,
-      square_corner = Nothing
+      square_corner = Nothing,
+      shape =
+         (
+            if (List.member tb.shape (get_shapes mode))
+            then tb.shape
+            else Simple
+         )
    }
 
 set_shape : Shape -> Type -> Type

@@ -51,6 +51,8 @@ get_mode_button current mode =
          (Html.text
             (case mode of
                Struct.Toolbox.Draw -> "Draw"
+               Struct.Toolbox.Focus -> "Focus"
+               Struct.Toolbox.Sample -> "Sample"
                Struct.Toolbox.AddSelection -> "Select+"
                Struct.Toolbox.RemoveSelection -> "Select-"
             )
@@ -97,7 +99,7 @@ get_shapes_menu_html tb =
       [(Html.Attributes.class "toolbox-shapes")]
       (List.map
          (get_shape_button (Struct.Toolbox.get_shape tb))
-         (Struct.Toolbox.get_shapes)
+         (Struct.Toolbox.get_shapes (Struct.Toolbox.get_mode tb))
       )
    )
 

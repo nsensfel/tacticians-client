@@ -2,8 +2,9 @@ module Update.SelectTile exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
 
--- Battlemap -------------------------------------------------------------------
+-- Map Editor ------------------------------------------------------------------
 import Struct.Event
+import Struct.UI
 import Struct.Location
 import Struct.Model
 import Struct.Toolbox
@@ -21,18 +22,34 @@ apply_to : (
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model loc_ref =
-   let
-      (toolbox, map) =
-         (Struct.Toolbox.apply_to
-            (Struct.Location.from_ref loc_ref)
-            model.toolbox
-            model.map
-         )
-   in
+   if ((Struct.Toolbox.get_mode model.toolbox) == Struct.Toolbox.Focus)
+   then
       (
          {model |
-            toolbox = toolbox,
-            map = map
+            ui =
+               (Struct.UI.set_previous_action
+                  (Just (Struct.UI.SelectedLocation loc_ref))
+                  (Struct.UI.set_displayed_tab
+                     Struct.UI.StatusTab
+                     model.ui
+                  )
+               )
          },
          Cmd.none
       )
+   else
+      let
+         (toolbox, map) =
+            (Struct.Toolbox.apply_to
+               (Struct.Location.from_ref loc_ref)
+               model.toolbox
+               model.map
+            )
+      in
+         (
+            {model |
+               toolbox = toolbox,
+               map = map
+            },
+            Cmd.none
+         )
