@@ -1,5 +1,5 @@
-@import '../shared/battleview/constants';
-@import '../shared/battleview/menu-mixins';
+@import '../shared/battle-view/constants';
+@import '../shared/battle-view/menu-mixins';
 
 @import 'constants';
 
@@ -40,38 +40,20 @@
    position: relative;
 }
 
-.map-tiled, .map-tiled *
-{
-   height: 32px;
-   width: 32px;
-}
-
-.map-tile-icon, .map-tile-icon *
-{
-   z-index: 0;
-   position: absolute;
-   background-size: 400%;
-}
-
-.map-tile-selected
+.tile-selected
 {
    border: 1px dashed white;
 }
 
-.map-tile-square-corner
+.tile-square-corner
 {
    animation-name: blinking;
    animation-duration: 1s;
    animation-iteration-count: infinite;
 }
 
-.map-tile, .map-tile * {background-size: 400%;}
-.map-tile * {position: absolute;}
-
 @keyframes blinking {
     0% {opacity: 1;}
     50% {opacity: 0;}
     100% {opacity: 1;}
 }
-
-@import 'map/variant.scss';

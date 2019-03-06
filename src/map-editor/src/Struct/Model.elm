@@ -1,6 +1,7 @@
 module Struct.Model exposing
    (
       Type,
+      tile_omnimods_fun,
       new,
       invalidate,
       add_tile,
@@ -18,7 +19,9 @@ import Struct.Flags
 -- Map Editor ------------------------------------------------------------------
 import Struct.Error
 import Struct.HelpRequest
+import Struct.Location
 import Struct.Map
+import Struct.Omnimods
 import Struct.Tile
 import Struct.TilePattern
 import Struct.Toolbox
@@ -54,6 +57,10 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+tile_omnimods_fun : Type -> (Struct.Location.Type -> Struct.Omnimods.Type)
+tile_omnimods_fun model =
+   (\loc -> (Struct.Map.get_omnimods_at loc model.tiles model.map))
+
 new : Struct.Flags.Type -> Type
 new flags =
    let

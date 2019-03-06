@@ -1,8 +1,9 @@
-@import 'shared/battleview';
+@import 'shared/battle-view';
+@import 'shared/battle-characters';
+@import 'shared/battle-map';
 @import 'shared/omnimod-icons';
 
 @import 'battle/controlled-panel';
-@import 'battle/info-card';
 @import 'battle/keyframes';
 @import 'battle/map';
 @import 'battle/message-board';

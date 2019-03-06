@@ -4,10 +4,10 @@ module Struct.Tile exposing
       VariantID,
       FamilyID,
       Type,
-      new,
       get_id,
       get_name,
       get_cost,
+      get_omnimods,
       get_family,
       decoder
    )
@@ -23,6 +23,7 @@ import Constants.UI
 import Constants.Movement
 
 import Struct.Location
+import Struct.Omnimods
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -37,7 +38,8 @@ type alias Type =
       name : String,
       crossing_cost : Int,
       family : FamilyID,
-      depth : Int
+      depth : Int,
+      omnimods : Struct.Omnimods.Type
    }
 
 --------------------------------------------------------------------------------
@@ -47,16 +49,6 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Ref -> String -> Int -> FamilyID -> Int -> Type
-new id name crossing_cost family depth =
-   {
-      id = id,
-      name = name,
-      crossing_cost = crossing_cost,
-      family = family,
-      depth = depth
-   }
-
 get_id : Type -> Ref
 get_id tile = tile.id
 
@@ -69,6 +61,9 @@ get_name tile = tile.name
 get_family : Type -> FamilyID
 get_family tile = tile.family
 
+get_omnimods : Type -> Struct.Omnimods.Type
+get_omnimods t = t.omnimods
+
 decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.succeed
@@ -78,4 +73,5 @@ decoder =
       |> (Json.Decode.Pipeline.required "ct" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "fa" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "de" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
    )

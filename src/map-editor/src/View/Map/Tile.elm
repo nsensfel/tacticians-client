@@ -26,7 +26,7 @@ get_layer_html index border =
    (Html.div
       [
          (Html.Attributes.class
-            ("map-tile-icon-f-" ++ (String.fromInt index))
+            ("tile-icon-f-" ++ (String.fromInt index))
          ),
          (Html.Attributes.style
             "background-image"
@@ -54,7 +54,7 @@ get_content_html tile =
    (
       (Html.div
          [
-            (Html.Attributes.class "map-tile-icon-bg"),
+            (Html.Attributes.class "tile-icon-bg"),
             (Html.Attributes.style
                "background-image"
                (
@@ -71,7 +71,7 @@ get_content_html tile =
       (
          (Html.div
             [
-               (Html.Attributes.class "map-tile-icon-dt"),
+               (Html.Attributes.class "tile-icon-dt"),
                (Html.Attributes.style
                   "background-image"
                   (
@@ -105,21 +105,21 @@ get_html tb tile =
    in
       (Html.div
          [
-            (Html.Attributes.class "map-tile-icon"),
-            (Html.Attributes.class "map-tiled"),
+            (Html.Attributes.class "tile-icon"),
+            (Html.Attributes.class "tiled"),
             (
                if (Struct.Toolbox.is_selected tile_loc tb)
-               then (Html.Attributes.class "map-tile-selected")
+               then (Html.Attributes.class "tile-selected")
                else (Html.Attributes.class "")
             ),
             (
                if (Struct.Toolbox.is_square_corner tile_loc tb)
-               then (Html.Attributes.class "map-tile-square-corner")
+               then (Html.Attributes.class "tile-square-corner")
                else (Html.Attributes.class "")
             ),
             (Html.Attributes.class
                (
-                  "map-tile-variant-"
+                  "tile-variant-"
                   ++
                   (String.fromInt
                      (Struct.TileInstance.get_local_variant_ix tile)

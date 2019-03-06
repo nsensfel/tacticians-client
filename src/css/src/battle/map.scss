@@ -1,5 +1,5 @@
-@import '../shared/battleview/constants';
-@import '../shared/battleview/menu-mixins';
+@import '../shared/battle-view/constants';
+@import '../shared/battle-view/menu-mixins';
 
 @import 'constants';
 
@@ -40,22 +40,6 @@
    position: relative;
 }
 
-.tiled, .tiled *
-{
-   height: 32px;
-   width: 32px;
-   /** Fixes odd behavior of table cell being resized. **/
-   /* min-width: 32px; */
-   /* max-width: 32px; */
-}
-
-.tile-icon, .tile-icon *
-{
-   z-index: 0;
-   position: absolute;
-   background-size: 400%;
-}
-
 .path-icon-below-markers  {z-index: 1;}
 .marker-icon              {z-index: 2;}
 .path-icon-above-markers  {z-index: 3;}
@@ -68,18 +52,7 @@
    position: absolute;
 }
 
-.tiles-layer
-{
-   /*display: table; */
-}
-
-.tiles-layer-row
-{
-  /* display: table-row; */
-}
-
 @import 'map/animation.scss';
 @import 'map/character.scss';
 @import 'map/marker.scss';
 @import 'map/path.scss';
-@import 'map/variant.scss';

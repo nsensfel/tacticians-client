@@ -9,6 +9,7 @@ module Struct.Map exposing
       get_tiles,
       set_tile_to,
       solve_tiles,
+      get_omnimods_at,
       try_getting_tile_at,
       decoder
    )
@@ -21,10 +22,11 @@ import Dict
 import Json.Decode
 
 -- Map Editor ------------------------------------------------------------------
-import Struct.Tile
 import Struct.Location
-import Struct.TileInstance
 import Struct.MapMarker
+import Struct.Omnimods
+import Struct.Tile
+import Struct.TileInstance
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -107,6 +109,22 @@ solve_tiles tiles map =
    {map |
       content = (Array.map (Struct.TileInstance.solve tiles) map.content)
    }
+
+get_omnimods_at : (
+      Struct.Location.Type ->
+      (Dict.Dict Struct.Tile.Ref Struct.Tile.Type) ->
+      Type ->
+      Struct.Omnimods.Type
+   )
+get_omnimods_at loc tiles_solver map =
+   case (try_getting_tile_at loc map) of
+      Nothing -> (Struct.Omnimods.none)
+      (Just tile_inst) ->
+         case
+            (Dict.get (Struct.TileInstance.get_class_id tile_inst) tiles_solver)
+         of
+            Nothing -> (Struct.Omnimods.none)
+            (Just tile) -> (Struct.Tile.get_omnimods tile)
 
 decoder : (Json.Decode.Decoder Type)
 decoder =

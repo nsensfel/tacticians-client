@@ -17,6 +17,14 @@
    height: inherit;
 }
 
+
+.character-portrait-battle-index
+{
+   position: relative;
+   z-index: 2;
+   top: -200%;
+}
+
 .character-portrait-body
 {
    z-index: 1;

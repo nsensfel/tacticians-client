@@ -31,7 +31,7 @@ get_tiles_html : (
 get_tiles_html tb map =
    (Html.div
       [
-         (Html.Attributes.class "map-tiles-layer"),
+         (Html.Attributes.class "tiles-layer"),
          (Html.Attributes.style
             "width"
             (

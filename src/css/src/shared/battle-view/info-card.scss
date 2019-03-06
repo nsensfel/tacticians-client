@@ -1,5 +1,5 @@
-@import "../shared/colors";
-@import "../shared/shadows";
+@import "../../shared/colors";
+@import "../../shared/shadows";
 
 .info-card
 {
@@ -99,6 +99,3 @@
    margin-left: 0.5em;
    width: calc(100% - 100px - 0.5em);
 }
-
-@import 'info-card/character';
-@import 'info-card/tile';

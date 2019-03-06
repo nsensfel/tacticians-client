@@ -1,0 +1,24 @@
+.tiled, .tiled *
+{
+   height: 32px;
+   width: 32px;
+}
+
+.tiled *
+{
+   position: absolute;
+}
+
+.tile-icon
+{
+   z-index: 0;
+   position: absolute;
+}
+
+.tile-icon *,
+.tile *
+{
+   background-size: 400%;
+}
+
+@import "tile/variant.scss"

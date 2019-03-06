@@ -13,7 +13,7 @@ import Util.Html
 
 import View.SubMenu.Tiles
 import View.SubMenu.Settings
-import View.SubMenu.Status
+import View.SubMenu.TileStatus
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -26,7 +26,7 @@ get_inner_html : (
 get_inner_html model tab =
    case tab of
       Struct.UI.StatusTab ->
-         (View.SubMenu.Status.get_html model)
+         (View.SubMenu.TileStatus.get_html model)
 
       Struct.UI.TilesTab ->
          (View.SubMenu.Tiles.get_html model)

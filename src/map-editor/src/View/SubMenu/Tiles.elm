@@ -25,10 +25,10 @@ get_icon_html : (
 get_icon_html (ref, tile) =
    (Html.div
       [
-         (Html.Attributes.class "map-tile"),
-         (Html.Attributes.class "map-tiled"),
+         (Html.Attributes.class "tile"),
+         (Html.Attributes.class "tiled"),
          (Html.Attributes.class "clickable"),
-         (Html.Attributes.class "map-tile-variant-0"),
+         (Html.Attributes.class "tile-variant-0"),
          (Html.Events.onClick
             (Struct.Event.TemplateRequested ((Struct.Tile.get_id tile), "0"))
          )

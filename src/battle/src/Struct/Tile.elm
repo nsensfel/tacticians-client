@@ -3,7 +3,6 @@ module Struct.Tile exposing
       Ref,
       VariantID,
       Type,
-      new,
       get_id,
       get_name,
       get_cost,
@@ -45,15 +44,6 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Ref -> String -> Int -> Struct.Omnimods.Type -> Type
-new id name crossing_cost omnimods =
-   {
-      id = id,
-      name = name,
-      crossing_cost = crossing_cost,
-      omnimods = omnimods
-   }
-
 get_id : Type -> Ref
 get_id tile = tile.id
 

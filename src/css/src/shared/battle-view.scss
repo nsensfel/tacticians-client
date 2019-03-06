@@ -12,6 +12,7 @@ body
    background-color: $BROWN-2;
 }
 
-@import 'battleview/button';
-@import 'battleview/main-menu';
-@import 'battleview/message-board';
+@import 'battle-view/button';
+@import 'battle-view/main-menu';
+@import 'battle-view/info-card';
+@import 'battle-view/message-board';

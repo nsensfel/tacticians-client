@@ -28,9 +28,9 @@ get_template_icon_html template =
    (Html.div
       [
          (Html.Attributes.class "toolbox-template"),
-         (Html.Attributes.class "map-tiled"),
-         (Html.Attributes.class "map-tile"),
-         (Html.Attributes.class "map-tile-variant-0")
+         (Html.Attributes.class "tiled"),
+         (Html.Attributes.class "tile"),
+         (Html.Attributes.class "tile-variant-0")
       ]
       (View.Map.Tile.get_content_html template)
    )
