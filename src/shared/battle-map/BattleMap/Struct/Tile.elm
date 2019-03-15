@@ -1,12 +1,14 @@
-module Struct.Tile exposing
+module BattleMap.Struct.Tile exposing
    (
       Ref,
       VariantID,
+      FamilyID,
       Type,
       get_id,
       get_name,
       get_cost,
       get_omnimods,
+      get_family,
       decoder
    )
 
@@ -17,24 +19,27 @@ import Json.Decode
 import Json.Decode.Pipeline
 
 -- Battle ----------------------------------------------------------------------
+import Battle.Struct.Omnimods
+
+-- Local Module ----------------------------------------------------------------
 import Constants.UI
 import Constants.Movement
-
-import Struct.Location
-import Struct.Omnimods
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type alias Ref = String
 type alias VariantID = String
+type alias FamilyID = String
 
 type alias Type =
    {
       id : Ref,
       name : String,
       crossing_cost : Int,
-      omnimods : Struct.Omnimods.Type
+      family : FamilyID,
+      depth : Int,
+      omnimods : Battle.Struct.Omnimods.Type
    }
 
 --------------------------------------------------------------------------------
@@ -53,7 +58,10 @@ get_cost tile = tile.crossing_cost
 get_name : Type -> String
 get_name tile = tile.name
 
-get_omnimods : Type -> Struct.Omnimods.Type
+get_family : Type -> FamilyID
+get_family tile = tile.family
+
+get_omnimods : Type -> Battle.Struct.Omnimods.Type
 get_omnimods t = t.omnimods
 
 decoder : (Json.Decode.Decoder Type)
@@ -63,5 +71,7 @@ decoder =
       |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "ct" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
+      |> (Json.Decode.Pipeline.required "fa" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "de" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "omni" Battle.Struct.Omnimods.decoder)
    )

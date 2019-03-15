@@ -5,12 +5,13 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Struct.Map -------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
+import Util.Html
+
+-- Local Module ----------------------------------------------------------------
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Navigator
-
-import Util.Html
 
 import View.Controlled.CharacterCard
 import View.Controlled.ManualControls

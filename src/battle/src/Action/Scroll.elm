@@ -5,11 +5,13 @@ import Browser.Dom
 
 import Task
 
--- Map -------------------------------------------------------------------
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
+
+-- Local Module ----------------------------------------------------------------
 import Constants.UI
 
 import Struct.UI
-import Struct.Location
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -27,7 +29,11 @@ tile_to_px ui t =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-to : Struct.Location.Type -> Struct.UI.Type -> (Task.Task Browser.Dom.Error ())
+to : (
+      BattleMap.Struct.Location.Type ->
+      Struct.UI.Type ->
+      (Task.Task Browser.Dom.Error ())
+   )
 to loc ui =
    (Browser.Dom.setViewportOf
       Constants.UI.viewer_html_id

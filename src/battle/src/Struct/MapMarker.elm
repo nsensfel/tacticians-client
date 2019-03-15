@@ -1,4 +1,4 @@
-module Struct.MapMarker exposing
+module BattleMap.Struct.MapMarker exposing
    (
       Type,
       new,
@@ -14,8 +14,8 @@ import Json.Decode
 import Json.Encode
 import List
 
--- Battle ----------------------------------------------------------------------
-import Struct.Location
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -23,7 +23,7 @@ import Struct.Location
 type alias Type =
    {
       permissions : (Set.Set String),
-      locations : (Set.Set Struct.Location.Ref)
+      locations : (Set.Set BattleMap.Struct.Location.Ref)
    }
 
 --------------------------------------------------------------------------------
@@ -41,10 +41,10 @@ new =
       locations = (Set.empty)
    }
 
-get_locations : Type -> (Set.Set Struct.Location.Ref)
+get_locations : Type -> (Set.Set BattleMap.Struct.Location.Ref)
 get_locations marker = marker.locations
 
-is_in_locations : Struct.Location.Ref -> Type -> Bool
+is_in_locations : BattleMap.Struct.Location.Ref -> Type -> Bool
 is_in_locations loc_ref marker =
    (Set.member loc_ref marker.locations)
 
@@ -65,8 +65,8 @@ decoder =
             (Set.fromList)
             (Json.Decode.list
                (Json.Decode.map
-                  (Struct.Location.get_ref)
-                  (Struct.Location.decoder)
+                  (BattleMap.Struct.Location.get_ref)
+                  (BattleMap.Struct.Location.decoder)
                )
             )
          )
@@ -88,7 +88,9 @@ encode marker =
             "l",
             (Json.Encode.list
                (\e ->
-                  (Struct.Location.encode (Struct.Location.from_ref e))
+                  (BattleMap.Struct.Location.encode
+                     (BattleMap.Struct.Location.from_ref e)
+                  )
                )
                (Set.toList marker.locations)
             )

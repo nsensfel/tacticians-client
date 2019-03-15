@@ -10,9 +10,11 @@ module Struct.RangeIndicator exposing
 import Dict
 import List
 
--- Map -------------------------------------------------------------------
-import Struct.Direction
-import Struct.Location
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Direction
+import BattleMap.Struct.Location
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Marker
 
 import Constants.Movement
@@ -25,7 +27,7 @@ type alias Type =
       distance: Int,
       true_range: Int,
       atk_range: Int,
-      path: (List Struct.Direction.Type),
+      path: (List BattleMap.Struct.Direction.Type),
       marker: Struct.Marker.Type
    }
 
@@ -34,13 +36,13 @@ type alias SearchParameters =
       maximum_distance: Int,
       maximum_attack_range: Int,
       minimum_defense_range: Int,
-      cost_function: (Struct.Location.Type -> Int),
-      true_range_fun: (Struct.Location.Type -> Int)
+      cost_function: (BattleMap.Struct.Location.Type -> Int),
+      true_range_fun: (BattleMap.Struct.Location.Type -> Int)
    }
 
 type alias LocatedIndicator =
    {
-      location_ref: Struct.Location.Ref,
+      location_ref: BattleMap.Struct.Location.Ref,
       indicator: Type
    }
 --------------------------------------------------------------------------------
@@ -48,7 +50,7 @@ type alias LocatedIndicator =
 --------------------------------------------------------------------------------
 get_closest : (
       Int ->
-      Struct.Location.Ref ->
+      BattleMap.Struct.Location.Ref ->
       Type ->
       LocatedIndicator ->
       LocatedIndicator
@@ -80,8 +82,8 @@ is_closer max_dist candidate current =
 
 generate_neighbor : (
       SearchParameters ->
-      Struct.Location.Type ->
-      Struct.Direction.Type ->
+      BattleMap.Struct.Location.Type ->
+      BattleMap.Struct.Direction.Type ->
       Type ->
       (Int, Type)
    )
@@ -145,9 +147,9 @@ candidate_is_acceptable search_params cost candidate =
 
 candidate_is_an_improvement : (
       SearchParameters ->
-      Struct.Location.Ref ->
+      BattleMap.Struct.Location.Ref ->
       Type ->
-      (Dict.Dict Struct.Location.Ref Type) ->
+      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
       Bool
    )
 candidate_is_an_improvement search_params loc_ref candidate alternatives =
@@ -160,17 +162,17 @@ candidate_is_an_improvement search_params loc_ref candidate alternatives =
 
 handle_neighbors : (
       LocatedIndicator ->
-      (Dict.Dict Struct.Location.Ref Type) ->
+      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
       SearchParameters ->
-      Struct.Direction.Type ->
-      (Dict.Dict Struct.Location.Ref Type) ->
-      (Dict.Dict Struct.Location.Ref Type)
+      BattleMap.Struct.Direction.Type ->
+      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
+      (Dict.Dict BattleMap.Struct.Location.Ref Type)
    )
 handle_neighbors src results search_params dir remaining =
    let
-      src_loc = (Struct.Location.from_ref src.location_ref)
-      neighbor_loc = (Struct.Location.neighbor dir src_loc)
-      neighbor_loc_ref = (Struct.Location.get_ref neighbor_loc)
+      src_loc = (BattleMap.Struct.Location.from_ref src.location_ref)
+      neighbor_loc = (BattleMap.Struct.Location.neighbor dir src_loc)
+      neighbor_loc_ref = (BattleMap.Struct.Location.get_ref neighbor_loc)
    in
       case (Dict.get neighbor_loc_ref results) of
          (Just _) ->
@@ -209,7 +211,7 @@ handle_neighbors src results search_params dir remaining =
 
 find_closest_in : (
       SearchParameters ->
-      (Dict.Dict Struct.Location.Ref Type) ->
+      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
       LocatedIndicator
    )
 find_closest_in search_params remaining =
@@ -247,8 +249,8 @@ resolve_marker_type search_params indicator =
 
 insert_in_dictionary : (
       LocatedIndicator ->
-      (Dict.Dict Struct.Location.Ref Type) ->
-      (Dict.Dict Struct.Location.Ref Type)
+      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
+      (Dict.Dict BattleMap.Struct.Location.Ref Type)
    )
 insert_in_dictionary located_indicator dict =
    (Dict.insert
@@ -258,10 +260,10 @@ insert_in_dictionary located_indicator dict =
    )
 
 search : (
-      (Dict.Dict Struct.Location.Ref Type) ->
-      (Dict.Dict Struct.Location.Ref Type) ->
+      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
+      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
       SearchParameters ->
-      (Dict.Dict Struct.Location.Ref Type)
+      (Dict.Dict BattleMap.Struct.Location.Ref Type)
    )
 search result remaining search_params =
    if (Dict.isEmpty remaining)
@@ -289,10 +291,10 @@ search result remaining search_params =
                )
                (Dict.remove finalized_clos_loc_ind.location_ref remaining)
                [
-                  Struct.Direction.Left,
-                  Struct.Direction.Right,
-                  Struct.Direction.Up,
-                  Struct.Direction.Down
+                  BattleMap.Struct.Direction.Left,
+                  BattleMap.Struct.Direction.Right,
+                  BattleMap.Struct.Direction.Up,
+                  BattleMap.Struct.Direction.Down
                ]
             )
             search_params
@@ -302,18 +304,18 @@ search result remaining search_params =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 generate : (
-      Struct.Location.Type ->
+      BattleMap.Struct.Location.Type ->
       Int ->
       Int ->
       Int ->
-      (Struct.Location.Type -> Int) ->
-      (Dict.Dict Struct.Location.Ref Type)
+      (BattleMap.Struct.Location.Type -> Int) ->
+      (Dict.Dict BattleMap.Struct.Location.Ref Type)
    )
 generate location max_dist def_range atk_range cost_fun =
    (search
       Dict.empty
       (Dict.insert
-         (Struct.Location.get_ref location)
+         (BattleMap.Struct.Location.get_ref location)
          {
             distance = 0,
             path = [],
@@ -333,12 +335,12 @@ generate location max_dist def_range atk_range cost_fun =
          maximum_attack_range = atk_range,
          minimum_defense_range = def_range,
          cost_function = (cost_fun),
-         true_range_fun = (Struct.Location.dist location)
+         true_range_fun = (BattleMap.Struct.Location.dist location)
       }
    )
 
 get_marker : Type -> Struct.Marker.Type
 get_marker indicator = indicator.marker
 
-get_path : Type -> (List Struct.Direction.Type)
+get_path : Type -> (List BattleMap.Struct.Direction.Type)
 get_path indicator = indicator.path

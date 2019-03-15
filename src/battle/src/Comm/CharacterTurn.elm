@@ -3,14 +3,13 @@ module Comm.CharacterTurn exposing (try)
 -- Elm -------------------------------------------------------------------------
 import Json.Encode
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Constants.IO
 
 import Comm.Send
 
 import Struct.Character
 import Struct.CharacterTurn
-import Struct.Direction
 import Struct.Event
 import Struct.Model
 

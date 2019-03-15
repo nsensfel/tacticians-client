@@ -9,7 +9,7 @@ import Time
 
 import Task
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Action.Scroll
 
 import Struct.Character

@@ -26,13 +26,16 @@ import Json.Decode
 import Util.Array
 
 -- Battle ----------------------------------------------------------------------
+import Battle.Struct.Omnimods
+
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
+import BattleMap.Struct.Direction
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Attack
 import Struct.Character
-import Struct.Direction
-import Struct.Location
-import Struct.Omnimods
 import Struct.Player
-import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -40,8 +43,8 @@ import Struct.WeaponSet
 type alias Movement =
    {
       character_index : Int,
-      path : (List Struct.Direction.Type),
-      destination : Struct.Location.Type
+      path : (List BattleMap.Struct.Direction.Type),
+      destination : BattleMap.Struct.Location.Type
    }
 
 type alias Attack =
@@ -85,7 +88,7 @@ type Type =
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_movement_step : (
-      (Struct.Location.Type -> Struct.Omnimods.Type) ->
+      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
       Movement ->
       (Array.Array Struct.Character.Type) ->
       (Array.Array Struct.Player.Type) ->
@@ -102,7 +105,7 @@ apply_movement_step tile_omnimods movement characters players =
             case (List.head movement.path) of
                (Just dir) ->
                   (Struct.Character.set_location
-                     (Struct.Location.neighbor
+                     (BattleMap.Struct.Location.neighbor
                         dir
                         (Struct.Character.get_location char)
                      )
@@ -118,7 +121,7 @@ apply_movement_step tile_omnimods movement characters players =
    )
 
 apply_inverse_movement_step : (
-      (Struct.Location.Type -> Struct.Omnimods.Type) ->
+      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
       Movement ->
       (Array.Array Struct.Character.Type) ->
       (Array.Array Struct.Player.Type) ->
@@ -136,9 +139,9 @@ apply_inverse_movement_step tile_omnimods movement characters players =
                (tile_omnimods)
                (Struct.Character.set_location
                   (List.foldr
-                     (Struct.Location.neighbor)
+                     (BattleMap.Struct.Location.neighbor)
                      (movement.destination)
-                     (List.map (Struct.Direction.opposite_of) movement.path)
+                     (List.map (BattleMap.Struct.Direction.opposite_of) movement.path)
                   )
                   char
                )
@@ -150,7 +153,7 @@ apply_inverse_movement_step tile_omnimods movement characters players =
    )
 
 apply_switched_weapon : (
-      (Struct.Location.Type -> Struct.Omnimods.Type) ->
+      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
       WeaponSwitch ->
       (Array.Array Struct.Character.Type) ->
       (Array.Array Struct.Player.Type) ->
@@ -166,12 +169,7 @@ apply_switched_weapon tile_omnimods weapon_switch characters players =
          (\char ->
             (Struct.Character.refresh_omnimods
                (tile_omnimods)
-               (Struct.Character.set_weapons
-                  (Struct.WeaponSet.switch_weapons
-                     (Struct.Character.get_weapons char)
-                  )
-                  char
-               )
+               (Struct.Character.toggle_is_using_primary char)
             )
          )
          characters
@@ -290,8 +288,8 @@ movement_decoder =
    (Json.Decode.map3
       Movement
       (Json.Decode.field "ix" Json.Decode.int)
-      (Json.Decode.field "p" (Json.Decode.list (Struct.Direction.decoder)))
-      (Json.Decode.field "nlc" (Struct.Location.decoder))
+      (Json.Decode.field "p" (Json.Decode.list (BattleMap.Struct.Direction.decoder)))
+      (Json.Decode.field "nlc" (BattleMap.Struct.Location.decoder))
    )
 
 attack_decoder : (Json.Decode.Decoder Attack)
@@ -441,7 +439,7 @@ apply_player_turn_started player_defeat characters players =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_step : (
-      (Struct.Location.Type -> Struct.Omnimods.Type) ->
+      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
       Type ->
       (Array.Array Struct.Character.Type) ->
       (Array.Array Struct.Player.Type) ->
@@ -476,7 +474,7 @@ apply_step tile_omnimods turn_result characters players =
          (apply_player_turn_started pturns characters players)
 
 apply_inverse_step : (
-      (Struct.Location.Type -> Struct.Omnimods.Type) ->
+      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
       Type ->
       (Array.Array Struct.Character.Type) ->
       (Array.Array Struct.Player.Type) ->
@@ -528,11 +526,11 @@ maybe_remove_step turn_result =
       (PlayerLost pdefeat) -> Nothing
       (PlayerTurnStarted pturns) -> Nothing
 
-get_next_movement_dir : Movement -> Struct.Direction.Type
+get_next_movement_dir : Movement -> BattleMap.Struct.Direction.Type
 get_next_movement_dir movement =
    case (List.head movement.path) of
       (Just dir) -> dir
-      Nothing -> Struct.Direction.None
+      Nothing -> BattleMap.Struct.Direction.None
 
 get_attack_defender_index : Attack -> Int
 get_attack_defender_index attack = attack.defender_index

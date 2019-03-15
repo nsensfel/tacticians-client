@@ -9,17 +9,20 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Map  ------------------------------------------------------------------
-import Constants.UI
-
+-- Shared ----------------------------------------------------------------------
 import Util.Html
 
-import Struct.Armor
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Portrait
+
+-- Local Module ----------------------------------------------------------------
+import Constants.UI
+
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
-import Struct.Portrait
 import Struct.UI
 
 --------------------------------------------------------------------------------
@@ -116,7 +119,7 @@ get_icon_head_html char =
             (
                "asset-character-icon-"
                ++
-               (Struct.Portrait.get_icon_id
+               (BattleCharacters.Struct.Portrait.get_icon_id
                   (Struct.Character.get_portrait char)
                )
             )
@@ -163,7 +166,10 @@ get_portrait_body_html char =
          (Html.Attributes.class
             (
                "asset-character-portrait-"
-               ++ (Struct.Portrait.get_id (Struct.Character.get_portrait char))
+               ++
+               (BattleCharacters.Struct.Portrait.get_id
+                  (Struct.Character.get_portrait char)
+               )
             )
          )
       ]
@@ -180,14 +186,16 @@ get_portrait_armor_html char =
             (
                "asset-armor-"
                ++
-               (Struct.Armor.get_image_id (Struct.Character.get_armor char))
+               (BattleCharacters.Struct.Armor.get_image_id
+                  (Struct.Character.get_armor char)
+               )
             )
          ),
          (Html.Attributes.class
             (
                "asset-armor-variation-"
                ++
-               (Struct.Portrait.get_body_id
+               (BattleCharacters.Struct.Portrait.get_body_id
                   (Struct.Character.get_portrait char)
                )
             )

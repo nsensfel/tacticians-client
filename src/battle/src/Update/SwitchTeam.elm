@@ -1,7 +1,6 @@
 module Update.SwitchTeam exposing (apply_to)
--- Elm -------------------------------------------------------------------------
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Model
 import Struct.Event
 
@@ -12,10 +11,7 @@ import Struct.Event
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : (
-      Struct.Model.Type ->
-      (Struct.Model.Type, (Cmd Struct.Event.Type))
-   )
+apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 apply_to model =
    if (model.player_ix == 0)
    then

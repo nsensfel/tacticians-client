@@ -20,23 +20,27 @@ import Struct.Flags
 
 import Util.Http
 
--- Battle ----------------------------------------------------------------------
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Weapon
+
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Map
+import BattleMap.Struct.Tile
+
+-- Local Module ----------------------------------------------------------------
 import Constants.IO
 
-import Struct.Armor
 import Struct.Player
 import Struct.Character
 import Struct.Error
 import Struct.Event
-import Struct.Map
 import Struct.Model
-import Struct.Portrait
 import Struct.ServerReply
-import Struct.Tile
 import Struct.TurnResult
 import Struct.TurnResultAnimator
 import Struct.UI
-import Struct.Weapon
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -45,27 +49,35 @@ import Struct.Weapon
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-weapon_getter : Struct.Model.Type -> Struct.Weapon.Ref -> Struct.Weapon.Type
+weapon_getter : (
+      Struct.Model.Type ->
+      BattleCharacters.Struct.Weapon.Ref ->
+      BattleCharacters.Struct.Weapon.Type
+   )
 weapon_getter model ref =
    case (Dict.get ref model.weapons) of
       (Just w) -> w
-      Nothing -> Struct.Weapon.none
+      Nothing -> BattleCharacters.Struct.Weapon.none
 
-armor_getter : Struct.Model.Type -> Struct.Armor.Ref -> Struct.Armor.Type
+armor_getter : (
+      Struct.Model.Type ->
+      BattleCharacters.Struct.Armor.Ref ->
+      BattleCharacters.Struct.Armor.Type
+   )
 armor_getter model ref =
    case (Dict.get ref model.armors) of
       (Just w) -> w
-      Nothing -> Struct.Armor.none
+      Nothing -> BattleCharacters.Struct.Armor.none
 
 portrait_getter : (
       Struct.Model.Type ->
-      Struct.Portrait.Ref ->
-      Struct.Portrait.Type
+      BattleCharacters.Struct.Portrait.Ref ->
+      BattleCharacters.Struct.Portrait.Type
    )
 portrait_getter model ref =
    case (Dict.get ref model.portraits) of
       (Just w) -> w
-      Nothing -> Struct.Portrait.none
+      Nothing -> BattleCharacters.Struct.Portrait.none
 
 -----------
 
@@ -95,7 +107,7 @@ disconnected current_state =
       )
 
 add_armor : (
-      Struct.Armor.Type ->
+      BattleCharacters.Struct.Armor.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
@@ -104,7 +116,7 @@ add_armor ar current_state =
       ((Struct.Model.add_armor ar model), cmds)
 
 add_portrait : (
-      Struct.Portrait.Type ->
+      BattleCharacters.Struct.Portrait.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
@@ -113,7 +125,7 @@ add_portrait pt current_state =
       ((Struct.Model.add_portrait pt model), cmds)
 
 add_tile : (
-      Struct.Tile.Type ->
+      BattleMap.Struct.Tile.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
@@ -122,7 +134,7 @@ add_tile tl current_state =
       ((Struct.Model.add_tile tl model), cmds)
 
 add_weapon : (
-      Struct.Weapon.Type ->
+      BattleCharacters.Struct.Weapon.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
@@ -168,7 +180,7 @@ add_character char_and_refs current_state =
       )
 
 set_map : (
-      Struct.Map.Type ->
+      BattleMap.Struct.Map.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
@@ -176,7 +188,7 @@ set_map map current_state =
    let (model, cmds) = current_state in
       (
          {model |
-            map = (Struct.Map.solve_tiles model.tiles map)
+            map = (BattleMap.Struct.Map.solve_tiles model.tiles map)
          },
          cmds
       )

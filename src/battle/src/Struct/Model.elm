@@ -29,21 +29,27 @@ import Dict
 import Struct.Flags
 
 -- Battle ----------------------------------------------------------------------
-import Struct.Armor
+import Battle.Struct.Omnimods
+
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Weapon
+
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
+import BattleMap.Struct.Map
+import BattleMap.Struct.Tile
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error
 import Struct.HelpRequest
-import Struct.Location
-import Struct.Map
-import Struct.Omnimods
-import Struct.Portrait
-import Struct.Tile
 import Struct.TurnResult
 import Struct.TurnResultAnimator
 import Struct.Player
 import Struct.UI
-import Struct.Weapon
 
 import Util.Array
 
@@ -52,24 +58,36 @@ import Util.Array
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      flags: Struct.Flags.Type,
-      help_request: Struct.HelpRequest.Type,
-      animator: (Maybe Struct.TurnResultAnimator.Type),
-      map: Struct.Map.Type,
-      characters: (Array.Array Struct.Character.Type),
-      players: (Array.Array Struct.Player.Type),
-      weapons: (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type),
-      armors: (Dict.Dict Struct.Armor.Ref Struct.Armor.Type),
-      portraits: (Dict.Dict Struct.Portrait.Ref Struct.Portrait.Type),
-      tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
-      error: (Maybe Struct.Error.Type),
-      player_id: String,
-      battle_id: String,
-      session_token: String,
-      player_ix: Int,
-      ui: Struct.UI.Type,
-      char_turn: Struct.CharacterTurn.Type,
-      timeline: (Array.Array Struct.TurnResult.Type)
+      flags : Struct.Flags.Type,
+      help_request : Struct.HelpRequest.Type,
+      animator : (Maybe Struct.TurnResultAnimator.Type),
+      map : BattleMap.Struct.Map.Type,
+      characters : (Array.Array Struct.Character.Type),
+      players : (Array.Array Struct.Player.Type),
+      weapons :
+         (Dict.Dict
+            BattleCharacters.Struct.Weapon.Ref
+            BattleCharacters.Struct.Weapon.Type
+         ),
+      armors :
+         (Dict.Dict
+            BattleCharacters.Struct.Armor.Ref
+            BattleCharacters.Struct.Armor.Type
+         ),
+      portraits :
+         (Dict.Dict
+            BattleCharacters.Struct.Portrait.Ref
+            BattleCharacters.Struct.Portrait.Type
+         ),
+      tiles : (Dict.Dict BattleMap.Struct.Tile.Ref BattleMap.Struct.Tile.Type),
+      error : (Maybe Struct.Error.Type),
+      player_id : String,
+      battle_id : String,
+      session_token : String,
+      player_ix : Int,
+      ui : Struct.UI.Type,
+      char_turn : Struct.CharacterTurn.Type,
+      timeline : (Array.Array Struct.TurnResult.Type)
    }
 
 --------------------------------------------------------------------------------
@@ -79,9 +97,12 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-tile_omnimods_fun : Type -> (Struct.Location.Type -> Struct.Omnimods.Type)
+tile_omnimods_fun : (
+      Type ->
+      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type)
+   )
 tile_omnimods_fun model =
-   (\loc -> (Struct.Map.get_omnimods_at loc model.tiles model.map))
+   (\loc -> (BattleMap.Struct.Map.get_omnimods_at loc model.tiles model.map))
 
 new : Struct.Flags.Type -> Type
 new flags =
@@ -92,7 +113,7 @@ new flags =
             flags = flags,
             help_request = Struct.HelpRequest.None,
             animator = Nothing,
-            map = (Struct.Map.empty),
+            map = (BattleMap.Struct.Map.empty),
             characters = (Array.empty),
             weapons = (Dict.empty),
             armors = (Dict.empty),
@@ -136,34 +157,34 @@ add_character char model =
          )
    }
 
-add_weapon : Struct.Weapon.Type -> Type -> Type
+add_weapon : BattleCharacters.Struct.Weapon.Type -> Type -> Type
 add_weapon wp model =
    {model |
       weapons =
          (Dict.insert
-            (Struct.Weapon.get_id wp)
+            (BattleCharacters.Struct.Weapon.get_id wp)
             wp
             model.weapons
          )
    }
 
-add_armor : Struct.Armor.Type -> Type -> Type
+add_armor : BattleCharacters.Struct.Armor.Type -> Type -> Type
 add_armor ar model =
    {model |
       armors =
          (Dict.insert
-            (Struct.Armor.get_id ar)
+            (BattleCharacters.Struct.Armor.get_id ar)
             ar
             model.armors
          )
    }
 
-add_portrait : Struct.Portrait.Type -> Type -> Type
+add_portrait : BattleCharacters.Struct.Portrait.Type -> Type -> Type
 add_portrait pt model =
    {model |
       portraits =
          (Dict.insert
-            (Struct.Portrait.get_id pt)
+            (BattleCharacters.Struct.Portrait.get_id pt)
             pt
             model.portraits
          )
@@ -179,12 +200,12 @@ add_player pl model =
          )
    }
 
-add_tile : Struct.Tile.Type -> Type -> Type
+add_tile : BattleMap.Struct.Tile.Type -> Type -> Type
 add_tile tl model =
    {model |
       tiles =
          (Dict.insert
-            (Struct.Tile.get_id tl)
+            (BattleMap.Struct.Tile.get_id tl)
             tl
             model.tiles
          )
@@ -207,7 +228,7 @@ full_debug_reset model =
    {model |
       help_request = Struct.HelpRequest.None,
       animator = Nothing,
-      map = (Struct.Map.empty),
+      map = (BattleMap.Struct.Map.empty),
       characters = (Array.empty),
       weapons = (Dict.empty),
       armors = (Dict.empty),

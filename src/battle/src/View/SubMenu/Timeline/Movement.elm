@@ -5,9 +5,8 @@ import Array
 
 import Html
 import Html.Attributes
---import Html.Events
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.TurnResult
 import Struct.Character

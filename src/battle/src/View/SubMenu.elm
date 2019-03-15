@@ -7,13 +7,14 @@ import Html
 import Html.Attributes
 import Html.Lazy
 
--- Map -------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
+import Util.Html
+
+-- Local Module ----------------------------------------------------------------
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.UI
-
-import Util.Html
 
 import View.Controlled.CharacterCard
 

@@ -7,9 +7,11 @@ import Html
 import Html.Attributes
 import Html.Lazy
 
--- Struct.Map -------------------------------------------------------------------
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
-import Struct.Location
 import Struct.Model
 import Struct.UI
 
@@ -34,7 +36,7 @@ get_html model =
             (Just (Struct.UI.SelectedLocation loc)) ->
                (View.SubMenu.Status.TileInfo.get_html
                   model
-                  (Struct.Location.from_ref loc)
+                  (BattleMap.Struct.Location.from_ref loc)
                )
 
             (Just (Struct.UI.SelectedCharacter target_char)) ->

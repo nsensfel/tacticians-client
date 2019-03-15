@@ -25,8 +25,10 @@ module Struct.UI exposing
       set_previous_action
    )
 
--- Map -------------------------------------------------------------------
-import Struct.Location
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Navigator
 
 --------------------------------------------------------------------------------
@@ -40,7 +42,7 @@ type Tab =
 
 type Action =
    UsedManualControls
-   | SelectedLocation Struct.Location.Ref
+   | SelectedLocation BattleMap.Struct.Location.Ref
    | SelectedCharacter Int
    | AttackedCharacter Int
 

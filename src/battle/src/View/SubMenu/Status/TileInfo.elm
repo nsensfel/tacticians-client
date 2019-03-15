@@ -6,25 +6,30 @@ import Dict
 import Html
 import Html.Attributes
 
--- Battle ----------------------------------------------------------------------
-import Constants.Movement
-
-import Struct.Map
-import Struct.Event
-import Struct.Location
-import Struct.Omnimods
-import Struct.Model
-import Struct.Tile
-import Struct.TileInstance
-
+-- Shared ----------------------------------------------------------------------
 import Util.Html
 
-import View.Map.Tile
+-- Battle ----------------------------------------------------------------------
+import Battle.Struct.Omnimods
+
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
+import BattleMap.Struct.Map
+import BattleMap.Struct.Tile
+import BattleMap.Struct.TileInstance
+
+import BattleMap.View.Map.Tile
+
+-- Local Module ----------------------------------------------------------------
+import Constants.Movement
+
+import Struct.Event
+import Struct.Model
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_icon : (Struct.TileInstance.Type -> (Html.Html Struct.Event.Type))
+get_icon : (BattleMap.Struct.TileInstance.Type -> (Html.Html Struct.Event.Type))
 get_icon tile =
    (Html.div
       [
@@ -35,21 +40,26 @@ get_icon tile =
                "tile-variant-"
                ++
                (String.fromInt
-                  (Struct.TileInstance.get_local_variant_ix tile)
+                  (BattleMap.Struct.TileInstance.get_local_variant_ix tile)
                )
             )
          )
       ]
-      (View.Map.Tile.get_content_html tile)
+      (BattleMap.View.Map.Tile.get_content_html tile)
    )
 
 get_name : (
       Struct.Model.Type ->
-      Struct.TileInstance.Type ->
+      BattleMap.Struct.TileInstance.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_name model tile_inst =
-   case (Dict.get (Struct.TileInstance.get_class_id tile_inst) model.tiles) of
+   case
+      (Dict.get
+         (BattleMap.Struct.TileInstance.get_class_id tile_inst)
+         model.tiles
+      )
+   of
       Nothing -> (Util.Html.nothing)
       (Just tile) ->
          (Html.div
@@ -59,14 +69,14 @@ get_name model tile_inst =
                (Html.Attributes.class "tile-card-name")
             ]
             [
-               (Html.text (Struct.Tile.get_name tile))
+               (Html.text (BattleMap.Struct.Tile.get_name tile))
             ]
          )
 
-get_cost : Struct.TileInstance.Type -> (Html.Html Struct.Event.Type)
+get_cost : BattleMap.Struct.TileInstance.Type -> (Html.Html Struct.Event.Type)
 get_cost tile_inst =
    let
-      cost = (Struct.TileInstance.get_cost tile_inst)
+      cost = (BattleMap.Struct.TileInstance.get_cost tile_inst)
       text =
          if (cost > Constants.Movement.max_points)
          then
@@ -84,10 +94,10 @@ get_cost tile_inst =
          ]
       )
 
-get_location : Struct.TileInstance.Type -> (Html.Html Struct.Event.Type)
+get_location : BattleMap.Struct.TileInstance.Type -> (Html.Html Struct.Event.Type)
 get_location tile_inst =
    let
-      tile_location = (Struct.TileInstance.get_location tile_inst)
+      tile_location = (BattleMap.Struct.TileInstance.get_location tile_inst)
    in
       (Html.div
          [
@@ -132,7 +142,7 @@ get_omnimods_listing mod_list =
       (List.map (get_mod_html) mod_list)
    )
 
-get_omnimods : Struct.Omnimods.Type -> (Html.Html Struct.Event.Type)
+get_omnimods : Battle.Struct.Omnimods.Type -> (Html.Html Struct.Event.Type)
 get_omnimods omnimods =
    (Html.div
       [
@@ -140,13 +150,21 @@ get_omnimods omnimods =
       ]
       [
          (Html.text "Attribute Modifiers"),
-         (get_omnimods_listing (Struct.Omnimods.get_attributes_mods omnimods)),
+         (get_omnimods_listing
+            (Battle.Struct.Omnimods.get_attributes_mods omnimods)
+         ),
          (Html.text "Statistics Modifiers"),
-         (get_omnimods_listing (Struct.Omnimods.get_statistics_mods omnimods)),
+         (get_omnimods_listing
+            (Battle.Struct.Omnimods.get_statistics_mods omnimods)
+         ),
          (Html.text "Attack Modifiers"),
-         (get_omnimods_listing (Struct.Omnimods.get_attack_mods omnimods)),
+         (get_omnimods_listing
+            (Battle.Struct.Omnimods.get_attack_mods omnimods)
+         ),
          (Html.text "Defense Modifiers"),
-         (get_omnimods_listing (Struct.Omnimods.get_defense_mods omnimods))
+         (get_omnimods_listing
+            (Battle.Struct.Omnimods.get_defense_mods omnimods)
+         )
       ]
    )
 --------------------------------------------------------------------------------
@@ -154,11 +172,11 @@ get_omnimods omnimods =
 --------------------------------------------------------------------------------
 get_html : (
       Struct.Model.Type ->
-      Struct.Location.Type ->
+      BattleMap.Struct.Location.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_html model loc =
-   case (Struct.Map.try_getting_tile_at loc model.map) of
+   case (BattleMap.Struct.Map.try_getting_tile_at loc model.map) of
       (Just tile) ->
          (Html.div
             [

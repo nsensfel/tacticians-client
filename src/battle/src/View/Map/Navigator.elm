@@ -7,12 +7,14 @@ import Html.Events
 
 import List
 
--- Map -------------------------------------------------------------------
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Direction
+import BattleMap.Struct.Location
+
+-- Local Module ----------------------------------------------------------------
 import Constants.UI
 
-import Struct.Direction
 import Struct.Event
-import Struct.Location
 import Struct.Marker
 import Struct.Navigator
 
@@ -21,11 +23,11 @@ import Struct.Navigator
 --------------------------------------------------------------------------------
 marker_get_html : (
       Bool ->
-      (Struct.Location.Ref, Struct.Marker.Type) ->
+      (BattleMap.Struct.Location.Ref, Struct.Marker.Type) ->
       (Html.Html Struct.Event.Type)
    )
 marker_get_html is_interactive (loc_ref, marker) =
-   let loc = (Struct.Location.from_ref loc_ref) in
+   let loc = (BattleMap.Struct.Location.from_ref loc_ref) in
    (Html.div
       (
          [
@@ -94,21 +96,21 @@ marker_get_html is_interactive (loc_ref, marker) =
 
 path_node_get_html : (
       Bool ->
-      Struct.Direction.Type ->
+      BattleMap.Struct.Direction.Type ->
       (
-         Struct.Location.Type,
-         Struct.Direction.Type,
+         BattleMap.Struct.Location.Type,
+         BattleMap.Struct.Direction.Type,
          (List (Html.Html Struct.Event.Type))
       ) ->
       (
-         Struct.Location.Type,
-         Struct.Direction.Type,
+         BattleMap.Struct.Location.Type,
+         BattleMap.Struct.Direction.Type,
          (List (Html.Html Struct.Event.Type))
       )
    )
 path_node_get_html is_below_markers next_dir (curr_loc, curr_dir, curr_nodes) =
    (
-      (Struct.Location.neighbor next_dir curr_loc),
+      (BattleMap.Struct.Location.neighbor next_dir curr_loc),
       next_dir,
       (
          (Html.div
@@ -128,14 +130,14 @@ path_node_get_html is_below_markers next_dir (curr_loc, curr_dir, curr_nodes) =
                   (
                      "path-icon-"
                      ++
-                     (Struct.Direction.to_string curr_dir)
+                     (BattleMap.Struct.Direction.to_string curr_dir)
                      ++
-                     (Struct.Direction.to_string next_dir)
+                     (BattleMap.Struct.Direction.to_string next_dir)
                   )
                ),
                (Html.Events.onClick
                   (Struct.Event.CharacterOrTileSelected
-                     (Struct.Location.get_ref curr_loc)
+                     (BattleMap.Struct.Location.get_ref curr_loc)
                   )
                ),
                (Html.Attributes.style
@@ -168,8 +170,8 @@ path_node_get_html is_below_markers next_dir (curr_loc, curr_dir, curr_nodes) =
    )
 
 mark_the_spot : (
-      Struct.Location.Type ->
-      Struct.Direction.Type ->
+      BattleMap.Struct.Location.Type ->
+      BattleMap.Struct.Direction.Type ->
       (Html.Html Struct.Event.Type)
    )
 mark_the_spot loc origin_dir =
@@ -182,11 +184,13 @@ mark_the_spot loc origin_dir =
             (
                "path-icon-mark"
                ++
-               (Struct.Direction.to_string origin_dir)
+               (BattleMap.Struct.Direction.to_string origin_dir)
             )
          ),
          (Html.Events.onClick
-            (Struct.Event.CharacterOrTileSelected (Struct.Location.get_ref loc))
+            (Struct.Event.CharacterOrTileSelected
+               (BattleMap.Struct.Location.get_ref loc)
+            )
          ),
          (Html.Attributes.style
             "top"
@@ -220,7 +224,11 @@ get_html nav_summary is_interactive =
                (final_loc, final_dir, path_node_htmls) =
                   (List.foldr
                      (path_node_get_html nav_summary.locked_path)
-                     (nav_summary.starting_location, Struct.Direction.None, [])
+                     (
+                        nav_summary.starting_location,
+                        BattleMap.Struct.Direction.None,
+                        []
+                     )
                      nav_summary.path
                   )
             in

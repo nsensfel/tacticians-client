@@ -1,4 +1,4 @@
-module Struct.Armor exposing
+module BattleCharacters.Struct.Armor exposing
    (
       Type,
       Ref,
@@ -8,6 +8,7 @@ module Struct.Armor exposing
       get_image_id,
       get_omnimods,
       decoder,
+      default,
       none
    )
 
@@ -16,7 +17,7 @@ import Json.Decode
 import Json.Decode.Pipeline
 
 -- Battle ----------------------------------------------------------------------
-import Struct.Omnimods
+import Battle.Struct.Omnimods
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -25,7 +26,7 @@ type alias Type =
    {
       id : String,
       name : String,
-      omnimods : Struct.Omnimods.Type
+      omnimods : Battle.Struct.Omnimods.Type
    }
 
 type alias Ref = String
@@ -37,7 +38,7 @@ type alias Ref = String
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : String -> String -> Struct.Omnimods.Type -> Type
+new : String -> String -> Battle.Struct.Omnimods.Type -> Type
 new id name omnimods =
    {
       id = id,
@@ -54,7 +55,7 @@ get_name ar = ar.name
 get_image_id : Type -> String
 get_image_id ar = ar.id
 
-get_omnimods : Type -> Struct.Omnimods.Type
+get_omnimods : Type -> Battle.Struct.Omnimods.Type
 get_omnimods ar = ar.omnimods
 
 decoder : (Json.Decode.Decoder Type)
@@ -63,8 +64,11 @@ decoder =
       Type
       |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
-      |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
+      |> (Json.Decode.Pipeline.required "omni" Battle.Struct.Omnimods.decoder)
    )
 
 none : Type
-none = (new "0" "None" (Struct.Omnimods.new [] [] [] []))
+none = (new "0" "None" (Battle.Struct.Omnimods.none))
+
+default : Type
+default = (none)

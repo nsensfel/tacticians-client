@@ -1,31 +1,32 @@
 module Struct.ServerReply exposing (Type(..))
 
--- Elm -------------------------------------------------------------------------
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Weapon
 
--- Battle ----------------------------------------------------------------------
-import Struct.Armor
-import Struct.Portrait
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Map
+import BattleMap.Struct.Tile
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Player
-import Struct.Map
 import Struct.Character
-import Struct.Tile
 import Struct.TurnResult
-import Struct.Weapon
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
 type Type =
    Okay
    | Disconnected
-   | AddArmor Struct.Armor.Type
-   | AddPortrait Struct.Portrait.Type
+   | AddArmor BattleCharacters.Struct.Armor.Type
+   | AddPortrait BattleCharacters.Struct.Portrait.Type
    | AddPlayer Struct.Player.Type
-   | AddWeapon Struct.Weapon.Type
+   | AddWeapon BattleCharacters.Struct.Weapon.Type
    | AddCharacter Struct.Character.TypeAndEquipmentRef
-   | AddTile Struct.Tile.Type
-   | SetMap Struct.Map.Type
+   | AddTile BattleMap.Struct.Tile.Type
+   | SetMap BattleMap.Struct.Map.Type
    | TurnResults (List Struct.TurnResult.Type)
    | SetTimeline (List Struct.TurnResult.Type)
 

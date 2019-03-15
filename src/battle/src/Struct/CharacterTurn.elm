@@ -25,11 +25,15 @@ module Struct.CharacterTurn exposing
 import Json.Encode
 
 -- Battle ----------------------------------------------------------------------
+import Battle.Struct.Omnimods
+
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Direction
+import BattleMap.Struct.Location
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
-import Struct.Direction
-import Struct.Location
 import Struct.Navigator
-import Struct.Omnimods
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -45,7 +49,7 @@ type alias Type =
    {
       state : State,
       active_character : (Maybe Struct.Character.Type),
-      path : (List Struct.Direction.Type),
+      path : (List BattleMap.Struct.Direction.Type),
       target : (Maybe Int),
       navigator : (Maybe Struct.Navigator.Type),
       has_switched_weapons : Bool
@@ -103,10 +107,14 @@ set_active_character_no_reset char ct =
 get_state : Type -> State
 get_state ct = ct.state
 
-get_path : Type -> (List Struct.Direction.Type)
+get_path : Type -> (List BattleMap.Struct.Direction.Type)
 get_path ct = ct.path
 
-lock_path : (Struct.Location.Type -> Struct.Omnimods.Type) -> Type -> Type
+lock_path : (
+      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
+      Type ->
+      Type
+   )
 lock_path tile_omnimods ct =
    case (ct.navigator, ct.active_character) of
       ((Just old_nav), (Just char)) ->
@@ -131,7 +139,7 @@ lock_path tile_omnimods ct =
       (_, _) ->
          ct
 
-unlock_path : (Struct.Location.Type -> Struct.Omnimods.Type) -> Type -> Type
+unlock_path : (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type) -> Type -> Type
 unlock_path tile_omnimods ct =
    case (ct.navigator, ct.active_character) of
       ((Just old_nav), (Just char)) ->
@@ -221,7 +229,7 @@ encode ct =
                (
                   (Json.Encode.string)
                   <<
-                  (Struct.Direction.to_string)
+                  (BattleMap.Struct.Direction.to_string)
                )
                (List.reverse (get_path ct))
             )

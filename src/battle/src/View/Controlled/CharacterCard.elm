@@ -12,19 +12,23 @@ import Html
 import Html.Attributes
 import Html.Events
 
+-- Shared ----------------------------------------------------------------------
+import Util.Html
+
 -- Battle ----------------------------------------------------------------------
-import Struct.Armor
+import Battle.Struct.Omnimods
+import Battle.Struct.Statistics
+
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Weapon
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.HelpRequest
 import Struct.Navigator
-import Struct.Omnimods
-import Struct.Statistics
-import Struct.Weapon
-import Struct.WeaponSet
-
-import Util.Html
 
 import View.Character
 import View.Gauge
@@ -56,7 +60,7 @@ get_health_bar char =
    let
       current = (Struct.Character.get_sane_current_health char)
       max =
-         (Struct.Statistics.get_max_health
+         (Battle.Struct.Statistics.get_max_health
             (Struct.Character.get_statistics char)
          )
    in
@@ -68,10 +72,7 @@ get_health_bar char =
          []
       )
 
-get_rank_status : (
-      Struct.Character.Rank ->
-      (Html.Html Struct.Event.Type)
-   )
+get_rank_status : Struct.Character.Rank -> (Html.Html Struct.Event.Type)
 get_rank_status rank =
    (Html.div
       [
@@ -97,10 +98,7 @@ get_rank_status rank =
       ]
    )
 
-get_statuses : (
-      Struct.Character.Type ->
-      (Html.Html Struct.Event.Type)
-   )
+get_statuses : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_statuses char =
    (Html.div
       [
@@ -123,7 +121,7 @@ get_active_movement_bar : (
 get_active_movement_bar maybe_navigator char =
    let
       max =
-         (Struct.Statistics.get_movement_points
+         (Battle.Struct.Statistics.get_movement_points
             (Struct.Character.get_statistics char)
          )
       current =
@@ -149,7 +147,7 @@ get_inactive_movement_bar : (
 get_inactive_movement_bar char =
    let
       max =
-         (Struct.Statistics.get_movement_points
+         (Battle.Struct.Statistics.get_movement_points
             (Struct.Character.get_statistics char)
          )
    in
@@ -158,7 +156,7 @@ get_inactive_movement_bar char =
             "MP: "
             ++
             (String.fromInt
-               (Struct.Statistics.get_movement_points
+               (Battle.Struct.Statistics.get_movement_points
                   (Struct.Character.get_statistics char)
                )
             )
@@ -196,7 +194,7 @@ get_movement_bar char_turn char =
 
 get_weapon_field_header : (
       Float ->
-      Struct.Weapon.Type ->
+      BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_weapon_field_header damage_multiplier weapon =
@@ -209,7 +207,7 @@ get_weapon_field_header damage_multiplier weapon =
             [
             ]
             [
-               (Html.text (Struct.Weapon.get_name weapon))
+               (Html.text (BattleCharacters.Struct.Weapon.get_name weapon))
             ]
          ),
          (Html.div
@@ -223,16 +221,29 @@ get_weapon_field_header damage_multiplier weapon =
                      (String.fromInt
                         (ceiling
                            (
-                              (toFloat (Struct.Weapon.get_damage_sum weapon))
+                              (toFloat
+                                 (BattleCharacters.Struct.Weapon.get_damage_sum
+                                    weapon
+                                 )
+                              )
                               * damage_multiplier
                            )
                         )
                      )
                      ++ " dmg @ ["
                      ++
-                     (String.fromInt (Struct.Weapon.get_defense_range weapon))
+                     (String.fromInt
+                        (BattleCharacters.Struct.Weapon.get_defense_range
+                           weapon
+                        )
+                     )
                      ++ ", "
-                     ++ (String.fromInt (Struct.Weapon.get_attack_range weapon))
+                     ++
+                     (String.fromInt
+                        (BattleCharacters.Struct.Weapon.get_attack_range
+                           weapon
+                        )
+                     )
                      ++ "]"
                   )
                )
@@ -243,9 +254,7 @@ get_weapon_field_header damage_multiplier weapon =
 
 get_mod_html : (String, Int) -> (Html.Html Struct.Event.Type)
 get_mod_html mod =
-   let
-      (category, value) = mod
-   in
+   let (category, value) = mod in
       (Html.div
          [
             (Html.Attributes.class "info-card-mod")
@@ -259,9 +268,7 @@ get_mod_html mod =
 
 get_multiplied_mod_html : Float -> (String, Int) -> (Html.Html Struct.Event.Type)
 get_multiplied_mod_html multiplier mod =
-   let
-      (category, value) = mod
-   in
+   let (category, value) = mod in
       (Html.div
          [
             (Html.Attributes.class "character-card-mod")
@@ -282,9 +289,9 @@ get_multiplied_mod_html multiplier mod =
       )
 
 get_weapon_details : (
-      Struct.Omnimods.Type ->
+      Battle.Struct.Omnimods.Type ->
       Float ->
-      Struct.Weapon.Type ->
+      BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_weapon_details omnimods damage_multiplier weapon =
@@ -300,7 +307,7 @@ get_weapon_details omnimods damage_multiplier weapon =
             ]
             (List.map
                (get_multiplied_mod_html damage_multiplier)
-               (Struct.Omnimods.get_attack_mods omnimods)
+               (Battle.Struct.Omnimods.get_attack_mods omnimods)
             )
          )
       ]
@@ -308,7 +315,7 @@ get_weapon_details omnimods damage_multiplier weapon =
 
 get_weapon_summary : (
       Float ->
-      Struct.Weapon.Type ->
+      BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_weapon_summary damage_multiplier weapon =
@@ -322,8 +329,8 @@ get_weapon_summary damage_multiplier weapon =
    )
 
 get_armor_details : (
-      Struct.Omnimods.Type ->
-      Struct.Armor.Type ->
+      Battle.Struct.Omnimods.Type ->
+      BattleCharacters.Struct.Armor.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_armor_details omnimods armor =
@@ -337,7 +344,7 @@ get_armor_details omnimods armor =
                (Html.Attributes.class "character-card-armor-name")
             ]
             [
-               (Html.text (Struct.Armor.get_name armor))
+               (Html.text (BattleCharacters.Struct.Armor.get_name armor))
             ]
          ),
          (Html.div
@@ -346,13 +353,13 @@ get_armor_details omnimods armor =
             ]
             (List.map
                (get_mod_html)
-               (Struct.Omnimods.get_defense_mods omnimods)
+               (Battle.Struct.Omnimods.get_defense_mods omnimods)
             )
          )
       ]
    )
 
-stat_name  : String -> (Html.Html Struct.Event.Type)
+stat_name : String -> (Html.Html Struct.Event.Type)
 stat_name name =
    (Html.div
       [
@@ -374,20 +381,14 @@ stat_val val perc =
             (
                (String.fromInt val)
                ++
-               (
-                  if perc
-                  then
-                     "%"
-                  else
-                     ""
-               )
+               (if perc then "%" else "")
             )
          )
       ]
    )
 
 get_relevant_stats : (
-      Struct.Statistics.Type ->
+      Battle.Struct.Statistics.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_relevant_stats stats =
@@ -397,15 +398,15 @@ get_relevant_stats stats =
       ]
       [
          (stat_name "Dodge"),
-         (stat_val (Struct.Statistics.get_dodges stats) True),
+         (stat_val (Battle.Struct.Statistics.get_dodges stats) True),
          (stat_name "Parry"),
-         (stat_val (Struct.Statistics.get_parries stats) True),
+         (stat_val (Battle.Struct.Statistics.get_parries stats) True),
          (stat_name "Accu."),
-         (stat_val (Struct.Statistics.get_accuracy stats) False),
+         (stat_val (Battle.Struct.Statistics.get_accuracy stats) False),
          (stat_name "2xHit"),
-         (stat_val (Struct.Statistics.get_double_hits stats) True),
+         (stat_val (Battle.Struct.Statistics.get_double_hits stats) True),
          (stat_name "Crit."),
-         (stat_val (Struct.Statistics.get_critical_hits stats) True)
+         (stat_val (Battle.Struct.Statistics.get_critical_hits stats) True)
       ]
    )
 
@@ -457,11 +458,22 @@ get_summary_html : (
    )
 get_summary_html char_turn player_ix char =
    let
-      weapon_set = (Struct.Character.get_weapons char)
-      main_weapon = (Struct.WeaponSet.get_active_weapon weapon_set)
+      is_using_primary = (Struct.Character.get_is_using_primary char)
+      active_weapon =
+         (
+            if (is_using_primary)
+            then (Struct.Character.get_primary_weapon char)
+            else (Struct.Character.get_secondary_weapon char)
+         )
+      inactive_weapon =
+         (
+            if (is_using_primary)
+            then (Struct.Character.get_secondary_weapon char)
+            else (Struct.Character.get_primary_weapon char)
+         )
       char_statistics = (Struct.Character.get_statistics char)
-      damage_modifier = (Struct.Statistics.get_damage_modifier char_statistics)
-      secondary_weapon = (Struct.WeaponSet.get_secondary_weapon weapon_set)
+      damage_modifier =
+         (Battle.Struct.Statistics.get_damage_modifier char_statistics)
       omnimods = (Struct.Character.get_current_omnimods char)
    in
       (Html.div
@@ -489,10 +501,10 @@ get_summary_html char_turn player_ix char =
                   (get_statuses char)
                ]
             ),
-            (get_weapon_details omnimods damage_modifier main_weapon),
+            (get_weapon_details omnimods damage_modifier active_weapon),
             (get_armor_details omnimods (Struct.Character.get_armor char)),
             (get_relevant_stats char_statistics),
-            (get_weapon_summary damage_modifier secondary_weapon)
+            (get_weapon_summary damage_modifier inactive_weapon)
          ]
       )
 
@@ -503,13 +515,24 @@ get_full_html : (
    )
 get_full_html player_ix char =
    let
-      weapon_set = (Struct.Character.get_weapons char)
-      main_weapon = (Struct.WeaponSet.get_active_weapon weapon_set)
+      is_using_primary = (Struct.Character.get_is_using_primary char)
+      active_weapon =
+         (
+            if (is_using_primary)
+            then (Struct.Character.get_primary_weapon char)
+            else (Struct.Character.get_secondary_weapon char)
+         )
+      inactive_weapon =
+         (
+            if (is_using_primary)
+            then (Struct.Character.get_secondary_weapon char)
+            else (Struct.Character.get_primary_weapon char)
+         )
       char_statistics = (Struct.Character.get_statistics char)
-      damage_modifier = (Struct.Statistics.get_damage_modifier char_statistics)
-      secondary_weapon = (Struct.WeaponSet.get_secondary_weapon weapon_set)
-      armor = (Struct.Character.get_armor char)
+      damage_modifier =
+         (Battle.Struct.Statistics.get_damage_modifier char_statistics)
       omnimods = (Struct.Character.get_current_omnimods char)
+      armor = (Struct.Character.get_armor char)
    in
       (Html.div
          [
@@ -537,9 +560,9 @@ get_full_html player_ix char =
                   (get_statuses char)
                ]
             ),
-            (get_weapon_details omnimods damage_modifier main_weapon),
+            (get_weapon_details omnimods damage_modifier active_weapon),
             (get_armor_details omnimods armor),
             (get_relevant_stats char_statistics),
-            (get_weapon_summary damage_modifier secondary_weapon)
+            (get_weapon_summary damage_modifier inactive_weapon)
          ]
       )

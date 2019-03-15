@@ -1,7 +1,6 @@
 module Update.SendLoadBattleRequest exposing (apply_to)
--- Elm -------------------------------------------------------------------------
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Comm.LoadBattle
 
 import Struct.Event
@@ -14,10 +13,7 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : (
-      Struct.Model.Type ->
-      (Struct.Model.Type, (Cmd Struct.Event.Type))
-   )
+apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 apply_to model =
    (
       (Struct.Model.full_debug_reset model),

@@ -3,7 +3,7 @@ module Comm.SetTimeline exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.ServerReply
 import Struct.TurnResult
 

@@ -3,10 +3,8 @@ module Comm.AddChar exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
-import Struct.Weapon
-import Struct.Armor
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------

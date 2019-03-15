@@ -5,7 +5,7 @@ import Html
 import Html.Lazy
 import Html.Attributes
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Constants.UI
 
 import Struct.Event

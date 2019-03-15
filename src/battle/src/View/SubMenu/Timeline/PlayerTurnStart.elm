@@ -3,9 +3,8 @@ module View.SubMenu.Timeline.PlayerTurnStart exposing (get_html)
 -- Elm -------------------------------------------------------------------------
 import Html
 import Html.Attributes
---import Html.Events
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.TurnResult
 

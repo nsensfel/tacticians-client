@@ -6,7 +6,7 @@ import Http
 import Json.Decode
 import Json.Encode
 
--- Battle ----------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Comm.AddArmor
 import Comm.AddPortrait
 import Comm.AddPlayer

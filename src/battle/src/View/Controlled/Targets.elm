@@ -6,11 +6,13 @@ import Dict
 import Html
 import Html.Attributes
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
+import Battle.Struct.Statistics
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
 import Struct.Model
-import Struct.Statistics
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -34,7 +36,7 @@ get_target_info_html model char_ref =
                ++ "): "
                ++
                (String.fromInt
-                  (Struct.Statistics.get_movement_points
+                  (Battle.Struct.Statistics.get_movement_points
                      (Struct.Character.get_statistics char)
                   )
                )
@@ -48,7 +50,7 @@ get_target_info_html model char_ref =
                ++ "/"
                ++
                (String.fromInt
-                  (Struct.Statistics.get_max_health
+                  (Battle.Struct.Statistics.get_max_health
                      (Struct.Character.get_statistics char)
                   )
                )

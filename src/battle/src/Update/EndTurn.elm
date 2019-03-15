@@ -1,8 +1,6 @@
 module Update.EndTurn exposing (apply_to)
 
--- Elm -------------------------------------------------------------------------
-
--- Struct.Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Comm.CharacterTurn
 
 import Struct.Character

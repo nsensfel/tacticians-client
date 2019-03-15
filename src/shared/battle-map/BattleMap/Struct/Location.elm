@@ -1,4 +1,4 @@
-module Struct.Location exposing (..)
+module BattleMap.Struct.Location exposing (..)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
@@ -6,8 +6,8 @@ import Json.Decode.Pipeline
 
 import Json.Encode
 
--- Battle ----------------------------------------------------------------------
-import Struct.Direction
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Direction
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -27,14 +27,14 @@ type alias Ref = (Int, Int)
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-neighbor : Struct.Direction.Type -> Type -> Type
+neighbor : BattleMap.Struct.Direction.Type -> Type -> Type
 neighbor dir loc =
    case dir of
-      Struct.Direction.Right -> {loc | x = (loc.x + 1)}
-      Struct.Direction.Left -> {loc | x = (loc.x - 1)}
-      Struct.Direction.Up -> {loc | y = (loc.y - 1)}
-      Struct.Direction.Down -> {loc | y = (loc.y + 1)}
-      Struct.Direction.None -> loc
+      BattleMap.Struct.Direction.Right -> {loc | x = (loc.x + 1)}
+      BattleMap.Struct.Direction.Left -> {loc | x = (loc.x - 1)}
+      BattleMap.Struct.Direction.Up -> {loc | y = (loc.y - 1)}
+      BattleMap.Struct.Direction.Down -> {loc | y = (loc.y + 1)}
+      BattleMap.Struct.Direction.None -> loc
 
 get_ref : Type -> Ref
 get_ref l =

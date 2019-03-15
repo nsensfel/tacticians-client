@@ -5,15 +5,17 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Map -------------------------------------------------------------------
-import Struct.Direction
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Direction
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 direction_button : (
-      Struct.Direction.Type ->
+      BattleMap.Struct.Direction.Type ->
       String ->
       (Html.Html Struct.Event.Type)
    )
@@ -51,10 +53,10 @@ get_html =
          (Html.Attributes.class "manual-controls")
       ]
       [
-         (direction_button Struct.Direction.Left "left"),
-         (direction_button Struct.Direction.Down "down"),
-         (direction_button Struct.Direction.Up "up"),
-         (direction_button Struct.Direction.Right "right"),
+         (direction_button BattleMap.Struct.Direction.Left "left"),
+         (direction_button BattleMap.Struct.Direction.Down "down"),
+         (direction_button BattleMap.Struct.Direction.Up "up"),
+         (direction_button BattleMap.Struct.Direction.Right "right"),
          (go_button)
       ]
    )

@@ -3,7 +3,7 @@ module View.MessageBoard exposing (get_html)
 -- Elm -------------------------------------------------------------------------
 import Html
 
--- Struct.Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
 

@@ -1,17 +1,18 @@
 module Update.SelectCharacterOrTile exposing (apply_to)
 
--- Elm -------------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
+import Util.Array
 
--- Map -------------------------------------------------------------------
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
-import Struct.Location
 import Struct.Model
 
 import Update.SelectCharacter
 import Update.SelectTile
-
-import Util.Array
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -22,7 +23,7 @@ import Util.Array
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Struct.Location.Ref ->
+      BattleMap.Struct.Location.Ref ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model loc_ref =
@@ -32,7 +33,7 @@ apply_to model loc_ref =
             (
                (
                   (Struct.Character.get_location c)
-                  == (Struct.Location.from_ref loc_ref)
+                  == (BattleMap.Struct.Location.from_ref loc_ref)
                )
                &&
                (Struct.Character.is_alive c)

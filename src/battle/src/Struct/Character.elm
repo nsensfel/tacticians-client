@@ -22,8 +22,10 @@ module Struct.Character exposing
       is_alive,
       set_enabled,
       set_defeated,
-      get_weapons,
-      set_weapons,
+      get_primary_weapon,
+      get_secondary_weapon,
+      toggle_is_using_primary,
+      get_is_using_primary,
       decoder,
       refresh_omnimods,
       fill_missing_equipment_and_omnimods
@@ -33,15 +35,18 @@ module Struct.Character exposing
 import Json.Decode
 import Json.Decode.Pipeline
 
--- Map -------------------------------------------------------------------
-import Struct.Armor
-import Struct.Portrait
-import Struct.Attributes
+-- Battle ----------------------------------------------------------------------
+import Battle.Struct.Attributes
+import Battle.Struct.Omnimods
+import Battle.Struct.Statistics
+
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Weapon
+
+-- Battle Map ------------------------------------------------------------------
 import Struct.Location
-import Struct.Omnimods
-import Struct.Statistics
-import Struct.Weapon
-import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -57,10 +62,10 @@ type alias PartiallyDecoded =
       pla : Int,
       ena : Bool,
       dea : Bool,
-      awp : Struct.Weapon.Ref,
-      swp : Struct.Weapon.Ref,
-      ar : Struct.Armor.Ref,
-      omni : Struct.Omnimods.Type
+      awp : BattleCharacters.Struct.Weapon.Ref,
+      swp : BattleCharacters.Struct.Weapon.Ref,
+      ar : BattleCharacters.Struct.Armor.Ref,
+      omni : Battle.Struct.Omnimods.Type
    }
 
 
@@ -74,18 +79,20 @@ type alias Type =
       ix : Int,
       name : String,
       rank : Rank,
-      portrait : Struct.Portrait.Type,
+      portrait : BattleCharacters.Struct.Portrait.Type,
       location : Struct.Location.Type,
       health : Int,
       player_ix : Int,
       enabled : Bool,
       defeated : Bool,
-      attributes : Struct.Attributes.Type,
-      statistics : Struct.Statistics.Type,
-      weapons : Struct.WeaponSet.Type,
-      armor : Struct.Armor.Type,
-      current_omnimods : Struct.Omnimods.Type,
-      permanent_omnimods : Struct.Omnimods.Type
+      attributes : Battle.Struct.Attributes.Type,
+      statistics : Battle.Struct.Statistics.Type,
+      primary_weapon : BattleCharacters.Struct.Weapon.Type,
+      secondary_weapon : BattleCharacters.Struct.Weapon.Type,
+      is_using_primary : Bool,
+      armor : BattleCharacters.Struct.Armor.Type,
+      current_omnimods : Battle.Struct.Omnimods.Type,
+      permanent_omnimods : Battle.Struct.Omnimods.Type
    }
 
 type alias TypeAndEquipmentRef =
@@ -110,10 +117,9 @@ str_to_rank str =
 finish_decoding : PartiallyDecoded -> TypeAndEquipmentRef
 finish_decoding add_char =
    let
-      weapon_set = (Struct.WeaponSet.new Struct.Weapon.none Struct.Weapon.none)
-      armor = Struct.Armor.none
-      portrait = Struct.Portrait.none
-      default_attributes = (Struct.Attributes.default)
+      armor = BattleCharacters.Struct.Armor.none
+      portrait = BattleCharacters.Struct.Portrait.none
+      default_attributes = (Battle.Struct.Attributes.default)
       almost_char =
          {
             ix = add_char.ix,
@@ -123,13 +129,15 @@ finish_decoding add_char =
             location = add_char.lc,
             health = add_char.hea,
             attributes = default_attributes,
-            statistics = (Struct.Statistics.new_raw default_attributes),
+            statistics = (Battle.Struct.Statistics.new_raw default_attributes),
             player_ix = add_char.pla,
             enabled = add_char.ena,
             defeated = add_char.dea,
-            weapons = weapon_set,
+            primary_weapon = BattleCharacters.Struct.Weapon.none,
+            secondary_weapon = BattleCharacters.Struct.Weapon.none,
+            is_using_primary = True,
             armor = armor,
-            current_omnimods = (Struct.Omnimods.new [] [] [] []),
+            current_omnimods = (Battle.Struct.Omnimods.new [] [] [] []),
             permanent_omnimods = add_char.omni
          }
    in
@@ -159,7 +167,7 @@ get_player_ix c = c.player_ix
 get_current_health : Type -> Int
 get_current_health c = c.health
 
-get_current_omnimods : Type -> Struct.Omnimods.Type
+get_current_omnimods : Type -> Battle.Struct.Omnimods.Type
 get_current_omnimods c = c.current_omnimods
 
 get_sane_current_health : Type -> Int
@@ -174,10 +182,10 @@ get_location t = t.location
 set_location : Struct.Location.Type -> Type -> Type
 set_location location char = {char | location = location}
 
-get_attributes : Type -> Struct.Attributes.Type
+get_attributes : Type -> Battle.Struct.Attributes.Type
 get_attributes char = char.attributes
 
-get_statistics : Type -> Struct.Statistics.Type
+get_statistics : Type -> Battle.Struct.Statistics.Type
 get_statistics char = char.statistics
 
 is_alive : Type -> Bool
@@ -195,20 +203,24 @@ set_enabled enabled char = {char | enabled = enabled}
 set_defeated : Bool -> Type -> Type
 set_defeated defeated char = {char | defeated = defeated}
 
-get_weapons : Type -> Struct.WeaponSet.Type
-get_weapons char = char.weapons
+get_primary_weapon : Type -> BattleCharacters.Struct.Weapon.Type
+get_primary_weapon char = char.primary_weapon
 
-get_armor : Type -> Struct.Armor.Type
+get_secondary_weapon : Type -> BattleCharacters.Struct.Weapon.Type
+get_secondary_weapon char = char.secondary_weapon
+
+get_is_using_primary : Type -> Bool
+get_is_using_primary char = char.is_using_primary
+
+toggle_is_using_primary : Type -> Type
+toggle_is_using_primary char =
+   {char | is_using_primary = (not char.is_using_primary)}
+
+get_armor : Type -> BattleCharacters.Struct.Armor.Type
 get_armor char = char.armor
 
-get_portrait : Type -> Struct.Portrait.Type
+get_portrait : Type -> BattleCharacters.Struct.Portrait.Type
 get_portrait char = char.portrait
-
-set_weapons : Struct.WeaponSet.Type -> Type -> Type
-set_weapons weapons char =
-   {char |
-      weapons = weapons
-   }
 
 decoder : (Json.Decode.Decoder TypeAndEquipmentRef)
 decoder =
@@ -228,39 +240,49 @@ decoder =
          |> (Json.Decode.Pipeline.required "awp" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "swp" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "ar" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required "pomni" Struct.Omnimods.decoder)
+         |>
+         (Json.Decode.Pipeline.required
+            "pomni"
+            Battle.Struct.Omnimods.decoder
+         )
       )
    )
 
 refresh_omnimods : (
-      (Struct.Location.Type -> Struct.Omnimods.Type) ->
+      (Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
       Type ->
       Type
    )
 refresh_omnimods tile_omnimods_fun char =
    let
-      previous_max_health = (Struct.Statistics.get_max_health char.statistics)
+      previous_max_health =
+         (Battle.Struct.Statistics.get_max_health char.statistics)
       current_omnimods =
-         (Struct.Omnimods.merge
-            (Struct.Weapon.get_omnimods
-               (Struct.WeaponSet.get_active_weapon char.weapons)
+         (Battle.Struct.Omnimods.merge
+            (BattleCharacters.Struct.Weapon.get_omnimods
+               (
+                  if (char.is_using_primary)
+                  then char.primary_weapon
+                  else char.secondary_weapon
+               )
             )
-            (Struct.Omnimods.merge
+            (Battle.Struct.Omnimods.merge
                (tile_omnimods_fun char.location)
                char.permanent_omnimods
             )
          )
       current_attributes =
-         (Struct.Omnimods.apply_to_attributes
+         (Battle.Struct.Omnimods.apply_to_attributes
             current_omnimods
-            (Struct.Attributes.default)
+            (Battle.Struct.Attributes.default)
          )
       current_statistics =
-         (Struct.Omnimods.apply_to_statistics
+         (Battle.Struct.Omnimods.apply_to_statistics
             current_omnimods
-            (Struct.Statistics.new_raw current_attributes)
+            (Battle.Struct.Statistics.new_raw current_attributes)
          )
-      new_max_health = (Struct.Statistics.get_max_health current_statistics)
+      new_max_health =
+         (Battle.Struct.Statistics.get_max_health current_statistics)
    in
       {char |
          attributes = current_attributes,
@@ -280,11 +302,11 @@ refresh_omnimods tile_omnimods_fun char =
       }
 
 fill_missing_equipment_and_omnimods : (
-      (Struct.Location.Type -> Struct.Omnimods.Type) ->
-      Struct.Portrait.Type ->
-      Struct.Weapon.Type ->
-      Struct.Weapon.Type ->
-      Struct.Armor.Type ->
+      (Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
+      BattleCharacters.Struct.Portrait.Type ->
+      BattleCharacters.Struct.Weapon.Type ->
+      BattleCharacters.Struct.Weapon.Type ->
+      BattleCharacters.Struct.Armor.Type ->
       Type ->
       Type
    )
@@ -295,7 +317,8 @@ fill_missing_equipment_and_omnimods tile_omnimods_fun pt awp swp ar char =
       (refresh_omnimods
          (tile_omnimods_fun)
          {char |
-            weapons = (Struct.WeaponSet.new awp swp),
+            primary_weapon = awp,
+            secondary_weapon = swp,
             armor = ar,
             portrait = pt
          }

@@ -1,10 +1,10 @@
 module Update.RequestDirection exposing (apply_to)
 
--- Elm -------------------------------------------------------------------------
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Direction
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.CharacterTurn
-import Struct.Direction
 import Struct.Error
 import Struct.Event
 import Struct.Model
@@ -17,7 +17,7 @@ import Struct.UI
 make_it_so : (
       Struct.Model.Type ->
       Struct.Navigator.Type ->
-      Struct.Direction.Type ->
+      BattleMap.Struct.Direction.Type ->
       Struct.Model.Type
    )
 make_it_so model navigator dir =
@@ -50,7 +50,7 @@ make_it_so model navigator dir =
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Struct.Direction.Type ->
+      BattleMap.Struct.Direction.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model dir =

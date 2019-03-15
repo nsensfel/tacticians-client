@@ -1,55 +1,24 @@
-module Struct.DamageType exposing
-   (
-      Type(..),
-      encode,
-      decode,
-      to_string
-   )
+module Comm.AddPortrait exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
+import Json.Decode
 
--- Map -------------------------------------------------------------------
+-- BattleCharacters ------------------------------------------------------------
+import Struct.Portrait
+import Struct.ServerReply
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-type Type =
-   Base
-   | Slash
-   | Blunt
-   | Pierce
-   | None
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+internal_decoder : Struct.Portrait.Type -> Struct.ServerReply.Type
+internal_decoder pt = (Struct.ServerReply.AddPortrait pt)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : String -> Type
-decode str =
-   case str of
-      "bse" -> Base
-      "slh" -> Slash
-      "pie" -> Pierce
-      "blu" -> Blunt
-      _ -> None
-
-encode : Type -> String
-encode t =
-   case t of
-      Base -> "bse"
-      Slash -> "slh"
-      Pierce -> "pie"
-      Blunt -> "blu"
-      None  -> "non"
-
-to_string : Type -> String
-to_string t =
-   case t of
-      Base -> "Base"
-      Slash -> "Slash"
-      Pierce -> "Piercing"
-      Blunt -> "Bludgeoning"
-      None  -> "ERROR"
+decode : (Json.Decode.Decoder Struct.ServerReply.Type)
+decode = (Json.Decode.map (internal_decoder) (Struct.Portrait.decoder))

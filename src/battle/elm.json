@@ -2,7 +2,10 @@
     "type": "application",
     "source-directories": [
         "src",
-        "../shared/elm"
+        "../shared/elm",
+        "../shared/battle",
+        "../shared/battle-map",
+        "../shared/battle-characters"
     ],
     "elm-version": "0.19.0",
     "dependencies": {

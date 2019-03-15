@@ -1,8 +1,6 @@
 module Update.AbortTurn exposing (apply_to)
 
--- Elm -------------------------------------------------------------------------
-
--- Struct.Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model

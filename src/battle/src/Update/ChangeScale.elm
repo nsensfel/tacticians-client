@@ -1,7 +1,6 @@
 module Update.ChangeScale exposing (apply_to)
--- Elm -------------------------------------------------------------------------
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
 import Struct.UI

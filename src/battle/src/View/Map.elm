@@ -9,26 +9,31 @@ import Html.Lazy
 
 import List
 
--- Map -------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
+import Util.Html
+
+-- Battle ----------------------------------------------------------------------
+import View.BattleMap.Tile
+
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Map
+
+-- Local Module ----------------------------------------------------------------
 import Constants.UI
 
-import Struct.Map
 import Struct.Character
 import Struct.Event
 import Struct.Model
 import Struct.Navigator
 import Struct.UI
 
-import Util.Html
-
 import View.Map.Character
 import View.Map.Navigator
-import View.Map.Tile
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_tiles_html : Struct.Map.Type -> (Html.Html Struct.Event.Type)
+get_tiles_html : BattleMap.Struct.Map.Type -> (Html.Html Struct.Event.Type)
 get_tiles_html map =
    (Html.div
       [
@@ -38,7 +43,7 @@ get_tiles_html map =
             (
                (String.fromInt
                   (
-                     (Struct.Map.get_width map)
+                     (BattleMap.Struct.Map.get_width map)
                      * Constants.UI.tile_size
                   )
                )
@@ -50,7 +55,7 @@ get_tiles_html map =
             (
                (String.fromInt
                   (
-                     (Struct.Map.get_height map)
+                     (BattleMap.Struct.Map.get_height map)
                      * Constants.UI.tile_size
                   )
                )
@@ -59,8 +64,8 @@ get_tiles_html map =
          )
       ]
       (List.map
-         (View.Map.Tile.get_html)
-         (Array.toList (Struct.Map.get_tiles map))
+         (View.BattleMap.Tile.get_html False)
+         (Array.toList (BattleMap.Struct.Map.get_tiles map))
       )
    )
 

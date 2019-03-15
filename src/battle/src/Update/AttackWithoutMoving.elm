@@ -1,8 +1,6 @@
 module Update.AttackWithoutMoving exposing (apply_to)
 
--- Elm -------------------------------------------------------------------------
-
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.CharacterTurn
 import Struct.Error
 import Struct.Event
@@ -24,10 +22,7 @@ make_it_so model =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : (
-      Struct.Model.Type ->
-      (Struct.Model.Type, (Cmd Struct.Event.Type))
-   )
+apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 apply_to model =
    case (Struct.CharacterTurn.get_state model.char_turn) of
       Struct.CharacterTurn.SelectedCharacter ->

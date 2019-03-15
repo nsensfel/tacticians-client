@@ -3,8 +3,10 @@ module Comm.AddArmor exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Map -------------------------------------------------------------------
-import Struct.Armor
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+
+-- Local Module ----------------------------------------------------------------
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------
@@ -14,11 +16,15 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-internal_decoder : Struct.Armor.Type -> Struct.ServerReply.Type
+internal_decoder : BattleCharacters.Struct.Armor.Type -> Struct.ServerReply.Type
 internal_decoder ar = (Struct.ServerReply.AddArmor ar)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.map (internal_decoder) (Struct.Armor.decoder))
+decode =
+   (Json.Decode.map
+      (internal_decoder)
+      (BattleCharacters.Struct.Armor.decoder)
+   )

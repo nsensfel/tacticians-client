@@ -1,10 +1,12 @@
 -- Elm ------------------------------------------------------------------------
 import Browser
 
--- Map -------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
+import Struct.Flags
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Model
 import Struct.Event
-import Struct.Flags
 
 import ElmModule.Init
 import ElmModule.Subscriptions

@@ -5,21 +5,26 @@ import Array
 
 import Task
 
--- Map -------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
+import Battle.Struct.Statistics
+
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Weapon
+
+-- Battle Map ------------------------------------------------------------------
+import Struct.Map
+import BattleMap.Struct.Location
+
+-- Local Module ----------------------------------------------------------------
 import Action.Scroll
 
-import Struct.Map
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error
 import Struct.Event
-import Struct.Location
 import Struct.Model
 import Struct.Navigator
-import Struct.Statistics
 import Struct.UI
-import Struct.Weapon
-import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -32,17 +37,19 @@ get_character_navigator : (
 get_character_navigator model char =
    let
       weapon =
-         (Struct.WeaponSet.get_active_weapon
-            (Struct.Character.get_weapons char)
+         (
+            if (Struct.Character.get_is_using_primary char)
+            then (Struct.Character.get_primary_weapon char)
+            else (Struct.Character.get_secondary_weapon char)
          )
    in
       (Struct.Navigator.new
          (Struct.Character.get_location char)
-         (Struct.Statistics.get_movement_points
+         (Battle.Struct.Statistics.get_movement_points
             (Struct.Character.get_statistics char)
          )
-         (Struct.Weapon.get_defense_range weapon)
-         (Struct.Weapon.get_attack_range weapon)
+         (BattleCharacters.Struct.Weapon.get_defense_range weapon)
+         (BattleCharacters.Struct.Weapon.get_attack_range weapon)
          (Struct.Map.get_movement_cost_function
             model.map
             (Struct.Character.get_location char)
@@ -135,7 +142,7 @@ can_target_character model target =
             (Just nav) ->
                case
                   (Struct.Navigator.try_getting_path_to
-                     (Struct.Location.get_ref
+                     (BattleMap.Struct.Location.get_ref
                         (Struct.Character.get_location target)
                      )
                      nav

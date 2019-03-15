@@ -1,9 +1,10 @@
 module Update.LookForCharacter exposing (apply_to)
+
 -- Elm -------------------------------------------------------------------------
 import Array
 import Task
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Action.Scroll
 
 import Struct.Character
@@ -14,11 +15,7 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-scroll_to_char : (
-      Struct.Model.Type ->
-      Int ->
-      (Cmd Struct.Event.Type)
-   )
+scroll_to_char : Struct.Model.Type -> Int -> (Cmd Struct.Event.Type)
 scroll_to_char model char_ix =
    case (Array.get char_ix model.characters) of
       (Just char) ->

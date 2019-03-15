@@ -1,13 +1,13 @@
 module Update.SelectTile exposing (apply_to)
 
--- Elm -------------------------------------------------------------------------
+-- Battle Map -------------------------------------------------------------------
+import BattleMap.Struct.Direction
+import BattleMap.Struct.Location
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.CharacterTurn
-import Struct.Direction
 import Struct.Error
 import Struct.Event
-import Struct.Location
 import Struct.Model
 import Struct.Navigator
 import Struct.UI
@@ -16,7 +16,7 @@ import Struct.UI
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 try_autopiloting : (
-      Struct.Direction.Type ->
+      BattleMap.Struct.Direction.Type ->
       (Maybe Struct.Navigator.Type) ->
       (Maybe Struct.Navigator.Type)
    )
@@ -30,7 +30,7 @@ try_autopiloting dir maybe_nav =
 go_to_tile : (
       Struct.Model.Type ->
       Struct.Navigator.Type ->
-      Struct.Location.Ref ->
+      BattleMap.Struct.Location.Ref ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 go_to_tile model navigator loc_ref =
@@ -38,7 +38,7 @@ go_to_tile model navigator loc_ref =
    (
       loc_ref
       ==
-      (Struct.Location.get_ref
+      (BattleMap.Struct.Location.get_ref
          (Struct.Navigator.get_current_location navigator)
       )
    )
@@ -135,7 +135,7 @@ go_to_tile model navigator loc_ref =
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Struct.Location.Ref ->
+      BattleMap.Struct.Location.Ref ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model loc_ref =

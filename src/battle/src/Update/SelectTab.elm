@@ -1,7 +1,6 @@
 module Update.SelectTab exposing (apply_to)
--- Elm -------------------------------------------------------------------------
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Model
 import Struct.Event
 import Struct.UI

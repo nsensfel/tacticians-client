@@ -1,4 +1,4 @@
-module Struct.Statistics exposing
+module Battle.Struct.Statistics exposing
    (
       Type,
       Category(..),
@@ -19,7 +19,7 @@ module Struct.Statistics exposing
 import List
 
 -- Battle ----------------------------------------------------------------------
-import Struct.Attributes
+import Battle.Struct.Attributes
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -168,15 +168,15 @@ mod cat v t =
       DoubleHits -> (mod_double_hits v t)
       CriticalHits -> (mod_critical_hits v t)
 
-new_raw : (Struct.Attributes.Type -> Type)
+new_raw : (Battle.Struct.Attributes.Type -> Type)
 new_raw att =
    let
-      constitution = (Struct.Attributes.get_constitution att)
-      dexterity = (Struct.Attributes.get_dexterity att)
-      intelligence = (Struct.Attributes.get_intelligence att)
-      mind = (Struct.Attributes.get_mind att)
-      speed = (Struct.Attributes.get_speed att)
-      strength = (Struct.Attributes.get_strength att)
+      constitution = (Battle.Struct.Attributes.get_constitution att)
+      dexterity = (Battle.Struct.Attributes.get_dexterity att)
+      intelligence = (Battle.Struct.Attributes.get_intelligence att)
+      mind = (Battle.Struct.Attributes.get_mind att)
+      speed = (Battle.Struct.Attributes.get_speed att)
+      strength = (Battle.Struct.Attributes.get_strength att)
    in
       {
          movement_points =

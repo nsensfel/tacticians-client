@@ -3,13 +3,14 @@ module View.MessageBoard.Animator exposing (get_html)
 -- Elm -------------------------------------------------------------------------
 import Html
 
--- Map -------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
+import Util.Html
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
 import Struct.TurnResult
 import Struct.TurnResultAnimator
-
-import Util.Html
 
 import View.MessageBoard.Animator.Attack
 

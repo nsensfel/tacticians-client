@@ -3,8 +3,10 @@ module Comm.SetMap exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Map -------------------------------------------------------------------------
-import Struct.Map
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Map
+
+-- Local Module ----------------------------------------------------------------
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------
@@ -22,5 +24,5 @@ decode : (Json.Decode.Decoder Struct.ServerReply.Type)
 decode =
    (Json.Decode.map
       (\map -> (Struct.ServerReply.SetMap map))
-      (Struct.Map.decoder)
+      (BattleMap.Struct.Map.decoder)
    )

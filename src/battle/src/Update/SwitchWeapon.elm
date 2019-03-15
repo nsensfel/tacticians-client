@@ -1,16 +1,17 @@
 module Update.SwitchWeapon exposing (apply_to)
 
--- Elm -------------------------------------------------------------------------
+-- FIXME: switching weapon should make the navigator disappear.
 
--- Battle ----------------------------------------------------------------------
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Weapon
+
+-- Local module ----------------------------------------------------------------
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error
 import Struct.Event
 import Struct.Model
 import Struct.Navigator
-import Struct.Weapon
-import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -28,11 +29,6 @@ make_it_so model =
             tile_omnimods = (Struct.Model.tile_omnimods_fun model)
             current_tile_omnimods =
                (tile_omnimods (Struct.Navigator.get_current_location nav))
-            new_weapons =
-               (Struct.WeaponSet.switch_weapons
-                  (Struct.Character.get_weapons char)
-               )
-            new_main_weapon = (Struct.WeaponSet.get_active_weapon new_weapons)
             new_char =
                (Struct.Character.refresh_omnimods
                   (\e -> current_tile_omnimods)
@@ -43,13 +39,9 @@ make_it_so model =
                char_turn =
                   (Struct.CharacterTurn.set_has_switched_weapons
                      True
-                     (Struct.CharacterTurn.show_attack_range_navigator
-                        (Struct.Weapon.get_defense_range new_main_weapon)
-                        (Struct.Weapon.get_attack_range new_main_weapon)
-                        (Struct.CharacterTurn.set_active_character_no_reset
-                           new_char
-                           model.char_turn
-                        )
+                     (Struct.CharacterTurn.set_active_character_no_reset
+                        new_char
+                        model.char_turn
                      )
                   )
             }

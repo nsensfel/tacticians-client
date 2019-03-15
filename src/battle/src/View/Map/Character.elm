@@ -5,16 +5,19 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Battle ----------------------------------------------------------------------
-import Constants.UI
-
+-- Shared ----------------------------------------------------------------------
 import Util.Html
+
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Portrait
+
+-- Local Module ----------------------------------------------------------------
+import Constants.UI
 
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
-import Struct.Portrait
 import Struct.TurnResult
 import Struct.TurnResultAnimator
 import Struct.UI
@@ -147,7 +150,7 @@ get_head_html char =
          (Html.Attributes.class "character-icon-head"),
          (Html.Attributes.class
             ("asset-character-icon-" ++
-               (Struct.Portrait.get_icon_id
+               (BattleCharacters.Struct.Portrait.get_icon_id
                   (Struct.Character.get_portrait char)
                )
             )

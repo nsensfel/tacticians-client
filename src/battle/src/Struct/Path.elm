@@ -11,12 +11,14 @@ module Struct.Path exposing
 -- Elm -------------------------------------------------------------------------
 import Set
 
--- Map -------------------------------------------------------------------
-import Struct.Direction
-import Struct.Location
-
+-- Shared ----------------------------------------------------------------------
 import Util.List
 
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Direction
+import BattleMap.Struct.Location
+
+-- Local Module ----------------------------------------------------------------
 import Constants.Movement
 
 --------------------------------------------------------------------------------
@@ -24,9 +26,9 @@ import Constants.Movement
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      current_location : Struct.Location.Type,
-      visited_locations : (Set.Set Struct.Location.Ref),
-      previous_directions : (List Struct.Direction.Type),
+      current_location : BattleMap.Struct.Location.Type,
+      visited_locations : (Set.Set BattleMap.Struct.Location.Ref),
+      previous_directions : (List BattleMap.Struct.Direction.Type),
       previous_points : (List Int),
       remaining_points : Int
    }
@@ -36,7 +38,7 @@ type alias Type =
 --------------------------------------------------------------------------------
 has_been_to : (
       Type ->
-      Struct.Location.Type ->
+      BattleMap.Struct.Location.Type ->
       Bool
    )
 has_been_to path location =
@@ -44,15 +46,15 @@ has_been_to path location =
       (path.current_location == location)
       ||
       (Set.member
-         (Struct.Location.get_ref location)
+         (BattleMap.Struct.Location.get_ref location)
          path.visited_locations
       )
    )
 
 try_moving_to : (
       Type ->
-      Struct.Direction.Type ->
-      Struct.Location.Type ->
+      BattleMap.Struct.Direction.Type ->
+      BattleMap.Struct.Location.Type ->
       Int ->
       (Maybe Type)
    )
@@ -67,7 +69,7 @@ try_moving_to path dir next_loc cost =
                current_location = next_loc,
                visited_locations =
                   (Set.insert
-                     (Struct.Location.get_ref path.current_location)
+                     (BattleMap.Struct.Location.get_ref path.current_location)
                      path.visited_locations
                   ),
                previous_directions = (dir :: path.previous_directions),
@@ -81,8 +83,8 @@ try_moving_to path dir next_loc cost =
 
 try_backtracking_to : (
       Type ->
-      Struct.Direction.Type ->
-      Struct.Location.Type ->
+      BattleMap.Struct.Direction.Type ->
+      BattleMap.Struct.Location.Type ->
       (Maybe Type)
    )
 try_backtracking_to path dir location =
@@ -97,14 +99,14 @@ try_backtracking_to path dir location =
          (Just (prev_pts_head, prev_pts_tail))) ->
          -- Does not compile in Elm 0.19 if I put the closing paren on this line
          (
-            if (prev_dir_head == (Struct.Direction.opposite_of dir))
+            if (prev_dir_head == (BattleMap.Struct.Direction.opposite_of dir))
             then
                (Just
                   {path |
                      current_location = location,
                      visited_locations =
                         (Set.remove
-                           (Struct.Location.get_ref location)
+                           (BattleMap.Struct.Location.get_ref location)
                            path.visited_locations
                         ),
                      previous_directions = prev_dir_tail,
@@ -123,7 +125,7 @@ try_backtracking_to path dir location =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-new : Struct.Location.Type -> Int -> Type
+new : BattleMap.Struct.Location.Type -> Int -> Type
 new start points =
    {
       current_location = start,
@@ -133,19 +135,19 @@ new start points =
       remaining_points = points
    }
 
-get_current_location : Type -> Struct.Location.Type
+get_current_location : Type -> BattleMap.Struct.Location.Type
 get_current_location path = path.current_location
 
 get_remaining_points : Type -> Int
 get_remaining_points path = path.remaining_points
 
-get_summary : Type -> (List Struct.Direction.Type)
+get_summary : Type -> (List BattleMap.Struct.Direction.Type)
 get_summary path = path.previous_directions
 
 try_following_direction : (
-      (Struct.Location.Type -> Int) ->
+      (BattleMap.Struct.Location.Type -> Int) ->
       (Maybe Type) ->
-      Struct.Direction.Type ->
+      BattleMap.Struct.Direction.Type ->
       (Maybe Type)
    )
 try_following_direction cost_fun maybe_path dir =
@@ -153,7 +155,7 @@ try_following_direction cost_fun maybe_path dir =
       (Just path) ->
          let
             next_location =
-               (Struct.Location.neighbor
+               (BattleMap.Struct.Location.neighbor
                   dir
                   path.current_location
                )

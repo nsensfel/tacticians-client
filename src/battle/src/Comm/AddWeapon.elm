@@ -3,8 +3,10 @@ module Comm.AddWeapon exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Map -------------------------------------------------------------------
-import Struct.Weapon
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Weapon
+
+-- Local Module ----------------------------------------------------------------
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------
@@ -14,11 +16,18 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-internal_decoder : Struct.Weapon.Type -> Struct.ServerReply.Type
+internal_decoder : (
+      BattleCharacters.Struct.Weapon.Type ->
+      Struct.ServerReply.Type
+   )
 internal_decoder wp = (Struct.ServerReply.AddWeapon wp)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.map (internal_decoder) (Struct.Weapon.decoder))
+decode =
+   (Json.Decode.map
+      (internal_decoder)
+      (BattleCharacters.Struct.Weapon.decoder)
+   )

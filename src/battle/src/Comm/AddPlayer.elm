@@ -3,7 +3,7 @@ module Comm.AddPlayer exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Battle ----------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Player
 import Struct.ServerReply
 

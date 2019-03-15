@@ -4,7 +4,7 @@ module View.MessageBoard.Help.Rank exposing (get_html_contents)
 import Html
 import Html.Attributes
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
 

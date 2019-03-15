@@ -30,12 +30,14 @@ import Json.Encode
 import Json.Decode
 import Json.Decode.Pipeline
 
+-- Battle Map ------------------------------------------------------------------
+import Struct.Tile
+import Struct.Location
+
 -- Map Editor ------------------------------------------------------------------
 import Constants.UI
 import Constants.Movement
 
-import Struct.Tile
-import Struct.Location
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------

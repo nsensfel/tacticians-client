@@ -3,10 +3,12 @@ module Struct.Event exposing (Type(..), attempted)
 -- Elm -------------------------------------------------------------------------
 import Http
 
--- Battle ----------------------------------------------------------------------
-import Struct.Direction
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Direction
+import BattleMap.Struct.Location
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Error
-import Struct.Location
 import Struct.ServerReply
 import Struct.HelpRequest
 import Struct.UI
@@ -19,12 +21,12 @@ type Type =
    | AnimationEnded
    | AttackWithoutMovingRequest
    | CharacterInfoRequested Int
-   | CharacterOrTileSelected Struct.Location.Ref
+   | CharacterOrTileSelected BattleMap.Struct.Location.Ref
    | CharacterSelected Int
    | DebugLoadBattleRequest
    | DebugTeamSwitchRequest
    | DebugTestAnimation
-   | DirectionRequested Struct.Direction.Type
+   | DirectionRequested BattleMap.Struct.Direction.Type
    | Failed Struct.Error.Type
    | GoToMainMenu
    | LookingForCharacter Int
@@ -33,7 +35,7 @@ type Type =
    | ScaleChangeRequested Float
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
    | TabSelected Struct.UI.Tab
-   | TileSelected Struct.Location.Ref
+   | TileSelected BattleMap.Struct.Location.Ref
    | TurnEnded
    | UndoActionRequest
    | WeaponSwitchRequest

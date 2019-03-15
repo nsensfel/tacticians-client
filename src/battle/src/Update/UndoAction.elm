@@ -4,15 +4,20 @@ module Update.UndoAction exposing (apply_to)
 import Array
 
 -- Battle ----------------------------------------------------------------------
-import Struct.Map
+import Battle.Struct.Statistics
+
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Weapon
+
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Map
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.Navigator
-import Struct.Statistics
-import Struct.Weapon
-import Struct.WeaponSet
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -25,18 +30,20 @@ get_character_navigator : (
 get_character_navigator model char =
    let
       weapon =
-         (Struct.WeaponSet.get_active_weapon
-            (Struct.Character.get_weapons char)
+         (
+            if (Struct.Character.get_is_using_primary char)
+            then (Struct.Character.get_primary_weapon char)
+            else (Struct.Character.get_secondary_weapon char)
          )
    in
       (Struct.Navigator.new
          (Struct.Character.get_location char)
-         (Struct.Statistics.get_movement_points
+         (Battle.Struct.Statistics.get_movement_points
             (Struct.Character.get_statistics char)
          )
-         (Struct.Weapon.get_defense_range weapon)
-         (Struct.Weapon.get_attack_range weapon)
-         (Struct.Map.get_movement_cost_function
+         (BattleCharacters.Struct.Weapon.get_defense_range weapon)
+         (BattleCharacters.Struct.Weapon.get_attack_range weapon)
+         (BattleMap.Struct.Map.get_movement_cost_function
             model.map
             (Struct.Character.get_location char)
             (Array.toList model.characters)
@@ -73,12 +80,7 @@ handle_undo_switched_weapons model =
 
       (Just char) ->
          let
-            new_weapons =
-               (Struct.WeaponSet.switch_weapons
-                  (Struct.Character.get_weapons char)
-               )
-            new_char =
-               (Struct.Character.set_weapons new_weapons char)
+            new_char = (Struct.Character.toggle_is_using_primary char)
             tile_omnimods = (Struct.Model.tile_omnimods_fun model)
          in
             (Struct.CharacterTurn.lock_path

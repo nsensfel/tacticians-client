@@ -4,7 +4,7 @@ module View.SubMenu.Status.CharacterInfo exposing (get_html)
 import Html
 import Html.Attributes
 
--- Struct.Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
 
