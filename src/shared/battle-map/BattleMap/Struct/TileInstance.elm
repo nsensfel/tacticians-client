@@ -72,7 +72,11 @@ noise_function a b c =
 clone : BattleMap.Struct.Location.Type -> Type -> Type
 clone loc inst = {inst | location = loc}
 
-new_border : BattleMap.Struct.Tile.Ref -> BattleMap.Struct.Tile.VariantID -> Border
+new_border : (
+      BattleMap.Struct.Tile.Ref ->
+      BattleMap.Struct.Tile.VariantID ->
+      Border
+   )
 new_border class_id variant_id =
    {
       class_id = class_id,
@@ -83,10 +87,10 @@ default : BattleMap.Struct.Tile.Type -> Type
 default tile =
    {
       location = {x = 0, y = 0},
-      class_id = (Struct.Tile.get_id tile),
+      class_id = (BattleMap.Struct.Tile.get_id tile),
       variant_id = "0",
-      crossing_cost = (Struct.Tile.get_cost tile),
-      family = (Struct.Tile.get_family tile),
+      crossing_cost = (BattleMap.Struct.Tile.get_cost tile),
+      family = (BattleMap.Struct.Tile.get_family tile),
       triggers = [],
       borders = []
    }
@@ -147,8 +151,8 @@ solve tiles tile_inst =
    case (Dict.get tile_inst.class_id tiles) of
       (Just tile) ->
          {tile_inst |
-            crossing_cost = (Struct.Tile.get_cost tile),
-            family = (Struct.Tile.get_family tile)
+            crossing_cost = (BattleMap.Struct.Tile.get_cost tile),
+            family = (BattleMap.Struct.Tile.get_family tile)
          }
 
       Nothing ->

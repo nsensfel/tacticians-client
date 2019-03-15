@@ -27,9 +27,12 @@ import Battle.Struct.Omnimods
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Location
-import BattleMap.Struct.MapMarker
+import BattleMap.Struct.Marker
 import BattleMap.Struct.Tile
 import BattleMap.Struct.TileInstance
+
+-- Local Module ----------------------------------------------------------------
+import Constants.Movement
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -39,7 +42,7 @@ type alias Type =
       width : Int,
       height : Int,
       content : (Array.Array BattleMap.Struct.TileInstance.Type),
-      markers : (Dict.Dict String BattleMap.Struct.MapMarker.Type)
+      markers : (Dict.Dict String BattleMap.Struct.Marker.Type)
    }
 
 --------------------------------------------------------------------------------
@@ -70,7 +73,7 @@ get_height map = map.height
 get_tiles : Type -> (Array.Array BattleMap.Struct.TileInstance.Type)
 get_tiles map = map.content
 
-get_markers : Type -> (Dict.Dict String BattleMap.Struct.MapMarker.Type)
+get_markers : Type -> (Dict.Dict String BattleMap.Struct.Marker.Type)
 get_markers map = map.markers
 
 set_tile_to : BattleMap.Struct.Location.Type -> BattleMap.Struct.TileInstance.Type -> Type -> Type
@@ -163,7 +166,7 @@ decoder =
                (Json.Decode.map
                   (Dict.fromList)
                   (Json.Decode.keyValuePairs
-                     (BattleMap.Struct.MapMarker.decoder)
+                     (BattleMap.Struct.Marker.decoder)
                   )
                )
             )
@@ -174,32 +177,19 @@ decoder =
 
 get_movement_cost_function : (
       Type ->
+      (List BattleMap.Struct.Location.Type) ->
       BattleMap.Struct.Location.Type ->
-      (List BattleMap.Struct.Character.Type) ->
       BattleMap.Struct.Location.Type ->
       Int
    )
-get_movement_cost_function bmap start_loc char_list loc =
+get_movement_cost_function bmap occupied_tiles start_loc loc =
    if (has_location loc bmap)
    then
       case (Array.get (location_to_index loc bmap) bmap.content) of
          (Just tile) ->
-            if
-               (List.any
-                  (
-                     \c ->
-                        (
-                           ((BattleMap.Struct.Character.get_location c) == loc)
-                           && (loc /= start_loc)
-                           && (BattleMap.Struct.Character.is_alive c)
-                        )
-                  )
-                  char_list
-               )
-            then
-               Constants.Movement.cost_when_occupied_tile
-            else
-               (BattleMap.Struct.TileInstance.get_cost tile)
+            if ((loc /= start_loc) && (List.member loc occupied_tiles))
+            then Constants.Movement.cost_when_occupied_tile
+            else (BattleMap.Struct.TileInstance.get_cost tile)
 
          Nothing -> Constants.Movement.cost_when_out_of_bounds
    else

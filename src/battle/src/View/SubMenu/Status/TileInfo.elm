@@ -18,7 +18,7 @@ import BattleMap.Struct.Map
 import BattleMap.Struct.Tile
 import BattleMap.Struct.TileInstance
 
-import BattleMap.View.Map.Tile
+import BattleMap.View.Tile
 
 -- Local Module ----------------------------------------------------------------
 import Constants.Movement
@@ -45,7 +45,7 @@ get_icon tile =
             )
          )
       ]
-      (BattleMap.View.Map.Tile.get_content_html tile)
+      (BattleMap.View.Tile.get_content_html tile)
    )
 
 get_name : (

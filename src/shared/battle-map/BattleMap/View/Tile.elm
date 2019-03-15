@@ -1,4 +1,9 @@
-module BattleMap.View.Tile exposing (get_html, get_html_extra, get_content_html)
+module BattleMap.View.Tile exposing
+   (
+      get_html,
+      get_html_with_extra,
+      get_content_html
+   )
 
 -- Elm -------------------------------------------------------------------------
 import Html
@@ -66,6 +71,7 @@ get_content_html tile =
          ]
          []
       )
+      ::
       (Html.div
          [
             (Html.Attributes.class "tile-icon-bg"),
@@ -173,7 +179,7 @@ get_html display_cost tile =
 
 get_html_with_extra : (
       Bool ->
-      (List Html.Attributes.Attribute) ->
+      (List (Html.Attribute Struct.Event.Type)) ->
       BattleMap.Struct.TileInstance.Type ->
       (Html.Html Struct.Event.Type)
    )

@@ -1,4 +1,4 @@
-module BattleMap.Struct.MapMarker exposing
+module BattleMap.Struct.Marker exposing
    (
       Type,
       new,

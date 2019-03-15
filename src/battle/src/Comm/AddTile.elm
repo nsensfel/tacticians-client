@@ -16,7 +16,7 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-internal_decoder : Struct.Tile.Type -> Struct.ServerReply.Type
+internal_decoder : BattleMap.Struct.Tile.Type -> Struct.ServerReply.Type
 internal_decoder wp = (Struct.ServerReply.AddTile wp)
 
 --------------------------------------------------------------------------------

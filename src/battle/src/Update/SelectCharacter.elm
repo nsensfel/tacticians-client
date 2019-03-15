@@ -12,7 +12,7 @@ import Battle.Struct.Statistics
 import BattleCharacters.Struct.Weapon
 
 -- Battle Map ------------------------------------------------------------------
-import Struct.Map
+import BattleMap.Struct.Map
 import BattleMap.Struct.Location
 
 -- Local Module ----------------------------------------------------------------
@@ -50,10 +50,13 @@ get_character_navigator model char =
          )
          (BattleCharacters.Struct.Weapon.get_defense_range weapon)
          (BattleCharacters.Struct.Weapon.get_attack_range weapon)
-         (Struct.Map.get_movement_cost_function
+         (BattleMap.Struct.Map.get_movement_cost_function
             model.map
+            (List.map
+               (Struct.Character.get_location)
+               (Array.toList model.characters)
+            )
             (Struct.Character.get_location char)
-            (Array.toList model.characters)
          )
       )
 

@@ -46,7 +46,7 @@ import BattleCharacters.Struct.Portrait
 import BattleCharacters.Struct.Weapon
 
 -- Battle Map ------------------------------------------------------------------
-import Struct.Location
+import BattleMap.Struct.Location
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -57,7 +57,7 @@ type alias PartiallyDecoded =
       nam : String,
       rnk : String,
       prt : String,
-      lc : Struct.Location.Type,
+      lc : BattleMap.Struct.Location.Type,
       hea : Int,
       pla : Int,
       ena : Bool,
@@ -80,7 +80,7 @@ type alias Type =
       name : String,
       rank : Rank,
       portrait : BattleCharacters.Struct.Portrait.Type,
-      location : Struct.Location.Type,
+      location : BattleMap.Struct.Location.Type,
       health : Int,
       player_ix : Int,
       enabled : Bool,
@@ -118,7 +118,7 @@ finish_decoding : PartiallyDecoded -> TypeAndEquipmentRef
 finish_decoding add_char =
    let
       armor = BattleCharacters.Struct.Armor.none
-      portrait = BattleCharacters.Struct.Portrait.none
+      portrait = BattleCharacters.Struct.Portrait.default
       default_attributes = (Battle.Struct.Attributes.default)
       almost_char =
          {
@@ -176,10 +176,10 @@ get_sane_current_health c = (max 0 c.health)
 set_current_health : Int -> Type -> Type
 set_current_health health c = {c | health = health}
 
-get_location : Type -> Struct.Location.Type
+get_location : Type -> BattleMap.Struct.Location.Type
 get_location t = t.location
 
-set_location : Struct.Location.Type -> Type -> Type
+set_location : BattleMap.Struct.Location.Type -> Type -> Type
 set_location location char = {char | location = location}
 
 get_attributes : Type -> Battle.Struct.Attributes.Type
@@ -232,7 +232,7 @@ decoder =
          |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "rnk" Json.Decode.string)
          |> (Json.Decode.Pipeline.required "prt" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required "lc" Struct.Location.decoder)
+         |> (Json.Decode.Pipeline.required "lc" BattleMap.Struct.Location.decoder)
          |> (Json.Decode.Pipeline.required "hea" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "pla" Json.Decode.int)
          |> (Json.Decode.Pipeline.required "ena" Json.Decode.bool)
@@ -249,7 +249,7 @@ decoder =
    )
 
 refresh_omnimods : (
-      (Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
+      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
       Type ->
       Type
    )
@@ -302,7 +302,7 @@ refresh_omnimods tile_omnimods_fun char =
       }
 
 fill_missing_equipment_and_omnimods : (
-      (Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
+      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
       BattleCharacters.Struct.Portrait.Type ->
       BattleCharacters.Struct.Weapon.Type ->
       BattleCharacters.Struct.Weapon.Type ->

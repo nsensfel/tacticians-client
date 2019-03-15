@@ -1,4 +1,4 @@
-module BattleCharacters.Comm.AddPortrait exposing (decode)
+module Comm.AddPortrait exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode

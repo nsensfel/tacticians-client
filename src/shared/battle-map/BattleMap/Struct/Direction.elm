@@ -1,10 +1,10 @@
 module BattleMap.Struct.Direction exposing
-(
-   Type(..),
-   opposite_of,
-   to_string,
-   decoder
-)
+   (
+      Type(..),
+      opposite_of,
+      to_string,
+      decoder
+   )
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode

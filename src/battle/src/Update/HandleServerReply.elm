@@ -77,7 +77,7 @@ portrait_getter : (
 portrait_getter model ref =
    case (Dict.get ref model.portraits) of
       (Just w) -> w
-      Nothing -> BattleCharacters.Struct.Portrait.none
+      Nothing -> BattleCharacters.Struct.Portrait.default
 
 -----------
 

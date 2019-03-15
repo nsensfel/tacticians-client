@@ -12,11 +12,10 @@ import List
 -- Shared ----------------------------------------------------------------------
 import Util.Html
 
--- Battle ----------------------------------------------------------------------
-import View.BattleMap.Tile
-
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Map
+
+import BattleMap.View.Tile
 
 -- Local Module ----------------------------------------------------------------
 import Constants.UI
@@ -64,7 +63,7 @@ get_tiles_html map =
          )
       ]
       (List.map
-         (View.BattleMap.Tile.get_html False)
+         (BattleMap.View.Tile.get_html False)
          (Array.toList (BattleMap.Struct.Map.get_tiles map))
       )
    )

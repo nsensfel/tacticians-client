@@ -32,7 +32,7 @@ make_it_so model =
             new_char =
                (Struct.Character.refresh_omnimods
                   (\e -> current_tile_omnimods)
-                  (Struct.Character.set_weapons new_weapons char)
+                  (Struct.Character.toggle_is_using_primary char)
                )
          in
             {model |
