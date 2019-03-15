@@ -15,8 +15,9 @@
       <div class="main-server-version">__CONF_VERSION</div>
       <div class="main-server-logo"><img src="__CONF_SERVER_LOGO"/></div>
       <nav>
+         <a href="/login/">Continue</a>
+         <a href="/login/?mode=signup">New Game</a>
          <a href="/about.html">About</a>
-         <a href="/login/">Play</a>
          <a href="/news/"><s>News</s></a>
          <a href="/community/"><s>Community</s></a>
       </nav>
