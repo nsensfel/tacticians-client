@@ -4,12 +4,13 @@ module View.SubMenu exposing (get_html)
 import Html
 import Html.Attributes
 
--- Map Editor ------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
+import Util.Html
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
 import Struct.UI
-
-import Util.Html
 
 import View.SubMenu.Markers
 import View.SubMenu.Settings

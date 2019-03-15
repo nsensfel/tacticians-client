@@ -1,11 +1,11 @@
 module Update.SelectTile exposing (apply_to)
 
--- Elm -------------------------------------------------------------------------
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
 
--- Map Editor ------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.UI
-import Struct.Location
 import Struct.Model
 import Struct.Toolbox
 
@@ -18,7 +18,7 @@ import Struct.Toolbox
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Struct.Location.Ref ->
+      BattleMap.Struct.Location.Ref ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model loc_ref =
@@ -41,7 +41,7 @@ apply_to model loc_ref =
       let
          (toolbox, map) =
             (Struct.Toolbox.apply_to
-               (Struct.Location.from_ref loc_ref)
+               (BattleMap.Struct.Location.from_ref loc_ref)
                model.toolbox
                model.map
             )

@@ -19,8 +19,8 @@ module Struct.UI exposing
       set_previous_action
    )
 
--- Map Editor ------------------------------------------------------------------
-import Struct.Location
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -29,9 +29,10 @@ type Tab =
    StatusTab
    | TilesTab
    | SettingsTab
+   | MarkersTab 
 
 type Action =
-   SelectedLocation Struct.Location.Ref
+   SelectedLocation BattleMap.Struct.Location.Ref
 
 type alias Type =
    {
@@ -80,11 +81,12 @@ to_string tab =
    case tab of
       StatusTab -> "Status"
       TilesTab -> "Tiles"
+      MarkersTab -> "Markers"
       SettingsTab -> "Settings"
 
 get_all_tabs : (List Tab)
 get_all_tabs =
-   [StatusTab, TilesTab, SettingsTab]
+   [StatusTab, TilesTab, MarkersTab, SettingsTab]
 
 -- Previous Action -------------------------------------------------------------
 set_previous_action : (Maybe Action) -> Type -> Type

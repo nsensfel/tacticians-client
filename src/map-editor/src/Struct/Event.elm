@@ -3,12 +3,14 @@ module Struct.Event exposing (Type(..), attempted)
 -- Elm -------------------------------------------------------------------------
 import Http
 
--- Battlemap -------------------------------------------------------------------
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
+import BattleMap.Struct.Tile
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Error
 import Struct.HelpRequest
-import Struct.Location
 import Struct.ServerReply
-import Struct.Tile
 import Struct.Toolbox
 import Struct.UI
 
@@ -21,12 +23,13 @@ type Type =
    | ScaleChangeRequested Float
    | ServerReplied (Result Http.Error (List Struct.ServerReply.Type))
    | TabSelected Struct.UI.Tab
-   | TileSelected Struct.Location.Ref
+   | TileSelected BattleMap.Struct.Location.Ref
    | RequestedHelp Struct.HelpRequest.Type
    | ModeRequested Struct.Toolbox.Mode
    | ShapeRequested Struct.Toolbox.Shape
    | ClearSelectionRequested
-   | TemplateRequested (Struct.Tile.Ref, Struct.Tile.VariantID)
+   | TemplateRequested
+      (BattleMap.Struct.Tile.Ref, BattleMap.Struct.Tile.VariantID)
    | PrettifySelectionRequested
    | SendMapUpdateRequested
    | GoToMainMenu

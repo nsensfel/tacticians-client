@@ -7,21 +7,24 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Map Editor ------------------------------------------------------------------
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Map
+import BattleMap.Struct.Tile
+import BattleMap.Struct.TileInstance
+
+import BattleMap.View.Tile
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
-import Struct.Map
 import Struct.Model
-import Struct.Tile
-import Struct.TileInstance
 import Struct.Toolbox
 
-import View.Map.Tile
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_template_icon_html : (
-      Struct.TileInstance.Type ->
+      BattleMap.Struct.TileInstance.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_template_icon_html template =
@@ -32,7 +35,7 @@ get_template_icon_html template =
          (Html.Attributes.class "tile"),
          (Html.Attributes.class "tile-variant-0")
       ]
-      (View.Map.Tile.get_content_html template)
+      (BattleMap.View.Tile.get_content_html template)
    )
 
 get_mode_button : (
@@ -139,7 +142,7 @@ get_html model =
             (get_template_icon_html (Struct.Toolbox.get_template tb)),
             (get_modes_menu_html tb),
             (get_shapes_menu_html tb),
-            (get_markers_html (Dict.keys (Struct.Map.get_markers model.map))),
+            (get_markers_html (Dict.keys (BattleMap.Struct.Map.get_markers model.map))),
             (get_others_menu_html)
          ]
       )

@@ -5,7 +5,7 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Battlemap -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
 

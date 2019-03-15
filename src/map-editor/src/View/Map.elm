@@ -9,23 +9,25 @@ import Html.Lazy
 
 import List
 
--- Map Editor ------------------------------------------------------------------
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Map
+
+-- Local Module ----------------------------------------------------------------
 import Constants.UI
 
 import Struct.Event
-import Struct.Map
 import Struct.Model
 import Struct.Toolbox
 import Struct.UI
 
-import View.Map.Tile
+import View.SelectableTile
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_tiles_html : (
       Struct.Toolbox.Type ->
-      Struct.Map.Type ->
+      BattleMap.Struct.Map.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_tiles_html tb map =
@@ -37,7 +39,7 @@ get_tiles_html tb map =
             (
                (String.fromInt
                   (
-                     (Struct.Map.get_width map)
+                     (BattleMap.Struct.Map.get_width map)
                      * Constants.UI.tile_size
                   )
                )
@@ -49,7 +51,7 @@ get_tiles_html tb map =
             (
                (String.fromInt
                   (
-                     (Struct.Map.get_height map)
+                     (BattleMap.Struct.Map.get_height map)
                      * Constants.UI.tile_size
                   )
                )
@@ -58,8 +60,8 @@ get_tiles_html tb map =
          )
       ]
       (List.map
-         (View.Map.Tile.get_html tb)
-         (Array.toList (Struct.Map.get_tiles map))
+         (View.SelectableTile.get_html False tb)
+         (Array.toList (BattleMap.Struct.Map.get_tiles map))
       )
    )
 

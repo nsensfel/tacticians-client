@@ -3,8 +3,10 @@ module Comm.AddTile exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Battlemap -------------------------------------------------------------------
-import Struct.Tile
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Tile
+
+-- Local Module ----------------------------------------------------------------
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------
@@ -14,11 +16,11 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-internal_decoder : Struct.Tile.Type -> Struct.ServerReply.Type
+internal_decoder : BattleMap.Struct.Tile.Type -> Struct.ServerReply.Type
 internal_decoder wp = (Struct.ServerReply.AddTile wp)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.map (internal_decoder) (Struct.Tile.decoder))
+decode = (Json.Decode.map (internal_decoder) (BattleMap.Struct.Tile.decoder))

@@ -16,13 +16,17 @@ import Dict
 -- Shared ----------------------------------------------------------------------
 import Struct.Flags
 
--- Map Editor ------------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
+import Battle.Struct.Omnimods
+
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
+import BattleMap.Struct.Map
+import BattleMap.Struct.Tile
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Error
 import Struct.HelpRequest
-import Struct.Location
-import Struct.Map
-import Struct.Omnimods
-import Struct.Tile
 import Struct.TilePattern
 import Struct.Toolbox
 import Struct.UI
@@ -32,22 +36,22 @@ import Struct.UI
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      flags: Struct.Flags.Type,
-      toolbox: Struct.Toolbox.Type,
-      help_request: Struct.HelpRequest.Type,
-      map: Struct.Map.Type,
-      tile_patterns:
+      flags : Struct.Flags.Type,
+      toolbox : Struct.Toolbox.Type,
+      help_request : Struct.HelpRequest.Type,
+      map : BattleMap.Struct.Map.Type,
+      tile_patterns :
          (Dict.Dict
             Struct.TilePattern.Actual
-            Struct.Tile.VariantID
+            BattleMap.Struct.Tile.VariantID
          ),
-      wild_tile_patterns: (List Struct.TilePattern.Type),
-      tiles: (Dict.Dict Struct.Tile.Ref Struct.Tile.Type),
-      error: (Maybe Struct.Error.Type),
-      player_id: String,
-      map_id: String,
-      session_token: String,
-      ui: Struct.UI.Type
+      wild_tile_patterns : (List Struct.TilePattern.Type),
+      tiles : (Dict.Dict BattleMap.Struct.Tile.Ref BattleMap.Struct.Tile.Type),
+      error : (Maybe Struct.Error.Type),
+      player_id : String,
+      map_id : String,
+      session_token : String,
+      ui : Struct.UI.Type
    }
 
 --------------------------------------------------------------------------------
@@ -57,9 +61,12 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-tile_omnimods_fun : Type -> (Struct.Location.Type -> Struct.Omnimods.Type)
+tile_omnimods_fun : (
+      Type ->
+      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type)
+   )
 tile_omnimods_fun model =
-   (\loc -> (Struct.Map.get_omnimods_at loc model.tiles model.map))
+   (\loc -> (BattleMap.Struct.Map.get_omnimods_at loc model.tiles model.map))
 
 new : Struct.Flags.Type -> Type
 new flags =
@@ -70,7 +77,7 @@ new flags =
             flags = flags,
             toolbox = (Struct.Toolbox.default),
             help_request = Struct.HelpRequest.None,
-            map = (Struct.Map.empty),
+            map = (BattleMap.Struct.Map.empty),
             tiles = (Dict.empty),
             tile_patterns = (Dict.empty),
             wild_tile_patterns = [],
@@ -98,12 +105,12 @@ new flags =
 
          (Just id) -> {model | map_id = id}
 
-add_tile : Struct.Tile.Type -> Type -> Type
+add_tile : BattleMap.Struct.Tile.Type -> Type -> Type
 add_tile tl model =
    {model |
       tiles =
          (Dict.insert
-            (Struct.Tile.get_id tl)
+            (BattleMap.Struct.Tile.get_id tl)
             tl
             model.tiles
          )

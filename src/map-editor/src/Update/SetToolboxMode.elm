@@ -1,7 +1,6 @@
 module Update.SetToolboxMode exposing (apply_to)
--- Elm -------------------------------------------------------------------------
 
--- Map Editor ------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
 import Struct.Toolbox

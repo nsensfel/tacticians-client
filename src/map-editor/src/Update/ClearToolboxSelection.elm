@@ -1,7 +1,6 @@
 module Update.ClearToolboxSelection exposing (apply_to)
--- Elm -------------------------------------------------------------------------
 
--- Battlemap -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Toolbox
 import Struct.Model

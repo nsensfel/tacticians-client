@@ -6,7 +6,7 @@ import Http
 import Json.Decode
 import Json.Encode
 
--- Battlemap -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Comm.AddTile
 import Comm.AddTilePattern
 import Comm.Okay

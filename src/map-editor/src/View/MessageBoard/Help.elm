@@ -4,7 +4,7 @@ module View.MessageBoard.Help exposing (get_html)
 import Html
 import Html.Attributes
 
--- Battlemap -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.HelpRequest
 import Struct.Model

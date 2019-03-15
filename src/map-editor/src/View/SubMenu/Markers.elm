@@ -7,33 +7,30 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Map Editor ------------------------------------------------------------------
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Tile
+import BattleMap.Struct.Map
+import BattleMap.Struct.Marker
+import BattleMap.Struct.TileInstance
+
+import BattleMap.View.Tile
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
-import Struct.Tile
-import Struct.TileInstance
-
-import View.Map.Tile
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_marker_html : (
-      (String, Struct.MapMarker.Type)
+      (String, BattleMap.Struct.Marker.Type)
       -> (Html.Html Struct.Event.Type)
    )
 get_marker_html (ref, marker) =
    (Html.div
       [
-         (Html.Attributes.class "tile"),
-         (Html.Attributes.class "tiled"),
-         (Html.Attributes.class "clickable"),
-         (Html.Attributes.class "tile-variant-0"),
-         (Html.Events.onClick
-            (Struct.Event.TemplateRequested ((Struct.Tile.get_id tile), "0"))
-         )
       ]
-      (View.Map.Tile.get_content_html (Struct.TileInstance.default tile))
+      [(Html.text ref)]
    )
 
 --------------------------------------------------------------------------------
@@ -48,6 +45,6 @@ get_html model =
       ]
       (List.map
          (get_marker_html)
-         (Dict.toList (Struct.Map.get_markers model.map))
+         (Dict.toList (BattleMap.Struct.Map.get_markers model.map))
       )
    )

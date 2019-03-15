@@ -4,7 +4,7 @@ module View.MessageBoard.Error exposing (get_html)
 import Html
 import Html.Attributes
 
--- Battlemap -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Error
 import Struct.Event
 import Struct.Model

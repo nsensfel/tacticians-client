@@ -3,7 +3,7 @@ module Comm.AddTilePattern exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Battlemap -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.TilePattern
 import Struct.ServerReply
 

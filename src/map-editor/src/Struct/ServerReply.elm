@@ -1,10 +1,10 @@
 module Struct.ServerReply exposing (Type(..))
 
--- Elm -------------------------------------------------------------------------
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Map
+import BattleMap.Struct.Tile
 
--- Map Editor ------------------------------------------------------------------
-import Struct.Map
-import Struct.Tile
+-- Local Module ----------------------------------------------------------------
 import Struct.TilePattern
 
 --------------------------------------------------------------------------------
@@ -14,9 +14,9 @@ import Struct.TilePattern
 type Type =
    Okay
    | Disconnected
-   | AddTile Struct.Tile.Type
+   | AddTile BattleMap.Struct.Tile.Type
    | AddTilePattern Struct.TilePattern.Type
-   | SetMap Struct.Map.Type
+   | SetMap BattleMap.Struct.Map.Type
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------

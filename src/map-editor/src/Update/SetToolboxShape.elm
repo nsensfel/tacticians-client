@@ -1,7 +1,6 @@
 module Update.SetToolboxShape exposing (apply_to)
--- Elm -------------------------------------------------------------------------
 
--- Battlemap -------------------------------------------------------------------
+-- Local module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Toolbox
 import Struct.Model

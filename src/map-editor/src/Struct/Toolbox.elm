@@ -19,25 +19,24 @@ module Struct.Toolbox exposing
       default
    )
 
--- Elm -------------------------------------------------------------------------
-
--- Map Editor ------------------------------------------------------------------
-import Struct.Location
-import Struct.Map
-import Struct.TileInstance
-
+-- Shared ----------------------------------------------------------------------
 import Util.List
+
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
+import BattleMap.Struct.Map
+import BattleMap.Struct.TileInstance
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      template : Struct.TileInstance.Type,
+      template : BattleMap.Struct.TileInstance.Type,
       mode : Mode,
       shape : Shape,
-      selection : (List Struct.Location.Type),
-      square_corner : (Maybe Struct.Location.Type)
+      selection : (List BattleMap.Struct.Location.Type),
+      square_corner : (Maybe BattleMap.Struct.Location.Type)
    }
 
 type Mode =
@@ -56,9 +55,9 @@ type Shape =
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_mode_to : (
-      Struct.Location.Type ->
-      (Type, Struct.Map.Type) ->
-      (Type, Struct.Map.Type)
+      BattleMap.Struct.Location.Type ->
+      (Type, BattleMap.Struct.Map.Type) ->
+      (Type, BattleMap.Struct.Map.Type)
    )
 apply_mode_to loc (tb, map) =
    case tb.mode of
@@ -67,9 +66,9 @@ apply_mode_to loc (tb, map) =
          then
             (
                tb,
-               (Struct.Map.set_tile_to
+               (BattleMap.Struct.Map.set_tile_to
                   loc
-                  (Struct.TileInstance.clone loc tb.template)
+                  (BattleMap.Struct.TileInstance.clone loc tb.template)
                   map
                )
             )
@@ -106,10 +105,10 @@ apply_mode_to loc (tb, map) =
          )
 
 get_filled_tiles_internals : (
-      (Struct.Location.Type -> Bool) ->
-      (List Struct.Location.Type) ->
-      (List Struct.Location.Type) ->
-      (List Struct.Location.Type)
+      (BattleMap.Struct.Location.Type -> Bool) ->
+      (List BattleMap.Struct.Location.Type) ->
+      (List BattleMap.Struct.Location.Type) ->
+      (List BattleMap.Struct.Location.Type)
    )
 get_filled_tiles_internals match_fun candidates result =
    case (Util.List.pop candidates) of
@@ -129,7 +128,7 @@ get_filled_tiles_internals match_fun candidates result =
                            )
                         )
                      )
-                     (Struct.Location.neighbors loc)
+                     (BattleMap.Struct.Location.neighbors loc)
                   )
                   ++ remaining_candidates
                )
@@ -139,24 +138,25 @@ get_filled_tiles_internals match_fun candidates result =
             (get_filled_tiles_internals match_fun remaining_candidates result)
 
 get_filled_tiles : (
-      (List Struct.Location.Type) ->
-      Struct.Map.Type ->
-      Struct.Location.Type ->
-      (List Struct.Location.Type)
+      (List BattleMap.Struct.Location.Type) ->
+      BattleMap.Struct.Map.Type ->
+      BattleMap.Struct.Location.Type ->
+      (List BattleMap.Struct.Location.Type)
    )
 get_filled_tiles selection map loc =
-   case (Struct.Map.try_getting_tile_at loc map) of
+   case (BattleMap.Struct.Map.try_getting_tile_at loc map) of
       Nothing -> []
       (Just target) ->
          let
-            target_class_id = (Struct.TileInstance.get_class_id target)
+            target_class_id =
+               (BattleMap.Struct.TileInstance.get_class_id target)
             map_match_fun =
                (\e ->
-                  (case (Struct.Map.try_getting_tile_at e map) of
+                  (case (BattleMap.Struct.Map.try_getting_tile_at e map) of
                      Nothing -> False
                      (Just t) ->
                         (
-                           (Struct.TileInstance.get_class_id t)
+                           (BattleMap.Struct.TileInstance.get_class_id t)
                            == target_class_id
                         )
                   )
@@ -173,10 +173,10 @@ get_filled_tiles selection map loc =
             )
 
 get_square_tiles : (
-      Struct.Location.Type ->
-      Struct.Map.Type ->
-      Struct.Location.Type ->
-      (List Struct.Location.Type)
+      BattleMap.Struct.Location.Type ->
+      BattleMap.Struct.Map.Type ->
+      BattleMap.Struct.Location.Type ->
+      (List BattleMap.Struct.Location.Type)
    )
 get_square_tiles corner map new_loc =
    let
@@ -189,7 +189,7 @@ get_square_tiles corner map new_loc =
          then (List.range corner.y new_loc.y)
          else (List.range new_loc.y corner.y)
    in
-      (Util.List.product_map (Struct.Location.new) x_range y_range)
+      (Util.List.product_map (BattleMap.Struct.Location.new) x_range y_range)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -197,14 +197,14 @@ get_square_tiles corner map new_loc =
 default : Type
 default =
    {
-      template = (Struct.TileInstance.error 0 0),
+      template = (BattleMap.Struct.TileInstance.error 0 0),
       mode = Draw,
       shape = Simple,
       selection = [],
       square_corner = Nothing
    }
 
-get_template : Type -> Struct.TileInstance.Type
+get_template : Type -> BattleMap.Struct.TileInstance.Type
 get_template tb = tb.template
 
 get_mode : Type -> Mode
@@ -235,10 +235,10 @@ get_shapes mode =
             Square
          ]
 
-get_selection : Type -> (List Struct.Location.Type)
+get_selection : Type -> (List BattleMap.Struct.Location.Type)
 get_selection tb = tb.selection
 
-set_template : Struct.TileInstance.Type -> Type -> Type
+set_template : BattleMap.Struct.TileInstance.Type -> Type -> Type
 set_template template tb =
    {tb |
       template = template,
@@ -272,19 +272,19 @@ clear_selection tb =
       square_corner = Nothing
    }
 
-is_selected : Struct.Location.Type -> Type -> Bool
+is_selected : BattleMap.Struct.Location.Type -> Type -> Bool
 is_selected loc tb =
    (List.member loc tb.selection)
 
-is_square_corner : Struct.Location.Type -> Type -> Bool
+is_square_corner : BattleMap.Struct.Location.Type -> Type -> Bool
 is_square_corner loc tb =
    (tb.square_corner == (Just loc))
 
 apply_to : (
-      Struct.Location.Type ->
+      BattleMap.Struct.Location.Type ->
       Type ->
-      Struct.Map.Type ->
-      (Type, Struct.Map.Type)
+      BattleMap.Struct.Map.Type ->
+      (Type, BattleMap.Struct.Map.Type)
    )
 apply_to loc tb map =
    case tb.shape of

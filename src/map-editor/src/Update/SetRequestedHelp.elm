@@ -1,7 +1,6 @@
 module Update.SetRequestedHelp exposing (apply_to)
--- Elm -------------------------------------------------------------------------
 
--- Battlemap -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.HelpRequest
 import Struct.Model

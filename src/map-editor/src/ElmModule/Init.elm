@@ -1,14 +1,14 @@
 module ElmModule.Init exposing (init)
 
--- Elm -------------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
+import Struct.Flags
 
--- Battlemap -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Comm.LoadTilePatterns
 import Comm.LoadTiles
 import Comm.LoadMap
 
 import Struct.Event
-import Struct.Flags
 import Struct.Model
 
 --------------------------------------------------------------------------------

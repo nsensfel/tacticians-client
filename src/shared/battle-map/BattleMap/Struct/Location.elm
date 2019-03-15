@@ -27,6 +27,13 @@ type alias Ref = (Int, Int)
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+new : Int -> Int -> Type
+new x y =
+   {
+      x = x,
+      y = y
+   }
+
 neighbor : BattleMap.Struct.Direction.Type -> Type -> Type
 neighbor dir loc =
    case dir of
@@ -68,3 +75,27 @@ encode loc =
          ( "y", (Json.Encode.int loc.y) )
       ]
    )
+
+neighbors : Type -> (List Type)
+neighbors loc =
+   [
+      {loc | x = (loc.x + 1)},
+      {loc | x = (loc.x - 1)},
+      {loc | y = (loc.y - 1)},
+      {loc | y = (loc.y + 1)}
+   ]
+
+get_full_neighborhood : Type -> (List Type)
+get_full_neighborhood loc =
+   [
+      {loc | x = (loc.x - 1), y = (loc.y - 1)},
+      {loc | y = (loc.y - 1)},
+      {loc | x = (loc.x + 1), y = (loc.y - 1)},
+      {loc | x = (loc.x - 1)},
+      {loc | x = (loc.x + 1)},
+      {loc | x = (loc.x - 1), y = (loc.y + 1)},
+      {loc | y = (loc.y + 1)},
+      {loc | x = (loc.x + 1), y = (loc.y + 1)}
+   ]
+
+

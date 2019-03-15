@@ -1,7 +1,7 @@
 module Update.SendMapUpdate exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 
--- Battlemap -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Comm.SendMapUpdate
 
 import Struct.Event

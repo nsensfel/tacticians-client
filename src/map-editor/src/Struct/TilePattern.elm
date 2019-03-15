@@ -16,9 +16,9 @@ import List
 import Json.Decode
 import Json.Decode.Pipeline
 
--- Map Editor ------------------------------------------------------------------
-import Struct.Tile
-import Struct.TileInstance
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Tile
+import BattleMap.Struct.TileInstance
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -27,7 +27,7 @@ type alias Actual = String
 
 type alias Type =
    {
-      v : Struct.Tile.VariantID,
+      v : BattleMap.Struct.Tile.VariantID,
       w : Bool,
       p : Actual
    }
@@ -40,15 +40,15 @@ type alias Type =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_pattern_for : (
-      Struct.Tile.FamilyID ->
-      (List Struct.TileInstance.Type) ->
+      BattleMap.Struct.Tile.FamilyID ->
+      (List BattleMap.Struct.TileInstance.Type) ->
       Actual
    )
 get_pattern_for source_fa neighborhood =
    (List.foldl
       (\t -> \acc ->
          let
-            t_fa = (Struct.TileInstance.get_family t)
+            t_fa = (BattleMap.Struct.TileInstance.get_family t)
          in
             if ((t_fa == "-1") || (t_fa == source_fa))
             then (acc ++ "1")
@@ -72,7 +72,7 @@ patterns_match a b =
 get_pattern : Type -> Actual
 get_pattern tp = tp.p
 
-get_variant_id : Type -> Struct.Tile.VariantID
+get_variant_id : Type -> BattleMap.Struct.Tile.VariantID
 get_variant_id tp = tp.v
 
 is_wild : Type -> Bool

@@ -7,19 +7,21 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Map Editor ------------------------------------------------------------------
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Tile
+import BattleMap.Struct.TileInstance
+
+import BattleMap.View.Tile
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
-import Struct.Tile
-import Struct.TileInstance
-
-import View.Map.Tile
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_icon_html : (
-      (Struct.Tile.Ref, Struct.Tile.Type) ->
+      (BattleMap.Struct.Tile.Ref, BattleMap.Struct.Tile.Type) ->
       (Html.Html Struct.Event.Type)
    )
 get_icon_html (ref, tile) =
@@ -30,10 +32,14 @@ get_icon_html (ref, tile) =
          (Html.Attributes.class "clickable"),
          (Html.Attributes.class "tile-variant-0"),
          (Html.Events.onClick
-            (Struct.Event.TemplateRequested ((Struct.Tile.get_id tile), "0"))
+            (Struct.Event.TemplateRequested
+               ((BattleMap.Struct.Tile.get_id tile), "0")
+            )
          )
       ]
-      (View.Map.Tile.get_content_html (Struct.TileInstance.default tile))
+      (BattleMap.View.Tile.get_content_html
+         (BattleMap.Struct.TileInstance.default tile)
+      )
    )
 
 --------------------------------------------------------------------------------

@@ -12,15 +12,17 @@ import Struct.Flags
 
 import Util.Http
 
--- Map Editor ------------------------------------------------------------------
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Map
+import BattleMap.Struct.Tile
+
+-- Local Module ----------------------------------------------------------------
 import Constants.IO
 
-import Struct.Map
 import Struct.Error
 import Struct.Event
 import Struct.Model
 import Struct.ServerReply
-import Struct.Tile
 import Struct.TilePattern
 
 --------------------------------------------------------------------------------
@@ -56,7 +58,7 @@ disconnected current_state =
       )
 
 add_tile : (
-      Struct.Tile.Type ->
+      BattleMap.Struct.Tile.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
@@ -74,13 +76,13 @@ add_tile_pattern tp current_state =
       ((Struct.Model.add_tile_pattern tp model), cmds)
 
 set_map : (
-      Struct.Map.Type ->
+      BattleMap.Struct.Map.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 set_map map current_state =
    let (model, cmds) = current_state in
-      ({model | map = (Struct.Map.solve_tiles model.tiles map)}, cmds)
+      ({model | map = (BattleMap.Struct.Map.solve_tiles model.tiles map)}, cmds)
 
 refresh_map : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
@@ -88,7 +90,12 @@ refresh_map : (
    )
 refresh_map current_state =
    let (model, cmds) = current_state in
-      ({model | map = (Struct.Map.solve_tiles model.tiles model.map)}, cmds)
+      (
+         {model |
+            map = (BattleMap.Struct.Map.solve_tiles model.tiles model.map)
+         },
+         cmds
+      )
 
 apply_command : (
       Struct.ServerReply.Type ->
