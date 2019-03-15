@@ -1,9 +1,6 @@
 module Update.JoinBattle exposing (apply_to)
 
--- Elm -------------------------------------------------------------------------
---import Array
-
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Comm.JoinBattle
 
 import Struct.Event

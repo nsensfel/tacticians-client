@@ -21,13 +21,15 @@ import Json.Decode
 import Json.Decode.Pipeline
 import Json.Encode
 
--- Roster Editor ---------------------------------------------------------------
-import Struct.Armor
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Weapon
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Glyph
 import Struct.GlyphBoard
-import Struct.Portrait
-import Struct.Weapon
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -81,12 +83,21 @@ from_character char =
       index = (Struct.Character.get_index char),
       name = (Struct.Character.get_name char),
       portrait_id =
-         (Struct.Portrait.get_id (Struct.Character.get_portrait char)),
-      armor_id = (Struct.Armor.get_id (Struct.Character.get_armor char)),
+         (BattleCharacters.Struct.Portrait.get_id
+            (Struct.Character.get_portrait char)
+         ),
+      armor_id =
+         (BattleCharacters.Struct.Armor.get_id
+            (Struct.Character.get_armor char)
+         ),
       main_weapon_id =
-         (Struct.Weapon.get_id (Struct.Character.get_primary_weapon char)),
+         (BattleCharacters.Struct.Weapon.get_id
+            (Struct.Character.get_primary_weapon char)
+         ),
       secondary_weapon_id =
-         (Struct.Weapon.get_id (Struct.Character.get_secondary_weapon char)),
+         (BattleCharacters.Struct.Weapon.get_id
+            (Struct.Character.get_secondary_weapon char)
+         ),
       glyph_board_id =
          (Struct.GlyphBoard.get_id (Struct.Character.get_glyph_board char)),
       glyph_ids =

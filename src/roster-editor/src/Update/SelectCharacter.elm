@@ -3,7 +3,7 @@ module Update.SelectCharacter exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Array
 
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Error
 import Struct.Event
 import Struct.Model

@@ -7,13 +7,16 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Roster Editor ---------------------------------------------------------------
-import Struct.Armor
+-- Battle ----------------------------------------------------------------------
+import Battle.View.Omnimods
+
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
-import Struct.Omnimods
 
-import View.Omnimods
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -34,7 +37,7 @@ get_mod_html mod =
       )
 
 get_armor_html : (
-      Struct.Armor.Type ->
+      BattleCharacters.Struct.Armor.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_armor_html armor =
@@ -43,7 +46,9 @@ get_armor_html armor =
          (Html.Attributes.class "character-card-armor"),
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
-            (Struct.Event.SelectedArmor (Struct.Armor.get_id armor))
+            (Struct.Event.SelectedArmor
+               (BattleCharacters.Struct.Armor.get_id armor)
+            )
          )
       ]
       [
@@ -52,10 +57,14 @@ get_armor_html armor =
                (Html.Attributes.class "character-card-armor-name")
             ]
             [
-               (Html.text (Struct.Armor.get_name armor))
+               (Html.text
+                  (BattleCharacters.Struct.Armor.get_name armor)
+               )
             ]
          ),
-         (View.Omnimods.get_html (Struct.Armor.get_omnimods armor))
+         (Battle.View.Omnimods.get_html
+            (BattleCharacters.Struct.Armor.get_omnimods armor)
+         )
       ]
    )
 

@@ -1,8 +1,6 @@
 module Update.SetName exposing (apply_to)
 
--- Elm -------------------------------------------------------------------------
-
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
 import Struct.Model

@@ -4,7 +4,7 @@ module ElmModule.View exposing (view)
 import Html
 import Html.Attributes
 
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
 

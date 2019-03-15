@@ -3,16 +3,18 @@ module Struct.Event exposing (Type(..), attempted)
 -- Elm -------------------------------------------------------------------------
 import Http
 
--- Roster Editor ---------------------------------------------------------------
-import Struct.Armor
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Weapon
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Error
 import Struct.Glyph
 import Struct.GlyphBoard
 import Struct.HelpRequest
-import Struct.Portrait
 import Struct.ServerReply
 import Struct.UI
-import Struct.Weapon
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -32,11 +34,11 @@ type Type =
 
    | SetCharacterName String
 
-   | SelectedArmor Struct.Armor.Ref
+   | SelectedArmor BattleCharacters.Struct.Armor.Ref
    | SelectedGlyph Struct.Glyph.Ref
    | SelectedGlyphBoard Struct.GlyphBoard.Ref
-   | SelectedPortrait Struct.Portrait.Ref
-   | SelectedWeapon Struct.Weapon.Ref
+   | SelectedPortrait BattleCharacters.Struct.Portrait.Ref
+   | SelectedWeapon BattleCharacters.Struct.Weapon.Ref
 
    | SwitchWeapons
 

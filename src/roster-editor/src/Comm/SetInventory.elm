@@ -3,7 +3,7 @@ module Comm.SetInventory exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Inventory
 import Struct.ServerReply
 

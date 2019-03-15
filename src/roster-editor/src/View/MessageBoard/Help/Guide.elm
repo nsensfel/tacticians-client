@@ -4,7 +4,7 @@ module View.MessageBoard.Help.Guide exposing (get_html_contents)
 import Html
 import Html.Attributes
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
 

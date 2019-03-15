@@ -3,7 +3,7 @@ module Update.SendRoster exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Array
 
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Comm.UpdateRoster
 
 import Struct.Character

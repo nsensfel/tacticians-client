@@ -11,20 +11,25 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Roster Editor ---------------------------------------------------------------
-import Struct.Armor
-import Struct.Attributes
+-- Battle ----------------------------------------------------------------------
+import Battle.Struct.Attributes
+import Battle.Struct.Omnimods
+import Battle.Struct.Statistics
+
+import Battle.View.Omnimods
+
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Weapon
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
 import Struct.GlyphBoard
-import Struct.Omnimods
-import Struct.Statistics
 import Struct.UI
-import Struct.Weapon
 
 import View.Character
 import View.Gauge
-import View.Omnimods
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -67,7 +72,7 @@ get_health_bar : (
 get_health_bar char =
    let
       max =
-         (Struct.Statistics.get_max_health
+         (Battle.Struct.Statistics.get_max_health
             (Struct.Character.get_statistics char)
          )
    in
@@ -96,7 +101,7 @@ get_movement_bar : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_movement_bar char =
    let
       max =
-         (Struct.Statistics.get_movement_points
+         (Battle.Struct.Statistics.get_movement_points
             (Struct.Character.get_statistics char)
          )
    in
@@ -105,7 +110,7 @@ get_movement_bar char =
             "MP: "
             ++
             (String.fromInt
-               (Struct.Statistics.get_movement_points
+               (Battle.Struct.Statistics.get_movement_points
                   (Struct.Character.get_statistics char)
                )
             )
@@ -118,7 +123,7 @@ get_movement_bar char =
 
 get_weapon_field_header : (
       Float ->
-      Struct.Weapon.Type ->
+      BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_weapon_field_header damage_multiplier weapon =
@@ -131,7 +136,7 @@ get_weapon_field_header damage_multiplier weapon =
             [
             ]
             [
-               (Html.text (Struct.Weapon.get_name weapon))
+               (Html.text (BattleCharacters.Struct.Weapon.get_name weapon))
             ]
          ),
          (Html.div
@@ -150,7 +155,11 @@ get_weapon_field_header damage_multiplier weapon =
                   (String.fromInt
                      (ceiling
                         (
-                           (toFloat (Struct.Weapon.get_damage_sum weapon))
+                           (toFloat
+                              (BattleCharacters.Struct.Weapon.get_damage_sum
+                                 weapon
+                              )
+                           )
                            * damage_multiplier
                         )
                      )
@@ -167,12 +176,16 @@ get_weapon_field_header damage_multiplier weapon =
                (Html.text
                   (
                      (String.fromInt
-                        (Struct.Weapon.get_defense_range weapon)
+                        (BattleCharacters.Struct.Weapon.get_defense_range
+                           weapon
+                        )
                      )
                      ++ "-"
                      ++
                      (String.fromInt
-                        (Struct.Weapon.get_attack_range weapon)
+                        (BattleCharacters.Struct.Weapon.get_attack_range
+                           weapon
+                        )
                      )
                   )
                )
@@ -203,7 +216,11 @@ get_mod_html mod =
          ]
       )
 
-get_multiplied_mod_html : Float -> (String, Int) -> (Html.Html Struct.Event.Type)
+get_multiplied_mod_html : (
+      Float ->
+      (String, Int) ->
+      (Html.Html Struct.Event.Type)
+   )
 get_multiplied_mod_html multiplier mod =
    let
       (category, value) = mod
@@ -229,7 +246,7 @@ get_multiplied_mod_html multiplier mod =
 
 get_weapon_details : (
       Float ->
-      Struct.Weapon.Type ->
+      BattleCharacters.Struct.Weapon.Type ->
       Bool ->
       (Html.Html Struct.Event.Type)
    )
@@ -246,9 +263,9 @@ get_weapon_details damage_multiplier weapon is_active_wp =
         ]
          [
             (get_weapon_field_header damage_multiplier weapon),
-            (View.Omnimods.get_html_with_modifier
+            (Battle.View.Omnimods.get_html_with_modifier
                damage_multiplier
-               (Struct.Weapon.get_omnimods weapon)
+               (BattleCharacters.Struct.Weapon.get_omnimods weapon)
             )
          ]
       )
@@ -266,7 +283,7 @@ get_weapon_details damage_multiplier weapon is_active_wp =
 
 get_armor_details : (
       Float ->
-      Struct.Armor.Type ->
+      BattleCharacters.Struct.Armor.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_armor_details damage_modifier armor =
@@ -284,12 +301,12 @@ get_armor_details damage_modifier armor =
                (Html.Attributes.class "character-card-armor-name")
             ]
             [
-               (Html.text (Struct.Armor.get_name armor))
+               (Html.text (BattleCharacters.Struct.Armor.get_name armor))
             ]
          ),
-         (View.Omnimods.get_html_with_modifier
+         (Battle.View.Omnimods.get_html_with_modifier
             damage_modifier
-            (Struct.Armor.get_omnimods armor)
+            (BattleCharacters.Struct.Armor.get_omnimods armor)
          )
       ]
    )
@@ -317,7 +334,7 @@ get_glyph_board_details damage_modifier board =
                (Html.text (Struct.GlyphBoard.get_name board))
             ]
          ),
-         (View.Omnimods.get_html_with_modifier
+         (Battle.View.Omnimods.get_html_with_modifier
             damage_modifier
             (Struct.GlyphBoard.get_omnimods board)
          )
@@ -359,7 +376,7 @@ stat_val val perc =
    )
 
 get_relevant_stats : (
-      Struct.Statistics.Type ->
+      Battle.Struct.Statistics.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_relevant_stats stats =
@@ -373,20 +390,20 @@ get_relevant_stats stats =
       ]
       [
          (stat_name "dodg"),
-         (stat_val (Struct.Statistics.get_dodges stats) True),
+         (stat_val (Battle.Struct.Statistics.get_dodges stats) True),
          (stat_name "pary"),
-         (stat_val (Struct.Statistics.get_parries stats) True),
+         (stat_val (Battle.Struct.Statistics.get_parries stats) True),
          (stat_name "accu"),
-         (stat_val (Struct.Statistics.get_accuracy stats) False),
+         (stat_val (Battle.Struct.Statistics.get_accuracy stats) False),
          (stat_name "dhit"),
-         (stat_val (Struct.Statistics.get_double_hits stats) True),
+         (stat_val (Battle.Struct.Statistics.get_double_hits stats) True),
          (stat_name "crit"),
-         (stat_val (Struct.Statistics.get_critical_hits stats) True)
+         (stat_val (Battle.Struct.Statistics.get_critical_hits stats) True)
       ]
    )
 
 get_attributes : (
-      Struct.Attributes.Type ->
+      Battle.Struct.Attributes.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_attributes atts =
@@ -400,17 +417,17 @@ get_attributes atts =
       ]
       [
          (stat_name "con"),
-         (stat_val (Struct.Attributes.get_constitution atts) False),
+         (stat_val (Battle.Struct.Attributes.get_constitution atts) False),
          (stat_name "str"),
-         (stat_val (Struct.Attributes.get_strength atts) False),
+         (stat_val (Battle.Struct.Attributes.get_strength atts) False),
          (stat_name "dex"),
-         (stat_val (Struct.Attributes.get_dexterity atts) False),
+         (stat_val (Battle.Struct.Attributes.get_dexterity atts) False),
          (stat_name "spe"),
-         (stat_val (Struct.Attributes.get_speed atts) False),
+         (stat_val (Battle.Struct.Attributes.get_speed atts) False),
          (stat_name "int"),
-         (stat_val (Struct.Attributes.get_intelligence atts) False),
+         (stat_val (Battle.Struct.Attributes.get_intelligence atts) False),
          (stat_name "min"),
-         (stat_val (Struct.Attributes.get_mind atts) False)
+         (stat_val (Battle.Struct.Attributes.get_mind atts) False)
       ]
    )
 
@@ -461,7 +478,10 @@ get_full_html char =
    let
       is_using_secondary = (Struct.Character.get_is_using_secondary char)
       char_statistics = (Struct.Character.get_statistics char)
-      damage_modifier = (Struct.Statistics.get_damage_modifier char_statistics)
+      damage_modifier =
+         (Battle.Struct.Statistics.get_damage_modifier
+            char_statistics
+         )
       armor = (Struct.Character.get_armor char)
    in
       (Html.div

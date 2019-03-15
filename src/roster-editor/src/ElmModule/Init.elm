@@ -1,8 +1,9 @@
 module ElmModule.Init exposing (init)
 
--- Elm -------------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
+import Struct.Flags
 
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Comm.LoadRoster
 import Comm.LoadArmors
 import Comm.LoadWeapons
@@ -11,7 +12,6 @@ import Comm.LoadGlyphs
 import Comm.LoadGlyphBoards
 
 import Struct.Event
-import Struct.Flags
 import Struct.Model
 
 --------------------------------------------------------------------------------

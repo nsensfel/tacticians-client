@@ -26,8 +26,14 @@ import Dict
 -- Shared ----------------------------------------------------------------------
 import Struct.Flags
 
--- Roster Editor ---------------------------------------------------------------
-import Struct.Armor
+import Util.Array
+
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Weapon
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.CharacterRecord
 import Struct.Error
@@ -35,34 +41,42 @@ import Struct.Glyph
 import Struct.GlyphBoard
 import Struct.HelpRequest
 import Struct.Inventory
-import Struct.Portrait
 import Struct.UI
-import Struct.Weapon
-
-import Util.Array
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      flags: Struct.Flags.Type,
-      help_request: Struct.HelpRequest.Type,
-      characters: (Array.Array Struct.Character.Type),
-      stalled_characters: (List Struct.CharacterRecord.Type),
-      weapons: (Dict.Dict Struct.Weapon.Ref Struct.Weapon.Type),
-      armors: (Dict.Dict Struct.Armor.Ref Struct.Armor.Type),
-      glyphs: (Dict.Dict Struct.Glyph.Ref Struct.Glyph.Type),
-      glyph_boards: (Dict.Dict Struct.GlyphBoard.Ref Struct.GlyphBoard.Type),
-      portraits: (Dict.Dict Struct.Portrait.Ref Struct.Portrait.Type),
-      error: (Maybe Struct.Error.Type),
-      battle_order: (Array.Array Int),
-      player_id: String,
-      roster_id: String,
-      edited_char: (Maybe Struct.Character.Type),
-      inventory: Struct.Inventory.Type,
-      session_token: String,
-      ui: Struct.UI.Type
+      flags : Struct.Flags.Type,
+      help_request : Struct.HelpRequest.Type,
+      characters : (Array.Array Struct.Character.Type),
+      stalled_characters : (List Struct.CharacterRecord.Type),
+      weapons :
+         (Dict.Dict
+            BattleCharacters.Struct.Weapon.Ref
+            BattleCharacters.Struct.Weapon.Type
+         ),
+      armors :
+         (Dict.Dict
+            BattleCharacters.Struct.Armor.Ref
+            BattleCharacters.Struct.Armor.Type
+         ),
+      glyphs : (Dict.Dict Struct.Glyph.Ref Struct.Glyph.Type),
+      glyph_boards : (Dict.Dict Struct.GlyphBoard.Ref Struct.GlyphBoard.Type),
+      portraits :
+         (Dict.Dict
+            BattleCharacters.Struct.Portrait.Ref
+            BattleCharacters.Struct.Portrait.Type
+         ),
+      error : (Maybe Struct.Error.Type),
+      battle_order : (Array.Array Int),
+      player_id : String,
+      roster_id : String,
+      edited_char : (Maybe Struct.Character.Type),
+      inventory : Struct.Inventory.Type,
+      session_token : String,
+      ui : Struct.UI.Type
    }
 
 --------------------------------------------------------------------------------
@@ -179,34 +193,34 @@ enable_character_records model =
    else
       model
 
-add_weapon : Struct.Weapon.Type -> Type -> Type
+add_weapon : BattleCharacters.Struct.Weapon.Type -> Type -> Type
 add_weapon wp model =
    {model |
       weapons =
          (Dict.insert
-            (Struct.Weapon.get_id wp)
+            (BattleCharacters.Struct.Weapon.get_id wp)
             wp
             model.weapons
          )
    }
 
-add_armor : Struct.Armor.Type -> Type -> Type
+add_armor : BattleCharacters.Struct.Armor.Type -> Type -> Type
 add_armor ar model =
    {model |
       armors =
          (Dict.insert
-            (Struct.Armor.get_id ar)
+            (BattleCharacters.Struct.Armor.get_id ar)
             ar
             model.armors
          )
    }
 
-add_portrait : Struct.Portrait.Type -> Type -> Type
+add_portrait : BattleCharacters.Struct.Portrait.Type -> Type -> Type
 add_portrait pt model =
    {model |
       portraits =
          (Dict.insert
-            (Struct.Portrait.get_id pt)
+            (BattleCharacters.Struct.Portrait.get_id pt)
             pt
             model.portraits
          )

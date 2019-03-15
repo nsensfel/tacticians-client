@@ -9,13 +9,16 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Roster Editor ---------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
 import Util.Html
 
-import Struct.Armor
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Portrait
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
-import Struct.Portrait
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -39,7 +42,10 @@ get_icon_head_html char =
          (Html.Attributes.class
             (
                "asset-character-icon-"
-               ++ (Struct.Armor.get_image_id (Struct.Character.get_armor char))
+               ++
+               (BattleCharacters.Struct.Armor.get_image_id
+                  (Struct.Character.get_armor char)
+               )
             )
          )
       ]
@@ -55,7 +61,10 @@ get_portrait_body_html char =
          (Html.Attributes.class
             (
                "asset-character-portrait-"
-               ++ (Struct.Portrait.get_id (Struct.Character.get_portrait char))
+               ++
+               (BattleCharacters.Struct.Portrait.get_id
+                  (Struct.Character.get_portrait char)
+               )
             )
          )
       ]
@@ -72,14 +81,16 @@ get_portrait_armor_html char =
             (
                "asset-armor-"
                ++
-               (Struct.Armor.get_image_id (Struct.Character.get_armor char))
+               (BattleCharacters.Struct.Armor.get_image_id
+                  (Struct.Character.get_armor char)
+               )
             )
          ),
          (Html.Attributes.class
             (
                "asset-armor-variation-"
                ++
-               (Struct.Portrait.get_body_id
+               (BattleCharacters.Struct.Portrait.get_body_id
                   (Struct.Character.get_portrait char)
                )
             )

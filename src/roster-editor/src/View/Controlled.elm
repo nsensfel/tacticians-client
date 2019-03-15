@@ -5,11 +5,12 @@ import Html
 import Html.Attributes
 import Html.Lazy
 
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
+import Util.Html
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
-
-import Util.Html
 
 import View.CharacterCard
 

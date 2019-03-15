@@ -7,13 +7,14 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Roster Editor ---------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
+import Battle.View.Omnimods
+
+-- Local Module ----------------------------------------------------------------
 import Struct.GlyphBoard
 import Struct.Event
 import Struct.Model
-import Struct.Omnimods
 
-import View.Omnimods
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -55,7 +56,9 @@ get_glyph_board_html glyph_board =
                (Html.text (Struct.GlyphBoard.get_name glyph_board))
             ]
          ),
-         (View.Omnimods.get_html (Struct.GlyphBoard.get_omnimods glyph_board))
+         (Battle.View.Omnimods.get_html
+            (Struct.GlyphBoard.get_omnimods glyph_board)
+         )
       ]
    )
 

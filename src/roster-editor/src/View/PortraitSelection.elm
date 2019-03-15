@@ -9,22 +9,29 @@ import Html.Events
 
 import List
 
--- Roster Editor ---------------------------------------------------------------
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Portrait
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
-import Struct.Portrait
 import Struct.Model
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_portrait_html : Struct.Portrait.Type -> (Html.Html Struct.Event.Type)
+get_portrait_html : (
+      BattleCharacters.Struct.Portrait.Type ->
+      (Html.Html Struct.Event.Type)
+   )
 get_portrait_html pt =
    (Html.div
       [
          (Html.Attributes.class "character-portrait-and-icon"),
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
-            (Struct.Event.SelectedPortrait (Struct.Portrait.get_id pt))
+            (Struct.Event.SelectedPortrait
+               (BattleCharacters.Struct.Portrait.get_id pt)
+            )
          )
      ]
       [
@@ -40,7 +47,7 @@ get_portrait_html pt =
                      (Html.Attributes.class
                         (
                            "asset-character-portrait-"
-                           ++ (Struct.Portrait.get_id pt)
+                           ++ (BattleCharacters.Struct.Portrait.get_id pt)
                         )
                      )
                   ]
@@ -69,7 +76,7 @@ get_portrait_html pt =
                      (Html.Attributes.class
                         (
                            "asset-character-icon-"
-                           ++ (Struct.Portrait.get_icon_id pt)
+                           ++ (BattleCharacters.Struct.Portrait.get_icon_id pt)
                         )
                      )
                   ]

@@ -4,7 +4,7 @@ module View.Gauge exposing (get_html)
 import Html
 import Html.Attributes
 
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 
 --------------------------------------------------------------------------------

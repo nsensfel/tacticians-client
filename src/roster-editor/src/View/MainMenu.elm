@@ -10,7 +10,7 @@ import Html.Events
 -- Shared ----------------------------------------------------------------------
 import Util.Html
 
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
 import Struct.UI

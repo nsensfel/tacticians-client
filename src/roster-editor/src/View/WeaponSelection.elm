@@ -10,14 +10,17 @@ import Html.Events
 -- Shared ----------------------------------------------------------------------
 import Util.Html
 
--- Roster Editor ---------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
+import Battle.View.Omnimods
+
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Weapon
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
 import Struct.Model
-import Struct.Omnimods
-import Struct.Weapon
 
-import View.Omnimods
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -44,7 +47,7 @@ get_mod_html mod =
       )
 
 get_weapon_html : (
-      Struct.Weapon.Type ->
+      BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_weapon_html weapon =
@@ -53,7 +56,9 @@ get_weapon_html weapon =
          (Html.Attributes.class "character-card-weapon"),
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
-            (Struct.Event.SelectedWeapon (Struct.Weapon.get_id weapon))
+            (Struct.Event.SelectedWeapon
+               (BattleCharacters.Struct.Weapon.get_id weapon)
+            )
          )
      ]
       [
@@ -66,7 +71,9 @@ get_weapon_html weapon =
                   [
                   ]
                   [
-                     (Html.text (Struct.Weapon.get_name weapon))
+                     (Html.text
+                        (BattleCharacters.Struct.Weapon.get_name weapon)
+                     )
                   ]
                ),
                (Html.div
@@ -78,7 +85,9 @@ get_weapon_html weapon =
                   ]
                ),
                (Html.text
-                  (String.fromInt (Struct.Weapon.get_damage_sum weapon))
+                  (String.fromInt
+                     (BattleCharacters.Struct.Weapon.get_damage_sum weapon)
+                  )
                ),
                (Html.div
                   [
@@ -91,18 +100,24 @@ get_weapon_html weapon =
                (Html.text
                   (
                      (String.fromInt
-                        (Struct.Weapon.get_defense_range weapon)
+                        (BattleCharacters.Struct.Weapon.get_defense_range
+                           weapon
+                        )
                      )
                      ++ "-"
                      ++
                      (String.fromInt
-                        (Struct.Weapon.get_attack_range weapon)
+                        (BattleCharacters.Struct.Weapon.get_attack_range
+                           weapon
+                        )
                      )
                   )
                )
             ]
          ),
-         (View.Omnimods.get_html (Struct.Weapon.get_omnimods weapon))
+         (Battle.View.Omnimods.get_html
+            (BattleCharacters.Struct.Weapon.get_omnimods weapon)
+         )
       ]
    )
 
@@ -142,7 +157,10 @@ get_html model =
                               (not
                                  (
                                     is_selecting_secondary
-                                    && (Struct.Weapon.get_is_primary e)
+                                    &&
+                                    (BattleCharacters.Struct.Weapon.get_is_primary
+                                       e
+                                    )
                                  )
                               )
                            )

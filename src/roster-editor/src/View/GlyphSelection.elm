@@ -7,22 +7,20 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Roster Editor ---------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
+import Battle.View.Omnimods
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Glyph
-import Struct.Omnimods
 import Struct.Model
-
-import View.Omnimods
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_mod_html : (String, Int) -> (Html.Html Struct.Event.Type)
 get_mod_html mod =
-   let
-      (category, value) = mod
-   in
+   let (category, value) = mod in
       (Html.div
          [
             (Html.Attributes.class "info-card-mod")
@@ -48,7 +46,7 @@ get_glyph_html glyph  =
       ]
       [
          (Html.text (Struct.Glyph.get_name glyph)),
-         (View.Omnimods.get_html (Struct.Glyph.get_omnimods glyph))
+         (Battle.View.Omnimods.get_html (Struct.Glyph.get_omnimods glyph))
       ]
    )
 

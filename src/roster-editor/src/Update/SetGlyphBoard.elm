@@ -3,7 +3,7 @@ module Update.SetGlyphBoard exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Dict
 
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
 import Struct.GlyphBoard

@@ -3,12 +3,14 @@ module Update.SetWeapon exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Dict
 
--- Roster Editor ---------------------------------------------------------------
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Weapon
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
 import Struct.Model
 import Struct.UI
-import Struct.Weapon
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -19,7 +21,7 @@ import Struct.Weapon
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Struct.Weapon.Ref ->
+      BattleCharacters.Struct.Weapon.Ref ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model ref =

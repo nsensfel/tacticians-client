@@ -14,8 +14,8 @@ module Struct.Glyph exposing
 import Json.Decode
 import Json.Decode.Pipeline
 
--- Roster Editor ---------------------------------------------------------------
-import Struct.Omnimods
+-- Battle ----------------------------------------------------------------------
+import Battle.Struct.Omnimods
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -24,7 +24,7 @@ type alias Type =
    {
       id : String,
       name : String,
-      omnimods : Struct.Omnimods.Type
+      omnimods : Battle.Struct.Omnimods.Type
    }
 
 type alias Ref = String
@@ -42,7 +42,7 @@ get_id g = g.id
 get_name : Type -> String
 get_name g = g.name
 
-get_omnimods : Type -> Struct.Omnimods.Type
+get_omnimods : Type -> Battle.Struct.Omnimods.Type
 get_omnimods g = g.omnimods
 
 decoder : (Json.Decode.Decoder Type)
@@ -51,7 +51,7 @@ decoder =
       Type
       |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
-      |> (Json.Decode.Pipeline.required "omni" Struct.Omnimods.decoder)
+      |> (Json.Decode.Pipeline.required "omni" Battle.Struct.Omnimods.decoder)
    )
 
 none : Type
@@ -59,7 +59,7 @@ none =
    {
       id = "0",
       name = "Empty",
-      omnimods = (Struct.Omnimods.none)
+      omnimods = (Battle.Struct.Omnimods.none)
    }
 
 default : Type

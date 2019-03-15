@@ -6,7 +6,7 @@ import Http
 import Json.Decode
 import Json.Encode
 
---- Roster Editor --------------------------------------------------------------
+--- Local Module ---------------------------------------------------------------
 import Comm.AddArmor
 import Comm.AddChar
 import Comm.AddGlyph

@@ -1,13 +1,13 @@
 module View.SubMenu.Characters exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
-import Array 
+import Array
 
 import Html
 import Html.Attributes
 import Html.Events
 
--- Map -------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
 

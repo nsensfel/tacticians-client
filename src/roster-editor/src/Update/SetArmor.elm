@@ -3,8 +3,10 @@ module Update.SetArmor exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Dict
 
--- Roster Editor ---------------------------------------------------------------
-import Struct.Armor
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
 import Struct.Model
@@ -18,7 +20,7 @@ import Struct.Model
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Struct.Armor.Ref ->
+      BattleCharacters.Struct.Armor.Ref ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model ref =

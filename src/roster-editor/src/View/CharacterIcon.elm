@@ -5,10 +5,11 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Map  ------------------------------------------------------------------
-import Constants.UI
-
+-- Shared ----------------------------------------------------------------------
 import Util.Html
+
+-- Local Module ----------------------------------------------------------------
+import Constants.UI
 
 import Struct.Character
 import Struct.CharacterTurn

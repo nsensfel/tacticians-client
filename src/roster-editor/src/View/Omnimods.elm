@@ -11,9 +11,11 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Roster Editor ---------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
+import Battle.Struct.Omnimods
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Event
-import Struct.Omnimods
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -84,7 +86,7 @@ get_multiplied_mod_html multiplier mod =
 --------------------------------------------------------------------------------
 get_html_with_modifier : (
       Float ->
-      Struct.Omnimods.Type ->
+      Battle.Struct.Omnimods.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_html_with_modifier attack_multiplier omnimods =
@@ -99,7 +101,7 @@ get_html_with_modifier attack_multiplier omnimods =
             ]
             (List.map
                (get_multiplied_mod_html attack_multiplier)
-               (Struct.Omnimods.get_attack_mods omnimods)
+               (Battle.Struct.Omnimods.get_attack_mods omnimods)
             )
          ),
          (Html.div
@@ -108,7 +110,7 @@ get_html_with_modifier attack_multiplier omnimods =
             ]
             (List.map
                (get_mod_html)
-               (Struct.Omnimods.get_defense_mods omnimods)
+               (Battle.Struct.Omnimods.get_defense_mods omnimods)
             )
          ),
          (Html.div
@@ -117,7 +119,7 @@ get_html_with_modifier attack_multiplier omnimods =
             ]
             (List.map
                (get_mod_html)
-               (Struct.Omnimods.get_attributes_mods omnimods)
+               (Battle.Struct.Omnimods.get_attributes_mods omnimods)
             )
          ),
          (Html.div
@@ -126,13 +128,13 @@ get_html_with_modifier attack_multiplier omnimods =
             ]
             (List.map
                (get_mod_html)
-               (Struct.Omnimods.get_statistics_mods omnimods)
+               (Battle.Struct.Omnimods.get_statistics_mods omnimods)
             )
          )
       ]
    )
 
-get_html : Struct.Omnimods.Type -> (Html.Html Struct.Event.Type)
+get_html : Battle.Struct.Omnimods.Type -> (Html.Html Struct.Event.Type)
 get_html omnimods =
    (Html.div
       [
@@ -145,7 +147,7 @@ get_html omnimods =
             ]
             (List.map
                (get_mod_html)
-               (Struct.Omnimods.get_attack_mods omnimods)
+               (Battle.Struct.Omnimods.get_attack_mods omnimods)
             )
          ),
          (Html.div
@@ -154,7 +156,7 @@ get_html omnimods =
             ]
             (List.map
                (get_mod_html)
-               (Struct.Omnimods.get_defense_mods omnimods)
+               (Battle.Struct.Omnimods.get_defense_mods omnimods)
             )
          ),
          (Html.div
@@ -163,7 +165,7 @@ get_html omnimods =
             ]
             (List.map
                (get_mod_html)
-               (Struct.Omnimods.get_attributes_mods omnimods)
+               (Battle.Struct.Omnimods.get_attributes_mods omnimods)
             )
          ),
          (Html.div
@@ -172,7 +174,7 @@ get_html omnimods =
             ]
             (List.map
                (get_mod_html)
-               (Struct.Omnimods.get_statistics_mods omnimods)
+               (Battle.Struct.Omnimods.get_statistics_mods omnimods)
             )
          )
       ]

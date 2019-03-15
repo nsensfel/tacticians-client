@@ -3,7 +3,7 @@ module Comm.LoadRoster exposing (try)
 -- Elm -------------------------------------------------------------------------
 import Json.Encode
 
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Comm.Send
 
 import Constants.IO

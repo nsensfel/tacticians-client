@@ -31,15 +31,19 @@ module Struct.Character exposing
 -- Elm -------------------------------------------------------------------------
 import Array
 
--- Roster Editor ---------------------------------------------------------------
-import Struct.Armor
-import Struct.Attributes
+-- Battle ----------------------------------------------------------------------
+import Battle.Struct.Omnimods
+import Battle.Struct.Attributes
+import Battle.Struct.Statistics
+
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Weapon
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Glyph
 import Struct.GlyphBoard
-import Struct.Omnimods
-import Struct.Portrait
-import Struct.Statistics
-import Struct.Weapon
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -49,16 +53,16 @@ type alias Type =
       ix : Int,
       battle_ix : Int,
       name : String,
-      portrait : Struct.Portrait.Type,
-      attributes : Struct.Attributes.Type,
-      statistics : Struct.Statistics.Type,
-      primary_weapon : Struct.Weapon.Type,
-      secondary_weapon : Struct.Weapon.Type,
+      portrait : BattleCharacters.Struct.Portrait.Type,
+      attributes : Battle.Struct.Attributes.Type,
+      statistics : Battle.Struct.Statistics.Type,
+      primary_weapon : BattleCharacters.Struct.Weapon.Type,
+      secondary_weapon : BattleCharacters.Struct.Weapon.Type,
       is_using_secondary : Bool,
-      armor : Struct.Armor.Type,
+      armor : BattleCharacters.Struct.Armor.Type,
       glyph_board : Struct.GlyphBoard.Type,
       glyphs : (Array.Array Struct.Glyph.Type),
-      current_omnimods : Struct.Omnimods.Type,
+      current_omnimods : Battle.Struct.Omnimods.Type,
       was_edited : Bool
    }
 
@@ -69,16 +73,16 @@ refresh_omnimods : Type -> Type
 refresh_omnimods char =
    let
       current_omnimods =
-         (Struct.Omnimods.merge
-            (Struct.Omnimods.merge
-               (Struct.Weapon.get_omnimods
+         (Battle.Struct.Omnimods.merge
+            (Battle.Struct.Omnimods.merge
+               (BattleCharacters.Struct.Weapon.get_omnimods
                   (
                      if (char.is_using_secondary)
                      then char.secondary_weapon
                      else char.primary_weapon
                   )
                )
-               (Struct.Armor.get_omnimods char.armor)
+               (BattleCharacters.Struct.Armor.get_omnimods char.armor)
             )
             (Struct.GlyphBoard.get_omnimods_with_glyphs
                char.glyphs
@@ -86,14 +90,14 @@ refresh_omnimods char =
             )
          )
       current_attributes =
-         (Struct.Omnimods.apply_to_attributes
+         (Battle.Struct.Omnimods.apply_to_attributes
             current_omnimods
-            (Struct.Attributes.default)
+            (Battle.Struct.Attributes.default)
          )
       current_statistics =
-         (Struct.Omnimods.apply_to_statistics
+         (Battle.Struct.Omnimods.apply_to_statistics
             current_omnimods
-            (Struct.Statistics.new_raw current_attributes)
+            (Battle.Struct.Statistics.new_raw current_attributes)
          )
    in
       {char |
@@ -109,10 +113,10 @@ refresh_omnimods char =
 new : (
       Int ->
       String ->
-      (Maybe Struct.Portrait.Type) ->
-      (Maybe Struct.Weapon.Type) ->
-      (Maybe Struct.Weapon.Type) ->
-      (Maybe Struct.Armor.Type) ->
+      (Maybe BattleCharacters.Struct.Portrait.Type) ->
+      (Maybe BattleCharacters.Struct.Weapon.Type) ->
+      (Maybe BattleCharacters.Struct.Weapon.Type) ->
+      (Maybe BattleCharacters.Struct.Armor.Type) ->
       (Maybe Struct.GlyphBoard.Type) ->
       (List (Maybe Struct.Glyph.Type)) ->
       Type
@@ -127,27 +131,30 @@ new index name m_portrait m_main_wp m_sec_wp m_armor m_board m_glyphs =
             (
                case m_portrait of
                   (Just portrait) -> portrait
-                  Nothing -> (Struct.Portrait.default)
+                  Nothing -> (BattleCharacters.Struct.Portrait.default)
             ),
-         attributes = (Struct.Attributes.default),
-         statistics = (Struct.Statistics.new_raw (Struct.Attributes.default)),
+         attributes = (Battle.Struct.Attributes.default),
+         statistics =
+            (Battle.Struct.Statistics.new_raw
+               (Battle.Struct.Attributes.default)
+            ),
          primary_weapon =
                (
                   case m_main_wp of
                      (Just w) -> w
-                     Nothing -> (Struct.Weapon.default)
+                     Nothing -> (BattleCharacters.Struct.Weapon.default)
                ),
          secondary_weapon =
                (
                   case m_sec_wp of
                      (Just w) -> w
-                     Nothing -> (Struct.Weapon.default)
+                     Nothing -> (BattleCharacters.Struct.Weapon.default)
                ),
          armor =
             (
                case m_armor of
                   (Just armor) -> armor
-                  Nothing -> (Struct.Armor.default)
+                  Nothing -> (BattleCharacters.Struct.Armor.default)
             ),
          glyph_board =
             (
@@ -167,7 +174,7 @@ new index name m_portrait m_main_wp m_sec_wp m_armor m_board m_glyphs =
                )
             ),
          is_using_secondary = False,
-         current_omnimods = (Struct.Omnimods.none),
+         current_omnimods = (Battle.Struct.Omnimods.none),
          was_edited = False
       }
    )
@@ -187,40 +194,40 @@ get_name c = c.name
 set_name : String -> Type -> Type
 set_name name char = {char | name = name}
 
-get_portrait : Type -> Struct.Portrait.Type
+get_portrait : Type -> BattleCharacters.Struct.Portrait.Type
 get_portrait c = c.portrait
 
-set_portrait : Struct.Portrait.Type -> Type -> Type
+set_portrait : BattleCharacters.Struct.Portrait.Type -> Type -> Type
 set_portrait portrait char = {char | portrait = portrait}
 
-get_current_omnimods : Type -> Struct.Omnimods.Type
+get_current_omnimods : Type -> Battle.Struct.Omnimods.Type
 get_current_omnimods c = c.current_omnimods
 
-get_attributes : Type -> Struct.Attributes.Type
+get_attributes : Type -> Battle.Struct.Attributes.Type
 get_attributes char = char.attributes
 
-get_statistics : Type -> Struct.Statistics.Type
+get_statistics : Type -> Battle.Struct.Statistics.Type
 get_statistics char = char.statistics
 
-get_primary_weapon : Type -> Struct.Weapon.Type
+get_primary_weapon : Type -> BattleCharacters.Struct.Weapon.Type
 get_primary_weapon char = char.primary_weapon
 
-set_primary_weapon : Struct.Weapon.Type -> Type -> Type
+set_primary_weapon : BattleCharacters.Struct.Weapon.Type -> Type -> Type
 set_primary_weapon wp char = (refresh_omnimods {char | primary_weapon = wp})
 
-get_secondary_weapon : Type -> Struct.Weapon.Type
+get_secondary_weapon : Type -> BattleCharacters.Struct.Weapon.Type
 get_secondary_weapon char = char.secondary_weapon
 
-set_secondary_weapon : Struct.Weapon.Type -> Type -> Type
+set_secondary_weapon : BattleCharacters.Struct.Weapon.Type -> Type -> Type
 set_secondary_weapon wp char = (refresh_omnimods {char | secondary_weapon = wp})
 
 get_is_using_secondary : Type -> Bool
 get_is_using_secondary char = char.is_using_secondary
 
-get_armor : Type -> Struct.Armor.Type
+get_armor : Type -> BattleCharacters.Struct.Armor.Type
 get_armor char = char.armor
 
-set_armor : Struct.Armor.Type -> Type -> Type
+set_armor : BattleCharacters.Struct.Armor.Type -> Type -> Type
 set_armor armor char = (refresh_omnimods {char | armor = armor})
 
 get_glyph_board : Type -> Struct.GlyphBoard.Type

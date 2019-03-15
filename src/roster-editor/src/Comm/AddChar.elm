@@ -3,7 +3,7 @@ module Comm.AddChar exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.CharacterRecord
 import Struct.ServerReply
 

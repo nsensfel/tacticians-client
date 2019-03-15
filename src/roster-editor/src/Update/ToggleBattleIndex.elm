@@ -3,9 +3,10 @@ module Update.ToggleBattleIndex exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Array
 
--- Roster Editor ---------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
 import Util.Array
 
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
 import Struct.Model

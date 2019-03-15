@@ -1,7 +1,6 @@
 module Update.SendLoadRosterRequest exposing (apply_to)
--- Elm -------------------------------------------------------------------------
 
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Comm.LoadRoster
 
 import Struct.Event

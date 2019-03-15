@@ -3,11 +3,13 @@ module Update.SetPortrait exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Dict
 
--- Roster Editor ---------------------------------------------------------------
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Portrait
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
 import Struct.Model
-import Struct.Portrait
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -18,7 +20,7 @@ import Struct.Portrait
 --------------------------------------------------------------------------------
 apply_to : (
       Struct.Model.Type ->
-      Struct.Portrait.Ref ->
+      BattleCharacters.Struct.Portrait.Ref ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model ref =

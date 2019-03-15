@@ -3,12 +3,14 @@ module Update.SwitchWeapons exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Dict
 
--- Roster Editor ---------------------------------------------------------------
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Weapon
+
+-- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
 import Struct.Model
 import Struct.UI
-import Struct.Weapon
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------

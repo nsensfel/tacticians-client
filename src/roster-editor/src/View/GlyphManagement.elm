@@ -7,12 +7,14 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Roster Editor ---------------------------------------------------------------
+-- Battle ----------------------------------------------------------------------
+import Battle.Struct.Omnimods
+
+-- Local Module ----------------------------------------------------------------
+import Struct.Character
 import Struct.Event
 import Struct.Glyph
 import Struct.GlyphBoard
-import Struct.Omnimods
-import Struct.Character
 import Struct.Model
 
 --------------------------------------------------------------------------------
@@ -60,7 +62,7 @@ get_glyph_html modifier (index, glyph) =
             ]
             (List.map
                (get_mod_html)
-               (Struct.Omnimods.get_all_mods
+               (Battle.Struct.Omnimods.get_all_mods
                   (Struct.Glyph.get_omnimods glyph)
                )
             )

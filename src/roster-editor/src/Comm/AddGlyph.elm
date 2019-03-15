@@ -3,7 +3,7 @@ module Comm.AddGlyph exposing (decode)
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Roster Editor ---------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Glyph
 import Struct.ServerReply
 
