@@ -11,6 +11,7 @@ module Battle.Struct.Statistics exposing
       get_critical_hits,
       get_damage_modifier,
       decode_category,
+      encode_category,
       mod,
       new_raw
    )
@@ -208,3 +209,14 @@ decode_category str =
       "accu" -> Accuracy
       "dhit" -> DoubleHits
       _  -> CriticalHits
+
+encode_category : Category -> String
+encode_category cat =
+   case cat of
+      MaxHealth -> "mheal"
+      MovementPoints -> "mpts"
+      Dodges -> "dodg"
+      Parries -> "pary"
+      Accuracy -> "accu"
+      DoubleHits -> "dhit"
+      CriticalHits -> "crit"

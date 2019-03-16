@@ -18,6 +18,7 @@ module Battle.Struct.Attributes exposing
       get,
       new,
       decode_category,
+      encode_category,
       default
    )
 
@@ -167,3 +168,13 @@ decode_category str =
       "min" -> Mind
       "spe" -> Speed
       _ -> Strength
+
+encode_category : Category -> string
+encode_category cat =
+   case cat of
+      Constitution -> "con"
+      Dexterity -> "dex"
+      Intelligence -> "int"
+      Mind -> "min"
+      Speed -> "spe"
+      Strength -> "str"
