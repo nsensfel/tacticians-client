@@ -173,12 +173,12 @@ mod cat v t =
 new_raw : (Battle.Struct.Attributes.Type -> Type)
 new_raw att =
    let
-      constitution = (Battle.Struct.Attributes.get_constitution att)
-      dexterity = (Battle.Struct.Attributes.get_dexterity att)
-      intelligence = (Battle.Struct.Attributes.get_intelligence att)
-      mind = (Battle.Struct.Attributes.get_mind att)
-      speed = (Battle.Struct.Attributes.get_speed att)
-      strength = (Battle.Struct.Attributes.get_strength att)
+      constitution = (Battle.Struct.Attributes.get_effective_constitution att)
+      dexterity = (Battle.Struct.Attributes.get_effective_dexterity att)
+      intelligence = (Battle.Struct.Attributes.get_effective_intelligence att)
+      mind = (Battle.Struct.Attributes.get_effective_mind att)
+      speed = (Battle.Struct.Attributes.get_effective_speed att)
+      strength = (Battle.Struct.Attributes.get_effective_strength att)
    in
       {
          movement_points =

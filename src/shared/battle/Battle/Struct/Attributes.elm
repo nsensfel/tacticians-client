@@ -8,6 +8,12 @@ module Battle.Struct.Attributes exposing
       get_mind,
       get_speed,
       get_strength,
+      get_effective_constitution,
+      get_effective_dexterity,
+      get_effective_intelligence,
+      get_effective_mind,
+      get_effective_speed,
+      get_effective_strength,
       mod_constitution,
       mod_dexterity,
       mod_intelligence,
@@ -73,40 +79,58 @@ get_speed t = t.speed
 get_strength : Type -> Int
 get_strength t = t.strength
 
+get_effective_constitution : Type -> Int
+get_effective_constitution t = (get_within_att_range t.constitution)
+
+get_effective_dexterity : Type -> Int
+get_effective_dexterity t = (get_within_att_range t.dexterity)
+
+get_effective_intelligence : Type -> Int
+get_effective_intelligence t = (get_within_att_range t.intelligence)
+
+get_effective_mind : Type -> Int
+get_effective_mind t = (get_within_att_range t.mind)
+
+get_effective_speed : Type -> Int
+get_effective_speed t = (get_within_att_range t.speed)
+
+get_effective_strength : Type -> Int
+get_effective_strength t = (get_within_att_range t.strength)
+
 mod_constitution : Int -> Type -> Type
 mod_constitution i t =
    {t |
-      constitution = (get_within_att_range (i + t.constitution))
+      constitution = (i + t.constitution)
    }
 
 mod_dexterity : Int -> Type -> Type
 mod_dexterity i t =
    {t |
-      dexterity = (get_within_att_range (i + t.dexterity))
+      dexterity = (i + t.dexterity)
    }
 
 mod_intelligence : Int -> Type -> Type
 mod_intelligence i t =
    {t |
-      intelligence = (get_within_att_range (i + t.intelligence))
+      intelligence = (i + t.intelligence)
    }
 
 mod_mind : Int -> Type -> Type
 mod_mind i t =
    {t |
-      mind = (get_within_att_range (i + t.mind))
+      mind = (i + t.mind)
    }
 
 mod_speed : Int -> Type -> Type
 mod_speed i t =
    {t |
-      speed = (get_within_att_range (i + t.speed))
+      speed = (i + t.speed)
    }
 
 mod_strength : Int -> Type -> Type
 mod_strength i t =
    {t |
-      strength = (get_within_att_range (i + t.strength))
+      strength = (i + t.strength)
    }
 
 mod : Category -> Int -> Type -> Type
