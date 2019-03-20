@@ -13,7 +13,8 @@ module Battle.Struct.Statistics exposing
       decode_category,
       encode_category,
       mod,
-      new_raw
+      new_raw,
+      is_percent
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -220,3 +221,6 @@ encode_category cat =
       Accuracy -> "accu"
       DoubleHits -> "dhit"
       CriticalHits -> "crit"
+
+is_percent : Category -> Bool
+is_percent cat = ((cat /= MaxHealth) && (cat /= MovementPoints))

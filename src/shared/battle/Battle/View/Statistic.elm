@@ -8,10 +8,11 @@ module Battle.View.Statistic exposing
 
 -- Elm -------------------------------------------------------------------------
 import Html
-import Html.Statistics
+import Html.Attributes
+import Html.Events
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Statistic
+import Battle.Struct.Statistics
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
@@ -25,9 +26,9 @@ import Struct.HelpRequest
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
-      Battle.Struct.Statistic.Category ->
+      Battle.Struct.Statistics.Category ->
       Int ->
-      (List (Html.Html Struct.Event.Type))
+      (Html.Html Struct.Event.Type)
    )
 get_html statistic value =
    (Html.div
@@ -41,30 +42,36 @@ get_html statistic value =
       [
          (Html.div
             [
-               (Html.Statistics.class "omnimod-icon"),
-               (Html.Statistics.class
+               (Html.Attributes.class "omnimod-icon"),
+               (Html.Attributes.class
                   (
                      "omnimod-icon-"
-                     ++ (Battle.Struct.Statistic.encode_category statistic)
+                     ++ (Battle.Struct.Statistics.encode_category statistic)
                   )
-               ),
+               )
             ]
             [
             ]
          ),
          (Html.div
             [
-               (Html.Statistics.class "omnimod-value")
+               (Html.Attributes.class "omnimod-value")
             ]
             [
-               (Html.text ((String.FromInt value) ++ "%"))
+               (Html.text
+                  (
+                     if (Battle.Struct.Statistics.is_percent statistic)
+                     then ((String.fromInt value) ++ "%")
+                     else (String.fromInt value)
+                  )
+               )
             ]
          )
       ]
    )
 
 get_signed_html : (
-      Battle.Struct.Statistic.Category ->
+      Battle.Struct.Statistics.Category ->
       Int ->
       (Html.Html Struct.Event.Type)
    )
@@ -73,8 +80,8 @@ get_signed_html statistic value =
       [
          (
             if (value < 0)
-            then (Html.Statistics.class "omnimod-negative")
-            else (Html.Statistics.class "omnimod-positive")
+            then (Html.Attributes.class "omnimod-negative")
+            else (Html.Attributes.class "omnimod-positive")
          ),
          (Html.Events.onClick
             (Struct.Event.RequestedHelp
@@ -85,31 +92,35 @@ get_signed_html statistic value =
       [
          (Html.div
             [
-               (Html.Statistics.class "omnimod-icon"),
-               (Html.Statistics.class
+               (Html.Attributes.class "omnimod-icon"),
+               (Html.Attributes.class
                   (
                      "omnimod-icon-"
-                     ++ (Battle.Struct.Statistic.encode_category statistic)
+                     ++ (Battle.Struct.Statistics.encode_category statistic)
                   )
-               ),
+               )
             ]
             [
             ]
          ),
          (Html.div
             [
-               (Html.Statistics.class "omnimod-value")
+               (Html.Attributes.class "omnimod-value")
             ]
             [
                (Html.text
                   (
                      (
-                        if (value < 0)
-                        then "-"
-                        else "+"
+                        if (value > 0)
+                        then ("+" ++ (String.fromInt value))
+                        else (String.fromInt value)
                      )
-                     ++ (String.FromInt value)
-                     ++ "%"
+                     ++
+                     (
+                        if (Battle.Struct.Statistics.is_percent statistic)
+                        then "%"
+                        else ""
+                     )
                   )
                )
             ]

@@ -6,7 +6,8 @@ module Battle.View.DamageType exposing
 
 -- Elm -------------------------------------------------------------------------
 import Html
-import Html.DamageTypes
+import Html.Attributes
+import Html.Events
 
 import List
 
@@ -27,7 +28,7 @@ import Struct.HelpRequest
 get_html : (
       Battle.Struct.DamageType.Type ->
       Int ->
-      (List (Html.Html Struct.Event.Type))
+      (Html.Html Struct.Event.Type)
    )
 get_html damage_type value =
    (Html.div
@@ -41,23 +42,23 @@ get_html damage_type value =
       [
          (Html.div
             [
-               (Html.DamageTypes.class "omnimod-icon"),
-               (Html.DamageTypes.class
+               (Html.Attributes.class "omnimod-icon"),
+               (Html.Attributes.class
                   (
                      "omnimod-icon-"
                      ++ (Battle.Struct.DamageType.encode damage_type)
                   )
-               ),
+               )
             ]
             [
             ]
          ),
          (Html.div
             [
-               (Html.DamageTypes.class "omnimod-value")
+               (Html.Attributes.class "omnimod-value")
             ]
             [
-               (Html.text (String.FromInt value))
+               (Html.text (String.fromInt value))
             ]
          )
       ]
@@ -73,8 +74,8 @@ get_signed_html damage_type value =
       [
          (
             if (value < 0)
-            then (Html.DamageTypes.class "omnimod-negative")
-            else (Html.DamageTypes.class "omnimod-positive")
+            then (Html.Attributes.class "omnimod-negative")
+            else (Html.Attributes.class "omnimod-positive")
          ),
          (Html.Events.onClick
             (Struct.Event.RequestedHelp
@@ -85,30 +86,27 @@ get_signed_html damage_type value =
       [
          (Html.div
             [
-               (Html.DamageTypes.class "omnimod-icon"),
-               (Html.DamageTypes.class
+               (Html.Attributes.class "omnimod-icon"),
+               (Html.Attributes.class
                   (
                      "omnimod-icon-"
                      ++ (Battle.Struct.DamageType.encode damage_type)
                   )
-               ),
+               )
             ]
             [
             ]
          ),
          (Html.div
             [
-               (Html.DamageTypes.class "omnimod-value")
+               (Html.Attributes.class "omnimod-value")
             ]
             [
                (Html.text
                   (
-                     (
-                        if (value < 0)
-                        then "-"
-                        else "+"
-                     )
-                     ++ (String.FromInt value)
+                     if (value > 0)
+                     then ("+" ++ (String.fromInt value))
+                     else (String.fromInt value)
                   )
                )
             ]
@@ -117,15 +115,15 @@ get_signed_html damage_type value =
    )
 
 get_all_html : (
-      (List Battle.Struct.DamageTypes.Type) ->
+      (List (Battle.Struct.DamageType.Type, Int)) ->
       (List (Html.Html Struct.Event.Type))
    )
 get_all_html damage_types =
-   (List.map (get_html) damage_types)
+   (List.map (\(d, v) -> (get_html d v)) damage_types)
 
 get_all_signed_html : (
-      (List Battle.Struct.DamageTypes.Type) ->
+      (List (Battle.Struct.DamageType.Type, Int)) ->
       (List (Html.Html Struct.Event.Type))
    )
 get_all_signed_html damage_types =
-   (List.map (get_signed_html) damage_types)
+   (List.map (\(d, v) -> (get_signed_html d v)) damage_types)

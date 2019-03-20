@@ -12,7 +12,14 @@ import Html.Attributes
 import Html.Events
 
 -- Battle ----------------------------------------------------------------------
+import Battle.Struct.Attributes
+import Battle.Struct.DamageType
 import Battle.Struct.Omnimods
+import Battle.Struct.Statistics
+
+import Battle.View.Attribute
+import Battle.View.DamageType
+import Battle.View.Statistic
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
@@ -20,66 +27,6 @@ import Struct.Event
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_mod_html : (String, Int) -> (Html.Html Struct.Event.Type)
-get_mod_html mod =
-   let
-      (category, value) = mod
-   in
-      (Html.div
-         [
-            (Html.Attributes.class "info-card-mod")
-         ]
-         [
-            (Html.div
-               [
-                  (Html.Attributes.class "omnimod-icon"),
-                  (Html.Attributes.class ("omnimod-icon-" ++ category)),
-                  (
-                     if (value < 0)
-                     then (Html.Attributes.class "omnimod-icon-negative")
-                     else (Html.Attributes.class "omnimod-icon-positive")
-                  )
-               ]
-               [
-               ]
-            ),
-            (Html.text (String.fromInt value))
-         ]
-      )
-
-get_multiplied_mod_html : Float -> (String, Int) -> (Html.Html Struct.Event.Type)
-get_multiplied_mod_html multiplier mod =
-   let
-      (category, value) = mod
-   in
-      (Html.div
-         [
-            (Html.Attributes.class "character-card-mod")
-         ]
-         [
-            (Html.div
-               [
-                  (Html.Attributes.class "omnimod-icon"),
-                  (Html.Attributes.class ("omnimod-icon-" ++ category)),
-                  (
-                     if (value < 0)
-                     then (Html.Attributes.class "omnimod-icon-negative")
-                     else (Html.Attributes.class "omnimod-icon-positive")
-                  )
-               ]
-               [
-               ]
-            ),
-            (Html.text
-               (
-                  (String.fromInt value)
-                  ++ " ("
-                  ++(String.fromInt (ceiling ((toFloat value) * multiplier)))
-                  ++ ")"
-               )
-            )
-         ]
-      )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -100,7 +47,12 @@ get_html_with_modifier attack_multiplier omnimods =
                (Html.Attributes.class "omnimod-attack-mods")
             ]
             (List.map
-               (get_multiplied_mod_html attack_multiplier)
+               (\(k, v) ->
+                  (Battle.View.DamageType.get_signed_html
+                     (Battle.Struct.DamageType.decode k)
+                     (ceiling ((toFloat v) * attack_multiplier))
+                  )
+               )
                (Battle.Struct.Omnimods.get_attack_mods omnimods)
             )
          ),
@@ -109,7 +61,12 @@ get_html_with_modifier attack_multiplier omnimods =
                (Html.Attributes.class "omnimod-defense-mods")
             ]
             (List.map
-               (get_mod_html)
+               (\(k, v) ->
+                  (Battle.View.DamageType.get_signed_html
+                     (Battle.Struct.DamageType.decode k)
+                     v
+                  )
+               )
                (Battle.Struct.Omnimods.get_defense_mods omnimods)
             )
          ),
@@ -118,7 +75,12 @@ get_html_with_modifier attack_multiplier omnimods =
                (Html.Attributes.class "omnimod-attribute-mods")
             ]
             (List.map
-               (get_mod_html)
+               (\(k, v) ->
+                  (Battle.View.Attribute.get_signed_html
+                     (Battle.Struct.Attributes.decode_category k)
+                     v
+                  )
+               )
                (Battle.Struct.Omnimods.get_attributes_mods omnimods)
             )
          ),
@@ -127,7 +89,12 @@ get_html_with_modifier attack_multiplier omnimods =
                (Html.Attributes.class "omnimod-statistics-mods")
             ]
             (List.map
-               (get_mod_html)
+               (\(k, v) ->
+                  (Battle.View.Statistic.get_signed_html
+                     (Battle.Struct.Statistics.decode_category k)
+                     v
+                  )
+               )
                (Battle.Struct.Omnimods.get_statistics_mods omnimods)
             )
          )
@@ -146,7 +113,12 @@ get_html omnimods =
                (Html.Attributes.class "omnimod-attack-mods")
             ]
             (List.map
-               (get_mod_html)
+               (\(k, v) ->
+                  (Battle.View.DamageType.get_signed_html
+                     (Battle.Struct.DamageType.decode k)
+                     v
+                  )
+               )
                (Battle.Struct.Omnimods.get_attack_mods omnimods)
             )
          ),
@@ -155,7 +127,12 @@ get_html omnimods =
                (Html.Attributes.class "omnimod-defense-mods")
             ]
             (List.map
-               (get_mod_html)
+               (\(k, v) ->
+                  (Battle.View.DamageType.get_signed_html
+                     (Battle.Struct.DamageType.decode k)
+                     v
+                  )
+               )
                (Battle.Struct.Omnimods.get_defense_mods omnimods)
             )
          ),
@@ -164,7 +141,12 @@ get_html omnimods =
                (Html.Attributes.class "omnimod-attribute-mods")
             ]
             (List.map
-               (get_mod_html)
+               (\(k, v) ->
+                  (Battle.View.Attribute.get_signed_html
+                     (Battle.Struct.Attributes.decode_category k)
+                     v
+                  )
+               )
                (Battle.Struct.Omnimods.get_attributes_mods omnimods)
             )
          ),
@@ -173,7 +155,12 @@ get_html omnimods =
                (Html.Attributes.class "omnimod-statistics-mods")
             ]
             (List.map
-               (get_mod_html)
+               (\(k, v) ->
+                  (Battle.View.Statistic.get_signed_html
+                     (Battle.Struct.Statistics.decode_category k)
+                     v
+                  )
+               )
                (Battle.Struct.Omnimods.get_statistics_mods omnimods)
             )
          )

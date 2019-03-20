@@ -169,7 +169,7 @@ decode_category str =
       "spe" -> Speed
       _ -> Strength
 
-encode_category : Category -> string
+encode_category : Category -> String
 encode_category cat =
    case cat of
       Constitution -> "con"

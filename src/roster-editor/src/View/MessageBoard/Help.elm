@@ -29,5 +29,7 @@ get_html model =
          case model.help_request of
             Struct.HelpRequest.None ->
                (View.MessageBoard.Help.Guide.get_html_contents model)
+
+            _ -> (View.MessageBoard.Help.Guide.get_html_contents model)
       )
    )

@@ -9,9 +9,10 @@ module Battle.View.Attribute exposing
 -- Elm -------------------------------------------------------------------------
 import Html
 import Html.Attributes
+import Html.Events
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Attribute
+import Battle.Struct.Attributes
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
@@ -25,9 +26,9 @@ import Struct.HelpRequest
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
-      Battle.Struct.Attribute.Category ->
+      Battle.Struct.Attributes.Category ->
       Int ->
-      (List (Html.Html Struct.Event.Type))
+      (Html.Html Struct.Event.Type)
    )
 get_html attribute value =
    (Html.div
@@ -45,9 +46,9 @@ get_html attribute value =
                (Html.Attributes.class
                   (
                      "omnimod-icon-"
-                     ++ (Battle.Struct.Attribute.encode_category attribute)
+                     ++ (Battle.Struct.Attributes.encode_category attribute)
                   )
-               ),
+               )
             ]
             [
             ]
@@ -57,14 +58,14 @@ get_html attribute value =
                (Html.Attributes.class "omnimod-value")
             ]
             [
-               (Html.text (String.FromInt value))
+               (Html.text (String.fromInt value))
             ]
          )
       ]
    )
 
 get_signed_html : (
-      Battle.Struct.Attribute.Category ->
+      Battle.Struct.Attributes.Category ->
       Int ->
       (Html.Html Struct.Event.Type)
    )
@@ -89,9 +90,9 @@ get_signed_html attribute value =
                (Html.Attributes.class
                   (
                      "omnimod-icon-"
-                     ++ (Battle.Struct.Attribute.encode_category attribute)
+                     ++ (Battle.Struct.Attributes.encode_category attribute)
                   )
-               ),
+               )
             ]
             [
             ]
@@ -103,12 +104,9 @@ get_signed_html attribute value =
             [
                (Html.text
                   (
-                     (
-                        if (value < 0)
-                        then "-"
-                        else "+"
-                     )
-                     ++ (String.FromInt value)
+                     if (value > 0)
+                     then ("+" ++ (String.fromInt value))
+                     else (String.fromInt value)
                   )
                )
             ]
