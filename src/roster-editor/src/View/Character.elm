@@ -16,6 +16,8 @@ import Util.Html
 import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.Portrait
 
+import BattleCharacters.View.Portrait
+
 -- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
@@ -53,53 +55,6 @@ get_icon_head_html char =
       ]
    )
 
-get_portrait_body_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
-get_portrait_body_html char =
-   (Html.div
-      [
-         (Html.Attributes.class "character-portrait-body"),
-         (Html.Attributes.class
-            (
-               "asset-character-portrait-"
-               ++
-               (BattleCharacters.Struct.Portrait.get_id
-                  (Struct.Character.get_portrait char)
-               )
-            )
-         )
-      ]
-      [
-      ]
-   )
-
-get_portrait_armor_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
-get_portrait_armor_html char =
-   (Html.div
-      [
-         (Html.Attributes.class "character-portrait-armor"),
-         (Html.Attributes.class
-            (
-               "asset-armor-"
-               ++
-               (BattleCharacters.Struct.Armor.get_image_id
-                  (Struct.Character.get_armor char)
-               )
-            )
-         ),
-         (Html.Attributes.class
-            (
-               "asset-armor-variation-"
-               ++
-               (BattleCharacters.Struct.Portrait.get_body_id
-                  (Struct.Character.get_portrait char)
-               )
-            )
-         )
-      ]
-      [
-      ]
-   )
-
 get_battle_index_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_battle_index_html char =
    let battle_ix = (Struct.Character.get_battle_index char) in
@@ -121,33 +76,31 @@ get_battle_index_html char =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_portrait_html : (
-      Struct.Character.Type ->
       Bool ->
+      Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_portrait_html char click_to_toggle =
+get_portrait_html click_to_toggle char =
    (Html.div
-      (
-         [
-            (Html.Attributes.class "character-portrait"),
-            (Html.Attributes.class "character-portrait-team-0")
-         ]
-         ++
-         if (click_to_toggle)
-         then
-            [
-               (Html.Events.onClick
-                  (Struct.Event.ToggleCharacterBattleIndex
-                     (Struct.Character.get_index char)
-                  )
-               )
-            ]
-         else
-            []
-      )
+      []
       [
-         (get_portrait_body_html char),
-         (get_portrait_armor_html char),
+         (BattleCharacters.View.Portrait.get_html
+            (
+               if (click_to_toggle)
+               then
+                  [
+                     (Html.Events.onClick
+                        (Struct.Event.ToggleCharacterBattleIndex
+                           (Struct.Character.get_index char)
+                        )
+                     ),
+                     (Html.Attributes.class "character-portrait-team-0")
+                  ]
+               else
+                  [(Html.Attributes.class "character-portrait-team-0")]
+            )
+            char
+         ),
          (get_battle_index_html char)
       ]
    )

@@ -19,6 +19,10 @@ import Util.Html
 import Battle.Struct.Omnimods
 import Battle.Struct.Statistics
 
+import Battle.View.Gauge
+import Battle.View.Statistic
+import Battle.View.DamageType
+
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.Weapon
@@ -31,7 +35,6 @@ import Struct.HelpRequest
 import Struct.Navigator
 
 import View.Character
-import View.Gauge
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -64,7 +67,7 @@ get_health_bar char =
             (Struct.Character.get_statistics char)
          )
    in
-      (View.Gauge.get_html
+      (Battle.View.Gauge.get_html
          ("HP: " ++ (String.fromInt current) ++ "/" ++ (String.fromInt max))
          (100.0 * ((toFloat current)/(toFloat max)))
          [(Html.Attributes.class "character-card-health")]
@@ -132,7 +135,7 @@ get_active_movement_bar maybe_navigator char =
             Nothing ->
                max
    in
-      (View.Gauge.get_html
+      (Battle.View.Gauge.get_html
          ("MP: " ++ (String.fromInt current) ++ "/" ++ (String.fromInt max))
          (100.0 * ((toFloat current)/(toFloat max)))
          [(Html.Attributes.class "character-card-movement")]
@@ -151,7 +154,7 @@ get_inactive_movement_bar char =
             (Struct.Character.get_statistics char)
          )
    in
-      (View.Gauge.get_html
+      (Battle.View.Gauge.get_html
          (
             "MP: "
             ++
@@ -252,42 +255,6 @@ get_weapon_field_header damage_multiplier weapon =
       ]
    )
 
-get_mod_html : (String, Int) -> (Html.Html Struct.Event.Type)
-get_mod_html mod =
-   let (category, value) = mod in
-      (Html.div
-         [
-            (Html.Attributes.class "info-card-mod")
-         ]
-         [
-            (Html.text
-               (category ++ ": " ++ (String.fromInt value))
-            )
-         ]
-      )
-
-get_multiplied_mod_html : Float -> (String, Int) -> (Html.Html Struct.Event.Type)
-get_multiplied_mod_html multiplier mod =
-   let (category, value) = mod in
-      (Html.div
-         [
-            (Html.Attributes.class "character-card-mod")
-         ]
-         [
-            (Html.div
-               [
-                  (Html.Attributes.class "omnimod-icon"),
-                  (Html.Attributes.class ("omnimod-icon-" ++ category))
-               ]
-               [
-               ]
-            ),
-            (Html.text
-               (String.fromInt (ceiling ((toFloat value) * multiplier)))
-            )
-         ]
-      )
-
 get_weapon_details : (
       Battle.Struct.Omnimods.Type ->
       Float ->
@@ -303,10 +270,15 @@ get_weapon_details omnimods damage_multiplier weapon =
          (get_weapon_field_header damage_multiplier weapon),
          (Html.div
             [
-               (Html.Attributes.class "info-card-omnimods-listing")
+               (Html.Attributes.class "omnimod-attack-mods")
             ]
             (List.map
-               (get_multiplied_mod_html damage_multiplier)
+               (\(k, v) ->
+                  (Battle.View.DamageType.get_html
+                     (Battle.Struct.DamageType.decode k)
+                     (ceiling ((toFloat v) * damage_multiplier))
+                  )
+               )
                (Battle.Struct.Omnimods.get_attack_mods omnimods)
             )
          )
@@ -347,66 +319,15 @@ get_armor_details omnimods armor =
                (Html.text (BattleCharacters.Struct.Armor.get_name armor))
             ]
          ),
-         (Html.div
-            [
-               (Html.Attributes.class "info-card-omnimods-listing")
-            ]
-            (List.map
-               (get_mod_html)
-               (Battle.Struct.Omnimods.get_defense_mods omnimods)
+         (List.map
+            (\(k, v) ->
+               (Battle.View.DamageType.get_html
+                  (Battle.Struct.DamageType.decode k)
+                  v
+               )
             )
+            (Battle.Struct.Omnimods.get_defense_mods omnimods)
          )
-      ]
-   )
-
-stat_name : String -> (Html.Html Struct.Event.Type)
-stat_name name =
-   (Html.div
-      [
-         (Html.Attributes.class "character-card-stat-name")
-      ]
-      [
-         (Html.text name)
-      ]
-   )
-
-stat_val : Int -> Bool -> (Html.Html Struct.Event.Type)
-stat_val val perc =
-   (Html.div
-      [
-         (Html.Attributes.class "character-card-stat-val")
-      ]
-      [
-         (Html.text
-            (
-               (String.fromInt val)
-               ++
-               (if perc then "%" else "")
-            )
-         )
-      ]
-   )
-
-get_relevant_stats : (
-      Battle.Struct.Statistics.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_relevant_stats stats =
-   (Html.div
-      [
-         (Html.Attributes.class "character-card-stats")
-      ]
-      [
-         (stat_name "Dodge"),
-         (stat_val (Battle.Struct.Statistics.get_dodges stats) True),
-         (stat_name "Parry"),
-         (stat_val (Battle.Struct.Statistics.get_parries stats) True),
-         (stat_name "Accu."),
-         (stat_val (Battle.Struct.Statistics.get_accuracy stats) False),
-         (stat_name "2xHit"),
-         (stat_val (Battle.Struct.Statistics.get_double_hits stats) True),
-         (stat_name "Crit."),
-         (stat_val (Battle.Struct.Statistics.get_critical_hits stats) True)
       ]
    )
 
@@ -503,7 +424,12 @@ get_summary_html char_turn player_ix char =
             ),
             (get_weapon_details omnimods damage_modifier active_weapon),
             (get_armor_details omnimods (Struct.Character.get_armor char)),
-            (get_relevant_stats char_statistics),
+            (Html.div
+               []
+               (Battle.View.Statistic.get_all_but_gauges_html
+                  char_statistics
+               )
+            ),
             (get_weapon_summary damage_modifier inactive_weapon)
          ]
       )
@@ -562,7 +488,12 @@ get_full_html player_ix char =
             ),
             (get_weapon_details omnimods damage_modifier active_weapon),
             (get_armor_details omnimods armor),
-            (get_relevant_stats char_statistics),
+            (Html.div
+               []
+               (Battle.View.Statistic.get_all_but_gauges_html
+                  char_statistics
+               )
+            ),
             (get_weapon_summary damage_modifier inactive_weapon)
          ]
       )

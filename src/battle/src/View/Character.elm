@@ -13,8 +13,9 @@ import Html.Events
 import Util.Html
 
 -- Battle Characters -----------------------------------------------------------
-import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.Portrait
+
+import BattleCharacters.View.Portrait
 
 -- Local Module ----------------------------------------------------------------
 import Constants.UI
@@ -158,53 +159,6 @@ get_icon_actual_html model char =
          ]
       )
 
-get_portrait_body_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
-get_portrait_body_html char =
-   (Html.div
-      [
-         (Html.Attributes.class "character-portrait-body"),
-         (Html.Attributes.class
-            (
-               "asset-character-portrait-"
-               ++
-               (BattleCharacters.Struct.Portrait.get_id
-                  (Struct.Character.get_portrait char)
-               )
-            )
-         )
-      ]
-      [
-      ]
-   )
-
-get_portrait_armor_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
-get_portrait_armor_html char =
-   (Html.div
-      [
-         (Html.Attributes.class "character-portrait-armor"),
-         (Html.Attributes.class
-            (
-               "asset-armor-"
-               ++
-               (BattleCharacters.Struct.Armor.get_image_id
-                  (Struct.Character.get_armor char)
-               )
-            )
-         ),
-         (Html.Attributes.class
-            (
-               "asset-armor-variation-"
-               ++
-               (BattleCharacters.Struct.Portrait.get_body_id
-                  (Struct.Character.get_portrait char)
-               )
-            )
-         )
-      ]
-      [
-      ]
-   )
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -214,7 +168,7 @@ get_portrait_html : (
       (Html.Html Struct.Event.Type)
    )
 get_portrait_html viewer_ix char =
-   (Html.div
+   (BattleCharacters.View.Portrait.get_html
       [
          (Html.Attributes.class
             (
@@ -225,7 +179,6 @@ get_portrait_html viewer_ix char =
                   "character-enemy"
             )
          ),
-         (Html.Attributes.class "character-portrait"),
          (Html.Attributes.class
             (
                "character-portrait-team-"
@@ -237,10 +190,7 @@ get_portrait_html viewer_ix char =
             (Struct.Event.LookingForCharacter (Struct.Character.get_index char))
          )
       ]
-      [
-         (get_portrait_body_html char),
-         (get_portrait_armor_html char)
-      ]
+      char
    )
 
 get_icon_html : (
