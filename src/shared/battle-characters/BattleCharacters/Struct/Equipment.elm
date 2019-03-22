@@ -1,5 +1,7 @@
 module BattleCharacters.Struct.Equipment exposing
    (
+      Type,
+      Unresolved,
       get_primary_weapon,
       get_secondary_weapon,
       get_armor,
@@ -49,7 +51,7 @@ type alias Type =
       glyphs : (Array.Array BattleCharacters.Struct.Glyph.Type)
    }
 
-type alias Ref =
+type alias Unresolved =
    {
       primary : BattleCharacters.Struct.Weapon.Ref,
       secondary : BattleCharacters.Struct.Weapon.Ref,
@@ -114,10 +116,10 @@ set_glyph : Int -> BattleCharacters.Struct.Glyph.Type -> Type -> Type
 set_glyph index glyph equipment =
    { equipment | glyphs = (Array.set index glyph equipment.glyphs) }
 
-ref_decoder : (Json.Decode.Decoder Type)
-ref_decoder =
+decoder : (Json.Decode.Decoder Unresolved)
+decoder =
    (Json.Decode.succeed
-      Ref
+      Unresolved
       |> (Json.Decode.Pipeline.required "pr" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "sc" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "ar" Json.Decode.string)
@@ -130,8 +132,8 @@ ref_decoder =
          )
    )
 
-ref_encoder : Ref -> Json.Encode.Value
-ref_encoder ref =
+encode : Unresolved -> Json.Encode.Value
+encode ref =
    (Json.Encode.object
       [
          ("pr", (Json.Encode.string ref.primary)),
@@ -164,7 +166,7 @@ resolve : (
          BattleCharacters.Struct.Glyph.Ref ->
          BattleCharacters.Struct.Glyph.Type
       ) ->
-      Ref ->
+      Unresolved ->
       Type
    )
 resolve resolve_wp resolve_ar resolve_pt resolve_gb resolve_gl ref =
@@ -177,8 +179,8 @@ resolve resolve_wp resolve_ar resolve_pt resolve_gb resolve_gl ref =
       glyphs = (Array.map (resolve_gl) ref.glyphs)
    }
 
-to_ref : Type -> Ref
-to_ref equipment =
+to_unresolved : Type -> Unresolved
+to_unresolved equipment =
    {
       primary = (BattleCharacters.Struct.Weapon.get_id equipment.primary),
       secondary = (BattleCharacters.Struct.Weapon.get_id equipment.secondary),
