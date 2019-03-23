@@ -9,7 +9,7 @@ module BattleCharacters.Struct.Character exposing
       dirty_set_equipment,
       get_omnimods,
       set_extra_omnimods,
-      dirty_set_extra_omnimods
+      dirty_set_extra_omnimods,
       get_attributes,
       get_statistics,
       get_active_weapon,
@@ -22,6 +22,10 @@ module BattleCharacters.Struct.Character exposing
    )
 
 -- Elm -------------------------------------------------------------------------
+import Json.Decode
+import Json.Decode.Pipeline
+
+import Json.Encode
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
@@ -40,18 +44,18 @@ import BattleCharacters.Struct.GlyphBoard
 type alias Type =
    {
       name : String,
-      equipment : BattleCharacters.Struct.Equipment,
+      equipment : BattleCharacters.Struct.Equipment.Type,
       attributes : Battle.Struct.Attributes.Type,
       statistics : Battle.Struct.Statistics.Type,
       is_using_secondary : Bool,
       omnimods : Battle.Struct.Omnimods.Type,
-      extra_omnimods : Battle.Struct.Omnimods.Type,
+      extra_omnimods : Battle.Struct.Omnimods.Type
    }
 
 type alias Unresolved =
    {
       name : String,
-      equipment : BattleCharacters.Struct.Unresolved,
+      equipment : BattleCharacters.Struct.Equipment.Unresolved,
       is_using_secondary : Bool
    }
 
@@ -102,7 +106,7 @@ refresh_omnimods char =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_active_weapon : Type -> BattleCharacters.Struct.Weapon.Type
-get_active_weapon char
+get_active_weapon char =
    if (char.is_using_secondary)
    then (BattleCharacters.Struct.Equipment.get_secondary_weapon char.equipment)
    else (BattleCharacters.Struct.Equipment.get_primary_weapon char.equipment)
@@ -111,7 +115,7 @@ get_inactive_weapon : Type -> BattleCharacters.Struct.Weapon.Type
 get_inactive_weapon char =
    if (char.is_using_secondary)
    then (BattleCharacters.Struct.Equipment.get_primary_weapon char.equipment)
-   then (BattleCharacters.Struct.Equipment.get_secondary_weapon char.equipment)
+   else (BattleCharacters.Struct.Equipment.get_secondary_weapon char.equipment)
 
 get_name : Type -> String
 get_name c = c.name
@@ -129,13 +133,13 @@ dirty_set_equipment : BattleCharacters.Struct.Equipment.Type -> Type -> Type
 dirty_set_equipment equipment char = {char | equipment = equipment}
 
 get_omnimods : Type -> Battle.Struct.Omnimods.Type
-get_omnimods c = c.current_omnimods
+get_omnimods char = char.omnimods
 
 set_extra_omnimods : Battle.Struct.Omnimods.Type -> Type -> Type
-set_extra_omnimods om c = (refresh_omnimods {char | extra_omnimods = om})
+set_extra_omnimods om char = (refresh_omnimods {char | extra_omnimods = om})
 
 dirty_set_extra_omnimods : Battle.Struct.Omnimods.Type -> Type -> Type
-dirty_set_extra_omnimods om c = {char | extra_omnimods = om}
+dirty_set_extra_omnimods om char = {char | extra_omnimods = om}
 
 get_attributes : Type -> Battle.Struct.Attributes.Type
 get_attributes char = char.attributes
@@ -154,7 +158,7 @@ dirty_switch_weapons char =
    {char | is_using_secondary = (not char.is_using_secondary)}
 
 decoder : (Json.Decode.Decoder Unresolved)
-decoder :
+decoder =
    (Json.Decode.succeed
       Unresolved
       |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)

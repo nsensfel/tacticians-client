@@ -116,10 +116,12 @@ apply_movement_step tile_omnimods movement characters players =
                   )
 
                Nothing ->
-                  (Struct.Character.set_location
-                     (tile_omnimods (Struct.Character.get_location char))
-                     char
-                  )
+                  let current_location = (Struct.Character.get_location char) in
+                     (Struct.Character.set_location
+                        current_location
+                        (tile_omnimods current_location)
+                        char
+                     )
          )
          characters
       ),
@@ -141,16 +143,23 @@ apply_inverse_movement_step tile_omnimods movement characters players =
       (Util.Array.update_unsafe
          movement.character_index
          (\char ->
-            (Struct.Character.refresh_omnimods
-               (tile_omnimods)
-               (Struct.Character.set_location
-                  (List.foldr
-                     (BattleMap.Struct.Location.neighbor)
-                     (movement.destination)
-                     (List.map (BattleMap.Struct.Direction.opposite_of) movement.path)
+            (
+               let
+                  location =
+                     (List.foldr
+                        (BattleMap.Struct.Location.neighbor)
+                        (movement.destination)
+                        (List.map
+                           (BattleMap.Struct.Direction.opposite_of)
+                           movement.path
+                        )
+                     )
+               in
+                  (Struct.Character.set_location
+                     location
+                     (tile_omnimods location)
+                     char
                   )
-                  char
-               )
             )
          )
          characters
@@ -176,6 +185,7 @@ apply_switched_weapon weapon_switch characters players =
                (BattleCharacters.Struct.Character.switch_weapons
                  (Struct.Character.get_base_character char)
                )
+               char
             )
          )
          characters

@@ -11,6 +11,7 @@ module Struct.Character exposing
       set_current_health,
       get_location,
       set_location,
+      dirty_set_location,
       is_enabled,
       is_defeated,
       is_alive,
@@ -28,9 +29,11 @@ import Json.Decode.Pipeline
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
+import Battle.Struct.Statistics
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Character
+import BattleCharacters.Struct.Equipment
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Location
@@ -128,6 +131,7 @@ set_location : (
       Battle.Struct.Omnimods.Type ->
       Type ->
       Type
+   )
 set_location location omnimods char =
    let
       previous_max_health =
@@ -140,9 +144,15 @@ set_location location omnimods char =
          {char |
             location = location,
             base =
-               (BattleCharacters.Struct.Character.set_extra_omnimods omnimods)
+               (BattleCharacters.Struct.Character.set_extra_omnimods
+                  omnimods
+                  char.base
+               )
          }
       )
+
+dirty_set_location : BattleMap.Struct.Location.Type -> Type -> Type
+dirty_set_location location char = { char | location = location }
 
 get_base_character : Type -> BattleCharacters.Struct.Character.Type
 get_base_character char = char.base
@@ -180,7 +190,6 @@ decoder =
    (Json.Decode.succeed
       Unresolved
       |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
-      |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
       |>
          (Json.Decode.Pipeline.required
             "rnk"
@@ -215,7 +224,7 @@ resolve location_omnimod_resolver equipment_resolver ref =
       ix = ref.ix,
       rank = ref.rank,
       location = ref.location,
-      health = ref.location,
+      health = ref.health,
       player_ix = ref.player_ix,
       enabled = ref.enabled,
       defeated = ref.defeated,

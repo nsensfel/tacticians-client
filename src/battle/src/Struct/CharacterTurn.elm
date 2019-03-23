@@ -121,7 +121,7 @@ lock_path ct =
             navigator = (Just (Struct.Navigator.lock_path old_nav))
          }
 
-      (_, _) ->
+      _ ->
          ct
 
 unlock_path : Type -> Type
@@ -134,7 +134,7 @@ unlock_path ct =
             navigator = (Just (Struct.Navigator.unlock_path old_nav))
          }
 
-      (_, _) ->
+      _ ->
          ct
 
 show_attack_range_navigator : Int -> Int -> Type -> Type

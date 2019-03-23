@@ -92,7 +92,7 @@ go_to_another_tile model char navigator loc_ref =
                      char_turn =
                         (Struct.CharacterTurn.set_navigator
                            new_navigator
-                           (Struct.CharacterTurn.set_active_char
+                           (Struct.CharacterTurn.set_active_character
                               (Struct.Character.set_base_character
                                  (BattleCharacters.Struct.Character.set_extra_omnimods
                                     (Struct.Model.tile_omnimods_fun
@@ -103,9 +103,10 @@ go_to_another_tile model char navigator loc_ref =
                                     )
                                     (Struct.Character.get_base_character char)
                                  )
+                                 char
                               )
+                              model.char_turn
                            )
-                           model.char_turn
                         ),
                      ui =
                         (Struct.UI.set_displayed_tab
@@ -151,7 +152,7 @@ go_to_tile model char navigator loc_ref =
       )
    )
    then (go_to_current_tile model loc_ref)
-   else (to_to_another_tile model char navigator loc_ref)
+   else (go_to_another_tile model char navigator loc_ref)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

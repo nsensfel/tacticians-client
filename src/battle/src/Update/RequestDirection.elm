@@ -74,8 +74,10 @@ apply_to : (
    )
 apply_to model dir =
    case
-      (Struct.CharacterTurn.try_getting_navigator model.char_turn)
-      (Struct.CharacterTurn.try_getting_active_character model.char_turn)
+      (
+         (Struct.CharacterTurn.try_getting_navigator model.char_turn),
+         (Struct.CharacterTurn.try_getting_active_character model.char_turn)
+      )
    of
       ((Just navigator), (Just char)) ->
          (

@@ -15,10 +15,10 @@ module BattleCharacters.Struct.Equipment exposing
       set_glyph_board,
       set_glyphs,
       set_glyph,
-      ref_decoder,
-      ref_encoder,
+      decoder,
+      encode,
       resolve,
-      to_ref
+      to_unresolved
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -141,7 +141,7 @@ encode ref =
          ("ar", (Json.Encode.string ref.armor)),
          ("pt", (Json.Encode.string ref.portrait)),
          ("gb", (Json.Encode.string ref.glyph_board)),
-         ("gl", (Json.Encode.array (Array.map (Json.Encode.string) ref.gl)))
+         ("gl", (Json.Encode.array (Json.Encode.string) ref.glyphs))
       ]
    )
 

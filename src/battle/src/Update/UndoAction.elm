@@ -7,6 +7,7 @@ import Array
 import Battle.Struct.Statistics
 
 -- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Character
 import BattleCharacters.Struct.Weapon
 
 -- Battle Map ------------------------------------------------------------------
@@ -78,23 +79,22 @@ handle_undo_switched_weapons model =
       Nothing -> model.char_turn
 
       (Just char) ->
-         let
-            new_char = (Struct.Character.toggle_is_using_primary char)
-            tile_omnimods = (Struct.Model.tile_omnimods_fun model)
-         in
-            (Struct.CharacterTurn.lock_path
-               tile_omnimods
-               (Struct.CharacterTurn.unlock_path
-                  tile_omnimods
-                  (Struct.CharacterTurn.set_has_switched_weapons
-                     False
-                     (Struct.CharacterTurn.set_active_character_no_reset
-                        new_char
-                        model.char_turn
+         (Struct.CharacterTurn.lock_path
+            (Struct.CharacterTurn.unlock_path
+               (Struct.CharacterTurn.set_has_switched_weapons
+                  False
+                  (Struct.CharacterTurn.set_active_character_no_reset
+                     (Struct.Character.set_base_character
+                        (BattleCharacters.Struct.Character.switch_weapons
+                           (Struct.Character.get_base_character char)
+                        )
+                        char
                      )
+                     model.char_turn
                   )
                )
             )
+         )
 
 handle_undo_chose_target : Struct.Model.Type -> Struct.CharacterTurn.Type
 handle_undo_chose_target model =
@@ -102,9 +102,7 @@ handle_undo_chose_target model =
       tile_omnimods = (Struct.Model.tile_omnimods_fun model)
    in
       (Struct.CharacterTurn.lock_path
-         (tile_omnimods)
          (Struct.CharacterTurn.unlock_path
-            (tile_omnimods)
             (Struct.CharacterTurn.set_target Nothing model.char_turn)
          )
       )

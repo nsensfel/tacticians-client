@@ -8,6 +8,8 @@ module Struct.Model exposing
       add_weapon,
       add_armor,
       add_portrait,
+      add_glyph_board,
+      add_glyph,
       add_player,
       add_tile,
       invalidate,

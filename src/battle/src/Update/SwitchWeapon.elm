@@ -16,7 +16,12 @@ import Struct.Model
 --------------------------------------------------------------------------------
 make_it_so : Struct.Model.Type -> Struct.Model.Type
 make_it_so model =
-   case (Struct.CharacterTurn.try_getting_active_character model.char_turn) of
+   case
+      (
+         (Struct.CharacterTurn.try_getting_active_character model.char_turn),
+         (Struct.CharacterTurn.try_getting_navigator model.char_turn)
+      )
+   of
       ((Just char), (Just nav)) ->
          let
             new_base_character =
