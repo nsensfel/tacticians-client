@@ -1,10 +1,13 @@
-module Comm.AddGlyphBoard exposing (decode)
+module BattleCharacters.Comm.AddGlyph exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Local Module-----------------------------------------------------------------
-import Struct.GlyphBoard
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Glyph
+import BattleCharacters.Struct.GlyphBoard
+
+-- Local Module ----------------------------------------------------------------
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------
@@ -14,11 +17,12 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-internal_decoder : Struct.GlyphBoard.Type -> Struct.ServerReply.Type
-internal_decoder glb = (Struct.ServerReply.AddGlyphBoard glb)
+internal_decoder : BattleCharacters.Struct.Glyph.Type -> Struct.ServerReply.Type
+internal_decoder gl = (Struct.ServerReply.AddGlyph gl)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.map (internal_decoder) (Struct.GlyphBoard.decoder))
+decode =
+   (Json.Decode.map (internal_decoder) (BattleCharacters.Struct.Glyph.decoder))

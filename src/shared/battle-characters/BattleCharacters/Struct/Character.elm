@@ -6,13 +6,16 @@ module BattleCharacters.Struct.Character exposing
       set_name,
       get_equipment,
       set_equipment,
+      dirty_set_equipment,
       get_omnimods,
       set_extra_omnimods,
+      dirty_set_extra_omnimods
       get_attributes,
       get_statistics,
       get_active_weapon,
       get_inactive_weapon,
       switch_weapons,
+      dirty_switch_weapons,
       decoder,
       encode,
       resolve
@@ -122,11 +125,17 @@ get_equipment c = c.equipment
 set_equipment : BattleCharacters.Struct.Equipment.Type -> Type -> Type
 set_equipment equipment char = (refresh_omnimods {char | equipment = equipment})
 
+dirty_set_equipment : BattleCharacters.Struct.Equipment.Type -> Type -> Type
+dirty_set_equipment equipment char = {char | equipment = equipment}
+
 get_omnimods : Type -> Battle.Struct.Omnimods.Type
 get_omnimods c = c.current_omnimods
 
 set_extra_omnimods : Battle.Struct.Omnimods.Type -> Type -> Type
 set_extra_omnimods om c = (refresh_omnimods {char | extra_omnimods = om})
+
+dirty_set_extra_omnimods : Battle.Struct.Omnimods.Type -> Type -> Type
+dirty_set_extra_omnimods om c = {char | extra_omnimods = om}
 
 get_attributes : Type -> Battle.Struct.Attributes.Type
 get_attributes char = char.attributes
@@ -139,6 +148,10 @@ switch_weapons char =
    (refresh_omnimods
       {char | is_using_secondary = (not char.is_using_secondary)}
    )
+
+dirty_switch_weapons : Type -> Type
+dirty_switch_weapons char =
+   {char | is_using_secondary = (not char.is_using_secondary)}
 
 decoder : (Json.Decode.Decoder Unresolved)
 decoder :

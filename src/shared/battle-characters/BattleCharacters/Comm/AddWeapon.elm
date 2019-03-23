@@ -1,4 +1,4 @@
-module Comm.AddWeapon exposing (decode)
+module BattleCharacters.Comm.AddWeapon exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode

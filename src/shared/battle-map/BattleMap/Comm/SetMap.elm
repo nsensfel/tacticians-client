@@ -1,4 +1,4 @@
-module Comm.SetMap exposing (decode)
+module BattleMap.Comm.SetMap exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode

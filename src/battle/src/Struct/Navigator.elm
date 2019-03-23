@@ -207,7 +207,8 @@ try_adding_step dir navigator =
             dir
          )
       of
-         (Just path) -> (Just {navigator | path = path})
+         (Just path) ->
+            (Just {navigator | path = path})
          Nothing -> Nothing
 
 try_getting_path_to : (

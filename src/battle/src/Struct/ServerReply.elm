@@ -2,6 +2,8 @@ module Struct.ServerReply exposing (Type(..))
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Glyph
+import BattleCharacters.Struct.GlyphBoard
 import BattleCharacters.Struct.Portrait
 import BattleCharacters.Struct.Weapon
 
@@ -22,9 +24,11 @@ type Type =
    | Disconnected
    | AddArmor BattleCharacters.Struct.Armor.Type
    | AddPortrait BattleCharacters.Struct.Portrait.Type
+   | AddGlyphBoard BattleCharacters.Struct.GlyphBoard.Type
+   | AddGlyph BattleCharacters.Struct.Glyph.Type
    | AddPlayer Struct.Player.Type
    | AddWeapon BattleCharacters.Struct.Weapon.Type
-   | AddCharacter Struct.Character.TypeAndEquipmentRef
+   | AddCharacter Struct.Character.Unresolved
    | AddTile BattleMap.Struct.Tile.Type
    | SetMap BattleMap.Struct.Map.Type
    | TurnResults (List Struct.TurnResult.Type)

@@ -1,9 +1,8 @@
 module Update.SwitchWeapon exposing (apply_to)
 
--- FIXME: switching weapon should make the navigator disappear.
-
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Weapon
+import BattleCharacters.Struct.Character
 
 -- Local module ----------------------------------------------------------------
 import Struct.Character
@@ -11,37 +10,42 @@ import Struct.CharacterTurn
 import Struct.Error
 import Struct.Event
 import Struct.Model
-import Struct.Navigator
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 make_it_so : Struct.Model.Type -> Struct.Model.Type
 make_it_so model =
-   case
-      (
-         (Struct.CharacterTurn.try_getting_active_character model.char_turn),
-         (Struct.CharacterTurn.try_getting_navigator model.char_turn)
-      )
-   of
+   case (Struct.CharacterTurn.try_getting_active_character model.char_turn) of
       ((Just char), (Just nav)) ->
          let
-            tile_omnimods = (Struct.Model.tile_omnimods_fun model)
-            current_tile_omnimods =
-               (tile_omnimods (Struct.Navigator.get_current_location nav))
-            new_char =
-               (Struct.Character.refresh_omnimods
-                  (\e -> current_tile_omnimods)
-                  (Struct.Character.toggle_is_using_primary char)
+            new_base_character =
+               (BattleCharacters.Struct.Character.switch_weapons
+                  (Struct.Character.get_base_character char)
+               )
+            active_weapon =
+               (BattleCharacters.Struct.Character.get_active_weapon
+                  new_base_character
                )
          in
             {model |
                char_turn =
-                  (Struct.CharacterTurn.set_has_switched_weapons
-                     True
-                     (Struct.CharacterTurn.set_active_character_no_reset
-                        new_char
-                        model.char_turn
+                  (Struct.CharacterTurn.show_attack_range_navigator
+                     (BattleCharacters.Struct.Weapon.get_defense_range
+                        active_weapon
+                     )
+                     (BattleCharacters.Struct.Weapon.get_attack_range
+                        active_weapon
+                     )
+                     (Struct.CharacterTurn.set_has_switched_weapons
+                        True
+                        (Struct.CharacterTurn.set_active_character_no_reset
+                           (Struct.Character.set_base_character
+                              new_base_character
+                              char
+                           )
+                           model.char_turn
+                        )
                      )
                   )
             }

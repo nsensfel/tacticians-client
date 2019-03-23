@@ -1,10 +1,10 @@
-module Comm.AddTile exposing (decode)
+module BattleCharacters.Comm.AddArmor exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
--- Battle Map ------------------------------------------------------------------
-import BattleMap.Struct.Tile
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Armor
 
 -- Local Module ----------------------------------------------------------------
 import Struct.ServerReply
@@ -16,11 +16,15 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-internal_decoder : BattleMap.Struct.Tile.Type -> Struct.ServerReply.Type
-internal_decoder wp = (Struct.ServerReply.AddTile wp)
+internal_decoder : BattleCharacters.Struct.Armor.Type -> Struct.ServerReply.Type
+internal_decoder ar = (Struct.ServerReply.AddArmor ar)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.map (internal_decoder) (BattleMap.Struct.Tile.decoder))
+decode =
+   (Json.Decode.map
+      (internal_decoder)
+      (BattleCharacters.Struct.Armor.decoder)
+   )

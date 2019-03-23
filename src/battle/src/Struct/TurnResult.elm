@@ -32,6 +32,9 @@ import Battle.Struct.Omnimods
 import BattleMap.Struct.Location
 import BattleMap.Struct.Direction
 
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Character
+
 -- Local Module ----------------------------------------------------------------
 import Struct.Attack
 import Struct.Character
@@ -104,7 +107,7 @@ apply_movement_step tile_omnimods movement characters players =
          (\char ->
             case (List.head movement.path) of
                (Just dir) ->
-                  (Struct.Character.set_location
+                  (Struct.Character.dirty_set_location
                      (BattleMap.Struct.Location.neighbor
                         dir
                         (Struct.Character.get_location char)
@@ -113,7 +116,10 @@ apply_movement_step tile_omnimods movement characters players =
                   )
 
                Nothing ->
-                  (Struct.Character.refresh_omnimods (tile_omnimods) char)
+                  (Struct.Character.set_location
+                     (tile_omnimods (Struct.Character.get_location char))
+                     char
+                  )
          )
          characters
       ),
@@ -153,7 +159,6 @@ apply_inverse_movement_step tile_omnimods movement characters players =
    )
 
 apply_switched_weapon : (
-      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
       WeaponSwitch ->
       (Array.Array Struct.Character.Type) ->
       (Array.Array Struct.Player.Type) ->
@@ -162,14 +167,15 @@ apply_switched_weapon : (
          (Array.Array Struct.Player.Type)
       )
    )
-apply_switched_weapon tile_omnimods weapon_switch characters players =
+apply_switched_weapon weapon_switch characters players =
    (
       (Util.Array.update_unsafe
          weapon_switch.character_index
          (\char ->
-            (Struct.Character.refresh_omnimods
-               (tile_omnimods)
-               (Struct.Character.toggle_is_using_primary char)
+            (Struct.Character.set_base_character
+               (BattleCharacters.Struct.Character.switch_weapons
+                 (Struct.Character.get_base_character char)
+               )
             )
          )
          characters
@@ -454,12 +460,7 @@ apply_step tile_omnimods turn_result characters players =
          (apply_movement_step (tile_omnimods) movement characters players)
 
       (SwitchedWeapon weapon_switch) ->
-         (apply_switched_weapon
-            (tile_omnimods)
-            weapon_switch
-            characters
-            players
-         )
+         (apply_switched_weapon weapon_switch characters players)
 
       (Attacked attack) ->
          (apply_attack_step attack characters players)
@@ -494,12 +495,7 @@ apply_inverse_step tile_omnimods turn_result characters players =
          )
 
       (SwitchedWeapon weapon_switch) ->
-         (apply_switched_weapon
-            (tile_omnimods)
-            weapon_switch
-            characters
-            players
-         )
+         (apply_switched_weapon weapon_switch characters players)
 
       (Attacked attack) ->
          (apply_inverse_attack attack characters players)

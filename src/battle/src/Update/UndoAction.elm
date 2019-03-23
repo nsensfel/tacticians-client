@@ -29,17 +29,13 @@ get_character_navigator : (
    )
 get_character_navigator model char =
    let
-      weapon =
-         (
-            if (Struct.Character.get_is_using_primary char)
-            then (Struct.Character.get_primary_weapon char)
-            else (Struct.Character.get_secondary_weapon char)
-         )
+      base_char = (Struct.Character.get_base_character char)
+      weapon = (BattleCharacters.Struct.Character.get_active_weapon base_char)
    in
       (Struct.Navigator.new
          (Struct.Character.get_location char)
          (Battle.Struct.Statistics.get_movement_points
-            (Struct.Character.get_statistics char)
+            (BattleCharacters.Struct.Character.get_statistics base_char)
          )
          (BattleCharacters.Struct.Weapon.get_defense_range weapon)
          (BattleCharacters.Struct.Weapon.get_attack_range weapon)

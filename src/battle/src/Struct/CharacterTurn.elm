@@ -110,42 +110,25 @@ get_state ct = ct.state
 get_path : Type -> (List BattleMap.Struct.Direction.Type)
 get_path ct = ct.path
 
-lock_path : (
-      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
-      Type ->
-      Type
-   )
-lock_path tile_omnimods ct =
-   case (ct.navigator, ct.active_character) of
-      ((Just old_nav), (Just char)) ->
-         let
-            current_tile_omnimods =
-               (tile_omnimods (Struct.Navigator.get_current_location old_nav))
-         in
-            {ct |
-               active_character =
-                  (Just
-                     (Struct.Character.refresh_omnimods
-                        (\e -> current_tile_omnimods)
-                        char
-                     )
-                  ),
-               state = MovedCharacter,
-               path = (Struct.Navigator.get_path old_nav),
-               target = Nothing,
-               navigator = (Just (Struct.Navigator.lock_path old_nav))
-            }
+lock_path : Type -> Type
+lock_path ct =
+   case ct.navigator of
+      (Just old_nav) ->
+         {ct |
+            state = MovedCharacter,
+            path = (Struct.Navigator.get_path old_nav),
+            target = Nothing,
+            navigator = (Just (Struct.Navigator.lock_path old_nav))
+         }
 
       (_, _) ->
          ct
 
-unlock_path : (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type) -> Type -> Type
-unlock_path tile_omnimods ct =
-   case (ct.navigator, ct.active_character) of
-      ((Just old_nav), (Just char)) ->
+unlock_path : Type -> Type
+unlock_path ct =
+   case ct.navigator of
+      (Just old_nav) ->
          {ct |
-            active_character =
-               (Just (Struct.Character.refresh_omnimods (tile_omnimods) char)),
             state = MovedCharacter,
             target = Nothing,
             navigator = (Just (Struct.Navigator.unlock_path old_nav))

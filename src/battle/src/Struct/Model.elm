@@ -34,6 +34,8 @@ import Battle.Struct.Omnimods
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Glyph
+import BattleCharacters.Struct.GlyphBoard
 import BattleCharacters.Struct.Weapon
 
 -- Battle Map ------------------------------------------------------------------
@@ -79,6 +81,16 @@ type alias Type =
             BattleCharacters.Struct.Portrait.Ref
             BattleCharacters.Struct.Portrait.Type
          ),
+      glyph_boards :
+         (Dict.Dict
+            BattleCharacters.Struct.GlyphBoard.Ref
+            BattleCharacters.Struct.GlyphBoard.Type
+         ),
+      glyphs :
+         (Dict.Dict
+            BattleCharacters.Struct.Glyph.Ref
+            BattleCharacters.Struct.Glyph.Type
+         ),
       tiles : (Dict.Dict BattleMap.Struct.Tile.Ref BattleMap.Struct.Tile.Type),
       error : (Maybe Struct.Error.Type),
       player_id : String,
@@ -118,6 +130,8 @@ new flags =
             weapons = (Dict.empty),
             armors = (Dict.empty),
             portraits = (Dict.empty),
+            glyph_boards = (Dict.empty),
+            glyphs = (Dict.empty),
             tiles = (Dict.empty),
             players = (Array.empty),
             error = Nothing,
@@ -190,6 +204,28 @@ add_portrait pt model =
          )
    }
 
+add_glyph_board : BattleCharacters.Struct.GlyphBoard.Type -> Type -> Type
+add_glyph_board pt model =
+   {model |
+      glyph_boards =
+         (Dict.insert
+            (BattleCharacters.Struct.GlyphBoard.get_id pt)
+            pt
+            model.glyph_boards
+         )
+   }
+
+add_glyph : BattleCharacters.Struct.Glyph.Type -> Type -> Type
+add_glyph pt model =
+   {model |
+      glyphs =
+         (Dict.insert
+            (BattleCharacters.Struct.Glyph.get_id pt)
+            pt
+            model.glyphs
+         )
+   }
+
 add_player : Struct.Player.Type -> Type -> Type
 add_player pl model =
    {model |
@@ -233,6 +269,8 @@ full_debug_reset model =
       weapons = (Dict.empty),
       armors = (Dict.empty),
       portraits = (Dict.empty),
+      glyph_boards = (Dict.empty),
+      glyphs = (Dict.empty),
       tiles = (Dict.empty),
       error = Nothing,
       ui = (Struct.UI.default),

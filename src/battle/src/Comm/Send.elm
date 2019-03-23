@@ -6,14 +6,20 @@ import Http
 import Json.Decode
 import Json.Encode
 
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Comm.AddArmor
+import BattleCharacters.Comm.AddGlyph
+import BattleCharacters.Comm.AddGlyphBoard
+import BattleCharacters.Comm.AddPortrait
+import BattleCharacters.Comm.AddWeapon
+
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Comm.AddTile
+import BattleMap.Comm.SetMap
+
 -- Local Module ----------------------------------------------------------------
-import Comm.AddArmor
-import Comm.AddPortrait
-import Comm.AddPlayer
 import Comm.AddChar
-import Comm.AddTile
-import Comm.AddWeapon
-import Comm.SetMap
+import Comm.AddPlayer
 import Comm.SetTimeline
 import Comm.TurnResults
 
@@ -31,13 +37,15 @@ import Struct.Model
 internal_decoder : String -> (Json.Decode.Decoder Struct.ServerReply.Type)
 internal_decoder reply_type =
    case reply_type of
-      "add_tile" -> (Comm.AddTile.decode)
-      "add_armor" -> (Comm.AddArmor.decode)
+      "add_tile" -> (BattleMap.Comm.AddTile.decode)
+      "add_armor" -> (BattleCharacters.Comm.AddArmor.decode)
       "add_char" -> (Comm.AddChar.decode)
-      "add_portrait" -> (Comm.AddPortrait.decode)
+      "add_portrait" -> (BattleCharacters.Comm.AddPortrait.decode)
+      "add_glyph_board" -> (BattleCharacters.Comm.AddGlyphBoard.decode)
+      "add_glyph" -> (BattleCharacters.Comm.AddGlyph.decode)
       "add_player" -> (Comm.AddPlayer.decode)
-      "add_weapon" -> (Comm.AddWeapon.decode)
-      "set_map" -> (Comm.SetMap.decode)
+      "add_weapon" -> (BattleCharacters.Comm.AddWeapon.decode)
+      "set_map" -> (BattleMap.Comm.SetMap.decode)
       "turn_results" -> (Comm.TurnResults.decode)
       "set_timeline" -> (Comm.SetTimeline.decode)
       "disconnected" -> (Json.Decode.succeed Struct.ServerReply.Disconnected)

@@ -22,6 +22,9 @@ import Util.Http
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Equipment
+import BattleCharacters.Struct.Glyph
+import BattleCharacters.Struct.GlyphBoard
 import BattleCharacters.Struct.Portrait
 import BattleCharacters.Struct.Weapon
 
@@ -79,6 +82,26 @@ portrait_getter model ref =
       (Just w) -> w
       Nothing -> BattleCharacters.Struct.Portrait.default
 
+glyph_board_getter : (
+      Struct.Model.Type ->
+      BattleCharacters.Struct.GlyphBoard.Ref ->
+      BattleCharacters.Struct.GlyphBoard.Type
+   )
+glyph_board_getter model ref =
+   case (Dict.get ref model.glyph_boards) of
+      (Just w) -> w
+      Nothing -> BattleCharacters.Struct.GlyphBoard.default
+
+glyph_getter : (
+      Struct.Model.Type ->
+      BattleCharacters.Struct.Glyph.Ref ->
+      BattleCharacters.Struct.Glyph.Type
+   )
+glyph_getter model ref =
+   case (Dict.get ref model.glyphs) of
+      (Just w) -> w
+      Nothing -> BattleCharacters.Struct.Glyph.default
+
 -----------
 
 disconnected : (
@@ -124,6 +147,24 @@ add_portrait pt current_state =
    let (model, cmds) = current_state in
       ((Struct.Model.add_portrait pt model), cmds)
 
+add_glyph_board : (
+      BattleCharacters.Struct.GlyphBoard.Type ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+add_glyph_board pt current_state =
+   let (model, cmds) = current_state in
+      ((Struct.Model.add_glyph_board pt model), cmds)
+
+add_glyph : (
+      BattleCharacters.Struct.Glyph.Type ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+add_glyph pt current_state =
+   let (model, cmds) = current_state in
+      ((Struct.Model.add_glyph pt model), cmds)
+
 add_tile : (
       BattleMap.Struct.Tile.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
@@ -152,27 +193,24 @@ add_player pl current_state =
       ((Struct.Model.add_player pl model), cmds)
 
 add_character : (
-      Struct.Character.TypeAndEquipmentRef ->
+      Struct.Character.Unresolved ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-add_character char_and_refs current_state =
-   let
-      (model, cmds) = current_state
-      awp = (weapon_getter model char_and_refs.main_weapon_ref)
-      swp = (weapon_getter model char_and_refs.secondary_weapon_ref)
-      ar = (armor_getter model char_and_refs.armor_ref)
-      pt = (portrait_getter model char_and_refs.portrait_ref)
-   in
+add_character unresolved_char current_state =
+   let (model, cmds) = current_state in
       (
          (Struct.Model.add_character
-            (Struct.Character.fill_missing_equipment_and_omnimods
+            (Struct.Character.resolve
                (Struct.Model.tile_omnimods_fun model)
-               pt
-               awp
-               swp
-               ar
-               char_and_refs.char
+               (BattleCharacters.Struct.Equipment.resolve
+                  (weapon_getter model)
+                  (armor_getter model)
+                  (portrait_getter model)
+                  (glyph_board_getter model)
+                  (glyph_getter model)
+               )
+               unresolved_char
             )
             model
          ),
@@ -253,6 +291,12 @@ apply_command command current_state =
 
       (Struct.ServerReply.AddPortrait pt) ->
          (add_portrait pt current_state)
+
+      (Struct.ServerReply.AddGlyphBoard pt) ->
+         (add_glyph_board pt current_state)
+
+      (Struct.ServerReply.AddGlyph pt) ->
+         (add_glyph pt current_state)
 
       (Struct.ServerReply.AddPlayer pl) ->
          (add_player pl current_state)

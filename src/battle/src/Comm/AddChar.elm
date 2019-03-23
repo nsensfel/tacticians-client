@@ -14,12 +14,8 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
-internal_decoder : (
-      Struct.Character.TypeAndEquipmentRef ->
-      Struct.ServerReply.Type
-   )
-internal_decoder char_and_refs = (Struct.ServerReply.AddCharacter char_and_refs)
+internal_decoder : Struct.Character.Unresolved -> Struct.ServerReply.Type
+internal_decoder ref = (Struct.ServerReply.AddCharacter ref)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
