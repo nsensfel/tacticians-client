@@ -13,6 +13,8 @@ import Html.Events
 import Util.Html
 
 -- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Character
+import BattleCharacters.Struct.Equipment
 import BattleCharacters.Struct.Portrait
 
 import BattleCharacters.View.Portrait
@@ -121,7 +123,11 @@ get_icon_head_html char =
                "asset-character-icon-"
                ++
                (BattleCharacters.Struct.Portrait.get_icon_id
-                  (Struct.Character.get_portrait char)
+                  (BattleCharacters.Struct.Equipment.get_portrait
+                     (BattleCharacters.Struct.Character.get_equipment
+                        (Struct.Character.get_base_character char)
+                     )
+                  )
                )
             )
          )
@@ -190,7 +196,9 @@ get_portrait_html viewer_ix char =
             (Struct.Event.LookingForCharacter (Struct.Character.get_index char))
          )
       ]
-      char
+      (BattleCharacters.Struct.Character.get_equipment
+         (Struct.Character.get_base_character char)
+      )
    )
 
 get_icon_html : (

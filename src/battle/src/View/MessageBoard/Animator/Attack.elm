@@ -6,6 +6,9 @@ import Array
 import Html
 import Html.Attributes
 
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Character
+
 -- Local Module ----------------------------------------------------------------
 import Struct.Attack
 import Struct.Character
@@ -61,8 +64,14 @@ get_attack_html : (
    )
 get_attack_html attacker defender attack =
    let
-      attacker_name = (Struct.Character.get_name attacker)
-      defender_name = (Struct.Character.get_name defender)
+      attacker_name =
+         (BattleCharacters.Struct.Character.get_name
+            (Struct.Character.get_base_character attacker)
+         )
+      defender_name =
+         (BattleCharacters.Struct.Character.get_name
+            (Struct.Character.get_base_character defender)
+         )
    in
       (Html.div
          [

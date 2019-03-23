@@ -57,7 +57,7 @@ get_portrait_armor_html equipment =
                "asset-armor-"
                ++
                (BattleCharacters.Struct.Armor.get_image_id
-                  (BattleCharacters.Equipment.get_armor equipment)
+                  (BattleCharacters.Struct.Equipment.get_armor equipment)
                )
             )
          ),
@@ -80,7 +80,7 @@ get_portrait_armor_html equipment =
 --------------------------------------------------------------------------------
 get_html : (
       (List (Html.Attribute Struct.Event.Type)) ->
-      BattleCharacters.Equipment.Type ->
+      BattleCharacters.Struct.Equipment.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_html extra_attributes equipment =

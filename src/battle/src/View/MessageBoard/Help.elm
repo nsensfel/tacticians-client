@@ -31,7 +31,9 @@ get_html model =
             Struct.HelpRequest.None ->
                (View.MessageBoard.Help.Guide.get_html_contents model)
 
-            (Struct.HelpRequest.HelpOnRank rank) ->
+            (Struct.HelpRequest.Rank rank) ->
                (View.MessageBoard.Help.Rank.get_html_contents rank)
+
+            _ -> [(Html.text "Help is not available for this, yet.")]
       )
    )

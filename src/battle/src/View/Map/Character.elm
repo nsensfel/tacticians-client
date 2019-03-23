@@ -10,6 +10,8 @@ import Util.Html
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Character
+import BattleCharacters.Struct.Equipment
 
 -- Local Module ----------------------------------------------------------------
 import Constants.UI
@@ -151,7 +153,11 @@ get_head_html char =
          (Html.Attributes.class
             ("asset-character-icon-" ++
                (BattleCharacters.Struct.Portrait.get_icon_id
-                  (Struct.Character.get_portrait char)
+                  (BattleCharacters.Struct.Equipment.get_portrait
+                     (BattleCharacters.Struct.Character.get_equipment
+                        (Struct.Character.get_base_character char)
+                     )
+                  )
                )
             )
          )

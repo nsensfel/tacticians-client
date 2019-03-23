@@ -2,8 +2,10 @@ module Battle.View.Statistic exposing
    (
       get_html,
       get_all_html,
+      get_all_but_gauges_html,
       get_signed_html,
-      get_all_signed_html
+      get_all_signed_html,
+      get_all_but_gauges_signed_html
    )
 
 -- Elm -------------------------------------------------------------------------

@@ -6,6 +6,9 @@ import Array
 import Html
 import Html.Attributes
 
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Character
+
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.TurnResult
@@ -38,7 +41,9 @@ get_html characters player_ix movement =
                (View.Character.get_portrait_html player_ix char),
                (Html.text
                   (
-                     (Struct.Character.get_name char)
+                     (BattleCharacters.Struct.Character.get_name
+                        (Struct.Character.get_base_character char)
+                     )
                      ++ " moved to ("
                      ++ (String.fromInt movement.destination.x)
                      ++ ", "

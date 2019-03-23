@@ -16,6 +16,7 @@ import Html.Events
 import Util.Html
 
 -- Battle ----------------------------------------------------------------------
+import Battle.Struct.DamageType
 import Battle.Struct.Omnimods
 import Battle.Struct.Statistics
 
@@ -25,6 +26,8 @@ import Battle.View.DamageType
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Character
+import BattleCharacters.Struct.Equipment
 import BattleCharacters.Struct.Weapon
 
 -- Local Module ----------------------------------------------------------------
@@ -51,7 +54,11 @@ get_name char =
          (Html.Attributes.class "character-card-name")
       ]
       [
-         (Html.text (Struct.Character.get_name char))
+         (Html.text
+            (BattleCharacters.Struct.Character.get_name
+               (Struct.Character.get_base_character char)
+            )
+         )
       ]
    )
 
@@ -64,7 +71,9 @@ get_health_bar char =
       current = (Struct.Character.get_sane_current_health char)
       max =
          (Battle.Struct.Statistics.get_max_health
-            (Struct.Character.get_statistics char)
+            (BattleCharacters.Struct.Character.get_statistics
+               (Struct.Character.get_base_character char)
+            )
          )
    in
       (Battle.View.Gauge.get_html
@@ -82,7 +91,7 @@ get_rank_status rank =
          (Html.Attributes.class "character-card-status"),
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
-            (Struct.Event.RequestedHelp (Struct.HelpRequest.HelpOnRank rank))
+            (Struct.Event.RequestedHelp (Struct.HelpRequest.Rank rank))
          ),
          (Html.Attributes.class
             (
@@ -125,7 +134,9 @@ get_active_movement_bar maybe_navigator char =
    let
       max =
          (Battle.Struct.Statistics.get_movement_points
-            (Struct.Character.get_statistics char)
+            (BattleCharacters.Struct.Character.get_statistics
+               (Struct.Character.get_base_character char)
+            )
          )
       current =
          case maybe_navigator of
@@ -151,19 +162,13 @@ get_inactive_movement_bar char =
    let
       max =
          (Battle.Struct.Statistics.get_movement_points
-            (Struct.Character.get_statistics char)
+            (BattleCharacters.Struct.Character.get_statistics
+               (Struct.Character.get_base_character char)
+            )
          )
    in
       (Battle.View.Gauge.get_html
-         (
-            "MP: "
-            ++
-            (String.fromInt
-               (Battle.Struct.Statistics.get_movement_points
-                  (Struct.Character.get_statistics char)
-               )
-            )
-         )
+         ( "MP: " ++ (String.fromInt max))
          100.0
          [(Html.Attributes.class "character-card-movement")]
          []
@@ -319,14 +324,17 @@ get_armor_details omnimods armor =
                (Html.text (BattleCharacters.Struct.Armor.get_name armor))
             ]
          ),
-         (List.map
-            (\(k, v) ->
-               (Battle.View.DamageType.get_html
-                  (Battle.Struct.DamageType.decode k)
-                  v
+         (Html.div
+            []
+            (List.map
+               (\(k, v) ->
+                  (Battle.View.DamageType.get_html
+                     (Battle.Struct.DamageType.decode k)
+                     v
+                  )
                )
+               (Battle.Struct.Omnimods.get_defense_mods omnimods)
             )
-            (Battle.Struct.Omnimods.get_defense_mods omnimods)
          )
       ]
    )
@@ -379,23 +387,15 @@ get_summary_html : (
    )
 get_summary_html char_turn player_ix char =
    let
-      is_using_primary = (Struct.Character.get_is_using_primary char)
-      active_weapon =
-         (
-            if (is_using_primary)
-            then (Struct.Character.get_primary_weapon char)
-            else (Struct.Character.get_secondary_weapon char)
-         )
-      inactive_weapon =
-         (
-            if (is_using_primary)
-            then (Struct.Character.get_secondary_weapon char)
-            else (Struct.Character.get_primary_weapon char)
-         )
-      char_statistics = (Struct.Character.get_statistics char)
+      base_char = (Struct.Character.get_base_character char)
+      char_statistics =
+         (BattleCharacters.Struct.Character.get_statistics base_char)
       damage_modifier =
-         (Battle.Struct.Statistics.get_damage_modifier char_statistics)
-      omnimods = (Struct.Character.get_current_omnimods char)
+         (Battle.Struct.Statistics.get_damage_modifier
+            char_statistics
+         )
+      omnimods = (BattleCharacters.Struct.Character.get_omnimods base_char)
+      equipment = (BattleCharacters.Struct.Character.get_equipment base_char)
    in
       (Html.div
          [
@@ -422,15 +422,29 @@ get_summary_html char_turn player_ix char =
                   (get_statuses char)
                ]
             ),
-            (get_weapon_details omnimods damage_modifier active_weapon),
-            (get_armor_details omnimods (Struct.Character.get_armor char)),
+            (get_weapon_details
+               omnimods
+               damage_modifier
+               (BattleCharacters.Struct.Character.get_active_weapon
+                  base_char
+               )
+            ),
+            (get_armor_details
+               omnimods
+               (BattleCharacters.Struct.Equipment.get_armor equipment)
+            ),
             (Html.div
                []
                (Battle.View.Statistic.get_all_but_gauges_html
                   char_statistics
                )
             ),
-            (get_weapon_summary damage_modifier inactive_weapon)
+            (get_weapon_summary
+               damage_modifier
+               (BattleCharacters.Struct.Character.get_inactive_weapon
+                  base_char
+               )
+            )
          ]
       )
 
@@ -441,24 +455,15 @@ get_full_html : (
    )
 get_full_html player_ix char =
    let
-      is_using_primary = (Struct.Character.get_is_using_primary char)
-      active_weapon =
-         (
-            if (is_using_primary)
-            then (Struct.Character.get_primary_weapon char)
-            else (Struct.Character.get_secondary_weapon char)
-         )
-      inactive_weapon =
-         (
-            if (is_using_primary)
-            then (Struct.Character.get_secondary_weapon char)
-            else (Struct.Character.get_primary_weapon char)
-         )
-      char_statistics = (Struct.Character.get_statistics char)
+      base_char = (Struct.Character.get_base_character char)
+      char_statistics =
+         (BattleCharacters.Struct.Character.get_statistics base_char)
       damage_modifier =
-         (Battle.Struct.Statistics.get_damage_modifier char_statistics)
-      omnimods = (Struct.Character.get_current_omnimods char)
-      armor = (Struct.Character.get_armor char)
+         (Battle.Struct.Statistics.get_damage_modifier
+            char_statistics
+         )
+      omnimods = (BattleCharacters.Struct.Character.get_omnimods base_char)
+      equipment = (BattleCharacters.Struct.Character.get_equipment base_char)
    in
       (Html.div
          [
@@ -486,14 +491,28 @@ get_full_html player_ix char =
                   (get_statuses char)
                ]
             ),
-            (get_weapon_details omnimods damage_modifier active_weapon),
-            (get_armor_details omnimods armor),
+            (get_weapon_details
+               omnimods
+               damage_modifier
+               (BattleCharacters.Struct.Character.get_active_weapon
+                  base_char
+               )
+            ),
+            (get_armor_details
+               omnimods
+               (BattleCharacters.Struct.Equipment.get_armor equipment)
+            ),
             (Html.div
                []
                (Battle.View.Statistic.get_all_but_gauges_html
                   char_statistics
                )
             ),
-            (get_weapon_summary damage_modifier inactive_weapon)
+            (get_weapon_summary
+               damage_modifier
+               (BattleCharacters.Struct.Character.get_inactive_weapon
+                  base_char
+               )
+            )
          ]
       )
