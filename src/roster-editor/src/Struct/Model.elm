@@ -2,8 +2,8 @@ module Struct.Model exposing
    (
       Type,
       new,
-      add_character_record,
-      enable_character_records,
+      add_unresolved_character,
+      resolve_characters,
       update_character,
       update_character_fun,
       save_character,
@@ -32,13 +32,12 @@ import Util.Array
 import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.Portrait
 import BattleCharacters.Struct.Weapon
+import BattleCharacters.Struct.Glyph
+import BattleCharacters.Struct.GlyphBoard
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Character
-import Struct.CharacterRecord
 import Struct.Error
-import Struct.Glyph
-import Struct.GlyphBoard
 import Struct.HelpRequest
 import Struct.Inventory
 import Struct.UI
@@ -51,7 +50,7 @@ type alias Type =
       flags : Struct.Flags.Type,
       help_request : Struct.HelpRequest.Type,
       characters : (Array.Array Struct.Character.Type),
-      stalled_characters : (List Struct.CharacterRecord.Type),
+      unresolved_characters : (List Struct.Character.Unresolved),
       weapons :
          (Dict.Dict
             BattleCharacters.Struct.Weapon.Ref
@@ -82,40 +81,26 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-add_character : Struct.CharacterRecord.Type -> Type -> Type
-add_character char_rec model =
-   let index = (Struct.CharacterRecord.get_index char_rec) in
+add_character_from_unresolved : Struct.Character.Unresolved -> Type -> Type
+add_character_from_unresolved char_ref model =
+   let
+      char =
+         (Struct.Character.resolve
+            (BattleCharacters.Struct.Equipment.resolve
+               (\e -> (Dict.get e model.weapons))
+               (\e -> (Dict.get e model.armors))
+               (\e -> (Dict.get e model.portraits))
+               (\e -> (Dict.get e model.glyph_boards))
+               (\e -> (Dict.get e model.glyphs))
+            )
+            char_ref
+         )
+   in
       {model |
          characters =
             (Array.push
-               (Struct.Character.new
-                  index
-                  (Struct.CharacterRecord.get_name char_rec)
-                  (Dict.get
-                     (Struct.CharacterRecord.get_portrait_id char_rec)
-                     model.portraits
-                  )
-                  (Dict.get
-                     (Struct.CharacterRecord.get_main_weapon_id char_rec)
-                     model.weapons
-                  )
-                  (Dict.get
-                     (Struct.CharacterRecord.get_secondary_weapon_id char_rec)
-                     model.weapons
-                  )
-                  (Dict.get
-                     (Struct.CharacterRecord.get_armor_id char_rec)
-                     model.armors
-                  )
-                  (Dict.get
-                     (Struct.CharacterRecord.get_glyph_board_id char_rec)
-                     model.glyph_boards
-                  )
-                  (List.map
-                     (\e -> (Dict.get e model.glyphs))
-                     (Struct.CharacterRecord.get_glyph_ids char_rec)
-                  )
-               )
+               (Struct.Character.get_index char)
+               char
                model.characters
             )
       }
@@ -143,7 +128,7 @@ new flags =
       flags = flags,
       help_request = Struct.HelpRequest.None,
       characters = (Array.empty),
-      stalled_characters = [],
+      unresolved_characters = [],
       weapons = (Dict.empty),
       armors = (Dict.empty),
       glyphs = (Dict.empty),
@@ -175,20 +160,24 @@ new flags =
       ui = (Struct.UI.default)
    }
 
-add_character_record : Struct.CharacterRecord.Type -> Type -> Type
-add_character_record char model =
+add_unresolved_character : Struct.Character.Unresolved -> Type -> Type
+add_unresolved_character char_ref model =
    if (has_loaded_data model)
-   then (add_character char model)
-   else {model | stalled_characters = (char :: model.stalled_characters)}
+   then
+      (add_character_from_unresolved char_ref model)
+   else
+      {model |
+         unresolved_characters = (char_ref :: model.unresolved_characters)
+      }
 
-enable_character_records : Type -> Type
-enable_character_records model =
+resolve_all_characters : Type -> Type
+resolve_all_characters model =
    if (has_loaded_data model)
    then
       (List.foldr
-         (add_character)
-         {model | stalled_characters = []}
-         model.stalled_characters
+         (add_character_from_unresolved)
+         {model | unresolved_characters = []}
+         model.unresolved_characters
       )
    else
       model

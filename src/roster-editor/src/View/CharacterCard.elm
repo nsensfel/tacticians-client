@@ -21,11 +21,11 @@ import Battle.View.Omnimods
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.Weapon
+import BattleCharacters.Struct.GlyphBoard
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
-import Struct.GlyphBoard
 import Struct.UI
 
 import View.Character
@@ -65,24 +65,19 @@ get_name char can_edit =
          ]
       )
 
-get_health_bar : (
-      Struct.Character.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_health_bar char =
-   let
-      max =
-         (Battle.Struct.Statistics.get_max_health
-            (Struct.Character.get_statistics char)
-         )
-   in
-      (View.Gauge.get_html
-         ("HP: " ++ (String.fromInt max))
-         100.0
-         [(Html.Attributes.class "character-card-health")]
-         []
-         []
+get_health_bar : Battle.Struct.Statistic.Type -> (Html.Html Struct.Event.Type)
+get_health_bar char_stats =
+   (View.Gauge.get_html
+      (
+         "HP: "
+         ++
+         (String.fromInt (Battle.Struct.Statistics.get_max_health char_stats))
       )
+      100.0
+      [(Html.Attributes.class "character-card-health")]
+      []
+      []
+   )
 
 get_statuses : (
       Struct.Character.Type ->
@@ -97,26 +92,31 @@ get_statuses char =
       ]
    )
 
-get_movement_bar : Struct.Character.Type -> (Html.Html Struct.Event.Type)
-get_movement_bar char =
-   let
-      max =
-         (Battle.Struct.Statistics.get_movement_points
-            (Struct.Character.get_statistics char)
+get_movement_bar : (
+      Battle.Struct.Statistics.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_movement_bar char_stats =
+   (View.Gauge.get_html
+      (
+         "MP: "
+         ++
+         (String.fromInt
+            (Battle.Struct.Statistics.get_movement_points char_stats)
          )
-   in
+      )
+      100.0
+      [(Html.Attributes.class "character-card-movement")]
+      []
+      []
+   )
+get_health_bar : Battle.Struct.Statistic.Type -> (Html.Html Struct.Event.Type)
+get_health_bar char_stats =
+   let max = (Battle.Struct.Statistics.get_max_health char_stats) in
       (View.Gauge.get_html
-         (
-            "MP: "
-            ++
-            (String.fromInt
-               (Battle.Struct.Statistics.get_movement_points
-                  (Struct.Character.get_statistics char)
-               )
-            )
-         )
+         ("HP: " ++ (String.fromInt max))
          100.0
-         [(Html.Attributes.class "character-card-movement")]
+         [(Html.Attributes.class "character-card-health")]
          []
          []
       )
@@ -313,7 +313,7 @@ get_armor_details damage_modifier armor =
 
 get_glyph_board_details : (
       Float ->
-      Struct.GlyphBoard.Type ->
+      BattleCharacters.Struct.GlyphBoard.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_glyph_board_details damage_modifier board =
@@ -331,46 +331,12 @@ get_glyph_board_details damage_modifier board =
                (Html.Attributes.class "character-card-glyph-board-name")
             ]
             [
-               (Html.text (Struct.GlyphBoard.get_name board))
+               (Html.text (BattleCharacters.Struct.GlyphBoard.get_name board))
             ]
          ),
          (Battle.View.Omnimods.get_html_with_modifier
             damage_modifier
-            (Struct.GlyphBoard.get_omnimods board)
-         )
-      ]
-   )
-
-stat_name  : String -> (Html.Html Struct.Event.Type)
-stat_name name =
-   (Html.div
-      [
-         (Html.Attributes.class "omnimod-icon"),
-         (Html.Attributes.class ("omnimod-icon-" ++ name))
-      ]
-      [
-      ]
-   )
-
-stat_val : Int -> Bool -> (Html.Html Struct.Event.Type)
-stat_val val perc =
-   (Html.div
-      [
-         (Html.Attributes.class "character-card-stat-val")
-      ]
-      [
-         (Html.text
-            (
-               (String.fromInt val)
-               ++
-               (
-                  if perc
-                  then
-                     "%"
-                  else
-                     ""
-               )
-            )
+            (BattleCharacters.Struct.GlyphBoard.get_omnimods board)
          )
       ]
    )
@@ -389,16 +355,6 @@ get_relevant_stats stats =
          )
       ]
       [
-         (stat_name "dodg"),
-         (stat_val (Battle.Struct.Statistics.get_dodges stats) True),
-         (stat_name "pary"),
-         (stat_val (Battle.Struct.Statistics.get_parries stats) True),
-         (stat_name "accu"),
-         (stat_val (Battle.Struct.Statistics.get_accuracy stats) False),
-         (stat_name "dhit"),
-         (stat_val (Battle.Struct.Statistics.get_double_hits stats) True),
-         (stat_name "crit"),
-         (stat_val (Battle.Struct.Statistics.get_critical_hits stats) True)
       ]
    )
 
@@ -416,18 +372,6 @@ get_attributes atts =
          )
       ]
       [
-         (stat_name "con"),
-         (stat_val (Battle.Struct.Attributes.get_constitution atts) False),
-         (stat_name "str"),
-         (stat_val (Battle.Struct.Attributes.get_strength atts) False),
-         (stat_name "dex"),
-         (stat_val (Battle.Struct.Attributes.get_dexterity atts) False),
-         (stat_name "spe"),
-         (stat_val (Battle.Struct.Attributes.get_speed atts) False),
-         (stat_name "int"),
-         (stat_val (Battle.Struct.Attributes.get_intelligence atts) False),
-         (stat_name "min"),
-         (stat_val (Battle.Struct.Attributes.get_mind atts) False)
       ]
    )
 
@@ -437,52 +381,61 @@ get_attributes atts =
 --------------------------------------------------------------------------------
 get_minimal_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_minimal_html char =
-   (Html.div
-      [
-         (Html.Attributes.class "info-card"),
-         (Html.Attributes.class "info-card-minimal"),
-         (Html.Attributes.class "character-card"),
-         (Html.Attributes.class "character-card-minimal"),
-         (Html.Events.onClick
-            (Struct.Event.CharacterSelected
-               (Struct.Character.get_index char)
+   let
+      base_char = (Struct.Character.get_base_character char)
+      char_statistics =
+         (BattleCharacters.Struct.Character.get_statistics base_char)
+   in
+      (Html.div
+         [
+            (Html.Attributes.class "info-card"),
+            (Html.Attributes.class "info-card-minimal"),
+            (Html.Attributes.class "character-card"),
+            (Html.Attributes.class "character-card-minimal"),
+            (Html.Events.onClick
+               (Struct.Event.CharacterSelected
+                  (Struct.Character.get_index char)
+               )
             )
-         )
-      ]
-      [
-         (get_name char False),
-         (Html.div
-            [
-               (Html.Attributes.class "info-card-top"),
-               (Html.Attributes.class "character-card-top")
-            ]
-            [
-               (Html.div
-                  [
-                     (Html.Attributes.class "info-card-picture")
-                  ]
-                  [
-                     (View.Character.get_portrait_html True char)
-                  ]
-               ),
-               (get_health_bar char),
-               (get_movement_bar char),
-               (get_statuses char)
-            ]
-         )
-      ]
-   )
+         ]
+         [
+            (get_name base_char False),
+            (Html.div
+               [
+                  (Html.Attributes.class "info-card-top"),
+                  (Html.Attributes.class "character-card-top")
+               ]
+               [
+                  (Html.div
+                     [
+                        (Html.Attributes.class "info-card-picture")
+                     ]
+                     [
+                        (View.Character.get_portrait_html True char)
+                     ]
+                  ),
+                  (get_health_bar char_statistics),
+                  (get_movement_bar char_statistics),
+                  (get_statuses char)
+               ]
+            )
+         ]
+      )
 
 get_full_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_full_html char =
    let
-      is_using_secondary = (Struct.Character.get_is_using_secondary char)
-      char_statistics = (Struct.Character.get_statistics char)
+      base_char = (Struct.Character.get_base_character char)
+      char_statistics =
+         (BattleCharacters.Struct.Character.get_statistics base_char)
       damage_modifier =
          (Battle.Struct.Statistics.get_damage_modifier
             char_statistics
          )
-      armor = (Struct.Character.get_armor char)
+      omnimods = (BattleCharacters.Struct.Character.get_omnimods base_char)
+      equipment = (BattleCharacters.Struct.Character.get_equipment base_char)
+      is_using_secondary =
+         (BattleCharacters.Struct.Character.is_using_secondary base_char)
    in
       (Html.div
          [
@@ -490,7 +443,7 @@ get_full_html char =
             (Html.Attributes.class "character-card")
          ]
          [
-            (get_name char True),
+            (get_name base_char True),
             (Html.div
                [
                   (Html.Attributes.class "info-card-top"),
@@ -511,29 +464,33 @@ get_full_html char =
                         (View.Character.get_portrait_html False char)
                      ]
                   ),
-                  (get_health_bar char),
-                  (get_movement_bar char),
+                  (get_health_bar char_statistics),
+                  (get_movement_bar char_statistics),
                   (get_statuses char)
                ]
             ),
             (get_weapon_details
                damage_modifier
-               (Struct.Character.get_primary_weapon char)
+               (BattleCharacters.Struct.Equipment.get_primary_weapon equipment)
                (not is_using_secondary)
             ),
             (get_armor_details
                damage_modifier
-               armor
+               (BattleCharacters.Struct.Equipment.get_armor equipment)
             ),
             (get_glyph_board_details
                damage_modifier
-               (Struct.Character.get_glyph_board char)
+               (BattleCharacters.Struct.Equipment.get_glyph_board equipment)
             ),
             (get_relevant_stats char_statistics),
-            (get_attributes (Struct.Character.get_attributes char)),
+            (get_attributes
+               (BattleCharacters.Struct.Character.get_attributes base_char)
+            ),
             (get_weapon_details
                damage_modifier
-               (Struct.Character.get_secondary_weapon char)
+               (BattleCharacters.Struct.Equipment.get_secondary_weapon
+                  equipment
+               )
                is_using_secondary
             )
          ]

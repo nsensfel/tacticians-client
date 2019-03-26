@@ -18,15 +18,15 @@ import Util.Http
 import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.Portrait
 import BattleCharacters.Struct.Weapon
+import BattleCharacters.Struct.Glyph
+import BattleCharacters.Struct.GlyphBoard
 
 -- Local Module ----------------------------------------------------------------
 import Constants.IO
 
-import Struct.CharacterRecord
+import Struct.Character
 import Struct.Error
 import Struct.Event
-import Struct.Glyph
-import Struct.GlyphBoard
 import Struct.Inventory
 import Struct.Model
 import Struct.ServerReply
@@ -128,7 +128,7 @@ add_portrait pt current_state =
       ((Struct.Model.add_portrait pt model), cmds)
 
 add_glyph : (
-      Struct.Glyph.Type ->
+      BattleCharacters.Struct.Glyph.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
@@ -137,7 +137,7 @@ add_glyph gl current_state =
       ((Struct.Model.add_glyph gl model), cmds)
 
 add_glyph_board : (
-      Struct.GlyphBoard.Type ->
+      BattleCharacters.Struct.GlyphBoard.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
@@ -164,14 +164,14 @@ set_inventory inv current_state =
       ({model | inventory = inv}, cmds)
 
 add_character : (
-      Struct.CharacterRecord.Type ->
+      Struct.Character.Unresolved ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-add_character char current_state =
+add_character char_ref current_state =
    let (model, cmds) = current_state in
       (
-         (Struct.Model.add_character_record char model),
+         (Struct.Model.add_unresolved_character char_ref model),
          cmds
       )
 

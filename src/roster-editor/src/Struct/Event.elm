@@ -7,11 +7,11 @@ import Http
 import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.Portrait
 import BattleCharacters.Struct.Weapon
+import BattleCharacters.Struct.Glyph
+import BattleCharacters.Struct.GlyphBoard
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Error
-import Struct.Glyph
-import Struct.GlyphBoard
 import Struct.HelpRequest
 import Struct.ServerReply
 import Struct.UI

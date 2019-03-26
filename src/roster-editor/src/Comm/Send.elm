@@ -6,13 +6,14 @@ import Http
 import Json.Decode
 import Json.Encode
 
+--- Battle Characters ----------------------------------------------------------
+import BattleCharacters.Comm.AddArmor
+import BattleCharacters.Comm.AddGlyph
+import BattleCharacters.Comm.AddGlyphBoard
+import BattleCharacters.Comm.AddPortrait
+import BattleCharacters.Comm.AddWeapon
+
 --- Local Module ---------------------------------------------------------------
-import Comm.AddArmor
-import Comm.AddChar
-import Comm.AddGlyph
-import Comm.AddGlyphBoard
-import Comm.AddPortrait
-import Comm.AddWeapon
 import Comm.GoTo
 import Comm.SetInventory
 
@@ -34,11 +35,11 @@ internal_decoder reply_type =
 
       "add_char" -> (Comm.AddChar.decode)
 
-      "add_armor" -> (Comm.AddArmor.decode)
-      "add_weapon" -> (Comm.AddWeapon.decode)
-      "add_portrait" -> (Comm.AddPortrait.decode)
-      "add_glyph" -> (Comm.AddGlyph.decode)
-      "add_glyph_board" -> (Comm.AddGlyphBoard.decode)
+      "add_armor" -> (BattleCharacters.Comm.AddArmor.decode)
+      "add_weapon" -> (BattleCharacters.Comm.AddWeapon.decode)
+      "add_portrait" -> (BattleCharacters.Comm.AddPortrait.decode)
+      "add_glyph" -> (BattleCharacters.Comm.AddGlyph.decode)
+      "add_glyph_board" -> (BattleCharacters.Comm.AddGlyphBoard.decode)
 
       "disconnected" -> (Json.Decode.succeed Struct.ServerReply.Disconnected)
       "goto" -> (Comm.GoTo.decode)

@@ -43,7 +43,7 @@ import View.Character
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_name : (
-      Struct.Character.Type ->
+      BattleCharacters.Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_name char =
@@ -54,11 +54,7 @@ get_name char =
          (Html.Attributes.class "character-card-name")
       ]
       [
-         (Html.text
-            (BattleCharacters.Struct.Character.get_name
-               (Struct.Character.get_base_character char)
-            )
-         )
+         (Html.text (BattleCharacters.Struct.Character.get_name char))
       ]
    )
 
@@ -348,6 +344,7 @@ get_minimal_html : (
       (Html.Html Struct.Event.Type)
    )
 get_minimal_html player_ix char =
+   let base_char = (Struct.Character.get_base_character char) in
    (Html.div
       [
          (Html.Attributes.class "info-card"),
@@ -356,7 +353,7 @@ get_minimal_html player_ix char =
          (Html.Attributes.class "character-card-minimal")
       ]
       [
-         (get_name char),
+         (get_name base_char),
          (Html.div
             [
                (Html.Attributes.class "info-card-top"),
@@ -471,7 +468,7 @@ get_full_html player_ix char =
             (Html.Attributes.class "character-card")
          ]
          [
-            (get_name char),
+            (get_name base_char),
             (Html.div
                [
                   (Html.Attributes.class "info-card-top"),

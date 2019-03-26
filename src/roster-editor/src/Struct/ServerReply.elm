@@ -4,11 +4,11 @@ module Struct.ServerReply exposing (Type(..))
 import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.Portrait
 import BattleCharacters.Struct.Weapon
+import BattleCharacters.Struct.Glyph
+import BattleCharacters.Struct.GlyphBoard
 
 -- Local Module ----------------------------------------------------------------
-import Struct.CharacterRecord
-import Struct.Glyph
-import Struct.GlyphBoard
+import Struct.Character
 import Struct.Inventory
 
 --------------------------------------------------------------------------------
@@ -25,7 +25,7 @@ type Type =
    | AddGlyphBoard Struct.GlyphBoard.Type
    | AddPortrait BattleCharacters.Struct.Portrait.Type
    | AddWeapon BattleCharacters.Struct.Weapon.Type
-   | AddCharacter Struct.CharacterRecord.Type
+   | AddCharacter Struct.Character.Unresolved
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------

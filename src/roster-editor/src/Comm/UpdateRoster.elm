@@ -13,7 +13,6 @@ import Comm.Send
 import Constants.IO
 
 import Struct.Character
-import Struct.CharacterRecord
 import Struct.Event
 import Struct.Model
 
@@ -35,8 +34,8 @@ try_encoding model =
                "rst",
                (Json.Encode.list
                   (
-                     (Struct.CharacterRecord.from_character)
-                     >> (Struct.CharacterRecord.encode)
+                     (Struct.Character.to_unresolved)
+                     >> (Struct.Character.encode)
                   )
                   (List.filter
                      (Struct.Character.get_was_edited)
