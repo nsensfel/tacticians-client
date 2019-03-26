@@ -10,11 +10,15 @@ import Html.Events
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
 
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Glyph
+import BattleCharacters.Struct.GlyphBoard
+import BattleCharacters.Struct.Equipment
+import BattleCharacters.Struct.Character
+
 -- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
-import Struct.Glyph
-import Struct.GlyphBoard
 import Struct.Model
 
 --------------------------------------------------------------------------------
@@ -51,7 +55,7 @@ get_glyph_html modifier (index, glyph) =
       [
          (Html.text
             (
-               (Struct.Glyph.get_name glyph)
+               (BattleCharacters.Struct.Glyph.get_name glyph)
                ++ " ("
                ++ (String.fromInt modifier)
                ++ "%)"
@@ -63,7 +67,7 @@ get_glyph_html modifier (index, glyph) =
             (List.map
                (get_mod_html)
                (Battle.Struct.Omnimods.get_all_mods
-                  (Struct.Glyph.get_omnimods glyph)
+                  (BattleCharacters.Struct.Glyph.get_omnimods glyph)
                )
             )
          )
@@ -85,18 +89,30 @@ get_html model =
          (case model.edited_char of
             Nothing -> (Html.div [] [(Html.text "No character selected")])
             (Just char) ->
-               (Html.div
-                  [
-                     (Html.Attributes.class "selection-window-listing")
-                  ]
-                  (List.map2
-                     (get_glyph_html)
-                     (Struct.GlyphBoard.get_slots
-                        (Struct.Character.get_glyph_board char)
+               let
+                  equipment =
+                     (BattleCharacters.Struct.Character.get_equipment
+                        (Struct.Character.get_base_character char)
                      )
-                     (Array.toIndexedList (Struct.Character.get_glyphs char))
+               in
+                  (Html.div
+                     [
+                        (Html.Attributes.class "selection-window-listing")
+                     ]
+                     (List.map2
+                        (get_glyph_html)
+                        (BattleCharacters.Struct.GlyphBoard.get_slots
+                           (BattleCharacters.Struct.Equipment.get_glyph_board
+                              equipment
+                           )
+                        )
+                        (Array.toIndexedList
+                           (BattleCharacters.Struct.Equipment.get_glyphs
+                              equipment
+                           )
+                        )
+                     )
                   )
-               )
          )
       ]
    )

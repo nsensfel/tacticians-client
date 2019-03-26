@@ -18,7 +18,8 @@ module BattleCharacters.Struct.Character exposing
       dirty_switch_weapons,
       decoder,
       encode,
-      resolve
+      resolve,
+      to_unresolved
    )
 
 -- Elm -------------------------------------------------------------------------

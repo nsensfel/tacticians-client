@@ -63,39 +63,44 @@ has_armor inv id = (Set.member id inv.armors)
 
 allows : Type -> BattleCharacters.Struct.Equipment.Type -> Bool
 allows inv equipment =
-   (and
+   (
       (has_weapon
          inv
          (BattleCharacters.Struct.Weapon.get_id
             (BattleCharacters.Struct.Equipment.get_primary_weapon equipment)
          )
       )
+      &&
       (has_weapon
          inv
          (BattleCharacters.Struct.Weapon.get_id
             (BattleCharacters.Struct.Equipment.get_secondary_weapon equipment)
          )
       )
+      &&
       (has_armor
          inv
          (BattleCharacters.Struct.Armor.get_id
             (BattleCharacters.Struct.Equipment.get_armor equipment)
          )
       )
+      &&
       (has_portrait
          inv
          (BattleCharacters.Struct.Portrait.get_id
             (BattleCharacters.Struct.Equipment.get_portrait equipment)
          )
       )
+      &&
       (has_glyph_board
          inv
          (BattleCharacters.Struct.GlyphBoard.get_id
             (BattleCharacters.Struct.Equipment.get_glyph_board equipment)
          )
       )
+      &&
       (List.all
-         ((BattleCharacters.Struct.Glyph.get_id) |> (has_glyph inv))
+         ((BattleCharacters.Struct.Glyph.get_id) >> (has_glyph inv))
          (Array.toList (BattleCharacters.Struct.Equipment.get_glyphs equipment))
       )
    )

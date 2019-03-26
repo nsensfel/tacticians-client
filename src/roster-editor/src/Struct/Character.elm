@@ -26,6 +26,7 @@ import Battle.Struct.Omnimods
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Character
+import BattleCharacters.Struct.Equipment
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -62,10 +63,10 @@ get_battle_index c = c.battle_ix
 set_battle_index : Int -> Type -> Type
 set_battle_index battle_ix c = {c | battle_ix = battle_ix}
 
-get_base_character : Type -> BattleCharacter.Struct.Character
+get_base_character : Type -> BattleCharacters.Struct.Character.Type
 get_base_character c = c.base
 
-set_base_character : BattleCharacter.Struct.Character -> Type -> Type
+set_base_character : BattleCharacters.Struct.Character.Type -> Type -> Type
 set_base_character base c = {c | base = base }
 
 get_was_edited : Type -> Bool
@@ -90,7 +91,7 @@ resolve equipment_resolver ref =
       base =
          (BattleCharacters.Struct.Character.resolve
             (equipment_resolver)
-            (Battle.Omnimods.none)
+            (Battle.Struct.Omnimods.none)
             ref.base
          )
    }

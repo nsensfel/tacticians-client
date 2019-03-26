@@ -10,11 +10,12 @@ import Html.Events
 -- Battle ----------------------------------------------------------------------
 import Battle.View.Omnimods
 
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.GlyphBoard
+
 -- Local Module ----------------------------------------------------------------
-import Struct.GlyphBoard
 import Struct.Event
 import Struct.Model
-
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -35,7 +36,10 @@ get_mod_html mod =
          ]
       )
 
-get_glyph_board_html : Struct.GlyphBoard.Type -> (Html.Html Struct.Event.Type)
+get_glyph_board_html : (
+      BattleCharacters.Struct.GlyphBoard.Type ->
+      (Html.Html Struct.Event.Type)
+   )
 get_glyph_board_html glyph_board =
    (Html.div
       [
@@ -43,7 +47,7 @@ get_glyph_board_html glyph_board =
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
             (Struct.Event.SelectedGlyphBoard
-               (Struct.GlyphBoard.get_id glyph_board)
+               (BattleCharacters.Struct.GlyphBoard.get_id glyph_board)
             )
          )
       ]
@@ -53,11 +57,13 @@ get_glyph_board_html glyph_board =
                (Html.Attributes.class "character-card-glyph-board-name")
             ]
             [
-               (Html.text (Struct.GlyphBoard.get_name glyph_board))
+               (Html.text
+                  (BattleCharacters.Struct.GlyphBoard.get_name glyph_board)
+               )
             ]
          ),
          (Battle.View.Omnimods.get_html
-            (Struct.GlyphBoard.get_omnimods glyph_board)
+            (BattleCharacters.Struct.GlyphBoard.get_omnimods glyph_board)
          )
       ]
    )

@@ -10,9 +10,11 @@ import Html.Events
 -- Battle ----------------------------------------------------------------------
 import Battle.View.Omnimods
 
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Glyph
+
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
-import Struct.Glyph
 import Struct.Model
 
 --------------------------------------------------------------------------------
@@ -32,7 +34,10 @@ get_mod_html mod =
          ]
       )
 
-get_glyph_html : Struct.Glyph.Type -> (Html.Html Struct.Event.Type)
+get_glyph_html : (
+      BattleCharacters.Struct.Glyph.Type ->
+      (Html.Html Struct.Event.Type)
+   )
 get_glyph_html glyph  =
    (Html.div
       [
@@ -40,13 +45,15 @@ get_glyph_html glyph  =
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
             (Struct.Event.SelectedGlyph
-               (Struct.Glyph.get_id glyph)
+               (BattleCharacters.Struct.Glyph.get_id glyph)
             )
          )
       ]
       [
-         (Html.text (Struct.Glyph.get_name glyph)),
-         (Battle.View.Omnimods.get_html (Struct.Glyph.get_omnimods glyph))
+         (Html.text (BattleCharacters.Struct.Glyph.get_name glyph)),
+         (Battle.View.Omnimods.get_html
+            (BattleCharacters.Struct.Glyph.get_omnimods glyph)
+         )
       ]
    )
 

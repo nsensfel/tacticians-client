@@ -3,7 +3,7 @@ module Struct.Model exposing
       Type,
       new,
       add_unresolved_character,
-      resolve_characters,
+      resolve_all_characters,
       update_character,
       update_character_fun,
       save_character,
@@ -33,6 +33,7 @@ import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.Portrait
 import BattleCharacters.Struct.Weapon
 import BattleCharacters.Struct.Glyph
+import BattleCharacters.Struct.Equipment
 import BattleCharacters.Struct.GlyphBoard
 
 -- Local Module ----------------------------------------------------------------
@@ -61,8 +62,16 @@ type alias Type =
             BattleCharacters.Struct.Armor.Ref
             BattleCharacters.Struct.Armor.Type
          ),
-      glyphs : (Dict.Dict Struct.Glyph.Ref Struct.Glyph.Type),
-      glyph_boards : (Dict.Dict Struct.GlyphBoard.Ref Struct.GlyphBoard.Type),
+      glyphs :
+         (Dict.Dict
+            BattleCharacters.Struct.Glyph.Ref
+            BattleCharacters.Struct.Glyph.Type
+         ),
+      glyph_boards :
+         (Dict.Dict
+            BattleCharacters.Struct.GlyphBoard.Ref
+            BattleCharacters.Struct.GlyphBoard.Type
+         ),
       portraits :
          (Dict.Dict
             BattleCharacters.Struct.Portrait.Ref
@@ -215,23 +224,23 @@ add_portrait pt model =
          )
    }
 
-add_glyph : Struct.Glyph.Type -> Type -> Type
+add_glyph : BattleCharacters.Struct.Glyph.Type -> Type -> Type
 add_glyph gl model =
    {model |
       glyphs =
          (Dict.insert
-            (Struct.Glyph.get_id gl)
+            (BattleCharacters.Struct.Glyph.get_id gl)
             gl
             model.glyphs
          )
    }
 
-add_glyph_board : Struct.GlyphBoard.Type -> Type -> Type
+add_glyph_board : BattleCharacters.Struct.GlyphBoard.Type -> Type -> Type
 add_glyph_board glb model =
    {model |
       glyph_boards =
          (Dict.insert
-            (Struct.GlyphBoard.get_id glb)
+            (BattleCharacters.Struct.GlyphBoard.get_id glb)
             glb
             model.glyph_boards
          )
