@@ -96,11 +96,11 @@ add_character_from_unresolved char_ref model =
       char =
          (Struct.Character.resolve
             (BattleCharacters.Struct.Equipment.resolve
-               (\e -> (Dict.get e model.weapons))
-               (\e -> (Dict.get e model.armors))
-               (\e -> (Dict.get e model.portraits))
-               (\e -> (Dict.get e model.glyph_boards))
-               (\e -> (Dict.get e model.glyphs))
+               (BattleCharacters.Struct.Weapon.find model.weapons)
+               (BattleCharacters.Struct.Armor.find model.armors)
+               (BattleCharacters.Struct.Portrait.find model.portraits)
+               (BattleCharacters.Struct.GlyphBoard.find model.glyph_boards)
+               (BattleCharacters.Struct.Glyph.find model.glyphs)
             )
             char_ref
          )
@@ -108,7 +108,7 @@ add_character_from_unresolved char_ref model =
       {model |
          characters =
             (Array.push
-               (Struct.Character.get_index char)
+--               (Struct.Character.get_index char)
                char
                model.characters
             )

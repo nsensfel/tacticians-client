@@ -14,7 +14,8 @@ import Util.Html
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
-import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Character
+import BattleCharacters.Struct.Equipment
 
 import BattleCharacters.View.Portrait
 
@@ -46,7 +47,11 @@ get_icon_head_html char =
                "asset-character-icon-"
                ++
                (BattleCharacters.Struct.Armor.get_image_id
-                  (Struct.Character.get_armor char)
+                  (BattleCharacters.Struct.Equipment.get_armor
+                     (BattleCharacters.Struct.Character.get_equipment
+                        (Struct.Character.get_base_character char)
+                     )
+                  )
                )
             )
          )
@@ -99,7 +104,9 @@ get_portrait_html click_to_toggle char =
                else
                   [(Html.Attributes.class "character-portrait-team-0")]
             )
-            char
+            (BattleCharacters.Struct.Character.get_equipment
+               (Struct.Character.get_base_character char)
+            )
          ),
          (get_battle_index_html char)
       ]

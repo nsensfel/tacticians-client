@@ -46,7 +46,7 @@ get_name : (
       BattleCharacters.Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_name char =
+get_name base_char =
    (Html.div
       [
          (Html.Attributes.class "info-card-name"),
@@ -54,7 +54,7 @@ get_name char =
          (Html.Attributes.class "character-card-name")
       ]
       [
-         (Html.text (BattleCharacters.Struct.Character.get_name char))
+         (Html.text (BattleCharacters.Struct.Character.get_name base_char))
       ]
    )
 
@@ -399,7 +399,7 @@ get_summary_html char_turn player_ix char =
             (Html.Attributes.class "character-card")
          ]
          [
-            (get_name char),
+            (get_name base_char),
             (Html.div
                [
                   (Html.Attributes.class "info-card-top"),

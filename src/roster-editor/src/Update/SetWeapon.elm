@@ -4,6 +4,8 @@ module Update.SetWeapon exposing (apply_to)
 import Dict
 
 -- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Character
+import BattleCharacters.Struct.Equipment
 import BattleCharacters.Struct.Weapon
 
 -- Local Module ----------------------------------------------------------------
@@ -31,19 +33,35 @@ apply_to model ref =
             ((Just char), (Just weapon)) ->
                {model |
                   edited_char =
+                     let
+                        base_char = (Struct.Character.get_base_character char)
+                     in
                      (Just
-                        (
-                           if (Struct.Character.get_is_using_secondary char)
-                           then
-                              (Struct.Character.set_secondary_weapon
-                                 weapon
-                                 char
+                        (Struct.Character.set_base_character
+                           (BattleCharacters.Struct.Character.set_equipment
+                              (
+                                 if
+                                    (BattleCharacters.Struct.Character.is_using_secondary
+                                       base_char
+                                    )
+                                 then
+                                    (BattleCharacters.Struct.Equipment.set_secondary_weapon
+                                       weapon
+                                       (BattleCharacters.Struct.Character.get_equipment
+                                          base_char
+                                       )
+                                    )
+                                 else
+                                    (BattleCharacters.Struct.Equipment.set_primary_weapon
+                                       weapon
+                                       (BattleCharacters.Struct.Character.get_equipment
+                                          base_char
+                                       )
+                                    )
                               )
-                           else
-                              (Struct.Character.set_primary_weapon
-                                 weapon
-                                 char
-                              )
+                              base_char
+                           )
+                           char
                         )
                      )
                }

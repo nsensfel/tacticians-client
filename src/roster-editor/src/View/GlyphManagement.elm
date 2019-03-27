@@ -42,7 +42,7 @@ get_mod_html mod =
 
 get_glyph_html : (
       Int ->
-      (Int, Struct.Glyph.Type)
+      (Int, BattleCharacters.Struct.Glyph.Type)
       -> (Html.Html Struct.Event.Type)
    )
 get_glyph_html modifier (index, glyph) =

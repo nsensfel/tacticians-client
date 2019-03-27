@@ -15,6 +15,7 @@ import BattleCharacters.Comm.AddWeapon
 
 --- Local Module ---------------------------------------------------------------
 import Comm.GoTo
+import Comm.AddChar
 import Comm.SetInventory
 
 import Struct.Event

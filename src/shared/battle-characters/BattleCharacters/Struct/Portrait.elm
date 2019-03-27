@@ -2,6 +2,7 @@ module BattleCharacters.Struct.Portrait exposing
    (
       Type,
       Ref,
+      find,
       default,
       get_id,
       get_name,
@@ -11,6 +12,8 @@ module BattleCharacters.Struct.Portrait exposing
    )
 
 -- Elm -------------------------------------------------------------------------
+import Dict
+
 import Json.Decode
 import Json.Decode.Pipeline
 
@@ -34,6 +37,12 @@ type alias Ref = String
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+find : (Dict.Dict Ref Type) -> Ref -> Type
+find dict ref =
+   case (Dict.get ref dict) of
+      (Just e) -> e
+      Nothing -> default
+
 default : Type
 default =
    {

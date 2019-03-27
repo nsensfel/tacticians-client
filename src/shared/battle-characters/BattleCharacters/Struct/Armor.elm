@@ -3,6 +3,7 @@ module BattleCharacters.Struct.Armor exposing
       Type,
       Ref,
       new,
+      find,
       get_id,
       get_name,
       get_image_id,
@@ -13,6 +14,8 @@ module BattleCharacters.Struct.Armor exposing
    )
 
 -- Elm -------------------------------------------------------------------------
+import Dict
+
 import Json.Decode
 import Json.Decode.Pipeline
 
@@ -38,6 +41,12 @@ type alias Ref = String
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+find : (Dict.Dict Ref Type) -> Ref -> Type
+find dict ref =
+   case (Dict.get ref dict) of
+      (Just e) -> e
+      Nothing -> none
+
 new : String -> String -> Battle.Struct.Omnimods.Type -> Type
 new id name omnimods =
    {

@@ -2,6 +2,7 @@ module BattleCharacters.Struct.GlyphBoard exposing
    (
       Type,
       Ref,
+      find,
       get_name,
       get_id,
       get_slots,
@@ -14,6 +15,8 @@ module BattleCharacters.Struct.GlyphBoard exposing
 
 -- Elm -------------------------------------------------------------------------
 import Array
+
+import Dict
 
 import List
 
@@ -46,6 +49,12 @@ type alias Ref = String
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+find : (Dict.Dict Ref Type) -> Ref -> Type
+find dict ref =
+   case (Dict.get ref dict) of
+      (Just e) -> e
+      Nothing -> none
+
 get_id : Type -> String
 get_id g = g.id
 

@@ -4,7 +4,7 @@ module Comm.AddChar exposing (decode)
 import Json.Decode
 
 -- Local Module ----------------------------------------------------------------
-import Struct.CharacterRecord
+import Struct.Character
 import Struct.ServerReply
 
 --------------------------------------------------------------------------------
@@ -14,12 +14,11 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
-internal_decoder : Struct.CharacterRecord.Type -> Struct.ServerReply.Type
-internal_decoder char= (Struct.ServerReply.AddCharacter char)
+internal_decoder : Struct.Character.Unresolved -> Struct.ServerReply.Type
+internal_decoder char = (Struct.ServerReply.AddCharacter char)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.map (internal_decoder) (Struct.CharacterRecord.decoder))
+decode = (Json.Decode.map (internal_decoder) (Struct.Character.decoder))

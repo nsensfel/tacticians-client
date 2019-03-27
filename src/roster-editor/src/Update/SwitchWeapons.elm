@@ -4,7 +4,7 @@ module Update.SwitchWeapons exposing (apply_to)
 import Dict
 
 -- Battle Characters -----------------------------------------------------------
-import BattleCharacters.Struct.Weapon
+import BattleCharacters.Struct.Character
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Character
@@ -31,7 +31,10 @@ apply_to model =
                {model |
                   edited_char =
                      (Just
-                        (Struct.Character.switch_weapons
+                        (Struct.Character.set_base_character
+                           (BattleCharacters.Struct.Character.switch_weapons
+                              (Struct.Character.get_base_character char)
+                           )
                            char
                         )
                      )

@@ -20,6 +20,8 @@ import Battle.View.Omnimods
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.Character
+import BattleCharacters.Struct.Equipment
 import BattleCharacters.Struct.Weapon
 import BattleCharacters.Struct.GlyphBoard
 
@@ -35,11 +37,11 @@ import View.Gauge
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_name : (
-      Struct.Character.Type ->
+      BattleCharacters.Struct.Character.Type ->
       Bool ->
       (Html.Html Struct.Event.Type)
    )
-get_name char can_edit =
+get_name base_char can_edit =
    if can_edit
    then
       (Html.input
@@ -48,7 +50,9 @@ get_name char can_edit =
             (Html.Attributes.class "info-card-text-field"),
             (Html.Attributes.class "character-card-name"),
             (Html.Events.onInput Struct.Event.SetCharacterName),
-            (Html.Attributes.value (Struct.Character.get_name char))
+            (Html.Attributes.value
+               (BattleCharacters.Struct.Character.get_name base_char)
+            )
          ]
          [
          ]
@@ -61,11 +65,11 @@ get_name char can_edit =
             (Html.Attributes.class "character-card-name")
          ]
          [
-            (Html.text (Struct.Character.get_name char))
+            (Html.text (BattleCharacters.Struct.Character.get_name base_char))
          ]
       )
 
-get_health_bar : Battle.Struct.Statistic.Type -> (Html.Html Struct.Event.Type)
+get_health_bar : Battle.Struct.Statistics.Type -> (Html.Html Struct.Event.Type)
 get_health_bar char_stats =
    (View.Gauge.get_html
       (
@@ -110,16 +114,6 @@ get_movement_bar char_stats =
       []
       []
    )
-get_health_bar : Battle.Struct.Statistic.Type -> (Html.Html Struct.Event.Type)
-get_health_bar char_stats =
-   let max = (Battle.Struct.Statistics.get_max_health char_stats) in
-      (View.Gauge.get_html
-         ("HP: " ++ (String.fromInt max))
-         100.0
-         [(Html.Attributes.class "character-card-health")]
-         []
-         []
-      )
 
 get_weapon_field_header : (
       Float ->

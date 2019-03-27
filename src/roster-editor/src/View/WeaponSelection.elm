@@ -14,6 +14,7 @@ import Util.Html
 import Battle.View.Omnimods
 
 -- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Character
 import BattleCharacters.Struct.Weapon
 
 -- Local Module ----------------------------------------------------------------
@@ -131,7 +132,9 @@ get_html model =
       (Just char) ->
          let
             is_selecting_secondary =
-               (Struct.Character.get_is_using_secondary char)
+               (BattleCharacters.Struct.Character.is_using_secondary
+                  (Struct.Character.get_base_character char)
+               )
          in
             (Html.div
                [

@@ -21,8 +21,8 @@ type Type =
    | GoTo String
    | SetInventory Struct.Inventory.Type
    | AddArmor BattleCharacters.Struct.Armor.Type
-   | AddGlyph Struct.Glyph.Type
-   | AddGlyphBoard Struct.GlyphBoard.Type
+   | AddGlyph BattleCharacters.Struct.Glyph.Type
+   | AddGlyphBoard BattleCharacters.Struct.GlyphBoard.Type
    | AddPortrait BattleCharacters.Struct.Portrait.Type
    | AddWeapon BattleCharacters.Struct.Weapon.Type
    | AddCharacter Struct.Character.Unresolved

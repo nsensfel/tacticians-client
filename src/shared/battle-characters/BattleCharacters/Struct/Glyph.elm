@@ -2,6 +2,7 @@ module BattleCharacters.Struct.Glyph exposing
    (
       Type,
       Ref,
+      find,
       get_name,
       get_id,
       get_omnimods,
@@ -11,6 +12,8 @@ module BattleCharacters.Struct.Glyph exposing
    )
 
 -- Elm -------------------------------------------------------------------------
+import Dict
+
 import Json.Decode
 import Json.Decode.Pipeline
 
@@ -36,6 +39,12 @@ type alias Ref = String
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+find : (Dict.Dict Ref Type) -> Ref -> Type
+find dict ref =
+   case (Dict.get ref dict) of
+      (Just e) -> e
+      Nothing -> none
+
 get_id : Type -> Ref
 get_id g = g.id
 

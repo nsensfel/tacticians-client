@@ -52,58 +52,6 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-weapon_getter : (
-      Struct.Model.Type ->
-      BattleCharacters.Struct.Weapon.Ref ->
-      BattleCharacters.Struct.Weapon.Type
-   )
-weapon_getter model ref =
-   case (Dict.get ref model.weapons) of
-      (Just w) -> w
-      Nothing -> BattleCharacters.Struct.Weapon.none
-
-armor_getter : (
-      Struct.Model.Type ->
-      BattleCharacters.Struct.Armor.Ref ->
-      BattleCharacters.Struct.Armor.Type
-   )
-armor_getter model ref =
-   case (Dict.get ref model.armors) of
-      (Just w) -> w
-      Nothing -> BattleCharacters.Struct.Armor.none
-
-portrait_getter : (
-      Struct.Model.Type ->
-      BattleCharacters.Struct.Portrait.Ref ->
-      BattleCharacters.Struct.Portrait.Type
-   )
-portrait_getter model ref =
-   case (Dict.get ref model.portraits) of
-      (Just w) -> w
-      Nothing -> BattleCharacters.Struct.Portrait.default
-
-glyph_board_getter : (
-      Struct.Model.Type ->
-      BattleCharacters.Struct.GlyphBoard.Ref ->
-      BattleCharacters.Struct.GlyphBoard.Type
-   )
-glyph_board_getter model ref =
-   case (Dict.get ref model.glyph_boards) of
-      (Just w) -> w
-      Nothing -> BattleCharacters.Struct.GlyphBoard.default
-
-glyph_getter : (
-      Struct.Model.Type ->
-      BattleCharacters.Struct.Glyph.Ref ->
-      BattleCharacters.Struct.Glyph.Type
-   )
-glyph_getter model ref =
-   case (Dict.get ref model.glyphs) of
-      (Just w) -> w
-      Nothing -> BattleCharacters.Struct.Glyph.default
-
------------
-
 disconnected : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
@@ -204,11 +152,11 @@ add_character unresolved_char current_state =
             (Struct.Character.resolve
                (Struct.Model.tile_omnimods_fun model)
                (BattleCharacters.Struct.Equipment.resolve
-                  (weapon_getter model)
-                  (armor_getter model)
-                  (portrait_getter model)
-                  (glyph_board_getter model)
-                  (glyph_getter model)
+                  (BattleCharacters.Struct.Weapon.find model.weapons)
+                  (BattleCharacters.Struct.Armor.find model.armors)
+                  (BattleCharacters.Struct.Portrait.find model.portraits)
+                  (BattleCharacters.Struct.GlyphBoard.find model.glyph_boards)
+                  (BattleCharacters.Struct.Glyph.find model.glyphs)
                )
                unresolved_char
             )

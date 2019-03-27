@@ -211,7 +211,7 @@ apply_command command current_state =
       Struct.ServerReply.Okay ->
          let (model, cmds) = current_state in
             (
-               (Struct.Model.enable_character_records model),
+               (Struct.Model.resolve_all_characters model),
                cmds
             )
 

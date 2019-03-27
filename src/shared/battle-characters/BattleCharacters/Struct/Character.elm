@@ -14,6 +14,7 @@ module BattleCharacters.Struct.Character exposing
       get_statistics,
       get_active_weapon,
       get_inactive_weapon,
+      is_using_secondary,
       switch_weapons,
       dirty_switch_weapons,
       decoder,
@@ -147,6 +148,9 @@ get_attributes char = char.attributes
 
 get_statistics : Type -> Battle.Struct.Statistics.Type
 get_statistics char = char.statistics
+
+is_using_secondary : Type -> Bool
+is_using_secondary char = char.is_using_secondary
 
 switch_weapons : Type -> Type
 switch_weapons char =

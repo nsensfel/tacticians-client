@@ -35,8 +35,8 @@ type Type =
    | SetCharacterName String
 
    | SelectedArmor BattleCharacters.Struct.Armor.Ref
-   | SelectedGlyph Struct.Glyph.Ref
-   | SelectedGlyphBoard Struct.GlyphBoard.Ref
+   | SelectedGlyph BattleCharacters.Struct.Glyph.Ref
+   | SelectedGlyphBoard BattleCharacters.Struct.GlyphBoard.Ref
    | SelectedPortrait BattleCharacters.Struct.Portrait.Ref
    | SelectedWeapon BattleCharacters.Struct.Weapon.Ref
 
