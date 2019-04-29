@@ -431,7 +431,7 @@ get_summary_html char_turn player_ix char =
                (BattleCharacters.Struct.Equipment.get_armor equipment)
             ),
             (Html.div
-               []
+               [(Html.Attributes.class "character-card-stats")]
                (Battle.View.Statistic.get_all_but_gauges_html
                   char_statistics
                )
@@ -500,7 +500,7 @@ get_full_html player_ix char =
                (BattleCharacters.Struct.Equipment.get_armor equipment)
             ),
             (Html.div
-               []
+               [(Html.Attributes.class "character-card-stats")]
                (Battle.View.Statistic.get_all_but_gauges_html
                   char_statistics
                )

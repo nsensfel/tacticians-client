@@ -134,3 +134,16 @@
 {
    filter: hue-rotate(30deg);
 }
+
+.omnimod-attack-mods,
+.omnimod-defense-mods,
+.omnimod-attribute-mods,
+.omnimod-statistics-mods,
+.omnimod-attack-mods > *,
+.omnimod-defense-mods > *,
+.omnimod-attribute-mods > *,
+.omnimod-statistics-mods >*
+{
+   display: flex;
+   flex-wrap: wrap;
+}

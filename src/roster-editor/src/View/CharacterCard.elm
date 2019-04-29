@@ -17,6 +17,8 @@ import Battle.Struct.Omnimods
 import Battle.Struct.Statistics
 
 import Battle.View.Omnimods
+import Battle.View.Statistic
+import Battle.View.Attribute
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
@@ -348,8 +350,7 @@ get_relevant_stats stats =
             (Struct.Event.TabSelected Struct.UI.GlyphManagementTab)
          )
       ]
-      [
-      ]
+      (Battle.View.Statistic.get_all_but_gauges_html stats)
    )
 
 get_attributes : (
@@ -359,14 +360,13 @@ get_attributes : (
 get_attributes atts =
    (Html.div
       [
-         (Html.Attributes.class "character-card-stats"),
+         (Html.Attributes.class "character-card-atts"),
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
             (Struct.Event.TabSelected Struct.UI.GlyphManagementTab)
          )
       ]
-      [
-      ]
+      (Battle.View.Attribute.get_all_html atts)
    )
 
 
