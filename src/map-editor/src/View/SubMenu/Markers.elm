@@ -8,29 +8,88 @@ import Html.Attributes
 import Html.Events
 
 -- Battle Map ------------------------------------------------------------------
-import BattleMap.Struct.Tile
 import BattleMap.Struct.Map
 import BattleMap.Struct.Marker
-import BattleMap.Struct.TileInstance
-
-import BattleMap.View.Tile
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
+import Struct.UI
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_marker_html : (
+      String ->
       (String, BattleMap.Struct.Marker.Type)
       -> (Html.Html Struct.Event.Type)
    )
-get_marker_html (ref, marker) =
+get_marker_html current_selection (ref, marker) =
+   (Html.option
+      [
+         (Html.Attributes.value ref),
+         (Html.Attributes.selected (ref == current_selection))
+      ]
+      [ (Html.text ref) ]
+   )
+
+get_selector_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
+get_selector_html model =
    (Html.div
       [
       ]
-      [(Html.text ref)]
+      [
+         (Html.select
+            [
+               (Html.Events.onInput Struct.Event.SetMarkerName)
+            ]
+            (List.map
+               (get_marker_html (Struct.UI.get_marker_name model.ui))
+               (Dict.toList (BattleMap.Struct.Map.get_markers model.map))
+            )
+         ),
+         (Html.button
+            [
+               (Html.Events.onClick  Struct.Event.LoadMarker)
+            ]
+            [(Html.text "Load")]
+         ),
+         (Html.button
+            [
+               (Html.Events.onClick Struct.Event.SaveMarker)
+            ]
+            [(Html.text "Save")]
+         ),
+         (Html.button
+            [
+               (Html.Events.onClick Struct.Event.RemoveMarker)
+            ]
+            [(Html.text "Remove")]
+         )
+      ]
+   )
+
+new_marker_menu : (Html.Html Struct.Event.Type)
+new_marker_menu =
+   (Html.div
+      []
+      [
+         (Html.input
+            [
+               (Html.Events.onInput Struct.Event.SetMarkerName)
+            ]
+            [
+            ]
+         ),
+         (Html.button
+            [
+               (Html.Events.onClick Struct.Event.NewMarker)
+            ]
+            [
+               (Html.text "Add")
+            ]
+         )
+      ]
    )
 
 --------------------------------------------------------------------------------
@@ -43,8 +102,8 @@ get_html model =
          (Html.Attributes.class "tabmenu-content"),
          (Html.Attributes.class "tabmenu-markers-tab")
       ]
-      (List.map
-         (get_marker_html)
-         (Dict.toList (BattleMap.Struct.Map.get_markers model.map))
-      )
+      [
+         (new_marker_menu),
+         (get_selector_html model)
+      ]
    )

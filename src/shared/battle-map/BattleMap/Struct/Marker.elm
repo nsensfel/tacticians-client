@@ -3,6 +3,7 @@ module BattleMap.Struct.Marker exposing
       Type,
       new,
       get_locations,
+      set_locations,
       is_in_locations,
       decoder,
       encode
@@ -43,6 +44,9 @@ new =
 
 get_locations : Type -> (Set.Set BattleMap.Struct.Location.Ref)
 get_locations marker = marker.locations
+
+set_locations : (Set.Set BattleMap.Struct.Location.Ref) -> Type -> Type
+set_locations locations marker = {marker | locations = locations}
 
 is_in_locations : BattleMap.Struct.Location.Ref -> Type -> Bool
 is_in_locations loc_ref marker =

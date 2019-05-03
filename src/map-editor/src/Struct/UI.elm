@@ -16,7 +16,11 @@ module Struct.UI exposing
       get_all_tabs,
       -- Previous Action
       get_previous_action,
-      set_previous_action
+      set_previous_action,
+      -- Marker Name
+      get_marker_name,
+      reset_marker_name,
+      set_marker_name
    )
 
 -- Battle Map ------------------------------------------------------------------
@@ -29,7 +33,7 @@ type Tab =
    StatusTab
    | TilesTab
    | SettingsTab
-   | MarkersTab 
+   | MarkersTab
 
 type Action =
    SelectedLocation BattleMap.Struct.Location.Ref
@@ -38,7 +42,8 @@ type alias Type =
    {
       zoom_level : Float,
       displayed_tab : (Maybe Tab),
-      previous_action : (Maybe Action)
+      previous_action : (Maybe Action),
+      marker_name : String
    }
 
 --------------------------------------------------------------------------------
@@ -53,7 +58,8 @@ default =
    {
       zoom_level = 1.0,
       displayed_tab = (Just TilesTab),
-      previous_action = Nothing
+      previous_action = Nothing,
+      marker_name = ""
    }
 
 -- Zoom ------------------------------------------------------------------------
@@ -94,3 +100,13 @@ set_previous_action act ui = {ui | previous_action = act}
 
 get_previous_action : Type -> (Maybe Action)
 get_previous_action ui = ui.previous_action
+
+-- Marker Name -----------------------------------------------------------------
+set_marker_name : String -> Type -> Type
+set_marker_name name ui = {ui | marker_name = name}
+
+reset_marker_name : Type -> Type
+reset_marker_name ui = {ui | marker_name = ""}
+
+get_marker_name : Type -> String
+get_marker_name ui = ui.marker_name

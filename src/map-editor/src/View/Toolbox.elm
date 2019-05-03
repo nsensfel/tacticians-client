@@ -19,7 +19,6 @@ import Struct.Event
 import Struct.Model
 import Struct.Toolbox
 
-
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -122,14 +121,6 @@ get_others_menu_html =
       ]
    )
 
-get_markers_html : (List String) -> (Html.Html Struct.Event.Type)
-get_markers_html markers_name =
-   (Html.select
-      [
-      ]
-      (List.map (Html.text) markers_name)
-   )
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -142,7 +133,6 @@ get_html model =
             (get_template_icon_html (Struct.Toolbox.get_template tb)),
             (get_modes_menu_html tb),
             (get_shapes_menu_html tb),
-            (get_markers_html (Dict.keys (BattleMap.Struct.Map.get_markers model.map))),
             (get_others_menu_html)
          ]
       )

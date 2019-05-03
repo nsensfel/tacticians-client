@@ -8,6 +8,7 @@ import Update.ChangeScale
 import Update.ClearToolboxSelection
 import Update.GoToMainMenu
 import Update.HandleServerReply
+import Update.Markers
 import Update.PrettifySelectedTiles
 import Update.SelectTab
 import Update.SelectTile
@@ -75,6 +76,21 @@ update event model =
 
       Struct.Event.SendMapUpdateRequested ->
          (Update.SendMapUpdate.apply_to new_model)
+
+      (Struct.Event.SetMarkerName name) ->
+         (Update.Markers.set_name new_model name)
+
+      Struct.Event.LoadMarker ->
+         (Update.Markers.load new_model)
+
+      Struct.Event.SaveMarker ->
+         (Update.Markers.save new_model)
+
+      Struct.Event.RemoveMarker ->
+         (Update.Markers.remove new_model)
+
+      Struct.Event.NewMarker ->
+         (Update.Markers.new new_model)
 
       Struct.Event.GoToMainMenu ->
          (Update.GoToMainMenu.apply_to new_model)

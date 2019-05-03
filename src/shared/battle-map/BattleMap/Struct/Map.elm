@@ -5,6 +5,7 @@ module BattleMap.Struct.Map exposing
       empty,
       get_height,
       get_markers,
+      set_markers,
       get_movement_cost_function,
       get_omnimods_at,
       get_tiles,
@@ -75,6 +76,9 @@ get_tiles map = map.content
 
 get_markers : Type -> (Dict.Dict String BattleMap.Struct.Marker.Type)
 get_markers map = map.markers
+
+set_markers : (Dict.Dict String BattleMap.Struct.Marker.Type) -> Type -> Type
+set_markers markers map = {map | markers = markers}
 
 set_tile_to : BattleMap.Struct.Location.Type -> BattleMap.Struct.TileInstance.Type -> Type -> Type
 set_tile_to loc tile_inst map =

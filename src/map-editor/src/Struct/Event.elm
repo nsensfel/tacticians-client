@@ -33,6 +33,11 @@ type Type =
    | PrettifySelectionRequested
    | SendMapUpdateRequested
    | GoToMainMenu
+   | SetMarkerName String
+   | NewMarker
+   | RemoveMarker
+   | LoadMarker
+   | SaveMarker
 
 attempted : (Result.Result err val) -> Type
 attempted act =

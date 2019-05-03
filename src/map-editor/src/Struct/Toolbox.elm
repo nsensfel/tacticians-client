@@ -16,6 +16,7 @@ module Struct.Toolbox exposing
       get_shape,
       get_shapes,
       get_selection,
+      set_selection,
       default
    )
 
@@ -237,6 +238,9 @@ get_shapes mode =
 
 get_selection : Type -> (List BattleMap.Struct.Location.Type)
 get_selection tb = tb.selection
+
+set_selection : (List BattleMap.Struct.Location.Type) -> Type -> Type
+set_selection location_list tb = {tb | selection = location_list}
 
 set_template : BattleMap.Struct.TileInstance.Type -> Type -> Type
 set_template template tb =
