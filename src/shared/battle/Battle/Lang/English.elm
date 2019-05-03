@@ -273,15 +273,10 @@ accuracy_help =
       ]
       [
          (Html.text
-            """
-            Accuracy lower the target's chance to evade an incoming blow, as it
-            is subtracted to their
-            an incoming attack and replace it by one of their own. It is
-            based on their
-            """
+            "Accuracy lowers the target's chance to evade an incoming blow ("
          ),
          (get_stats_reference_html Battle.Struct.Statistics.Dodges),
-         (Html.text ". Accuracy is based on "),
+         (Html.text "). It is based on "),
          (get_atts_reference_html Battle.Struct.Attributes.Dexterity),
          (Html.text " (100%).")
       ]
