@@ -4,6 +4,10 @@ module View.MessageBoard.Help exposing (get_html)
 import Html
 import Html.Attributes
 
+-- Battle ----------------------------------------------------------------------
+import Battle.View.Help.Attribute
+import Battle.View.Help.Statistic
+
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.HelpRequest
@@ -33,6 +37,12 @@ get_html model =
 
             (Struct.HelpRequest.Rank rank) ->
                (View.MessageBoard.Help.Rank.get_html_contents rank)
+
+            (Struct.HelpRequest.Attribute att_cat) ->
+               (Battle.View.Help.Attribute.get_html_contents att_cat)
+
+            (Struct.HelpRequest.Statistic stat_cat) ->
+               (Battle.View.Help.Statistic.get_html_contents stat_cat)
 
             _ -> [(Html.text "Help is not available for this, yet.")]
       )

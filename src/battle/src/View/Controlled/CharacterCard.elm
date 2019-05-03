@@ -75,7 +75,17 @@ get_health_bar char =
       (Battle.View.Gauge.get_html
          ("HP: " ++ (String.fromInt current) ++ "/" ++ (String.fromInt max))
          (100.0 * ((toFloat current)/(toFloat max)))
-         [(Html.Attributes.class "character-card-health")]
+         [
+            (Html.Attributes.class "character-card-health"),
+            (Html.Attributes.class "clickable"),
+            (Html.Events.onClick
+               (Struct.Event.RequestedHelp
+                  (Struct.HelpRequest.Statistic
+                     Battle.Struct.Statistics.MaxHealth
+                  )
+               )
+            )
+         ]
          []
          []
       )
@@ -145,7 +155,17 @@ get_active_movement_bar maybe_navigator char =
       (Battle.View.Gauge.get_html
          ("MP: " ++ (String.fromInt current) ++ "/" ++ (String.fromInt max))
          (100.0 * ((toFloat current)/(toFloat max)))
-         [(Html.Attributes.class "character-card-movement")]
+         [
+            (Html.Attributes.class "character-card-movement"),
+            (Html.Attributes.class "clickable"),
+            (Html.Events.onClick
+               (Struct.Event.RequestedHelp
+                  (Struct.HelpRequest.Statistic
+                     Battle.Struct.Statistics.MovementPoints
+                  )
+               )
+            )
+         ]
          []
          []
       )
@@ -166,7 +186,17 @@ get_inactive_movement_bar char =
       (Battle.View.Gauge.get_html
          ( "MP: " ++ (String.fromInt max))
          100.0
-         [(Html.Attributes.class "character-card-movement")]
+         [
+            (Html.Attributes.class "character-card-movement"),
+            (Html.Attributes.class "clickable"),
+            (Html.Events.onClick
+               (Struct.Event.RequestedHelp
+                  (Struct.HelpRequest.Statistic
+                     Battle.Struct.Statistics.MovementPoints
+                  )
+               )
+            )
+         ]
          []
          []
       )

@@ -28,15 +28,8 @@ get_header_html title =
 get_default_html_contents : (List (Html.Html Struct.Event.Type))
 get_default_html_contents =
    [
-      (get_header_html "Selecting a Character"),
-      (Html.text
-         (
-            "Click once on a character to focus them. This will show you"
-            ++ " their stats, equipment, and other infos. If they are in"
-            ++ " your team and active (the pulsating characters),"
-            ++ " clicking on them again will let you take control."
-         )
-      )
+      (get_header_html "Modifying the Character Roster"),
+      (Html.text "The guide for this module is not yet available.")
    ]
 
 --------------------------------------------------------------------------------

@@ -30,6 +30,7 @@ import BattleCharacters.Struct.GlyphBoard
 -- Local Module ----------------------------------------------------------------
 import Struct.Character
 import Struct.Event
+import Struct.HelpRequest
 import Struct.UI
 
 import View.Character
@@ -80,7 +81,15 @@ get_health_bar char_stats =
          (String.fromInt (Battle.Struct.Statistics.get_max_health char_stats))
       )
       100.0
-      [(Html.Attributes.class "character-card-health")]
+      [
+         (Html.Attributes.class "character-card-health"),
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (Struct.Event.RequestedHelp
+               (Struct.HelpRequest.Statistic Battle.Struct.Statistics.MaxHealth)
+            )
+         )
+      ]
       []
       []
    )
@@ -112,7 +121,17 @@ get_movement_bar char_stats =
          )
       )
       100.0
-      [(Html.Attributes.class "character-card-movement")]
+      [
+         (Html.Attributes.class "character-card-movement"),
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (Struct.Event.RequestedHelp
+               (Struct.HelpRequest.Statistic
+                  Battle.Struct.Statistics.MovementPoints
+               )
+            )
+         )
+      ]
       []
       []
    )
@@ -315,16 +334,16 @@ get_glyph_board_details : (
 get_glyph_board_details damage_modifier board =
    (Html.div
       [
-         (Html.Attributes.class "character-card-glyph-board"),
-         (Html.Attributes.class "clickable"),
-         (Html.Events.onClick
-            (Struct.Event.TabSelected Struct.UI.GlyphBoardSelectionTab)
-         )
+         (Html.Attributes.class "character-card-glyph-board")
       ]
       [
          (Html.div
             [
-               (Html.Attributes.class "character-card-glyph-board-name")
+               (Html.Attributes.class "character-card-glyph-board-name"),
+               (Html.Attributes.class "clickable"),
+               (Html.Events.onClick
+                  (Struct.Event.TabSelected Struct.UI.GlyphBoardSelectionTab)
+               )
             ]
             [
                (Html.text (BattleCharacters.Struct.GlyphBoard.get_name board))
@@ -333,6 +352,17 @@ get_glyph_board_details damage_modifier board =
          (Battle.View.Omnimods.get_html_with_modifier
             damage_modifier
             (BattleCharacters.Struct.GlyphBoard.get_omnimods board)
+         ),
+         (Html.div
+            [
+               (Html.Attributes.class "clickable"),
+               (Html.Events.onClick
+                  (Struct.Event.TabSelected Struct.UI.GlyphManagementTab)
+               )
+            ]
+            [
+               (Html.text "[PH] Select Glyphs")
+            ]
          )
       ]
    )
@@ -345,10 +375,7 @@ get_relevant_stats stats =
    (Html.div
       [
          (Html.Attributes.class "character-card-stats"),
-         (Html.Attributes.class "clickable"),
-         (Html.Events.onClick
-            (Struct.Event.TabSelected Struct.UI.GlyphManagementTab)
-         )
+         (Html.Attributes.class "clickable")
       ]
       (Battle.View.Statistic.get_all_but_gauges_html stats)
    )
@@ -360,11 +387,7 @@ get_attributes : (
 get_attributes atts =
    (Html.div
       [
-         (Html.Attributes.class "character-card-atts"),
-         (Html.Attributes.class "clickable"),
-         (Html.Events.onClick
-            (Struct.Event.TabSelected Struct.UI.GlyphManagementTab)
-         )
+         (Html.Attributes.class "character-card-atts")
       ]
       (Battle.View.Attribute.get_all_html atts)
    )
