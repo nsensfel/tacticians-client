@@ -23,6 +23,11 @@
    background-image: url(/asset/svg/damage_type/slash.svg);
 }
 
+.omnimod-icon-bse
+{
+   background-image: url(/asset/svg/damage_type/base.svg);
+}
+
 .omnimod-icon-blu
 {
    background-image: url(/asset/svg/damage_type/impact.svg);
@@ -55,6 +60,15 @@
 {
    background-image:
       url(/asset/svg/damage_type/piercing.svg),
+      url(/asset/svg/damage_type/shield.svg)
+   ;
+   background-size: 1em, 1.5em;
+}
+
+.omnimod-defense-mods .omnimod-icon-bse
+{
+   background-image:
+      url(/asset/svg/damage_type/base.svg),
       url(/asset/svg/damage_type/shield.svg)
    ;
    background-size: 1em, 1.5em;

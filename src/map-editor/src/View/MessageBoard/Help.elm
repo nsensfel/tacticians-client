@@ -4,6 +4,11 @@ module View.MessageBoard.Help exposing (get_html)
 import Html
 import Html.Attributes
 
+-- Battle ----------------------------------------------------------------------
+import Battle.View.Help.Attribute
+import Battle.View.Help.DamageType
+import Battle.View.Help.Statistic
+
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.HelpRequest
@@ -27,6 +32,15 @@ get_html model =
       ]
       (
          case model.help_request of
+            (Struct.HelpRequest.Attribute att_cat) ->
+               (Battle.View.Help.Attribute.get_html_contents att_cat)
+
+            (Struct.HelpRequest.Statistic stat_cat) ->
+               (Battle.View.Help.Statistic.get_html_contents stat_cat)
+
+            (Struct.HelpRequest.DamageType dmg_cat) ->
+               (Battle.View.Help.DamageType.get_html_contents dmg_cat)
+
             Struct.HelpRequest.None ->
                (View.MessageBoard.Help.Guide.get_html_contents model)
       )

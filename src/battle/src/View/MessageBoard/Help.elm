@@ -6,6 +6,7 @@ import Html.Attributes
 
 -- Battle ----------------------------------------------------------------------
 import Battle.View.Help.Attribute
+import Battle.View.Help.DamageType
 import Battle.View.Help.Statistic
 
 -- Local Module ----------------------------------------------------------------
@@ -44,6 +45,9 @@ get_html model =
             (Struct.HelpRequest.Statistic stat_cat) ->
                (Battle.View.Help.Statistic.get_html_contents stat_cat)
 
-            _ -> [(Html.text "Help is not available for this, yet.")]
+            (Struct.HelpRequest.DamageType dmg_cat) ->
+               (Battle.View.Help.DamageType.get_html_contents dmg_cat)
+
+--            _ -> [(Html.text "Help is not available for this, yet.")]
       )
    )

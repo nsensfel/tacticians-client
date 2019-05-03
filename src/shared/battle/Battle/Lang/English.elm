@@ -8,6 +8,7 @@ import Html.Events
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Attributes
 import Battle.Struct.Statistics
+import Battle.Struct.DamageType
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
@@ -66,6 +67,19 @@ double_hits = "Double Hit Chance"
 
 critical_hits : String
 critical_hits = "Critical Hit Chance"
+
+---- Damage Types --------------------------------------------------------------
+slash : String
+slash = "Slashing Damage"
+
+blunt : String
+blunt = "Bludgeoning Damage"
+
+pierce : String
+pierce = "Piercing Damage"
+
+base : String
+base = "Universal Damage"
 
 -- Help ------------------------------------------------------------------------
 ---- Attributes ----------------------------------------------------------------
@@ -342,6 +356,49 @@ get_stats_reference_html cat =
       ]
    )
 
+---- Damage Types --------------------------------------------------------------
+slash_help : (Html.Html Struct.Event.Type)
+slash_help =
+   (Html.div
+      [
+      ]
+      [
+         (Html.text "Tis but a scratch. You had worse.")
+      ]
+   )
+
+blunt_help : (Html.Html Struct.Event.Type)
+blunt_help =
+   (Html.div
+      [
+      ]
+      [
+         (Html.text "At least words will never harm you.")
+      ]
+   )
+
+pierce_help : (Html.Html Struct.Event.Type)
+pierce_help =
+   (Html.div
+      [
+      ]
+      [
+         (Html.text "Improves your aerodynamics.")
+      ]
+   )
+
+base_help : (Html.Html Struct.Event.Type)
+base_help =
+   (Html.div
+      [
+      ]
+      [
+         (Html.text
+            "Defensive only. This is applied to every type of incoming damage."
+         )
+      ]
+   )
+
 get_atts_reference_html : (
       Battle.Struct.Attributes.Category ->
       (Html.Html Struct.Event.Type)
@@ -445,3 +502,23 @@ get_statistic_category_help cat =
 
       Battle.Struct.Statistics.CriticalHits ->
          ((critical_hits), (critical_hits_help))
+
+get_damage_type_help : (
+      Battle.Struct.DamageType.Type ->
+      (String, (Html.Html Struct.Event.Type))
+   )
+get_damage_type_help cat =
+   case cat of
+      Battle.Struct.DamageType.Base ->
+         ((base), (base_help))
+
+      Battle.Struct.DamageType.Slash ->
+         ((slash), (slash_help))
+
+      Battle.Struct.DamageType.Blunt ->
+         ((blunt), (blunt_help))
+
+      Battle.Struct.DamageType.Pierce ->
+         ((pierce), (pierce_help))
+
+      _ -> ("None Damage", (Html.div [] [(Html.text "Should not appear.")]))
