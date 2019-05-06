@@ -12,6 +12,8 @@ import Util.Html
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
 
+import Battle.View.Omnimods
+
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Location
 import BattleMap.Struct.Map
@@ -117,56 +119,6 @@ get_location tile_inst =
          ]
       )
 
-get_mod_html : (String, Int) -> (Html.Html Struct.Event.Type)
-get_mod_html mod =
-   let
-      (category, value) = mod
-   in
-      (Html.div
-         [
-            (Html.Attributes.class "info-card-mod")
-         ]
-         [
-            (Html.text
-               (category ++ ": " ++ (String.fromInt value))
-            )
-         ]
-      )
-
-get_omnimods_listing : (List (String, Int)) -> (Html.Html Struct.Event.Type)
-get_omnimods_listing mod_list =
-   (Html.div
-      [
-         (Html.Attributes.class "info-card-omnimods-listing")
-      ]
-      (List.map (get_mod_html) mod_list)
-   )
-
-get_omnimods : Battle.Struct.Omnimods.Type -> (Html.Html Struct.Event.Type)
-get_omnimods omnimods =
-   (Html.div
-      [
-         (Html.Attributes.class "info-card-omnimods")
-      ]
-      [
-         (Html.text "Attribute Modifiers"),
-         (get_omnimods_listing
-            (Battle.Struct.Omnimods.get_attributes_mods omnimods)
-         ),
-         (Html.text "Statistics Modifiers"),
-         (get_omnimods_listing
-            (Battle.Struct.Omnimods.get_statistics_mods omnimods)
-         ),
-         (Html.text "Attack Modifiers"),
-         (get_omnimods_listing
-            (Battle.Struct.Omnimods.get_attack_mods omnimods)
-         ),
-         (Html.text "Defense Modifiers"),
-         (get_omnimods_listing
-            (Battle.Struct.Omnimods.get_defense_mods omnimods)
-         )
-      ]
-   )
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -196,7 +148,9 @@ get_html model loc =
                      (get_cost tile)
                   ]
                ),
-               (get_omnimods ((Struct.Model.tile_omnimods_fun model) loc))
+               (Battle.View.Omnimods.get_html
+                  ((Struct.Model.tile_omnimods_fun model) loc)
+               )
             ]
          )
 

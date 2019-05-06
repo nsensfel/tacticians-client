@@ -351,7 +351,9 @@ get_armor_details omnimods armor =
             ]
          ),
          (Html.div
-            []
+            [
+               (Html.Attributes.class "omnimod-defense-mods")
+            ]
             (List.map
                (\(k, v) ->
                   (Battle.View.DamageType.get_html
