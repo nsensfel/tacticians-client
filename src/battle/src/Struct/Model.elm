@@ -27,6 +27,8 @@ import Array
 
 import Dict
 
+import Set
+
 -- Shared ----------------------------------------------------------------------
 import Struct.Flags
 
@@ -99,6 +101,7 @@ type alias Type =
       battle_id : String,
       session_token : String,
       player_ix : Int,
+      player_characters_ix : (Set.Set Int),
       ui : Struct.UI.Type,
       char_turn : Struct.CharacterTurn.Type,
       timeline : (Array.Array Struct.TurnResult.Type)
@@ -146,6 +149,7 @@ new flags =
                ),
             session_token = flags.token,
             player_ix = 0,
+            player_characters_ix = (Set.empty),
             ui = (Struct.UI.default),
             char_turn = (Struct.CharacterTurn.new),
             timeline = (Array.empty)
@@ -170,7 +174,15 @@ add_character char model =
          (Array.push
             char
             model.characters
-         )
+         ),
+      player_characters_ix =
+         if ((Struct.Character.get_player_ix char) == model.player_ix)
+         then
+            (Set.insert
+               (Struct.Character.get_index char)
+               model.player_characters_ix
+            )
+         else model.player_characters_ix
    }
 
 add_weapon : BattleCharacters.Struct.Weapon.Type -> Type -> Type
@@ -235,7 +247,11 @@ add_player pl model =
          (Array.push
             pl
             model.players
-         )
+         ),
+      player_ix =
+         if ((Struct.Player.get_id pl) == model.player_id)
+         then (Struct.Player.get_index pl)
+         else model.player_ix
    }
 
 add_tile : BattleMap.Struct.Tile.Type -> Type -> Type
