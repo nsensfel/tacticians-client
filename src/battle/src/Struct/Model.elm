@@ -36,6 +36,7 @@ import Struct.Flags
 import Battle.Struct.Omnimods
 
 -- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Character
 import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.Portrait
 import BattleCharacters.Struct.Glyph
@@ -101,7 +102,6 @@ type alias Type =
       battle_id : String,
       session_token : String,
       player_ix : Int,
-      player_characters_ix : (Set.Set Int),
       ui : Struct.UI.Type,
       char_turn : Struct.CharacterTurn.Type,
       timeline : (Array.Array Struct.TurnResult.Type)
@@ -149,7 +149,6 @@ new flags =
                ),
             session_token = flags.token,
             player_ix = 0,
-            player_characters_ix = (Set.empty),
             ui = (Struct.UI.default),
             char_turn = (Struct.CharacterTurn.new),
             timeline = (Array.empty)
@@ -169,21 +168,7 @@ new flags =
 
 add_character : Struct.Character.Type -> Type -> Type
 add_character char model =
-   {model |
-      characters =
-         (Array.push
-            char
-            model.characters
-         ),
-      player_characters_ix =
-         if ((Struct.Character.get_player_ix char) == model.player_ix)
-         then
-            (Set.insert
-               (Struct.Character.get_index char)
-               model.player_characters_ix
-            )
-         else model.player_characters_ix
-   }
+   {model | characters = (Array.push char model.characters)}
 
 add_weapon : BattleCharacters.Struct.Weapon.Type -> Type -> Type
 add_weapon wp model =
@@ -382,3 +367,39 @@ invalidate err model =
 
 clear_error : Type -> Type
 clear_error model = {model | error = Nothing}
+
+generate_danger_zone : Type -> (Set.Set BattleMap.Struct.Location.Ref)
+generate_danger_zone model =
+   (Array.foldl
+      (\char danger_zone ->
+         let
+            char_weapon =
+               (BattleCharacters.Struct.Character.get_active_weapon
+                  (Struct.Character.get_base_character char)
+               )
+         in
+            if
+            (
+               (Struct.Character.is_alive char)
+               && ((Struct.Character.get_player_ix char) /= model.player_ix)
+               &&
+               (
+                  (BattleCharacters.Struct.Weapon.get_defense_range char_weapon)
+                  == 0
+               )
+            )
+            then
+               (BattleMap.Struct.Location.add_neighborhood_to_set
+                  (BattleMap.Struct.Map.get_width model.map)
+                  (BattleMap.Struct.Map.get_height model.map)
+                  (BattleCharacters.Struct.Weapon.get_attack_range
+                     char_weapon
+                  )
+                  (Struct.Character.get_location char)
+                  danger_zone
+               )
+            else danger_zone
+      )
+      (Set.empty)
+      model.characters
+   )

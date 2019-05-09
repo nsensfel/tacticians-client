@@ -6,6 +6,8 @@ import Json.Decode.Pipeline
 
 import Json.Encode
 
+import Set
+
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Direction
 
@@ -98,4 +100,43 @@ get_full_neighborhood loc =
       {loc | x = (loc.x + 1), y = (loc.y + 1)}
    ]
 
-
+add_neighborhood_to_set : (
+      Int ->
+      Int ->
+      Int ->
+      Type ->
+      (Set.Set Ref) ->
+      (Set.Set Ref)
+   )
+add_neighborhood_to_set map_width map_height tdist loc set =
+   (List.foldl
+      (\height_mod current_width_result ->
+         let
+            abs_width_mod = (abs (tdist - height_mod))
+            current_height = (loc.y + height_mod)
+         in
+            if ((current_height < 0) || (current_height >= map_height))
+            then current_width_result
+            else
+               (List.foldl
+                  (\width_mod current_result ->
+                     let new_location_x = (loc.x + width_mod) in
+                        if
+                        (
+                           (new_location_x < 0)
+                           || (new_location_x >= map_width)
+                        )
+                        then current_result
+                        else
+                           (Set.insert
+                              (new_location_x, current_height)
+                              current_result
+                           )
+                  )
+                  current_width_result
+                  (List.range (-abs_width_mod) abs_width_mod)
+               )
+      )
+      set
+      (List.range (-tdist) tdist)
+   )
