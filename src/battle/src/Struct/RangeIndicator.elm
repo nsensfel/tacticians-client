@@ -22,43 +22,51 @@ import Constants.Movement
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+type alias TileData = (Int, Int) -- (TileCost, TileBattles)
+
+-- (TileLocation, TileRequiredBattles)
+type alias TileSearchLocation = (BattleMap.Struct.Location.Ref, Int)
+
 type alias Type =
    {
-      distance: Int,
-      true_range: Int,
-      atk_range: Int,
-      path: (List BattleMap.Struct.Direction.Type),
-      marker: Struct.Marker.Type
+      distance : Int,
+      required_battles : Int,
+      taxicab_dist : Int,
+      atk_range : Int,
+      path : (List BattleMap.Struct.Direction.Type),
+      marker : Struct.Marker.Type
    }
 
 type alias SearchParameters =
    {
-      maximum_distance: Int,
-      maximum_attack_range: Int,
-      minimum_defense_range: Int,
-      cost_function: (BattleMap.Struct.Location.Type -> Int),
-      true_range_fun: (BattleMap.Struct.Location.Type -> Int)
+      maximum_distance : Int,
+      maximum_attack_range : Int,
+      minimum_defense_range : Int,
+      tile_data_function : (BattleMap.Struct.Location.Type -> (Int, Int)),
+      taxicab_dist_fun : (BattleMap.Struct.Location.Type -> Int)
    }
 
 type alias LocatedIndicator =
    {
-      location_ref: BattleMap.Struct.Location.Ref,
-      indicator: Type
+      location_ref : BattleMap.Struct.Location.Ref,
+      required_battles : Int,
+      indicator : Type
    }
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_closest : (
       Int ->
-      BattleMap.Struct.Location.Ref ->
+      TileSearchLocation ->
       Type ->
       LocatedIndicator ->
       LocatedIndicator
    )
-get_closest max_dist ref indicator current_best =
+get_closest max_dist (ref, ignored_param) indicator current_best =
    if (is_closer max_dist indicator current_best.indicator)
    then
       {
+         required_battles = indicator.required_battles,
          location_ref = ref,
          indicator = indicator
       }
@@ -68,14 +76,14 @@ get_closest max_dist ref indicator current_best =
 is_closer : Int -> Type -> Type -> Bool
 is_closer max_dist candidate current =
    (
-      -- It's closer when moving
+      -- It's closer when moving;
       (candidate.distance < current.distance)
       ||
-      (
-         -- Or neither are reachable by moving,
+      ( -- Or
+         -- neither are reachable by moving,
          (max_dist <= candidate.distance)
          && (max_dist <= current.distance)
-         -- but the new one is closer when attacking.
+         -- but the new one is closer when attacking;
          && (candidate.atk_range < current.atk_range)
       )
    )
@@ -89,16 +97,16 @@ generate_neighbor : (
    )
 generate_neighbor search_params neighbor_loc dir src_indicator =
    let
-      node_cost = (search_params.cost_function neighbor_loc)
+      (node_cost, node_battles) =
+         (search_params.tile_data_function neighbor_loc)
       new_dist =
          if (node_cost == Constants.Movement.cost_when_occupied_tile)
-         then
-            (search_params.maximum_distance + 1)
-         else
-            (src_indicator.distance + node_cost)
+         then (search_params.maximum_distance + 1)
+         else (src_indicator.distance + node_cost)
       new_atk_range = (src_indicator.atk_range + 1)
-      new_true_range = (search_params.true_range_fun neighbor_loc)
-      can_defend = (new_true_range > search_params.minimum_defense_range)
+      new_taxicab_dist = (search_params.taxicab_dist_fun neighbor_loc)
+      new_battle_count = (src_indicator.required_battles + node_battles)
+      can_defend = (new_taxicab_dist > search_params.minimum_defense_range)
    in
       if (new_dist > search_params.maximum_distance)
       then
@@ -106,8 +114,9 @@ generate_neighbor search_params neighbor_loc dir src_indicator =
             node_cost,
             {
                distance = (search_params.maximum_distance + 1),
-               atk_range = new_atk_range,
-               true_range = new_true_range,
+               atk_range = (src_indicator.atk_range + 1),
+               taxicab_dist = new_taxicab_dist,
+               required_battles = new_battle_count,
                path = (dir :: src_indicator.path),
                marker =
                   if (can_defend)
@@ -123,7 +132,8 @@ generate_neighbor search_params neighbor_loc dir src_indicator =
             {
                distance = new_dist,
                atk_range = 0,
-               true_range = new_true_range,
+               required_battles = new_battle_count,
+               taxicab_dist = new_taxicab_dist,
                path = (dir :: src_indicator.path),
                marker =
                   if (can_defend)
@@ -149,82 +159,93 @@ candidate_is_an_improvement : (
       SearchParameters ->
       BattleMap.Struct.Location.Ref ->
       Type ->
-      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
+      (Dict.Dict TileSearchLocation Type) ->
+      (Dict.Dict TileSearchLocation Type) ->
       Bool
    )
-candidate_is_an_improvement search_params loc_ref candidate alternatives =
-   case (Dict.get loc_ref alternatives) of
-      (Just alternative) ->
-         (is_closer search_params.maximum_distance candidate alternative)
+candidate_is_an_improvement
+   search_params
+   loc_ref
+   candidate
+   candidate_solutions
+   best_solutions =
+   (List.all
+      -- Does it improve on all possible solutions that have less (or as much)
+      -- battles?
+      (\req_battles ->
+         let index = (loc_ref, req_battles) in
+            case (Dict.get index candidate_solutions) of
+               (Just alternative) ->
+                  (is_closer
+                     search_params.maximum_distance
+                     candidate
+                     alternative
+                  )
 
-      Nothing ->
-         True
+               Nothing ->
+                     case (Dict.get index best_solutions) of
+                        (Just alternative) ->
+                           (is_closer
+                              search_params.maximum_distance
+                              candidate
+                              alternative
+                           )
+
+                        Nothing -> True
+      )
+      (List.range 0 candidate.required_battles)
+   )
 
 handle_neighbors : (
       LocatedIndicator ->
-      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
+      (Dict.Dict TileSearchLocation Type) ->
       SearchParameters ->
       BattleMap.Struct.Direction.Type ->
-      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
-      (Dict.Dict BattleMap.Struct.Location.Ref Type)
+      (Dict.Dict TileSearchLocation Type) ->
+      (Dict.Dict TileSearchLocation Type)
    )
 handle_neighbors src results search_params dir remaining =
    let
       src_loc = (BattleMap.Struct.Location.from_ref src.location_ref)
       neighbor_loc = (BattleMap.Struct.Location.neighbor dir src_loc)
       neighbor_loc_ref = (BattleMap.Struct.Location.get_ref neighbor_loc)
+      (candidate_cost, candidate) =
+         (generate_neighbor search_params neighbor_loc dir src.indicator)
+      candidate_index = (neighbor_loc_ref, candidate.required_battles)
    in
-      case (Dict.get neighbor_loc_ref results) of
-         (Just _) ->
-            -- A minimal path for this location has already been found
+      if
+      (
+         (candidate_is_acceptable search_params candidate_cost candidate)
+         &&
+         (candidate_is_an_improvement
+            search_params
+            neighbor_loc_ref
+            candidate
             remaining
-
-         Nothing ->
-            let
-               (candidate_cost, candidate) =
-                  (generate_neighbor
-                     search_params
-                     neighbor_loc
-                     dir
-                     src.indicator
-                  )
-            in
-               if
-               (
-                  (candidate_is_acceptable
-                     search_params
-                     candidate_cost
-                     candidate
-                  )
-                  &&
-                  (candidate_is_an_improvement
-                     search_params
-                     neighbor_loc_ref
-                     candidate
-                     remaining
-                  )
-               )
-               then
-                  (Dict.insert neighbor_loc_ref candidate remaining)
-               else
-                  remaining
+            results
+         )
+      )
+      then (Dict.insert candidate_index candidate remaining)
+      else remaining
 
 find_closest_in : (
       SearchParameters ->
-      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
+      (Dict.Dict TileSearchLocation Type) ->
       LocatedIndicator
    )
 find_closest_in search_params remaining =
    (Dict.foldl
       (get_closest search_params.maximum_distance)
       {
+         required_battles = 9999,
          location_ref = (-1, -1),
          indicator =
             {
+               required_battles = 9999,
                distance = Constants.Movement.cost_when_out_of_bounds,
                path = [],
                atk_range = Constants.Movement.cost_when_out_of_bounds,
-               true_range = Constants.Movement.cost_when_out_of_bounds,
+               taxicab_dist = Constants.Movement.cost_when_out_of_bounds,
                marker = Struct.Marker.CanAttackCanDefend
             }
       }
@@ -238,7 +259,7 @@ resolve_marker_type search_params indicator =
          case
             (
                (indicator.atk_range > 0),
-               (indicator.true_range <= search_params.minimum_defense_range)
+               (indicator.taxicab_dist <= search_params.minimum_defense_range)
             )
          of
             (True, True) -> Struct.Marker.CanAttackCantDefend
@@ -249,31 +270,30 @@ resolve_marker_type search_params indicator =
 
 insert_in_dictionary : (
       LocatedIndicator ->
-      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
-      (Dict.Dict BattleMap.Struct.Location.Ref Type)
+      (Dict.Dict TileSearchLocation Type) ->
+      (Dict.Dict TileSearchLocation Type)
    )
 insert_in_dictionary located_indicator dict =
    (Dict.insert
-      located_indicator.location_ref
+      (located_indicator.location_ref, located_indicator.required_battles)
       located_indicator.indicator
       dict
    )
 
 search : (
-      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
-      (Dict.Dict BattleMap.Struct.Location.Ref Type) ->
+      (Dict.Dict TileSearchLocation Type) ->
+      (Dict.Dict TileSearchLocation Type) ->
       SearchParameters ->
-      (Dict.Dict BattleMap.Struct.Location.Ref Type)
+      (Dict.Dict TileSearchLocation Type)
    )
 search result remaining search_params =
    if (Dict.isEmpty remaining)
-   then
-      result
+   then result
    else
       let
          closest_located_indicator = (find_closest_in search_params remaining)
          finalized_clos_loc_ind =
-            {closest_located_indicator|
+            {closest_located_indicator |
                indicator =
                   (resolve_marker_type
                      search_params
@@ -289,7 +309,13 @@ search result remaining search_params =
                   result
                   search_params
                )
-               (Dict.remove finalized_clos_loc_ind.location_ref remaining)
+               (Dict.remove
+                  (
+                     finalized_clos_loc_ind.location_ref,
+                     finalized_clos_loc_ind.required_battles
+                  )
+                  remaining
+               )
                [
                   BattleMap.Struct.Direction.Left,
                   BattleMap.Struct.Direction.Right,
@@ -300,6 +326,25 @@ search result remaining search_params =
             search_params
          )
 
+cleanup : (
+      (Dict.Dict TileSearchLocation Type) ->
+      (Dict.Dict BattleMap.Struct.Location.Ref Type)
+   )
+cleanup search_results =
+   (Dict.foldl
+      (\
+         (candidate_location, candidate_battles) candidate result ->
+            case (Dict.get candidate_location result) of
+               (Just current_best) ->
+                  if (current_best.required_battles < candidate_battles)
+                  then result
+                  else (Dict.insert candidate_location candidate result)
+
+               Nothing -> (Dict.insert candidate_location candidate result)
+      )
+      (Dict.empty)
+      search_results
+   )
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -308,35 +353,38 @@ generate : (
       Int ->
       Int ->
       Int ->
-      (BattleMap.Struct.Location.Type -> Int) ->
+      (BattleMap.Struct.Location.Type -> (Int, Int)) ->
       (Dict.Dict BattleMap.Struct.Location.Ref Type)
    )
-generate location max_dist def_range atk_range cost_fun =
-   (search
-      Dict.empty
-      (Dict.insert
-         (BattleMap.Struct.Location.get_ref location)
-         {
-            distance = 0,
-            path = [],
-            atk_range = 0,
-            true_range = 0,
-            marker =
-               if (def_range == 0)
-               then
-                  Struct.Marker.CanGoToCanDefend
-               else
-                  Struct.Marker.CanGoToCantDefend
-         }
+generate location max_dist def_range atk_range tile_data_fun =
+   (cleanup
+      (search
          Dict.empty
+         (Dict.insert
+            ((BattleMap.Struct.Location.get_ref location), 0)
+            {
+               distance = 0,
+               path = [],
+               atk_range = 0,
+               taxicab_dist = 0,
+               required_battles = 0,
+               marker =
+                  if (def_range == 0)
+                  then
+                     Struct.Marker.CanGoToCanDefend
+                  else
+                     Struct.Marker.CanGoToCantDefend
+            }
+            Dict.empty
+         )
+         {
+            maximum_distance = max_dist,
+            maximum_attack_range = atk_range,
+            minimum_defense_range = def_range,
+            tile_data_function = (tile_data_fun),
+            taxicab_dist_fun = (BattleMap.Struct.Location.dist location)
+         }
       )
-      {
-         maximum_distance = max_dist,
-         maximum_attack_range = atk_range,
-         minimum_defense_range = def_range,
-         cost_function = (cost_fun),
-         true_range_fun = (BattleMap.Struct.Location.dist location)
-      }
    )
 
 get_marker : Type -> Struct.Marker.Type

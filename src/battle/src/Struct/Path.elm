@@ -145,12 +145,12 @@ get_summary : Type -> (List BattleMap.Struct.Direction.Type)
 get_summary path = path.previous_directions
 
 try_following_direction : (
-      (BattleMap.Struct.Location.Type -> Int) ->
+      (BattleMap.Struct.Location.Type -> (Int, Int)) ->
       (Maybe Type) ->
       BattleMap.Struct.Direction.Type ->
       (Maybe Type)
    )
-try_following_direction cost_fun maybe_path dir =
+try_following_direction tile_data_fun maybe_path dir =
    case maybe_path of
       (Just path) ->
          let
@@ -159,7 +159,8 @@ try_following_direction cost_fun maybe_path dir =
                   dir
                   path.current_location
                )
-            next_location_cost = (cost_fun next_location)
+            (next_location_cost, next_location_battles) =
+               (tile_data_fun next_location)
          in
             if (next_location_cost <= Constants.Movement.max_points)
             then

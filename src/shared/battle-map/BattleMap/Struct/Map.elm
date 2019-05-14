@@ -6,7 +6,7 @@ module BattleMap.Struct.Map exposing
       get_height,
       get_markers,
       set_markers,
-      get_movement_cost_function,
+      get_tile_data_function,
       get_omnimods_at,
       get_tiles,
       get_width,
@@ -179,22 +179,22 @@ decoder =
       (Json.Decode.field "w" Json.Decode.int)
    )
 
-get_movement_cost_function : (
+get_tile_data_function : (
       Type ->
       (List BattleMap.Struct.Location.Type) ->
       BattleMap.Struct.Location.Type ->
       BattleMap.Struct.Location.Type ->
-      Int
+      (Int, Int)
    )
-get_movement_cost_function bmap occupied_tiles start_loc loc =
+get_tile_data_function bmap occupied_tiles start_loc loc =
    if (has_location loc bmap)
    then
       case (Array.get (location_to_index loc bmap) bmap.content) of
          (Just tile) ->
             if ((loc /= start_loc) && (List.member loc occupied_tiles))
-            then Constants.Movement.cost_when_occupied_tile
-            else (BattleMap.Struct.TileInstance.get_cost tile)
+            then (Constants.Movement.cost_when_occupied_tile, 0)
+            else ((BattleMap.Struct.TileInstance.get_cost tile), 0)
 
-         Nothing -> Constants.Movement.cost_when_out_of_bounds
+         Nothing -> (Constants.Movement.cost_when_out_of_bounds, 0)
    else
-      Constants.Movement.cost_when_out_of_bounds
+      (Constants.Movement.cost_when_out_of_bounds, 0)

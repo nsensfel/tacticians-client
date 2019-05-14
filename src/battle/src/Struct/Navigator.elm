@@ -34,26 +34,26 @@ import Struct.RangeIndicator
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      starting_location: BattleMap.Struct.Location.Type,
-      movement_dist: Int,
-      defense_dist: Int,
-      attack_dist: Int,
-      path: Struct.Path.Type,
-      locked_path: Bool,
-      range_indicators:
+      starting_location : BattleMap.Struct.Location.Type,
+      movement_dist : Int,
+      defense_dist : Int,
+      attack_dist : Int,
+      path : Struct.Path.Type,
+      locked_path : Bool,
+      range_indicators :
          (Dict.Dict
             BattleMap.Struct.Location.Ref
             Struct.RangeIndicator.Type
          ),
-      cost_fun: (BattleMap.Struct.Location.Type -> Int)
+      tile_data_fun : (BattleMap.Struct.Location.Type -> (Int, Int))
    }
 
 type alias Summary =
    {
-      starting_location: BattleMap.Struct.Location.Type,
-      path: (List BattleMap.Struct.Direction.Type),
-      markers: (List (BattleMap.Struct.Location.Ref, Struct.Marker.Type)),
-      locked_path: Bool
+      starting_location : BattleMap.Struct.Location.Type,
+      path : (List BattleMap.Struct.Direction.Type),
+      markers : (List (BattleMap.Struct.Location.Ref, Struct.Marker.Type)),
+      locked_path : Bool
    }
 
 --------------------------------------------------------------------------------
@@ -68,10 +68,10 @@ new : (
       Int ->
       Int ->
       Int ->
-      (BattleMap.Struct.Location.Type -> Int) ->
+      (BattleMap.Struct.Location.Type -> (Int, Int)) ->
       Type
    )
-new start_loc mov_dist def_dist atk_dist cost_fun =
+new start_loc mov_dist def_dist atk_dist tile_data_fun =
    {
       starting_location = start_loc,
       movement_dist = mov_dist,
@@ -85,9 +85,9 @@ new start_loc mov_dist def_dist atk_dist cost_fun =
             mov_dist
             def_dist
             atk_dist
-            (cost_fun)
+            (tile_data_fun)
          ),
-      cost_fun = cost_fun
+      tile_data_fun = tile_data_fun
    }
 
 get_current_location : Type -> BattleMap.Struct.Location.Type
@@ -157,7 +157,7 @@ lock_path navigator =
             0
             navigator.defense_dist
             navigator.attack_dist
-            (navigator.cost_fun)
+            (navigator.tile_data_fun)
          ),
       locked_path = True
    }
@@ -171,7 +171,7 @@ unlock_path navigator =
             navigator.movement_dist
             navigator.defense_dist
             navigator.attack_dist
-            (navigator.cost_fun)
+            (navigator.tile_data_fun)
          ),
       locked_path = True
    }
@@ -185,7 +185,7 @@ lock_path_with_new_attack_ranges range_min range_max navigator =
             0
             range_min
             range_max
-            (navigator.cost_fun)
+            (navigator.tile_data_fun)
          ),
       locked_path = True
    }
@@ -202,7 +202,7 @@ try_adding_step dir navigator =
    else
       case
          (Struct.Path.try_following_direction
-            (navigator.cost_fun)
+            (navigator.tile_data_fun)
             (Just navigator.path)
             dir
          )

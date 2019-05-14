@@ -40,7 +40,7 @@ get_character_navigator model char =
          )
          (BattleCharacters.Struct.Weapon.get_defense_range weapon)
          (BattleCharacters.Struct.Weapon.get_attack_range weapon)
-         (BattleMap.Struct.Map.get_movement_cost_function
+         (BattleMap.Struct.Map.get_tile_data_function
             model.map
             (List.map
                (Struct.Character.get_location)
