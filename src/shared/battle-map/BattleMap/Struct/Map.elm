@@ -19,9 +19,14 @@ module BattleMap.Struct.Map exposing
 -- Elm -------------------------------------------------------------------------
 import Array
 
+import Set
+
 import Dict
 
 import Json.Decode
+
+-- Shared ----------------------------------------------------------------------
+import Util.Array
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
@@ -79,6 +84,53 @@ get_markers map = map.markers
 
 set_markers : (Dict.Dict String BattleMap.Struct.Marker.Type) -> Type -> Type
 set_markers markers map = {map | markers = markers}
+
+remove_marker : String -> Type -> Type
+remove_marker marker_name map =
+   case (Dict.get marker_name map.markers) of
+      Nothing -> map
+      (Just marker) ->
+         {map |
+            markers = (Dict.remove marker_name map.markers),
+            content =
+               (Set.foldl
+                  (\loc array ->
+                     (Util.Array.update_unsafe
+                        (location_to_index
+                           (BattleMap.Struct.Location.from_ref loc)
+                           map
+                        )
+                        (BattleMap.Struct.TileInstance.remove_trigger
+                           marker_name
+                        )
+                        array
+                     )
+                  )
+                  map.content
+                  (BattleMap.Struct.Marker.get_locations marker)
+               )
+         }
+
+add_marker : String -> BattleMap.Struct.Marker.Type -> Type -> Type
+add_marker marker_name marker map =
+   {map |
+      markers = (Dict.insert marker_name marker map.markers),
+      content =
+         (Set.foldl
+            (\loc array ->
+               (Util.Array.update_unsafe
+                  (location_to_index
+                     (BattleMap.Struct.Location.from_ref loc)
+                     map
+                  )
+                  (BattleMap.Struct.TileInstance.add_trigger marker_name)
+                  array
+               )
+            )
+            map.content
+            (BattleMap.Struct.Marker.get_locations marker)
+         )
+   }
 
 set_tile_to : BattleMap.Struct.Location.Type -> BattleMap.Struct.TileInstance.Type -> Type -> Type
 set_tile_to loc tile_inst map =

@@ -15,6 +15,9 @@ module BattleMap.Struct.TileInstance exposing
       get_border_variant_id,
       get_border_class_id,
       get_local_variant_ix,
+      remove_trigger,
+      add_trigger,
+      get_triggers,
       error,
       solve,
       set_location_from_index,
@@ -24,6 +27,8 @@ module BattleMap.Struct.TileInstance exposing
 
 -- Elm -------------------------------------------------------------------------
 import Dict
+
+import Set
 
 import Json.Encode
 
@@ -49,7 +54,7 @@ type alias Type =
       family : BattleMap.Struct.Tile.FamilyID,
       class_id : BattleMap.Struct.Tile.Ref,
       variant_id : BattleMap.Struct.Tile.VariantID,
-      triggers : (List String),
+      triggers : (Set.Set String),
       borders : (List Border)
    }
 
@@ -91,7 +96,7 @@ default tile =
       variant_id = "0",
       crossing_cost = (BattleMap.Struct.Tile.get_cost tile),
       family = (BattleMap.Struct.Tile.get_family tile),
-      triggers = [],
+      triggers = (Set.empty),
       borders = []
    }
 
@@ -103,7 +108,7 @@ error x y =
       variant_id = "0",
       family = "0",
       crossing_cost = Constants.Movement.cost_when_out_of_bounds,
-      triggers = [],
+      triggers = (Set.empty),
       borders = []
    }
 
@@ -192,7 +197,10 @@ decoder =
                   |>
                      (Json.Decode.Pipeline.required
                         "t"
-                        (Json.Decode.list (Json.Decode.string))
+                        (Json.Decode.map
+                           (Set.fromList)
+                           (Json.Decode.list (Json.Decode.string))
+                        )
                      )
                   |>
                      (Json.Decode.Pipeline.hardcoded
@@ -246,8 +254,25 @@ encode tile_inst =
          ),
          (
             "t",
-            (Json.Encode.list (Json.Encode.string) tile_inst.triggers)
+            (Json.Encode.list
+               (Json.Encode.string)
+               (Set.toList tile_inst.triggers)
+            )
          )
       ]
    )
 
+get_triggers : Type -> (Set.Set String)
+get_triggers tile_inst = tile_inst.triggers
+
+add_trigger : String -> Type -> Type
+add_trigger trigger tile_inst =
+   {tile_inst |
+      triggers = (Set.insert trigger tile_inst.triggers)
+   }
+
+remove_trigger : String -> Type -> Type
+remove_trigger trigger tile_inst =
+   {tile_inst |
+      triggers = (Set.remove trigger tile_inst.triggers)
+   }
