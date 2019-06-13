@@ -46,6 +46,7 @@ import BattleCharacters.Struct.Weapon
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Location
 import BattleMap.Struct.Map
+import BattleMap.Struct.Marker
 import BattleMap.Struct.Tile
 
 -- Local Module ----------------------------------------------------------------
@@ -110,6 +111,52 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+regenerate_attack_of_opportunity_markers_of_char : (
+      Int ->
+      Struct.Character.Type ->
+      Type ->
+      Type
+   )
+regenerate_attack_of_opportunity_markers_of_char char_ix char model =
+   if ((Struct.Character.get_player_index char) == model.player_ix)
+   then model
+   else
+      let
+         marker_name = ("matk_c" ++ (String.fromInt char_ix))
+         map_without_this_marker =
+            (BattleMap.Struct.Map.remove_marker marker_name model.map)
+      in
+         case (Struct.Character.get_melee_attack_range char) of
+            0 -> {model | map = map_without_this_marker}
+            attack_range ->
+                  {model |
+                     map =
+                        (BattleMap.Struct.Map.add_marker
+                           marker_name
+                           (BattleMap.Struct.Marker.new_melee_attack
+                              char_ix
+                              (BattleMap.Struct.Location.add_neighborhood_to_set
+                                 (BattleMap.Struct.Map.get_width
+                                    map_without_this_marker
+                                 )
+                                 (BattleMap.Struct.Map.get_height
+                                    map_without_this_marker
+                                 )
+                                 attack_range
+                                 (Struct.Character.get_location char)
+                                 (Set.empty)
+                              )
+                           )
+                           map_without_this_marker
+                        )
+                  }
+
+regenerate_attack_of_opportunity_markers : Int -> Type -> Type
+regenerate_attack_of_opportunity_markers char_ix model =
+   case (Array.get char_ix model.characters) of
+      Nothing -> model
+      (Just char) ->
+         (regenerate_attack_of_opportunity_markers_of_char char_ix char model)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -168,7 +215,12 @@ new flags =
 
 add_character : Struct.Character.Type -> Type -> Type
 add_character char model =
-   {model | characters = (Array.push char model.characters)}
+   let characters = model.characters in
+      (regenerate_attack_of_opportunity_markers_of_char
+         (Array.length characters)
+         char
+         {model | characters = (Array.push char characters)}
+      )
 
 add_weapon : BattleCharacters.Struct.Weapon.Type -> Type -> Type
 add_weapon wp model =
@@ -315,10 +367,17 @@ move_animator_to_next_step model =
    case model.animator of
       Nothing -> model
       (Just animator) ->
-         {model |
-            animator =
-               (Struct.TurnResultAnimator.maybe_trigger_next_step animator)
-         }
+         case (Struct.TurnResultAnimator.maybe_trigger_next_step animator) of
+            Nothing ->
+               (Set.foldl
+                  (regenerate_attack_of_opportunity_markers)
+                  {model | animator = Nothing }
+                  (Struct.TurnResultAnimator.get_animated_character_indices
+                     animator
+                  )
+               )
+
+            just_next_animator -> {model | animator = just_next_animator }
 
 apply_animator_step : Type -> Type
 apply_animator_step model =
@@ -367,39 +426,3 @@ invalidate err model =
 
 clear_error : Type -> Type
 clear_error model = {model | error = Nothing}
-
-generate_danger_zone : Type -> (Set.Set BattleMap.Struct.Location.Ref)
-generate_danger_zone model =
-   (Array.foldl
-      (\char danger_zone ->
-         let
-            char_weapon =
-               (BattleCharacters.Struct.Character.get_active_weapon
-                  (Struct.Character.get_base_character char)
-               )
-         in
-            if
-            (
-               (Struct.Character.is_alive char)
-               && ((Struct.Character.get_player_ix char) /= model.player_ix)
-               &&
-               (
-                  (BattleCharacters.Struct.Weapon.get_defense_range char_weapon)
-                  == 0
-               )
-            )
-            then
-               (BattleMap.Struct.Location.add_neighborhood_to_set
-                  (BattleMap.Struct.Map.get_width model.map)
-                  (BattleMap.Struct.Map.get_height model.map)
-                  (BattleCharacters.Struct.Weapon.get_attack_range
-                     char_weapon
-                  )
-                  (Struct.Character.get_location char)
-                  danger_zone
-               )
-            else danger_zone
-      )
-      (Set.empty)
-      model.characters
-   )

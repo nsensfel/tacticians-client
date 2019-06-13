@@ -80,7 +80,7 @@ get_alliance_class : (
       (Html.Attribute Struct.Event.Type)
    )
 get_alliance_class model char =
-   if ((Struct.Character.get_player_ix char) == model.player_ix)
+   if ((Struct.Character.get_player_index char) == model.player_ix)
    then
       (Html.Attributes.class "character-ally")
    else
@@ -137,7 +137,7 @@ get_body_html char =
          (Html.Attributes.class
             (
                "asset-character-team-body-"
-               ++ (String.fromInt (Struct.Character.get_player_ix char))
+               ++ (String.fromInt (Struct.Character.get_player_index char))
             )
          )
       ]

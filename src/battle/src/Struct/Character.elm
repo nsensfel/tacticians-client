@@ -4,7 +4,7 @@ module Struct.Character exposing
       Rank(..),
       Unresolved,
       get_index,
-      get_player_ix,
+      get_player_index,
       get_rank,
       get_current_health,
       get_sane_current_health,
@@ -19,11 +19,14 @@ module Struct.Character exposing
       set_defeated,
       get_base_character,
       set_base_character,
+      get_melee_attack_range,
       decoder,
       resolve
    )
 
 -- Elm -------------------------------------------------------------------------
+import Set
+
 import Json.Decode
 import Json.Decode.Pipeline
 
@@ -34,6 +37,7 @@ import Battle.Struct.Statistics
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Character
 import BattleCharacters.Struct.Equipment
+import BattleCharacters.Struct.Weapon
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Location
@@ -105,14 +109,37 @@ fix_health previous_max_health char =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+get_melee_attack_range : Type -> Int
+get_melee_attack_range c =
+   if (is_alive c)
+   then
+      (
+         let
+            active_weapon =
+               (BattleCharacters.Struct.Character.get_active_weapon
+                  (get_base_character c)
+               )
+         in
+            case
+               (BattleCharacters.Struct.Weapon.get_defense_range active_weapon)
+            of
+               0 ->
+                  (BattleCharacters.Struct.Weapon.get_attack_range
+                     active_weapon
+                  )
+
+               _ -> 0
+      )
+   else 0
+
 get_index : Type -> Int
 get_index c = c.ix
 
 get_rank : Type -> Rank
 get_rank c = c.rank
 
-get_player_ix : Type -> Int
-get_player_ix c = c.player_ix
+get_player_index : Type -> Int
+get_player_index c = c.player_ix
 
 get_current_health : Type -> Int
 get_current_health c = c.health

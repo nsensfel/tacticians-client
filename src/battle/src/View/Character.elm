@@ -48,7 +48,7 @@ get_alliance_class : (
       (Html.Attribute Struct.Event.Type)
    )
 get_alliance_class model char =
-   if ((Struct.Character.get_player_ix char) == model.player_ix)
+   if ((Struct.Character.get_player_index char) == model.player_ix)
    then
       (Html.Attributes.class "character-ally")
    else
@@ -105,7 +105,7 @@ get_icon_body_html char =
          (Html.Attributes.class
             (
                "asset-character-team-body-"
-               ++ (String.fromInt (Struct.Character.get_player_ix char))
+               ++ (String.fromInt (Struct.Character.get_player_index char))
             )
          )
       ]
@@ -178,7 +178,7 @@ get_portrait_html viewer_ix char =
       [
          (Html.Attributes.class
             (
-               if ((Struct.Character.get_player_ix char) == viewer_ix)
+               if ((Struct.Character.get_player_index char) == viewer_ix)
                then
                   "character-ally"
                else
@@ -189,7 +189,7 @@ get_portrait_html viewer_ix char =
             (
                "character-portrait-team-"
                ++
-               (String.fromInt (Struct.Character.get_player_ix char))
+               (String.fromInt (Struct.Character.get_player_index char))
             )
          ),
          (Html.Events.onClick

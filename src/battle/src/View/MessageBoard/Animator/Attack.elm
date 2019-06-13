@@ -194,7 +194,7 @@ get_attacker_card maybe_attack char =
       )
       [
          (View.Controlled.CharacterCard.get_minimal_html
-            (Struct.Character.get_player_ix char)
+            (Struct.Character.get_player_index char)
             char
          )
       ]

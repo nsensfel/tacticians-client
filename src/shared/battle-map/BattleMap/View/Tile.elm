@@ -10,6 +10,8 @@ import Html
 import Html.Attributes
 import Html.Events
 
+import Set
+
 -- Battle Map ------------------------------------------------------------------
 import Constants.UI
 import Constants.IO
@@ -56,6 +58,21 @@ get_content_html : (
    )
 get_content_html tile =
    (
+      (Html.div
+         [
+            (Html.Attributes.class "tile-icon-dg")
+         ]
+         (
+            case
+               (Set.size
+                  (BattleMap.Struct.TileInstance.get_triggers tile)
+               )
+            of
+               0 -> []
+               other -> [(Html.text (String.fromInt other))]
+         )
+      )
+      ::
       (Html.div
          [
             (Html.Attributes.class "tile-icon-bg"),

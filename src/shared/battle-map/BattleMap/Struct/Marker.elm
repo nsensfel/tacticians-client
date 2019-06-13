@@ -3,8 +3,10 @@ module BattleMap.Struct.Marker exposing
       Type,
       DataType,
       new,
+      new_melee_attack,
       get_locations,
       set_locations,
+      is_dangerous,
       get_data,
       is_in_locations,
       decoder,
@@ -78,6 +80,13 @@ new =
    {
       locations = (Set.empty),
       data = None
+   }
+
+new_melee_attack : Int -> (Set.Set BattleMap.Struct.Location.Ref) -> Type
+new_melee_attack char_ix locations =
+   {
+      locations = locations,
+      data = (MeleeAttackZone {character_ix = char_ix})
    }
 
 get_locations : Type -> (Set.Set BattleMap.Struct.Location.Ref)
@@ -159,3 +168,9 @@ encode marker =
          )
       ]
    )
+
+is_dangerous : Type -> Bool
+is_dangerous marker =
+   case marker.data of
+      (MeleeAttackZone _) -> True
+      _ -> False

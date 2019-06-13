@@ -112,7 +112,7 @@ add_neighborhood_to_set map_width map_height tdist loc set =
    (List.foldl
       (\height_mod current_width_result ->
          let
-            abs_width_mod = (abs (tdist - height_mod))
+            abs_width_mod = (abs (tdist - (abs height_mod)))
             current_height = (loc.y + height_mod)
          in
             if ((current_height < 0) || (current_height >= map_height))

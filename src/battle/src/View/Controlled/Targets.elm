@@ -32,7 +32,7 @@ get_target_info_html model char_ref =
                "Attacking "
                ++ char.name
                ++ " (player "
-               ++ (String.fromInt (Struct.Character.get_player_ix char))
+               ++ (String.fromInt (Struct.Character.get_player_index char))
                ++ "): "
                ++
                (String.fromInt

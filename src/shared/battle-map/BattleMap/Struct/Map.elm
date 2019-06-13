@@ -6,6 +6,8 @@ module BattleMap.Struct.Map exposing
       get_height,
       get_markers,
       set_markers,
+      remove_marker,
+      add_marker,
       get_tile_data_function,
       get_omnimods_at,
       get_tiles,
@@ -243,9 +245,25 @@ get_tile_data_function bmap occupied_tiles start_loc loc =
    then
       case (Array.get (location_to_index loc bmap) bmap.content) of
          (Just tile) ->
-            if ((loc /= start_loc) && (List.member loc occupied_tiles))
-            then (Constants.Movement.cost_when_occupied_tile, 0)
-            else ((BattleMap.Struct.TileInstance.get_cost tile), 0)
+            (
+               (
+                  if ((loc /= start_loc) && (List.member loc occupied_tiles))
+                  then Constants.Movement.cost_when_occupied_tile
+                  else (BattleMap.Struct.TileInstance.get_cost tile)
+               ),
+               (Set.foldl
+                  (\trigger dangers_count ->
+                     case (Dict.get trigger bmap.markers) of
+                        Nothing -> dangers_count
+                        (Just marker) ->
+                           if (BattleMap.Struct.Marker.is_dangerous marker)
+                           then (dangers_count + 1)
+                           else dangers_count
+                  )
+                  0
+                  (BattleMap.Struct.TileInstance.get_triggers tile)
+               )
+            )
 
          Nothing -> (Constants.Movement.cost_when_out_of_bounds, 0)
    else

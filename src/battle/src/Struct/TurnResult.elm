@@ -207,7 +207,7 @@ apply_player_defeat pdefeat characters players =
       (Array.map
          (\c ->
             (
-               if ((Struct.Character.get_player_ix c) == pdefeat.player_index)
+               if ((Struct.Character.get_player_index c) == pdefeat.player_index)
                then (Struct.Character.set_defeated True c)
                else c
             )
@@ -231,7 +231,11 @@ apply_inverse_player_defeat pdefeat characters players =
       (Array.map
          (\c ->
             (
-               if ((Struct.Character.get_player_ix c) == pdefeat.player_index)
+               if
+               (
+                  (Struct.Character.get_player_index c)
+                  == pdefeat.player_index
+               )
                then (Struct.Character.set_defeated False c)
                else c
             )
