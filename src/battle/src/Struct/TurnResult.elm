@@ -148,7 +148,8 @@ apply_inverse_movement_step tile_omnimods movement characters players =
                   location =
                      (List.foldr
                         (BattleMap.Struct.Location.neighbor)
-                        (movement.destination)
+                        (Struct.Character.get_location char)
+                        --(movement.destination)
                         (List.map
                            (BattleMap.Struct.Direction.opposite_of)
                            movement.path
@@ -206,11 +207,9 @@ apply_player_defeat pdefeat characters players =
    (
       (Array.map
          (\c ->
-            (
-               if ((Struct.Character.get_player_index c) == pdefeat.player_index)
-               then (Struct.Character.set_defeated True c)
-               else c
-            )
+            if ((Struct.Character.get_player_index c) == pdefeat.player_index)
+            then (Struct.Character.set_defeated True c)
+            else c
          )
          characters
       ),
