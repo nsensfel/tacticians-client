@@ -131,7 +131,7 @@ default =
       accuracy = 0,
       double_hits = 0,
       critical_hits = 0,
-      damage_modifier = 0
+      damage_modifier = 100
    }
 
 decode_category : String -> Category
