@@ -12,12 +12,10 @@ import Html.Attributes
 import Html.Events
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Attributes
 import Battle.Struct.DamageType
 import Battle.Struct.Omnimods
 import Battle.Struct.Statistics
 
-import Battle.View.Attribute
 import Battle.View.DamageType
 import Battle.View.Statistic
 
@@ -72,20 +70,6 @@ get_html_with_modifier attack_multiplier omnimods =
          ),
          (Html.div
             [
-               (Html.Attributes.class "omnimod-attribute-mods")
-            ]
-            (List.map
-               (\(k, v) ->
-                  (Battle.View.Attribute.get_signed_html
-                     (Battle.Struct.Attributes.decode_category k)
-                     v
-                  )
-               )
-               (Battle.Struct.Omnimods.get_attributes_mods omnimods)
-            )
-         ),
-         (Html.div
-            [
                (Html.Attributes.class "omnimod-statistics-mods")
             ]
             (List.map
@@ -134,20 +118,6 @@ get_html omnimods =
                   )
                )
                (Battle.Struct.Omnimods.get_defense_mods omnimods)
-            )
-         ),
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-attribute-mods")
-            ]
-            (List.map
-               (\(k, v) ->
-                  (Battle.View.Attribute.get_signed_html
-                     (Battle.Struct.Attributes.decode_category k)
-                     v
-                  )
-               )
-               (Battle.Struct.Omnimods.get_attributes_mods omnimods)
             )
          ),
          (Html.div

@@ -6,7 +6,6 @@ import Html.Attributes
 import Html.Events
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Attributes
 import Battle.Struct.Statistics
 import Battle.Struct.DamageType
 
@@ -27,26 +26,6 @@ import Struct.HelpRequest
 --------------------------------------------------------------------------------
 
 -- Nouns -----------------------------------------------------------------------
----- Attributes ----------------------------------------------------------------
-constitution : String
-constitution = "Constitution"
-
-dexterity : String
-dexterity = "Dexterity"
-
-intelligence : String
-intelligence = "Intelligence"
-
-mind : String
-mind = "Mind"
-
-speed : String
-speed = "Speed"
-
-strength : String
-strength = "Strength"
-
----- Statistics ----------------------------------------------------------------
 max_health : String
 max_health = "Max. Health"
 
@@ -68,6 +47,9 @@ double_hits = "Double Hit Chance"
 critical_hits : String
 critical_hits = "Critical Hit Chance"
 
+damage_modifier : String
+damage_modifier = "Damage Multiplier"
+
 ---- Damage Types --------------------------------------------------------------
 slash : String
 slash = "Slashing Damage"
@@ -82,97 +64,6 @@ base : String
 base = "Universal Damage"
 
 -- Help ------------------------------------------------------------------------
----- Attributes ----------------------------------------------------------------
-constitution_help : (Html.Html Struct.Event.Type)
-constitution_help =
-   (Html.div
-      [
-      ]
-      [
-         (Html.text "Constitution influences "),
-         (get_stats_reference_html Battle.Struct.Statistics.MaxHealth),
-         (Html.text " (75%), and "),
-         (get_stats_reference_html Battle.Struct.Statistics.MovementPoints),
-         (Html.text " (~33%).")
-      ]
-   )
-
-dexterity_help : (Html.Html Struct.Event.Type)
-dexterity_help =
-   (Html.div
-      [
-      ]
-      [
-         (Html.text "Dexterity influences "),
-         (get_stats_reference_html Battle.Struct.Statistics.Accuracy),
-         (Html.text " (100%), "),
-         (get_stats_reference_html Battle.Struct.Statistics.Dodges),
-         (Html.text " (~33%), and "),
-         (get_stats_reference_html Battle.Struct.Statistics.Parries),
-         (Html.text " (25%).")
-      ]
-   )
-
-intelligence_help : (Html.Html Struct.Event.Type)
-intelligence_help =
-   (Html.div
-      [
-      ]
-      [
-         (Html.text "Intelligence influences "),
-         (get_stats_reference_html Battle.Struct.Statistics.CriticalHits),
-         (Html.text " (100%), and "),
-         (get_stats_reference_html Battle.Struct.Statistics.Parries),
-         (Html.text " (25%).")
-      ]
-   )
-
-mind_help : (Html.Html Struct.Event.Type)
-mind_help =
-   (Html.div
-      [
-      ]
-      [
-         (Html.text "Mind influences "),
-         (get_stats_reference_html Battle.Struct.Statistics.DoubleHits),
-         (Html.text " (50%), "),
-         (get_stats_reference_html Battle.Struct.Statistics.Dodges),
-         (Html.text " (~33%), "),
-         (get_stats_reference_html Battle.Struct.Statistics.MaxHealth),
-         (Html.text " (25%), and "),
-         (get_stats_reference_html Battle.Struct.Statistics.MovementPoints),
-         (Html.text " (~16%).")
-      ]
-   )
-
-speed_help : (Html.Html Struct.Event.Type)
-speed_help =
-   (Html.div
-      [
-      ]
-      [
-         (Html.text "Speed influences "),
-         (get_stats_reference_html Battle.Struct.Statistics.MovementPoints),
-         (Html.text " (50%), "),
-         (get_stats_reference_html Battle.Struct.Statistics.DoubleHits),
-         (Html.text " (50%), and "),
-         (get_stats_reference_html Battle.Struct.Statistics.Dodges),
-         (Html.text " (~33%).")
-      ]
-   )
-
-strength_help : (Html.Html Struct.Event.Type)
-strength_help =
-   (Html.div
-      [
-      ]
-      [
-         (Html.text "Strength influences attack damage (100%), and "),
-         (get_stats_reference_html Battle.Struct.Statistics.Parries),
-         (Html.text " (25%).")
-      ]
-   )
-
 ---- Statistics ----------------------------------------------------------------
 max_health_help : (Html.Html Struct.Event.Type)
 max_health_help =
@@ -183,13 +74,9 @@ max_health_help =
          (Html.text
             """
             Maximum Health is the maximum amount of hit points the character can
-            have. It is based on
+            have.
             """
-         ),
-         (get_atts_reference_html Battle.Struct.Attributes.Constitution),
-         (Html.text " (75%), and "),
-         (get_atts_reference_html Battle.Struct.Attributes.Mind),
-         (Html.text " (25%).")
+         )
       ]
    )
 
@@ -202,15 +89,9 @@ movement_points_help =
          (Html.text
             """
             Movement Points are an indication of how much this character can
-            move every turn. They are based on
+            move every turn.
             """
-         ),
-         (get_atts_reference_html Battle.Struct.Attributes.Speed),
-         (Html.text " (50%), "),
-         (get_atts_reference_html Battle.Struct.Attributes.Constitution),
-         (Html.text " (~33%), and "),
-         (get_atts_reference_html Battle.Struct.Attributes.Mind),
-         (Html.text " (~16%).")
+         )
       ]
    )
 
@@ -229,16 +110,10 @@ dodges_help =
          ),
          (get_stats_reference_html Battle.Struct.Statistics.Accuracy),
          (Html.text
-            """. Multiply by two to get the chance of avoiding partially (taking
-            only half damage) an attack. Dodge Chance is based on
+            """. Multiply by two to get the chance of at least avoiding
+            partially (taking only half damage) an attack.
             """
-         ),
-         (get_atts_reference_html Battle.Struct.Attributes.Dexterity),
-         (Html.text " (~33%), "),
-         (get_atts_reference_html Battle.Struct.Attributes.Mind),
-         (Html.text " (~33%), and "),
-         (get_atts_reference_html Battle.Struct.Attributes.Speed),
-         (Html.text " (~33%).")
+         )
       ]
    )
 
@@ -251,18 +126,10 @@ parries_help =
          (Html.text
             """
             Parry Chance indicates how likely it is for this characters to void
-            an incoming attack and replace it by one of their own. It is
-            based on
+            an incoming attack and replace it by one of their own. This requires
+            a melee weapon. Attacks of Opportunity cannot be parried.
             """
-         ),
-         (get_atts_reference_html Battle.Struct.Attributes.Dexterity),
-         (Html.text " (25%), "),
-         (get_atts_reference_html Battle.Struct.Attributes.Intelligence),
-         (Html.text " (25%), "),
-         (get_atts_reference_html Battle.Struct.Attributes.Speed),
-         (Html.text " (25%), and "),
-         (get_atts_reference_html Battle.Struct.Attributes.Strength),
-         (Html.text " (25%).")
+         )
       ]
    )
 
@@ -276,9 +143,7 @@ accuracy_help =
             "Accuracy lowers the target's chance to evade an incoming blow ("
          ),
          (get_stats_reference_html Battle.Struct.Statistics.Dodges),
-         (Html.text "). It is based on "),
-         (get_atts_reference_html Battle.Struct.Attributes.Dexterity),
-         (Html.text " (100%).")
+         (Html.text ").")
       ]
    )
 
@@ -292,13 +157,9 @@ double_hits_help =
             """
             Double Hit Chance indicate how likely this character is to perform
             a follow-up attack (which takes place after their target's
-            retaliation, if there is any). It is based on
+            retaliation, if there is any).
             """
-         ),
-         (get_atts_reference_html Battle.Struct.Attributes.Mind),
-         (Html.text " (50%), and "),
-         (get_atts_reference_html Battle.Struct.Attributes.Speed),
-         (Html.text " (50%).")
+         )
       ]
    )
 
@@ -311,11 +172,23 @@ critical_hits_help =
          (Html.text
             """
             Critical Hit Chance indicate how likely this character is to perform
-            an attack with double the damage. It is based on
+            an attack with double the damage.
             """
-         ),
-         (get_atts_reference_html Battle.Struct.Attributes.Intelligence),
-         (Html.text " (100%).")
+         )
+      ]
+   )
+damage_modifier_help : (Html.Html Struct.Event.Type)
+damage_modifier_help =
+   (Html.div
+      [
+      ]
+      [
+         (Html.text
+            """
+            Increases or decreases (if lower than 100%) the damage of all of
+            this character's attacks.
+            """
+         )
       ]
    )
 
@@ -394,48 +267,6 @@ base_help =
       ]
    )
 
-get_atts_reference_html : (
-      Battle.Struct.Attributes.Category ->
-      (Html.Html Struct.Event.Type)
-   )
-get_atts_reference_html cat =
-   (Html.div
-      [
-         (Html.Attributes.class "tooltip-reference"),
-         (Html.Events.onClick
-            (Struct.Event.RequestedHelp
-               (Struct.HelpRequest.Attribute cat)
-            )
-         )
-      ]
-      [
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-icon"),
-               (Html.Attributes.class
-                  (
-                     "omnimod-icon-"
-                     ++ (Battle.Struct.Attributes.encode_category cat)
-                  )
-               )
-            ]
-            [
-            ]
-         ),
-         (Html.text (get_attribute_name cat))
-      ]
-   )
-
-get_attribute_name : Battle.Struct.Attributes.Category -> String
-get_attribute_name cat =
-   case cat of
-      Battle.Struct.Attributes.Constitution -> (constitution)
-      Battle.Struct.Attributes.Dexterity -> (dexterity)
-      Battle.Struct.Attributes.Intelligence -> (intelligence)
-      Battle.Struct.Attributes.Mind -> (mind)
-      Battle.Struct.Attributes.Speed -> (speed)
-      Battle.Struct.Attributes.Strength -> (strength)
-
 get_statistic_name : Battle.Struct.Statistics.Category -> String
 get_statistic_name cat =
    case cat of
@@ -446,30 +277,7 @@ get_statistic_name cat =
       Battle.Struct.Statistics.Accuracy -> (accuracy)
       Battle.Struct.Statistics.DoubleHits -> (double_hits)
       Battle.Struct.Statistics.CriticalHits -> (critical_hits)
-
-get_attribute_category_help : (
-      Battle.Struct.Attributes.Category ->
-      (String, (Html.Html Struct.Event.Type))
-   )
-get_attribute_category_help cat =
-   case cat of
-      Battle.Struct.Attributes.Constitution ->
-         ((constitution), (constitution_help))
-
-      Battle.Struct.Attributes.Dexterity ->
-         ((dexterity), (dexterity_help))
-
-      Battle.Struct.Attributes.Intelligence ->
-         ((intelligence), (intelligence_help))
-
-      Battle.Struct.Attributes.Mind ->
-         ((mind), (mind_help))
-
-      Battle.Struct.Attributes.Speed ->
-         ((speed), (speed_help))
-
-      Battle.Struct.Attributes.Strength ->
-         ((strength), (strength_help))
+      Battle.Struct.Statistics.DamageModifier -> (damage_modifier)
 
 get_statistic_category_help : (
       Battle.Struct.Statistics.Category ->
@@ -497,6 +305,9 @@ get_statistic_category_help cat =
 
       Battle.Struct.Statistics.CriticalHits ->
          ((critical_hits), (critical_hits_help))
+
+      Battle.Struct.Statistics.DamageModifier ->
+         ((damage_modifier), (damage_modifier_help))
 
 get_damage_type_help : (
       Battle.Struct.DamageType.Type ->

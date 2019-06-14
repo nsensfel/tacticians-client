@@ -12,13 +12,11 @@ import Html.Attributes
 import Html.Events
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Attributes
 import Battle.Struct.Omnimods
 import Battle.Struct.Statistics
 
 import Battle.View.Omnimods
 import Battle.View.Statistic
-import Battle.View.Attribute
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
@@ -301,7 +299,7 @@ get_armor_details : (
       BattleCharacters.Struct.Armor.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_armor_details damage_modifier armor =
+get_armor_details damage_multiplier armor =
    (Html.div
       [
          (Html.Attributes.class "character-card-armor"),
@@ -320,7 +318,7 @@ get_armor_details damage_modifier armor =
             ]
          ),
          (Battle.View.Omnimods.get_html_with_modifier
-            damage_modifier
+            damage_multiplier
             (BattleCharacters.Struct.Armor.get_omnimods armor)
          )
       ]
@@ -331,7 +329,7 @@ get_glyph_board_details : (
       BattleCharacters.Struct.GlyphBoard.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_glyph_board_details damage_modifier board =
+get_glyph_board_details damage_multiplier board =
    (Html.div
       [
          (Html.Attributes.class "character-card-glyph-board")
@@ -350,7 +348,7 @@ get_glyph_board_details damage_modifier board =
             ]
          ),
          (Battle.View.Omnimods.get_html_with_modifier
-            damage_modifier
+            damage_multiplier
             (BattleCharacters.Struct.GlyphBoard.get_omnimods board)
          ),
          (Html.div
@@ -379,19 +377,6 @@ get_relevant_stats stats =
       ]
       (Battle.View.Statistic.get_all_but_gauges_html stats)
    )
-
-get_attributes : (
-      Battle.Struct.Attributes.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_attributes atts =
-   (Html.div
-      [
-         (Html.Attributes.class "character-card-atts")
-      ]
-      (Battle.View.Attribute.get_all_html atts)
-   )
-
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -445,8 +430,8 @@ get_full_html char =
       base_char = (Struct.Character.get_base_character char)
       char_statistics =
          (BattleCharacters.Struct.Character.get_statistics base_char)
-      damage_modifier =
-         (Battle.Struct.Statistics.get_damage_modifier
+      damage_multiplier =
+         (Battle.Struct.Statistics.get_damage_multiplier
             char_statistics
          )
       omnimods = (BattleCharacters.Struct.Character.get_omnimods base_char)
@@ -487,24 +472,21 @@ get_full_html char =
                ]
             ),
             (get_weapon_details
-               damage_modifier
+               damage_multiplier
                (BattleCharacters.Struct.Equipment.get_primary_weapon equipment)
                (not is_using_secondary)
             ),
             (get_armor_details
-               damage_modifier
+               damage_multiplier
                (BattleCharacters.Struct.Equipment.get_armor equipment)
             ),
             (get_glyph_board_details
-               damage_modifier
+               damage_multiplier
                (BattleCharacters.Struct.Equipment.get_glyph_board equipment)
             ),
             (get_relevant_stats char_statistics),
-            (get_attributes
-               (BattleCharacters.Struct.Character.get_attributes base_char)
-            ),
             (get_weapon_details
-               damage_modifier
+               damage_multiplier
                (BattleCharacters.Struct.Equipment.get_secondary_weapon
                   equipment
                )

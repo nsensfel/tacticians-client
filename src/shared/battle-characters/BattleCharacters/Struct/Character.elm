@@ -10,7 +10,6 @@ module BattleCharacters.Struct.Character exposing
       get_omnimods,
       set_extra_omnimods,
       dirty_set_extra_omnimods,
-      get_attributes,
       get_statistics,
       get_active_weapon,
       get_inactive_weapon,
@@ -31,7 +30,6 @@ import Json.Encode
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
-import Battle.Struct.Attributes
 import Battle.Struct.Statistics
 
 -- Battle Characters -----------------------------------------------------------
@@ -47,7 +45,6 @@ type alias Type =
    {
       name : String,
       equipment : BattleCharacters.Struct.Equipment.Type,
-      attributes : Battle.Struct.Attributes.Type,
       statistics : Battle.Struct.Statistics.Type,
       is_using_secondary : Bool,
       omnimods : Battle.Struct.Omnimods.Type,
@@ -86,19 +83,13 @@ refresh_omnimods char =
                (BattleCharacters.Struct.Equipment.get_glyph_board equipment)
             )
          )
-      attributes =
-         (Battle.Struct.Omnimods.apply_to_attributes
-            omnimods
-            (Battle.Struct.Attributes.default)
-         )
       statistics =
          (Battle.Struct.Omnimods.apply_to_statistics
             omnimods
-            (Battle.Struct.Statistics.new_raw attributes)
+            (Battle.Struct.Statistics.default)
          )
    in
       {char |
-         attributes = attributes,
          statistics = statistics,
          omnimods = omnimods
       }
@@ -142,9 +133,6 @@ set_extra_omnimods om char = (refresh_omnimods {char | extra_omnimods = om})
 
 dirty_set_extra_omnimods : Battle.Struct.Omnimods.Type -> Type -> Type
 dirty_set_extra_omnimods om char = {char | extra_omnimods = om}
-
-get_attributes : Type -> Battle.Struct.Attributes.Type
-get_attributes char = char.attributes
 
 get_statistics : Type -> Battle.Struct.Statistics.Type
 get_statistics char = char.statistics
@@ -204,13 +192,11 @@ resolve : (
       Type
    )
 resolve resolve_equipment extra_omnimods ref =
-   let default_attributes = (Battle.Struct.Attributes.default) in
    (refresh_omnimods
       {
          name = ref.name,
          equipment = (resolve_equipment ref.equipment),
-         attributes = default_attributes,
-         statistics = (Battle.Struct.Statistics.new_raw default_attributes),
+         statistics = (Battle.Struct.Statistics.default),
          is_using_secondary = ref.is_using_secondary,
          omnimods = (Battle.Struct.Omnimods.none),
          extra_omnimods = extra_omnimods

@@ -419,8 +419,8 @@ get_summary_html char_turn player_ix char =
       base_char = (Struct.Character.get_base_character char)
       char_statistics =
          (BattleCharacters.Struct.Character.get_statistics base_char)
-      damage_modifier =
-         (Battle.Struct.Statistics.get_damage_modifier
+      damage_multiplier =
+         (Battle.Struct.Statistics.get_damage_multiplier
             char_statistics
          )
       omnimods = (BattleCharacters.Struct.Character.get_omnimods base_char)
@@ -453,7 +453,7 @@ get_summary_html char_turn player_ix char =
             ),
             (get_weapon_details
                omnimods
-               damage_modifier
+               damage_multiplier
                (BattleCharacters.Struct.Character.get_active_weapon
                   base_char
                )
@@ -469,7 +469,7 @@ get_summary_html char_turn player_ix char =
                )
             ),
             (get_weapon_summary
-               damage_modifier
+               damage_multiplier
                (BattleCharacters.Struct.Character.get_inactive_weapon
                   base_char
                )
@@ -487,8 +487,8 @@ get_full_html player_ix char =
       base_char = (Struct.Character.get_base_character char)
       char_statistics =
          (BattleCharacters.Struct.Character.get_statistics base_char)
-      damage_modifier =
-         (Battle.Struct.Statistics.get_damage_modifier
+      damage_multiplier =
+         (Battle.Struct.Statistics.get_damage_multiplier
             char_statistics
          )
       omnimods = (BattleCharacters.Struct.Character.get_omnimods base_char)
@@ -522,7 +522,7 @@ get_full_html player_ix char =
             ),
             (get_weapon_details
                omnimods
-               damage_modifier
+               damage_multiplier
                (BattleCharacters.Struct.Character.get_active_weapon
                   base_char
                )
@@ -538,7 +538,7 @@ get_full_html player_ix char =
                )
             ),
             (get_weapon_summary
-               damage_modifier
+               damage_multiplier
                (BattleCharacters.Struct.Character.get_inactive_weapon
                   base_char
                )
