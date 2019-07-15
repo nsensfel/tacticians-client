@@ -9,10 +9,12 @@
    background-position: center;
 }
 
-.omnimod-icon-dmg
+.omnimod-icon-dmg,
+.omnimod-icon-dmgm
 {
    background-image: url(/asset/svg/damage_type/damage.svg);
 }
+
 .omnimod-icon-range
 {
    background-image: url(/asset/svg/damage_type/accuracy.svg);
