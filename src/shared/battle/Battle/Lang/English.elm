@@ -6,7 +6,7 @@ import Html.Attributes
 import Html.Events
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Statistics
+import Battle.Struct.Attributes
 import Battle.Struct.DamageType
 
 -- Local Module ----------------------------------------------------------------
@@ -64,7 +64,7 @@ base : String
 base = "Universal Damage"
 
 -- Help ------------------------------------------------------------------------
----- Statistics ----------------------------------------------------------------
+---- Attributes ----------------------------------------------------------------
 max_health_help : (Html.Html Struct.Event.Type)
 max_health_help =
    (Html.div
@@ -108,7 +108,7 @@ dodges_help =
             the opponent's
             """
          ),
-         (get_stats_reference_html Battle.Struct.Statistics.Accuracy),
+         (get_atts_reference_html Battle.Struct.Attributes.Accuracy),
          (Html.text
             """. Multiply by two to get the chance of at least avoiding
             partially (taking only half damage) an attack.
@@ -142,7 +142,7 @@ accuracy_help =
          (Html.text
             "Accuracy lowers the target's chance to evade an incoming blow ("
          ),
-         (get_stats_reference_html Battle.Struct.Statistics.Dodges),
+         (get_atts_reference_html Battle.Struct.Attributes.Dodges),
          (Html.text ").")
       ]
    )
@@ -192,17 +192,17 @@ damage_modifier_help =
       ]
    )
 
-get_stats_reference_html : (
-      Battle.Struct.Statistics.Category ->
+get_atts_reference_html : (
+      Battle.Struct.Attributes.Category ->
       (Html.Html Struct.Event.Type)
    )
-get_stats_reference_html cat =
+get_atts_reference_html cat =
    (Html.div
       [
          (Html.Attributes.class "tooltip-reference"),
          (Html.Events.onClick
             (Struct.Event.RequestedHelp
-               (Struct.HelpRequest.Statistic cat)
+               (Struct.HelpRequest.Attribute cat)
             )
          )
       ]
@@ -213,14 +213,14 @@ get_stats_reference_html cat =
                (Html.Attributes.class
                   (
                      "omnimod-icon-"
-                     ++ (Battle.Struct.Statistics.encode_category cat)
+                     ++ (Battle.Struct.Attributes.encode_category cat)
                   )
                )
             ]
             [
             ]
          ),
-         (Html.text (get_statistic_name cat))
+         (Html.text (get_attribute_name cat))
       ]
    )
 
@@ -267,46 +267,46 @@ base_help =
       ]
    )
 
-get_statistic_name : Battle.Struct.Statistics.Category -> String
-get_statistic_name cat =
+get_attribute_name : Battle.Struct.Attributes.Category -> String
+get_attribute_name cat =
    case cat of
-      Battle.Struct.Statistics.MaxHealth -> (max_health)
-      Battle.Struct.Statistics.MovementPoints -> (movement_points)
-      Battle.Struct.Statistics.Dodges -> (dodges)
-      Battle.Struct.Statistics.Parries -> (parries)
-      Battle.Struct.Statistics.Accuracy -> (accuracy)
-      Battle.Struct.Statistics.DoubleHits -> (double_hits)
-      Battle.Struct.Statistics.CriticalHits -> (critical_hits)
-      Battle.Struct.Statistics.DamageModifier -> (damage_modifier)
+      Battle.Struct.Attributes.MaxHealth -> (max_health)
+      Battle.Struct.Attributes.MovementPoints -> (movement_points)
+      Battle.Struct.Attributes.Dodges -> (dodges)
+      Battle.Struct.Attributes.Parries -> (parries)
+      Battle.Struct.Attributes.Accuracy -> (accuracy)
+      Battle.Struct.Attributes.DoubleHits -> (double_hits)
+      Battle.Struct.Attributes.CriticalHits -> (critical_hits)
+      Battle.Struct.Attributes.DamageModifier -> (damage_modifier)
 
-get_statistic_category_help : (
-      Battle.Struct.Statistics.Category ->
+get_attribute_category_help : (
+      Battle.Struct.Attributes.Category ->
       (String, (Html.Html Struct.Event.Type))
    )
-get_statistic_category_help cat =
+get_attribute_category_help cat =
    case cat of
-      Battle.Struct.Statistics.MaxHealth ->
+      Battle.Struct.Attributes.MaxHealth ->
          ((max_health), (max_health_help))
 
-      Battle.Struct.Statistics.MovementPoints ->
+      Battle.Struct.Attributes.MovementPoints ->
          ((movement_points), (movement_points_help))
 
-      Battle.Struct.Statistics.Dodges ->
+      Battle.Struct.Attributes.Dodges ->
          ((dodges), (dodges_help))
 
-      Battle.Struct.Statistics.Parries ->
+      Battle.Struct.Attributes.Parries ->
          ((parries), (parries_help))
 
-      Battle.Struct.Statistics.Accuracy ->
+      Battle.Struct.Attributes.Accuracy ->
          ((accuracy), (accuracy_help))
 
-      Battle.Struct.Statistics.DoubleHits ->
+      Battle.Struct.Attributes.DoubleHits ->
          ((double_hits), (double_hits_help))
 
-      Battle.Struct.Statistics.CriticalHits ->
+      Battle.Struct.Attributes.CriticalHits ->
          ((critical_hits), (critical_hits_help))
 
-      Battle.Struct.Statistics.DamageModifier ->
+      Battle.Struct.Attributes.DamageModifier ->
          ((damage_modifier), (damage_modifier_help))
 
 get_damage_type_help : (

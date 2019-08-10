@@ -18,10 +18,10 @@ import Util.Html
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.DamageType
 import Battle.Struct.Omnimods
-import Battle.Struct.Statistics
+import Battle.Struct.Attributes
 
 import Battle.View.Gauge
-import Battle.View.Statistic
+import Battle.View.Attribute
 import Battle.View.DamageType
 
 -- Battle Characters -----------------------------------------------------------
@@ -66,8 +66,8 @@ get_health_bar char =
    let
       current = (Struct.Character.get_sane_current_health char)
       max =
-         (Battle.Struct.Statistics.get_max_health
-            (BattleCharacters.Struct.Character.get_statistics
+         (Battle.Struct.Attributes.get_max_health
+            (BattleCharacters.Struct.Character.get_attributes
                (Struct.Character.get_base_character char)
             )
          )
@@ -80,8 +80,8 @@ get_health_bar char =
             (Html.Attributes.class "clickable"),
             (Html.Events.onClick
                (Struct.Event.RequestedHelp
-                  (Struct.HelpRequest.Statistic
-                     Battle.Struct.Statistics.MaxHealth
+                  (Struct.HelpRequest.Attribute
+                     Battle.Struct.Attributes.MaxHealth
                   )
                )
             )
@@ -139,8 +139,8 @@ get_active_movement_bar : (
 get_active_movement_bar maybe_navigator char =
    let
       max =
-         (Battle.Struct.Statistics.get_movement_points
-            (BattleCharacters.Struct.Character.get_statistics
+         (Battle.Struct.Attributes.get_movement_points
+            (BattleCharacters.Struct.Character.get_attributes
                (Struct.Character.get_base_character char)
             )
          )
@@ -160,8 +160,8 @@ get_active_movement_bar maybe_navigator char =
             (Html.Attributes.class "clickable"),
             (Html.Events.onClick
                (Struct.Event.RequestedHelp
-                  (Struct.HelpRequest.Statistic
-                     Battle.Struct.Statistics.MovementPoints
+                  (Struct.HelpRequest.Attribute
+                     Battle.Struct.Attributes.MovementPoints
                   )
                )
             )
@@ -177,8 +177,8 @@ get_inactive_movement_bar : (
 get_inactive_movement_bar char =
    let
       max =
-         (Battle.Struct.Statistics.get_movement_points
-            (BattleCharacters.Struct.Character.get_statistics
+         (Battle.Struct.Attributes.get_movement_points
+            (BattleCharacters.Struct.Character.get_attributes
                (Struct.Character.get_base_character char)
             )
          )
@@ -191,8 +191,8 @@ get_inactive_movement_bar char =
             (Html.Attributes.class "clickable"),
             (Html.Events.onClick
                (Struct.Event.RequestedHelp
-                  (Struct.HelpRequest.Statistic
-                     Battle.Struct.Statistics.MovementPoints
+                  (Struct.HelpRequest.Attribute
+                     Battle.Struct.Attributes.MovementPoints
                   )
                )
             )
@@ -417,11 +417,11 @@ get_summary_html : (
 get_summary_html char_turn player_ix char =
    let
       base_char = (Struct.Character.get_base_character char)
-      char_statistics =
-         (BattleCharacters.Struct.Character.get_statistics base_char)
+      char_attributes =
+         (BattleCharacters.Struct.Character.get_attributes base_char)
       damage_multiplier =
-         (Battle.Struct.Statistics.get_damage_multiplier
-            char_statistics
+         (Battle.Struct.Attributes.get_damage_multiplier
+            char_attributes
          )
       omnimods = (BattleCharacters.Struct.Character.get_omnimods base_char)
       equipment = (BattleCharacters.Struct.Character.get_equipment base_char)
@@ -463,9 +463,9 @@ get_summary_html char_turn player_ix char =
                (BattleCharacters.Struct.Equipment.get_armor equipment)
             ),
             (Html.div
-               [(Html.Attributes.class "character-card-stats")]
-               (Battle.View.Statistic.get_all_but_gauges_html
-                  char_statistics
+               [(Html.Attributes.class "character-card-atts")]
+               (Battle.View.Attribute.get_all_but_gauges_html
+                  char_attributes
                )
             ),
             (get_weapon_summary
@@ -485,11 +485,11 @@ get_full_html : (
 get_full_html player_ix char =
    let
       base_char = (Struct.Character.get_base_character char)
-      char_statistics =
-         (BattleCharacters.Struct.Character.get_statistics base_char)
+      char_attributes =
+         (BattleCharacters.Struct.Character.get_attributes base_char)
       damage_multiplier =
-         (Battle.Struct.Statistics.get_damage_multiplier
-            char_statistics
+         (Battle.Struct.Attributes.get_damage_multiplier
+            char_attributes
          )
       omnimods = (BattleCharacters.Struct.Character.get_omnimods base_char)
       equipment = (BattleCharacters.Struct.Character.get_equipment base_char)
@@ -532,9 +532,9 @@ get_full_html player_ix char =
                (BattleCharacters.Struct.Equipment.get_armor equipment)
             ),
             (Html.div
-               [(Html.Attributes.class "character-card-stats")]
-               (Battle.View.Statistic.get_all_but_gauges_html
-                  char_statistics
+               [(Html.Attributes.class "character-card-atts")]
+               (Battle.View.Attribute.get_all_but_gauges_html
+                  char_attributes
                )
             ),
             (get_weapon_summary

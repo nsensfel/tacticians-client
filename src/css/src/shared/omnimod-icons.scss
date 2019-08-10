@@ -154,11 +154,9 @@
 .omnimod-attack-mods,
 .omnimod-defense-mods,
 .omnimod-attribute-mods,
-.omnimod-statistics-mods,
 .omnimod-attack-mods > *,
 .omnimod-defense-mods > *,
-.omnimod-attribute-mods > *,
-.omnimod-statistics-mods >*
+.omnimod-attribute-mods > *
 {
    display: flex;
    flex-wrap: wrap;

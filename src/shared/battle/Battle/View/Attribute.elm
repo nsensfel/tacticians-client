@@ -1,4 +1,4 @@
-module Battle.View.Statistic exposing
+module Battle.View.Attribute exposing
    (
       get_html,
       get_all_html,
@@ -14,7 +14,7 @@ import Html.Attributes
 import Html.Events
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Statistics
+import Battle.Struct.Attributes
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
@@ -28,16 +28,16 @@ import Struct.HelpRequest
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
-      Battle.Struct.Statistics.Category ->
+      Battle.Struct.Attributes.Category ->
       Int ->
       (Html.Html Struct.Event.Type)
    )
-get_html statistic value =
+get_html attribute value =
    (Html.div
       [
          (Html.Events.onClick
             (Struct.Event.RequestedHelp
-               (Struct.HelpRequest.Statistic statistic)
+               (Struct.HelpRequest.Attribute attribute)
             )
          )
       ]
@@ -48,7 +48,7 @@ get_html statistic value =
                (Html.Attributes.class
                   (
                      "omnimod-icon-"
-                     ++ (Battle.Struct.Statistics.encode_category statistic)
+                     ++ (Battle.Struct.Attributes.encode_category attribute)
                   )
                )
             ]
@@ -62,7 +62,7 @@ get_html statistic value =
             [
                (Html.text
                   (
-                     if (Battle.Struct.Statistics.is_percent statistic)
+                     if (Battle.Struct.Attributes.is_percent attribute)
                      then ((String.fromInt value) ++ "%")
                      else (String.fromInt value)
                   )
@@ -73,11 +73,11 @@ get_html statistic value =
    )
 
 get_signed_html : (
-      Battle.Struct.Statistics.Category ->
+      Battle.Struct.Attributes.Category ->
       Int ->
       (Html.Html Struct.Event.Type)
    )
-get_signed_html statistic value =
+get_signed_html attribute value =
    (Html.div
       [
          (
@@ -87,7 +87,7 @@ get_signed_html statistic value =
          ),
          (Html.Events.onClick
             (Struct.Event.RequestedHelp
-               (Struct.HelpRequest.Statistic statistic)
+               (Struct.HelpRequest.Attribute attribute)
             )
          )
       ]
@@ -98,7 +98,7 @@ get_signed_html statistic value =
                (Html.Attributes.class
                   (
                      "omnimod-icon-"
-                     ++ (Battle.Struct.Statistics.encode_category statistic)
+                     ++ (Battle.Struct.Attributes.encode_category attribute)
                   )
                )
             ]
@@ -119,7 +119,7 @@ get_signed_html statistic value =
                      )
                      ++
                      (
-                        if (Battle.Struct.Statistics.is_percent statistic)
+                        if (Battle.Struct.Attributes.is_percent attribute)
                         then "%"
                         else ""
                      )
@@ -131,129 +131,129 @@ get_signed_html statistic value =
    )
 
 get_all_html : (
-      Battle.Struct.Statistics.Type ->
+      Battle.Struct.Attributes.Type ->
       (List (Html.Html Struct.Event.Type))
    )
-get_all_html stats =
+get_all_html atts =
    [
       (get_html
-         Battle.Struct.Statistics.Dodges
-         (Battle.Struct.Statistics.get_dodges stats)
+         Battle.Struct.Attributes.Dodges
+         (Battle.Struct.Attributes.get_dodges atts)
       ),
       (get_html
-         Battle.Struct.Statistics.Parries
-         (Battle.Struct.Statistics.get_parries stats)
+         Battle.Struct.Attributes.Parries
+         (Battle.Struct.Attributes.get_parries atts)
       ),
       (get_html
-         Battle.Struct.Statistics.Accuracy
-         (Battle.Struct.Statistics.get_accuracy stats)
+         Battle.Struct.Attributes.Accuracy
+         (Battle.Struct.Attributes.get_accuracy atts)
       ),
       (get_html
-         Battle.Struct.Statistics.DoubleHits
-         (Battle.Struct.Statistics.get_double_hits stats)
+         Battle.Struct.Attributes.DoubleHits
+         (Battle.Struct.Attributes.get_double_hits atts)
       ),
       (get_html
-         Battle.Struct.Statistics.CriticalHits
-         (Battle.Struct.Statistics.get_critical_hits stats)
+         Battle.Struct.Attributes.CriticalHits
+         (Battle.Struct.Attributes.get_critical_hits atts)
       ),
       (get_html
-         Battle.Struct.Statistics.MaxHealth
-         (Battle.Struct.Statistics.get_max_health stats)
+         Battle.Struct.Attributes.MaxHealth
+         (Battle.Struct.Attributes.get_max_health atts)
       ),
       (get_html
-         Battle.Struct.Statistics.MovementPoints
-         (Battle.Struct.Statistics.get_movement_points stats)
+         Battle.Struct.Attributes.MovementPoints
+         (Battle.Struct.Attributes.get_movement_points atts)
       )
    ]
 
 get_all_signed_html : (
-      Battle.Struct.Statistics.Type ->
+      Battle.Struct.Attributes.Type ->
       (List (Html.Html Struct.Event.Type))
    )
-get_all_signed_html stats =
+get_all_signed_html atts =
    [
       (get_signed_html
-         Battle.Struct.Statistics.Dodges
-         (Battle.Struct.Statistics.get_dodges stats)
+         Battle.Struct.Attributes.Dodges
+         (Battle.Struct.Attributes.get_dodges atts)
       ),
       (get_signed_html
-         Battle.Struct.Statistics.Parries
-         (Battle.Struct.Statistics.get_parries stats)
+         Battle.Struct.Attributes.Parries
+         (Battle.Struct.Attributes.get_parries atts)
       ),
       (get_signed_html
-         Battle.Struct.Statistics.Accuracy
-         (Battle.Struct.Statistics.get_accuracy stats)
+         Battle.Struct.Attributes.Accuracy
+         (Battle.Struct.Attributes.get_accuracy atts)
       ),
       (get_signed_html
-         Battle.Struct.Statistics.DoubleHits
-         (Battle.Struct.Statistics.get_double_hits stats)
+         Battle.Struct.Attributes.DoubleHits
+         (Battle.Struct.Attributes.get_double_hits atts)
       ),
       (get_signed_html
-         Battle.Struct.Statistics.CriticalHits
-         (Battle.Struct.Statistics.get_critical_hits stats)
+         Battle.Struct.Attributes.CriticalHits
+         (Battle.Struct.Attributes.get_critical_hits atts)
       ),
       (get_signed_html
-         Battle.Struct.Statistics.MaxHealth
-         (Battle.Struct.Statistics.get_max_health stats)
+         Battle.Struct.Attributes.MaxHealth
+         (Battle.Struct.Attributes.get_max_health atts)
       ),
       (get_signed_html
-         Battle.Struct.Statistics.MovementPoints
-         (Battle.Struct.Statistics.get_movement_points stats)
+         Battle.Struct.Attributes.MovementPoints
+         (Battle.Struct.Attributes.get_movement_points atts)
       )
    ]
 
 get_all_but_gauges_html : (
-      Battle.Struct.Statistics.Type ->
+      Battle.Struct.Attributes.Type ->
       (List (Html.Html Struct.Event.Type))
    )
-get_all_but_gauges_html stats =
+get_all_but_gauges_html atts =
    [
       (get_html
-         Battle.Struct.Statistics.Dodges
-         (Battle.Struct.Statistics.get_dodges stats)
+         Battle.Struct.Attributes.Dodges
+         (Battle.Struct.Attributes.get_dodges atts)
       ),
       (get_html
-         Battle.Struct.Statistics.Parries
-         (Battle.Struct.Statistics.get_parries stats)
+         Battle.Struct.Attributes.Parries
+         (Battle.Struct.Attributes.get_parries atts)
       ),
       (get_html
-         Battle.Struct.Statistics.Accuracy
-         (Battle.Struct.Statistics.get_accuracy stats)
+         Battle.Struct.Attributes.Accuracy
+         (Battle.Struct.Attributes.get_accuracy atts)
       ),
       (get_html
-         Battle.Struct.Statistics.DoubleHits
-         (Battle.Struct.Statistics.get_double_hits stats)
+         Battle.Struct.Attributes.DoubleHits
+         (Battle.Struct.Attributes.get_double_hits atts)
       ),
       (get_html
-         Battle.Struct.Statistics.CriticalHits
-         (Battle.Struct.Statistics.get_critical_hits stats)
+         Battle.Struct.Attributes.CriticalHits
+         (Battle.Struct.Attributes.get_critical_hits atts)
       )
    ]
 
 get_all_but_gauges_signed_html : (
-      Battle.Struct.Statistics.Type ->
+      Battle.Struct.Attributes.Type ->
       (List (Html.Html Struct.Event.Type))
    )
-get_all_but_gauges_signed_html stats =
+get_all_but_gauges_signed_html atts =
    [
       (get_signed_html
-         Battle.Struct.Statistics.Dodges
-         (Battle.Struct.Statistics.get_dodges stats)
+         Battle.Struct.Attributes.Dodges
+         (Battle.Struct.Attributes.get_dodges atts)
       ),
       (get_signed_html
-         Battle.Struct.Statistics.Parries
-         (Battle.Struct.Statistics.get_parries stats)
+         Battle.Struct.Attributes.Parries
+         (Battle.Struct.Attributes.get_parries atts)
       ),
       (get_signed_html
-         Battle.Struct.Statistics.Accuracy
-         (Battle.Struct.Statistics.get_accuracy stats)
+         Battle.Struct.Attributes.Accuracy
+         (Battle.Struct.Attributes.get_accuracy atts)
       ),
       (get_signed_html
-         Battle.Struct.Statistics.DoubleHits
-         (Battle.Struct.Statistics.get_double_hits stats)
+         Battle.Struct.Attributes.DoubleHits
+         (Battle.Struct.Attributes.get_double_hits atts)
       ),
       (get_signed_html
-         Battle.Struct.Statistics.CriticalHits
-         (Battle.Struct.Statistics.get_critical_hits stats)
+         Battle.Struct.Attributes.CriticalHits
+         (Battle.Struct.Attributes.get_critical_hits atts)
       )
    ]

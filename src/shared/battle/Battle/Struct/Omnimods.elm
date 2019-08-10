@@ -4,10 +4,10 @@ module Battle.Struct.Omnimods exposing
       new,
       merge,
       none,
-      apply_to_statistics,
+      apply_to_attributes,
       get_attack_damage,
       get_damage_sum,
-      get_statistics_mods,
+      get_attribute_mods,
       get_attack_mods,
       get_defense_mods,
       get_all_mods,
@@ -22,7 +22,7 @@ import Json.Decode
 import Json.Decode.Pipeline
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Statistics
+import Battle.Struct.Attributes
 import Battle.Struct.DamageType
 
 --------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ import Battle.Struct.DamageType
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      statistics : (Dict.Dict String Int),
+      attributes : (Dict.Dict String Int),
       attack : (Dict.Dict String Int),
       defense : (Dict.Dict String Int)
    }
@@ -84,7 +84,7 @@ decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.succeed
       Type
-      |> (Json.Decode.Pipeline.required "stam" generic_mods_decoder)
+      |> (Json.Decode.Pipeline.required "attm" generic_mods_decoder)
       |> (Json.Decode.Pipeline.required "atkm" generic_mods_decoder)
       |> (Json.Decode.Pipeline.required "defm" generic_mods_decoder)
    )
@@ -95,9 +95,9 @@ new : (
       (List (String, Int)) ->
       Type
    )
-new statistic_mods attack_mods defense_mods =
+new attribute_mods attack_mods defense_mods =
    {
-      statistics = (Dict.fromList statistic_mods),
+      attributes = (Dict.fromList attribute_mods),
       attack = (Dict.fromList attack_mods),
       defense = (Dict.fromList defense_mods)
    }
@@ -105,7 +105,7 @@ new statistic_mods attack_mods defense_mods =
 none : Type
 none =
    {
-      statistics = (Dict.empty),
+      attributes = (Dict.empty),
       attack = (Dict.empty),
       defense = (Dict.empty)
    }
@@ -113,24 +113,24 @@ none =
 merge : Type -> Type -> Type
 merge omni_a omni_b =
    {
-      statistics = (merge_mods omni_a.statistics omni_b.statistics),
+      attributes = (merge_mods omni_a.attributes omni_b.attributes),
       attack = (merge_mods omni_a.attack omni_b.attack),
       defense = (merge_mods omni_a.defense omni_b.defense)
    }
 
-apply_to_statistics : (
+apply_to_attributes : (
       Type ->
-      Battle.Struct.Statistics.Type ->
-      Battle.Struct.Statistics.Type
+      Battle.Struct.Attributes.Type ->
+      Battle.Struct.Attributes.Type
    )
-apply_to_statistics omnimods statistics =
+apply_to_attributes omnimods attributes =
    (Dict.foldl
       (
-         (Battle.Struct.Statistics.decode_category)
-         >> (Battle.Struct.Statistics.mod)
+         (Battle.Struct.Attributes.decode_category)
+         >> (Battle.Struct.Attributes.mod)
       )
-      statistics
-      omnimods.statistics
+      attributes
+      omnimods.attributes
    )
 
 get_damage_sum : Type -> Int
@@ -177,14 +177,14 @@ get_attack_damage dmg_modifier atk_omni def_omni =
 scale : Float -> Type -> Type
 scale multiplier omnimods =
    {omnimods |
-      statistics = (Dict.map (scale_dict_value multiplier) omnimods.statistics),
+      attributes = (Dict.map (scale_dict_value multiplier) omnimods.attributes),
       attack = (Dict.map (scale_dict_value multiplier) omnimods.attack),
       defense =
          (Dict.map (scale_dict_value multiplier) omnimods.defense)
    }
 
-get_statistics_mods : Type -> (List (String, Int))
-get_statistics_mods omnimods = (Dict.toList omnimods.statistics)
+get_attribute_mods : Type -> (List (String, Int))
+get_attribute_mods omnimods = (Dict.toList omnimods.attributes)
 
 get_attack_mods : Type -> (List (String, Int))
 get_attack_mods omnimods = (Dict.toList omnimods.attack)
@@ -195,7 +195,7 @@ get_defense_mods omnimods = (Dict.toList omnimods.defense)
 get_all_mods : Type -> (List (String, Int))
 get_all_mods omnimods =
    (
-      (get_statistics_mods omnimods)
+      (get_attribute_mods omnimods)
       ++ (get_attack_mods omnimods)
       ++ (get_defense_mods omnimods)
    )

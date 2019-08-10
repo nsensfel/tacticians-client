@@ -1,4 +1,4 @@
-module Battle.Struct.Statistics exposing
+module Battle.Struct.Attributes exposing
    (
       Type,
       Category(..),

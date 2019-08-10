@@ -10,7 +10,7 @@ module BattleCharacters.Struct.Character exposing
       get_omnimods,
       set_extra_omnimods,
       dirty_set_extra_omnimods,
-      get_statistics,
+      get_attributes,
       get_active_weapon,
       get_inactive_weapon,
       is_using_secondary,
@@ -30,7 +30,7 @@ import Json.Encode
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
-import Battle.Struct.Statistics
+import Battle.Struct.Attributes
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
@@ -45,7 +45,7 @@ type alias Type =
    {
       name : String,
       equipment : BattleCharacters.Struct.Equipment.Type,
-      statistics : Battle.Struct.Statistics.Type,
+      attributes : Battle.Struct.Attributes.Type,
       is_using_secondary : Bool,
       omnimods : Battle.Struct.Omnimods.Type,
       extra_omnimods : Battle.Struct.Omnimods.Type
@@ -83,14 +83,14 @@ refresh_omnimods char =
                (BattleCharacters.Struct.Equipment.get_glyph_board equipment)
             )
          )
-      statistics =
-         (Battle.Struct.Omnimods.apply_to_statistics
+      attributes =
+         (Battle.Struct.Omnimods.apply_to_attributes
             omnimods
-            (Battle.Struct.Statistics.default)
+            (Battle.Struct.Attributes.default)
          )
    in
       {char |
-         statistics = statistics,
+         attributes = attributes,
          omnimods = omnimods
       }
 
@@ -134,8 +134,8 @@ set_extra_omnimods om char = (refresh_omnimods {char | extra_omnimods = om})
 dirty_set_extra_omnimods : Battle.Struct.Omnimods.Type -> Type -> Type
 dirty_set_extra_omnimods om char = {char | extra_omnimods = om}
 
-get_statistics : Type -> Battle.Struct.Statistics.Type
-get_statistics char = char.statistics
+get_attributes : Type -> Battle.Struct.Attributes.Type
+get_attributes char = char.attributes
 
 is_using_secondary : Type -> Bool
 is_using_secondary char = char.is_using_secondary
@@ -196,7 +196,7 @@ resolve resolve_equipment extra_omnimods ref =
       {
          name = ref.name,
          equipment = (resolve_equipment ref.equipment),
-         statistics = (Battle.Struct.Statistics.default),
+         attributes = (Battle.Struct.Attributes.default),
          is_using_secondary = ref.is_using_secondary,
          omnimods = (Battle.Struct.Omnimods.none),
          extra_omnimods = extra_omnimods

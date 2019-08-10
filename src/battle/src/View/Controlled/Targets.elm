@@ -7,7 +7,7 @@ import Html
 import Html.Attributes
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Statistics
+import Battle.Struct.Attributes
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Character
@@ -36,8 +36,8 @@ get_target_info_html model char_ref =
                ++ "): "
                ++
                (String.fromInt
-                  (Battle.Struct.Statistics.get_movement_points
-                     (Struct.Character.get_statistics char)
+                  (Battle.Struct.Attributes.get_movement_points
+                     (Struct.Character.get_attributes char)
                   )
                )
                ++ " movement points; "
@@ -50,8 +50,8 @@ get_target_info_html model char_ref =
                ++ "/"
                ++
                (String.fromInt
-                  (Battle.Struct.Statistics.get_max_health
-                     (Struct.Character.get_statistics char)
+                  (Battle.Struct.Attributes.get_max_health
+                     (Struct.Character.get_attributes char)
                   )
                )
             )

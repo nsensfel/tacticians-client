@@ -115,14 +115,14 @@
    margin-top: 0.3em;
 }
 
-.character-card-armor-stats
+.character-card-armor-atts
 {
    display: flex;
    flex-direction: row;
    flex-wrap: wrap;
 }
 
-.character-card-stats
+.character-card-atts
 {
    display: flex;
    flex-direction: row;
@@ -151,11 +151,8 @@
    display: inline-block;
 }
 
-.character-card-stats,
 .character-card-atts,
-.character-card-stats > *,
 .character-card-atts > *
-
 {
    display: flex;
    flex-direction: row;

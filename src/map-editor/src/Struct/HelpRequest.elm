@@ -1,7 +1,7 @@
 module Struct.HelpRequest exposing (Type(..))
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Statistics
+import Battle.Struct.Attributes
 import Battle.Struct.DamageType
 
 --------------------------------------------------------------------------------
@@ -9,5 +9,5 @@ import Battle.Struct.DamageType
 --------------------------------------------------------------------------------
 type Type =
    None
-   | Statistic Battle.Struct.Statistics.Category
+   | Attribute Battle.Struct.Attributes.Category
    | DamageType Battle.Struct.DamageType.Type

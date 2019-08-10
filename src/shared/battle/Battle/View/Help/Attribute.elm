@@ -1,11 +1,11 @@
-module Battle.View.Help.Statistic exposing (get_html_contents)
+module Battle.View.Help.Attribute exposing (get_html_contents)
 
 -- Elm -------------------------------------------------------------------------
 import Html
 import Html.Attributes
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Statistics
+import Battle.Struct.Attributes
 import Battle.Lang.English
 
 -- Local Module ----------------------------------------------------------------
@@ -15,7 +15,7 @@ import Struct.Event
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_header_html : (
-      Battle.Struct.Statistics.Category ->
+      Battle.Struct.Attributes.Category ->
       String ->
       (Html.Html Struct.Event.Type)
    )
@@ -34,7 +34,7 @@ get_header_html cat name =
                (Html.Attributes.class
                   (
                      "omnimod-icon-"
-                     ++ (Battle.Struct.Statistics.encode_category cat)
+                     ++ (Battle.Struct.Attributes.encode_category cat)
                   )
                )
             ]
@@ -49,12 +49,12 @@ get_header_html cat name =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html_contents : (
-      Battle.Struct.Statistics.Category ->
+      Battle.Struct.Attributes.Category ->
       (List (Html.Html Struct.Event.Type))
    )
 get_html_contents cat =
    let
-      (name, tooltip) = (Battle.Lang.English.get_statistic_category_help cat)
+      (name, tooltip) = (Battle.Lang.English.get_attribute_category_help cat)
    in
    [
       (get_header_html cat name),

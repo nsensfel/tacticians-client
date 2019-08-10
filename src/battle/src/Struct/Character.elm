@@ -32,7 +32,7 @@ import Json.Decode.Pipeline
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
-import Battle.Struct.Statistics
+import Battle.Struct.Attributes
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Character
@@ -88,8 +88,8 @@ fix_health : Int -> Type -> Type
 fix_health previous_max_health char =
    let
       new_max_health =
-         (Battle.Struct.Statistics.get_max_health
-            (BattleCharacters.Struct.Character.get_statistics char.base)
+         (Battle.Struct.Attributes.get_max_health
+            (BattleCharacters.Struct.Character.get_attributes char.base)
          )
    in
       {char |
@@ -162,8 +162,8 @@ set_location : (
 set_location location omnimods char =
    let
       previous_max_health =
-         (Battle.Struct.Statistics.get_max_health
-            (BattleCharacters.Struct.Character.get_statistics char.base)
+         (Battle.Struct.Attributes.get_max_health
+            (BattleCharacters.Struct.Character.get_attributes char.base)
          )
    in
       (fix_health
@@ -188,8 +188,8 @@ set_base_character : BattleCharacters.Struct.Character.Type -> Type -> Type
 set_base_character new_base char =
    let
       previous_max_health =
-         (Battle.Struct.Statistics.get_max_health
-            (BattleCharacters.Struct.Character.get_statistics char.base)
+         (Battle.Struct.Attributes.get_max_health
+            (BattleCharacters.Struct.Character.get_attributes char.base)
          )
    in
       (fix_health

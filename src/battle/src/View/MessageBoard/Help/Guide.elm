@@ -87,7 +87,7 @@ get_default_html_contents =
       (Html.text
          (
             "Click once on a character to focus them. This will show you"
-            ++ " their stats, equipment, and other infos. If they are in"
+            ++ " their attributes, equipment, and other infos. If they are in"
             ++ " your team and active (the pulsating characters),"
             ++ " clicking on them again will let you take control."
          )

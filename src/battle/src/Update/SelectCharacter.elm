@@ -6,7 +6,7 @@ import Array
 import Task
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Statistics
+import Battle.Struct.Attributes
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Character
@@ -42,8 +42,8 @@ get_character_navigator model char =
    in
       (Struct.Navigator.new
          (Struct.Character.get_location char)
-         (Battle.Struct.Statistics.get_movement_points
-            (BattleCharacters.Struct.Character.get_statistics base_char)
+         (Battle.Struct.Attributes.get_movement_points
+            (BattleCharacters.Struct.Character.get_attributes base_char)
          )
          (BattleCharacters.Struct.Weapon.get_defense_range weapon)
          (BattleCharacters.Struct.Weapon.get_attack_range weapon)

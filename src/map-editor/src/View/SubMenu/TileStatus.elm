@@ -153,9 +153,9 @@ get_omnimods omnimods =
          (Html.Attributes.class "info-card-omnimods")
       ]
       [
-         (Html.text "Statistics Modifiers"),
+         (Html.text "Attributes Modifiers"),
          (get_omnimods_listing
-            (Battle.Struct.Omnimods.get_statistics_mods omnimods)
+            (Battle.Struct.Omnimods.get_attribute_mods omnimods)
          ),
          (Html.text "Attack Modifiers"),
          (get_omnimods_listing
