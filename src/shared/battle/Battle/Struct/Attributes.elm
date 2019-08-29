@@ -121,17 +121,18 @@ mod cat v t =
       CriticalHits -> (mod_critical_hits v t)
       DamageModifier -> (mod_damage_modifier v t)
 
+-- TODO: Link this to the server using tacticians-data.
 default : Type
 default =
    {
-      movement_points = 0,
+      movement_points = 8,
       max_health = 1,
       dodges = 0,
       parries = 0,
       accuracy = 0,
       double_hits = 0,
       critical_hits = 0,
-      damage_modifier = 100
+      damage_modifier = 0
    }
 
 decode_category : String -> Category
