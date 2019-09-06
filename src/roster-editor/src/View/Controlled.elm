@@ -11,6 +11,7 @@ import Util.Html
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
+import Struct.UI
 
 import View.CharacterCard
 
@@ -29,8 +30,9 @@ get_html model =
          (Html.div
             [(Html.Attributes.class "controlled")]
             [
-               (Html.Lazy.lazy
+               (Html.Lazy.lazy2
                   (View.CharacterCard.get_full_html)
+                  (Struct.UI.get_displayed_tab model.ui)
                   char
                )
             ]

@@ -37,6 +37,11 @@ apply_to model =
                            )
                            char
                         )
+                     ),
+                  ui =
+                     (Struct.UI.set_displayed_tab
+                        Struct.UI.WeaponSelectionTab
+                        model.ui
                      )
                }
 

@@ -163,6 +163,10 @@ get_all_html atts =
       (get_html
          Battle.Struct.Attributes.MovementPoints
          (Battle.Struct.Attributes.get_movement_points atts)
+      ),
+      (get_html
+         Battle.Struct.Attributes.DamageModifier
+         (Battle.Struct.Attributes.get_damage_modifier atts)
       )
    ]
 
@@ -199,6 +203,10 @@ get_all_signed_html atts =
       (get_signed_html
          Battle.Struct.Attributes.MovementPoints
          (Battle.Struct.Attributes.get_movement_points atts)
+      ),
+      (get_signed_html
+         Battle.Struct.Attributes.DamageModifier
+         (Battle.Struct.Attributes.get_damage_modifier atts)
       )
    ]
 
@@ -227,6 +235,14 @@ get_all_but_gauges_html atts =
       (get_html
          Battle.Struct.Attributes.CriticalHits
          (Battle.Struct.Attributes.get_critical_hits atts)
+      ),
+      (get_html
+         Battle.Struct.Attributes.CriticalHits
+         (Battle.Struct.Attributes.get_critical_hits atts)
+      ),
+      (get_html
+         Battle.Struct.Attributes.DamageModifier
+         (Battle.Struct.Attributes.get_damage_modifier atts)
       )
    ]
 
@@ -255,5 +271,9 @@ get_all_but_gauges_signed_html atts =
       (get_signed_html
          Battle.Struct.Attributes.CriticalHits
          (Battle.Struct.Attributes.get_critical_hits atts)
+      ),
+      (get_signed_html
+         Battle.Struct.Attributes.DamageModifier
+         (Battle.Struct.Attributes.get_damage_modifier atts)
       )
    ]

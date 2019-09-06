@@ -11,6 +11,9 @@ import Html
 import Html.Attributes
 import Html.Events
 
+-- Shared ----------------------------------------------------------------------
+import Util.Html
+
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
 import Battle.Struct.Attributes
@@ -135,16 +138,29 @@ get_movement_bar char_atts =
    )
 
 get_weapon_field_header : (
-      Float ->
+      Bool ->
       BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_field_header damage_multiplier weapon =
+get_weapon_field_header is_active_wp weapon =
    (Html.div
       [
          (Html.Attributes.class "character-card-header")
       ]
       [
+         (
+            if (is_active_wp)
+            then
+               (Html.div
+                  [
+                     (Html.Attributes.class "character-card-active-weapon")
+                  ]
+                  [
+                     (Html.text "(Equipped)")
+                  ]
+               )
+            else (Util.Html.nothing)
+         ),
          (Html.div
             [
             ]
@@ -156,28 +172,6 @@ get_weapon_field_header damage_multiplier weapon =
             [
             ]
             [
-               (Html.div
-                  [
-                     (Html.Attributes.class "omnimod-icon"),
-                     (Html.Attributes.class "omnimod-icon-dmg")
-                  ]
-                  [
-                  ]
-               ),
-               (Html.text
-                  (String.fromInt
-                     (ceiling
-                        (
-                           (toFloat
-                              (BattleCharacters.Struct.Weapon.get_damage_sum
-                                 weapon
-                              )
-                           )
-                           * damage_multiplier
-                        )
-                     )
-                  )
-               ),
                (Html.div
                   [
                      (Html.Attributes.class "omnimod-icon"),
@@ -229,77 +223,44 @@ get_mod_html mod =
          ]
       )
 
-get_multiplied_mod_html : (
-      Float ->
-      (String, Int) ->
-      (Html.Html Struct.Event.Type)
-   )
-get_multiplied_mod_html multiplier mod =
-   let
-      (category, value) = mod
-   in
-      (Html.div
-         [
-            (Html.Attributes.class "character-card-mod")
-         ]
-         [
-            (Html.div
-               [
-                  (Html.Attributes.class "omnimod-icon"),
-                  (Html.Attributes.class ("omnimod-icon-" ++ category))
-               ]
-               [
-               ]
-            ),
-            (Html.text
-               (String.fromInt (ceiling ((toFloat value) * multiplier)))
-            )
-         ]
-      )
-
 get_weapon_details : (
-      Float ->
-      BattleCharacters.Struct.Weapon.Type ->
+      Struct.UI.Tab ->
       Bool ->
+      BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_details damage_multiplier weapon is_active_wp =
-   if (is_active_wp)
-   then
-      (Html.div
-         [
-            (Html.Attributes.class "character-card-weapon"),
-            (Html.Attributes.class "clickable"),
-            (Html.Events.onClick
-               (Struct.Event.TabSelected Struct.UI.WeaponSelectionTab)
+get_weapon_details current_tab is_active_wp weapon =
+   (Html.div
+      [
+         (Html.Attributes.class "character-card-weapon"),
+         (Html.Attributes.class "clickable"),
+         (Html.Events.onClick
+            (
+               if (is_active_wp)
+               then (Struct.Event.TabSelected Struct.UI.WeaponSelectionTab)
+               else (Struct.Event.SwitchWeapons)
             )
-        ]
-         [
-            (get_weapon_field_header damage_multiplier weapon),
-            (Battle.View.Omnimods.get_html_with_modifier
-               damage_multiplier
-               (BattleCharacters.Struct.Weapon.get_omnimods weapon)
-            )
-         ]
-      )
-   else
-      (Html.div
-         [
-            (Html.Attributes.class "character-card-weapon-summary"),
-            (Html.Attributes.class "clickable"),
-            (Html.Events.onClick (Struct.Event.SwitchWeapons))
-         ]
-         [
-            (get_weapon_field_header damage_multiplier weapon)
-         ]
-      )
+         )
+      ]
+      [
+         (get_weapon_field_header is_active_wp weapon),
+         (
+            if (is_active_wp && (current_tab == Struct.UI.WeaponSelectionTab))
+            then
+               (Battle.View.Omnimods.get_html
+                  (BattleCharacters.Struct.Weapon.get_omnimods weapon)
+               )
+            else (Util.Html.nothing)
+         )
+      ]
+   )
 
 get_armor_details : (
-      Float ->
+      Struct.UI.Tab ->
       BattleCharacters.Struct.Armor.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_armor_details damage_multiplier armor =
+get_armor_details current_tab armor =
    (Html.div
       [
          (Html.Attributes.class "character-card-armor"),
@@ -317,19 +278,22 @@ get_armor_details damage_multiplier armor =
                (Html.text (BattleCharacters.Struct.Armor.get_name armor))
             ]
          ),
-         (Battle.View.Omnimods.get_html_with_modifier
-            damage_multiplier
-            (BattleCharacters.Struct.Armor.get_omnimods armor)
+         (
+            if (current_tab == Struct.UI.ArmorSelectionTab)
+            then
+               (Battle.View.Omnimods.get_html
+                  (BattleCharacters.Struct.Armor.get_omnimods armor)
+               )
+            else (Util.Html.nothing)
          )
       ]
    )
 
 get_glyph_board_details : (
-      Float ->
       BattleCharacters.Struct.GlyphBoard.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_glyph_board_details damage_multiplier board =
+get_glyph_board_details board =
    (Html.div
       [
          (Html.Attributes.class "character-card-glyph-board")
@@ -362,16 +326,52 @@ get_glyph_board_details damage_multiplier board =
    )
 
 get_relevant_atts : (
+      Battle.Struct.Omnimods.Type ->
       Battle.Struct.Attributes.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_relevant_atts atts =
+get_relevant_atts omnimods atts =
    (Html.div
       [
-         (Html.Attributes.class "character-card-atts"),
-         (Html.Attributes.class "clickable")
+         (Html.Attributes.class "character-card-atts")
       ]
-      (Battle.View.Attribute.get_all_but_gauges_html atts)
+      (
+         [
+            (
+               let
+                  damage_multiplier =
+                     (Battle.Struct.Attributes.get_damage_multiplier atts)
+               in
+                  (Html.div
+                     [
+                        (Html.Attributes.class "omnimod-attack-mods")
+                     ]
+                     (List.map
+                        (
+                           \(s, i) ->
+                           (get_mod_html
+                              (
+                                 s,
+                                 (ceiling ((toFloat i) * damage_multiplier))
+                              )
+                           )
+                        )
+                        (Battle.Struct.Omnimods.get_attack_mods omnimods)
+                     )
+                  )
+            ),
+            (Html.div
+               [
+                  (Html.Attributes.class "omnimod-defense-mods")
+               ]
+               (List.map
+                  (get_mod_html)
+                  (Battle.Struct.Omnimods.get_defense_mods omnimods)
+               )
+            )
+         ]
+         ++ (Battle.View.Attribute.get_all_but_gauges_html atts)
+      )
    )
 
 --------------------------------------------------------------------------------
@@ -420,16 +420,16 @@ get_minimal_html char =
          ]
       )
 
-get_full_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
-get_full_html char =
+get_full_html : (
+      Struct.UI.Tab ->
+      Struct.Character.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_full_html current_tab char =
    let
       base_char = (Struct.Character.get_base_character char)
       char_attributes =
          (BattleCharacters.Struct.Character.get_attributes base_char)
-      damage_multiplier =
-         (Battle.Struct.Attributes.get_damage_multiplier
-            char_attributes
-         )
       omnimods = (BattleCharacters.Struct.Character.get_omnimods base_char)
       equipment = (BattleCharacters.Struct.Character.get_equipment base_char)
       is_using_secondary =
@@ -468,25 +468,24 @@ get_full_html char =
                ]
             ),
             (get_weapon_details
-               damage_multiplier
-               (BattleCharacters.Struct.Equipment.get_primary_weapon equipment)
+               current_tab
                (not is_using_secondary)
+               (BattleCharacters.Struct.Equipment.get_primary_weapon equipment)
             ),
-            (get_armor_details
-               damage_multiplier
-               (BattleCharacters.Struct.Equipment.get_armor equipment)
-            ),
-            (get_glyph_board_details
-               damage_multiplier
-               (BattleCharacters.Struct.Equipment.get_glyph_board equipment)
-            ),
-            (get_relevant_atts char_attributes),
             (get_weapon_details
-               damage_multiplier
+               current_tab
+               is_using_secondary
                (BattleCharacters.Struct.Equipment.get_secondary_weapon
                   equipment
                )
-               is_using_secondary
-            )
+            ),
+            (get_armor_details
+               current_tab
+               (BattleCharacters.Struct.Equipment.get_armor equipment)
+            ),
+            (get_glyph_board_details
+               (BattleCharacters.Struct.Equipment.get_glyph_board equipment)
+            ),
+            (get_relevant_atts omnimods char_attributes)
          ]
       )
