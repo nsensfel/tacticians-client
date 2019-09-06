@@ -6,7 +6,6 @@ module BattleCharacters.Struct.GlyphBoard exposing
       get_name,
       get_id,
       get_slots,
-      get_omnimods,
       get_omnimods_with_glyphs,
       decoder,
       none,
@@ -36,8 +35,7 @@ type alias Type =
    {
       id : String,
       name : String,
-      slots : (List Int),
-      omnimods : Battle.Struct.Omnimods.Type
+      slots : (List Int)
    }
 
 type alias Ref = String
@@ -64,9 +62,6 @@ get_name g = g.name
 get_slots : Type -> (List Int)
 get_slots  g = g.slots
 
-get_omnimods : Type -> Battle.Struct.Omnimods.Type
-get_omnimods g = g.omnimods
-
 get_omnimods_with_glyphs : (
       (Array.Array BattleCharacters.Struct.Glyph.Type) ->
       Type ->
@@ -75,7 +70,7 @@ get_omnimods_with_glyphs : (
 get_omnimods_with_glyphs glyphs board =
    (List.foldl
       (Battle.Struct.Omnimods.merge)
-      board.omnimods
+      (Battle.Struct.Omnimods.none)
       (List.map2
          (Battle.Struct.Omnimods.scale)
          (List.map (\e -> ((toFloat e) / 100.0)) board.slots)
@@ -95,7 +90,6 @@ decoder =
             "slot"
             (Json.Decode.list (Json.Decode.int))
          )
-      |> (Json.Decode.Pipeline.required "omni" Battle.Struct.Omnimods.decoder)
    )
 
 none : Type
@@ -103,8 +97,7 @@ none =
    {
       id = "",
       name = "None",
-      slots = [],
-      omnimods = (Battle.Struct.Omnimods.none)
+      slots = []
    }
 
 default : Type

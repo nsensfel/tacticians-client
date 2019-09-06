@@ -347,10 +347,6 @@ get_glyph_board_details damage_multiplier board =
                (Html.text (BattleCharacters.Struct.GlyphBoard.get_name board))
             ]
          ),
-         (Battle.View.Omnimods.get_html_with_modifier
-            damage_multiplier
-            (BattleCharacters.Struct.GlyphBoard.get_omnimods board)
-         ),
          (Html.div
             [
                (Html.Attributes.class "clickable"),

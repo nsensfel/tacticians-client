@@ -61,9 +61,6 @@ get_glyph_board_html glyph_board =
                   (BattleCharacters.Struct.GlyphBoard.get_name glyph_board)
                )
             ]
-         ),
-         (Battle.View.Omnimods.get_html
-            (BattleCharacters.Struct.GlyphBoard.get_omnimods glyph_board)
          )
       ]
    )
