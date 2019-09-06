@@ -9,6 +9,8 @@ module Struct.Character exposing
       set_base_character,
       set_was_edited,
       get_was_edited,
+      set_is_valid,
+      get_is_valid,
       resolve,
       to_unresolved,
       decoder,
@@ -22,6 +24,7 @@ import Json.Decode.Pipeline
 import Json.Encode
 
 -- Battle ----------------------------------------------------------------------
+import Battle.Struct.Attributes
 import Battle.Struct.Omnimods
 
 -- Battle Characters -----------------------------------------------------------
@@ -36,6 +39,7 @@ type alias Type =
       ix : Int,
       battle_ix : Int,
       was_edited : Bool,
+      is_valid : Bool,
       base : BattleCharacters.Struct.Character.Type
    }
 
@@ -44,6 +48,7 @@ type alias Unresolved =
       ix : Int,
       battle_ix : Int,
       was_edited : Bool,
+      is_valid : Bool,
       base : BattleCharacters.Struct.Character.Unresolved
    }
 
@@ -75,6 +80,30 @@ get_was_edited char = char.was_edited
 set_was_edited : Bool -> Type -> Type
 set_was_edited val char = {char | was_edited = val}
 
+get_is_valid : Type -> Bool
+get_is_valid char = char.is_valid
+
+set_is_valid : Type -> Type
+set_is_valid char =
+   {char |
+      is_valid =
+         (
+            (List.all
+               (\(s, i) -> (i >= 0))
+               (Battle.Struct.Omnimods.get_all_mods
+                  (BattleCharacters.Struct.Character.get_omnimods char.base)
+               )
+            )
+            &&
+            (
+               (Battle.Struct.Attributes.get_max_health
+                  (BattleCharacters.Struct.Character.get_attributes char.base)
+               )
+               > 0
+            )
+         )
+   }
+
 resolve : (
       (
          BattleCharacters.Struct.Equipment.Unresolved ->
@@ -84,17 +113,20 @@ resolve : (
       Type
    )
 resolve equipment_resolver ref =
-   {
-      ix = ref.ix,
-      battle_ix = ref.battle_ix,
-      was_edited = ref.was_edited,
-      base =
-         (BattleCharacters.Struct.Character.resolve
-            (equipment_resolver)
-            (Battle.Struct.Omnimods.none)
-            ref.base
-         )
-   }
+   (set_is_valid
+      {
+         ix = ref.ix,
+         battle_ix = ref.battle_ix,
+         was_edited = ref.was_edited,
+         is_valid = False,
+         base =
+            (BattleCharacters.Struct.Character.resolve
+               (equipment_resolver)
+               (Battle.Struct.Omnimods.none)
+               ref.base
+            )
+      }
+   )
 
 to_unresolved : Type -> Unresolved
 to_unresolved char =
@@ -102,6 +134,7 @@ to_unresolved char =
       ix = char.ix,
       battle_ix = char.battle_ix,
       was_edited = char.was_edited,
+      is_valid = char.is_valid,
       base = (BattleCharacters.Struct.Character.to_unresolved char.base)
    }
 
@@ -112,6 +145,7 @@ decoder =
       |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
       |> (Json.Decode.Pipeline.hardcoded -1)
       |> (Json.Decode.Pipeline.hardcoded False)
+      |> (Json.Decode.Pipeline.hardcoded True)
       |>
          (Json.Decode.Pipeline.required
             "bas"

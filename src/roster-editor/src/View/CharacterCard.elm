@@ -208,7 +208,17 @@ get_mod_html mod =
    in
       (Html.div
          [
-            (Html.Attributes.class "info-card-mod")
+            (Html.Attributes.class "info-card-mod"),
+            (Html.Attributes.class
+               (
+                  if (value < 0)
+                  then "omnimod-negative-value"
+                  else
+                     if (value > 0)
+                     then "omnimod-positive-value"
+                     else "omnimod-nil-value"
+               )
+            )
          ]
          [
             (Html.div
@@ -333,7 +343,8 @@ get_relevant_atts : (
 get_relevant_atts omnimods atts =
    (Html.div
       [
-         (Html.Attributes.class "character-card-atts")
+         (Html.Attributes.class "character-card-atts"),
+         (Html.Attributes.class "roster-editor-atts")
       ]
       (
          [
@@ -370,7 +381,7 @@ get_relevant_atts omnimods atts =
                )
             )
          ]
-         ++ (Battle.View.Attribute.get_all_but_gauges_html atts)
+         ++ (Battle.View.Attribute.get_true_all_html atts)
       )
    )
 
@@ -390,6 +401,13 @@ get_minimal_html char =
             (Html.Attributes.class "info-card-minimal"),
             (Html.Attributes.class "character-card"),
             (Html.Attributes.class "character-card-minimal"),
+            (Html.Attributes.class
+               (
+                  if (Struct.Character.get_is_valid char)
+                  then "roster-editor-valid-character"
+                  else "roster-editor-invalid-character"
+               )
+            ),
             (Html.Events.onClick
                (Struct.Event.CharacterSelected
                   (Struct.Character.get_index char)

@@ -262,7 +262,9 @@ save_character model =
             characters =
                (Array.set
                   (Struct.Character.get_index char)
-                  (Struct.Character.set_was_edited True char)
+                  (Struct.Character.set_is_valid
+                     (Struct.Character.set_was_edited True char)
+                  )
                   model.characters
                )
          }

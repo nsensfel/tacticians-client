@@ -11,6 +11,14 @@ module Battle.Struct.Attributes exposing
       get_critical_hits,
       get_damage_modifier,
       get_damage_multiplier,
+      get_true_movement_points,
+      get_true_max_health,
+      get_true_dodges,
+      get_true_parries,
+      get_true_accuracy,
+      get_true_double_hits,
+      get_true_critical_hits,
+      get_true_damage_modifier,
       decode_category,
       encode_category,
       mod,
@@ -108,6 +116,31 @@ get_damage_modifier t = (max 0 t.damage_modifier)
 
 get_damage_multiplier : Type -> Float
 get_damage_multiplier t = ((toFloat (max 0 t.damage_modifier)) / 100.0)
+
+get_true_movement_points : Type -> Int
+get_true_movement_points t = t.movement_points
+
+get_true_max_health : Type -> Int
+get_true_max_health t = t.max_health
+
+get_true_dodges : Type -> Int
+get_true_dodges t = t.dodges
+
+get_true_parries : Type -> Int
+get_true_parries t = t.parries
+
+get_true_accuracy : Type -> Int
+get_true_accuracy t = t.accuracy
+
+get_true_double_hits : Type -> Int
+get_true_double_hits t = t.double_hits
+
+get_true_critical_hits : Type -> Int
+get_true_critical_hits t = t.critical_hits
+
+get_true_damage_modifier : Type -> Int
+get_true_damage_modifier t = t.damage_modifier
+
 
 mod : Category -> Int -> Type -> Type
 mod cat v t =

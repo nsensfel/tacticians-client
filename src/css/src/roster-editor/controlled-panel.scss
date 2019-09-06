@@ -1,3 +1,5 @@
+@import '../shared/colors';
+
 @import '../shared/battle-view/constants';
 @import '../shared/battle-view/menu-mixins';
 
@@ -20,4 +22,19 @@
    display: flex;
    flex-flow: column;
    justify-content: space-between;
+}
+
+
+.roster-editor-atts .omnimod-negative-value
+{
+   background-color: $RED-2;
+   border-radius: 6px;
+   border: solid 1px $RED-0;
+   padding: 2px;
+}
+
+.roster-editor-invalid-character > .info-card-name,
+.roster-editor-invalid-character > .character-card-name
+{
+   background-color: $RED-2;
 }
