@@ -3,12 +3,14 @@ module View.GlyphManagement exposing (get_html)
 -- Elm -------------------------------------------------------------------------
 import Array
 
+import Set
+
 import Html
 import Html.Attributes
 import Html.Events
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Omnimods
+import Battle.View.Omnimods
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Glyph
@@ -41,15 +43,27 @@ get_mod_html mod =
       )
 
 get_glyph_html : (
+      (Set.Set BattleCharacters.Struct.Glyph.Ref) ->
       Int ->
       (Int, BattleCharacters.Struct.Glyph.Type)
       -> (Html.Html Struct.Event.Type)
    )
-get_glyph_html modifier (index, glyph) =
+get_glyph_html invalid_family_ids modifier (index, glyph) =
    (Html.div
       [
          (Html.Attributes.class "character-card-glyph"),
          (Html.Attributes.class "clickable"),
+         (Html.Attributes.class
+            (
+               if
+                  (Set.member
+                     (BattleCharacters.Struct.Glyph.get_family_id glyph)
+                     invalid_family_ids
+                  )
+               then "roster-editor-invalid-glyph"
+               else "roster-editor-valid-glyph"
+            )
+         ),
          (Html.Events.onClick (Struct.Event.ClickedOnGlyph index))
       ]
       [
@@ -61,15 +75,8 @@ get_glyph_html modifier (index, glyph) =
                ++ "%)"
             )
          ),
-         (Html.div
-            [
-            ]
-            (List.map
-               (get_mod_html)
-               (Battle.Struct.Omnimods.get_all_mods
-                  (BattleCharacters.Struct.Glyph.get_omnimods glyph)
-               )
-            )
+         (Battle.View.Omnimods.get_html
+            (BattleCharacters.Struct.Glyph.get_omnimods glyph)
          )
       ]
    )
@@ -100,7 +107,11 @@ get_html model =
                         (Html.Attributes.class "selection-window-listing")
                      ]
                      (List.map2
-                        (get_glyph_html)
+                        (get_glyph_html
+                           (Struct.Character.get_invalid_glyph_family_indices
+                              char
+                           )
+                        )
                         (BattleCharacters.Struct.GlyphBoard.get_slots
                            (BattleCharacters.Struct.Equipment.get_glyph_board
                               equipment

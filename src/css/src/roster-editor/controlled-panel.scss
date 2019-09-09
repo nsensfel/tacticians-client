@@ -25,7 +25,8 @@
 }
 
 
-.roster-editor-atts .omnimod-negative-value
+.roster-editor-atts .omnimod-negative-value,
+.roster-editor-invalid-glyph
 {
    background-color: $RED-2;
    border-radius: 6px;
@@ -38,7 +39,8 @@
    justify-items: space-evenly;
 }
 .roster-editor-invalid-character > .info-card-name,
-.roster-editor-invalid-character > .character-card-name
+.roster-editor-invalid-character > .character-card-name,
+.roster-editor-glyph-board-problem > .character-card-glyph-board-name
 {
    background-color: $RED-2;
 }
