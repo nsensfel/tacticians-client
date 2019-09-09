@@ -1,5 +1,7 @@
 module Util.List exposing (..)
 
+import Set
+
 import List
 
 pop : List a -> (Maybe (a, List a))
@@ -34,3 +36,18 @@ product_map_rec product_fun list_a list_b result =
             )
          )
 
+duplicates : (List comparable) -> (Set.Set comparable)
+duplicates list =
+   let
+      (encountered, final_result) =
+         (List.foldl
+            (\elem (met, result) ->
+               if (Set.member elem met)
+               then (met, (Set.insert elem result))
+               else ((Set.insert elem met), result)
+            )
+            ((Set.empty), (Set.empty))
+            list
+         )
+   in
+      final_result

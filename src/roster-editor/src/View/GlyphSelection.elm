@@ -38,7 +38,7 @@ get_glyph_html : (
       BattleCharacters.Struct.Glyph.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_glyph_html glyph  =
+get_glyph_html glyph =
    (Html.div
       [
          (Html.Attributes.class "character-card-glyph"),

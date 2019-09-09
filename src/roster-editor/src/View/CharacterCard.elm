@@ -5,6 +5,8 @@ module View.CharacterCard exposing
    )
 
 -- Elm -------------------------------------------------------------------------
+import Set
+
 import List
 
 import Html
@@ -300,13 +302,21 @@ get_armor_details current_tab armor =
    )
 
 get_glyph_board_details : (
+      Bool ->
       BattleCharacters.Struct.GlyphBoard.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_glyph_board_details board =
+get_glyph_board_details has_no_invalid_glyphs board =
    (Html.div
       [
-         (Html.Attributes.class "character-card-glyph-board")
+         (Html.Attributes.class "character-card-glyph-board"),
+         (Html.Attributes.class
+            (
+               if (has_no_invalid_glyphs)
+               then "roster-editor-glyph-board-no-problem"
+               else "roster-editor-glyph-board-problem"
+            )
+         )
       ]
       [
          (Html.div
@@ -502,6 +512,9 @@ get_full_html current_tab char =
                (BattleCharacters.Struct.Equipment.get_armor equipment)
             ),
             (get_glyph_board_details
+               (Set.isEmpty
+                  (Struct.Character.get_invalid_glyph_family_indices char)
+               )
                (BattleCharacters.Struct.Equipment.get_glyph_board equipment)
             ),
             (get_relevant_atts omnimods char_attributes)

@@ -11,6 +11,8 @@ module Struct.Character exposing
       get_was_edited,
       set_is_valid,
       get_is_valid,
+      set_invalid_glyph_family_indices,
+      get_invalid_glyph_family_indices,
       resolve,
       to_unresolved,
       decoder,
@@ -18,10 +20,17 @@ module Struct.Character exposing
    )
 
 -- Elm -------------------------------------------------------------------------
+import Array
+
+import Set
+
 import Json.Decode
 import Json.Decode.Pipeline
 
 import Json.Encode
+
+-- Shared ----------------------------------------------------------------------
+import Util.List
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Attributes
@@ -30,6 +39,7 @@ import Battle.Struct.Omnimods
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Character
 import BattleCharacters.Struct.Equipment
+import BattleCharacters.Struct.Glyph
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -40,6 +50,7 @@ type alias Type =
       battle_ix : Int,
       was_edited : Bool,
       is_valid : Bool,
+      invalid_glyph_family_ids : (Set.Set BattleCharacters.Struct.Glyph.Ref),
       base : BattleCharacters.Struct.Character.Type
    }
 
@@ -49,12 +60,31 @@ type alias Unresolved =
       battle_ix : Int,
       was_edited : Bool,
       is_valid : Bool,
+      invalid_glyph_family_ids : (Set.Set BattleCharacters.Struct.Glyph.Ref),
       base : BattleCharacters.Struct.Character.Unresolved
    }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+compute_invalid_glyph_family_ids : (
+      BattleCharacters.Struct.Equipment.Type ->
+      (Set.Set BattleCharacters.Struct.Glyph.Ref)
+   )
+compute_invalid_glyph_family_ids equipment =
+   (Set.remove
+      (BattleCharacters.Struct.Glyph.get_family_id
+         (BattleCharacters.Struct.Glyph.none)
+      )
+      (Util.List.duplicates
+         (List.map
+            (BattleCharacters.Struct.Glyph.get_family_id)
+            (Array.toList
+               (BattleCharacters.Struct.Equipment.get_glyphs equipment)
+            )
+         )
+      )
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -88,6 +118,8 @@ set_is_valid char =
    {char |
       is_valid =
          (
+            (Set.isEmpty char.invalid_glyph_family_ids)
+            &&
             (List.all
                (\(s, i) -> (i >= 0))
                (Battle.Struct.Omnimods.get_all_mods
@@ -104,6 +136,24 @@ set_is_valid char =
          )
    }
 
+get_invalid_glyph_family_indices : (
+      Type ->
+      (Set.Set BattleCharacters.Struct.Glyph.Ref)
+   )
+get_invalid_glyph_family_indices char = char.invalid_glyph_family_ids
+
+set_invalid_glyph_family_indices : (
+      BattleCharacters.Struct.Equipment.Type ->
+      Type ->
+      Type
+   )
+set_invalid_glyph_family_indices equipment char =
+   let ids = (compute_invalid_glyph_family_ids equipment) in
+      {char |
+         invalid_glyph_family_ids = ids,
+         is_valid = (char.is_valid && (Set.isEmpty ids))
+      }
+
 resolve : (
       (
          BattleCharacters.Struct.Equipment.Unresolved ->
@@ -119,6 +169,7 @@ resolve equipment_resolver ref =
          battle_ix = ref.battle_ix,
          was_edited = ref.was_edited,
          is_valid = False,
+         invalid_glyph_family_ids = ref.invalid_glyph_family_ids,
          base =
             (BattleCharacters.Struct.Character.resolve
                (equipment_resolver)
@@ -135,6 +186,7 @@ to_unresolved char =
       battle_ix = char.battle_ix,
       was_edited = char.was_edited,
       is_valid = char.is_valid,
+      invalid_glyph_family_ids = char.invalid_glyph_family_ids,
       base = (BattleCharacters.Struct.Character.to_unresolved char.base)
    }
 
@@ -146,6 +198,7 @@ decoder =
       |> (Json.Decode.Pipeline.hardcoded -1)
       |> (Json.Decode.Pipeline.hardcoded False)
       |> (Json.Decode.Pipeline.hardcoded True)
+      |> (Json.Decode.Pipeline.hardcoded (Set.empty))
       |>
          (Json.Decode.Pipeline.required
             "bas"

@@ -31,22 +31,29 @@ apply_to model ref =
       (
          case (model.edited_char, (Dict.get ref model.glyphs)) of
             ((Just char), (Just glyph)) ->
-               let base_char = (Struct.Character.get_base_character char) in
+               let
+                  base_char = (Struct.Character.get_base_character char)
+                  updated_equipment =
+                     (BattleCharacters.Struct.Equipment.set_glyph
+                        (Struct.UI.get_glyph_slot model.ui)
+                        glyph
+                        (BattleCharacters.Struct.Character.get_equipment
+                           base_char
+                        )
+                     )
+               in
                {model |
                   edited_char =
                      (Just
-                        (Struct.Character.set_base_character
-                           (BattleCharacters.Struct.Character.set_equipment
-                              (BattleCharacters.Struct.Equipment.set_glyph
-                                 (Struct.UI.get_glyph_slot model.ui)
-                                 glyph
-                                 (BattleCharacters.Struct.Character.get_equipment
-                                    base_char
-                                 )
+                        (Struct.Character.set_invalid_glyph_family_indices
+                           updated_equipment
+                           (Struct.Character.set_base_character
+                              (BattleCharacters.Struct.Character.set_equipment
+                                 updated_equipment
+                                 base_char
                               )
-                              base_char
+                              char
                            )
-                           char
                         )
                      ),
                   ui =
