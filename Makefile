@@ -34,7 +34,7 @@ all: $(PREPROCESSOR_RESULT) build $(WWW_DIR) $(MODULES_WWW)
 
 upload_to:
 	$(MAKE) CONFIG_FILE=conf/tacticians.conf
-	scp -r $(WWW_DIR)/* procyon_:/static_content_node/www/
+	rsync -avz -L -e "ssh" $(WWW_DIR) procyon_:/static_content_node/
 
 build:
 	for module in $(MODULES_SRC) ; do \
