@@ -33,9 +33,11 @@ apply_to model ref =
             ((Just char), (Just glyph)) ->
                let
                   base_char = (Struct.Character.get_base_character char)
+                  (glyph_slot, glyph_modifier) =
+                        (Struct.UI.get_glyph_slot model.ui)
                   updated_equipment =
                      (BattleCharacters.Struct.Equipment.set_glyph
-                        (Struct.UI.get_glyph_slot model.ui)
+                        glyph_slot
                         glyph
                         (BattleCharacters.Struct.Character.get_equipment
                            base_char
@@ -45,7 +47,7 @@ apply_to model ref =
                {model |
                   edited_char =
                      (Just
-                        (Struct.Character.set_invalid_glyph_family_indices
+                        (Struct.Character.update_glyph_family_index_collections
                            updated_equipment
                            (Struct.Character.set_base_character
                               (BattleCharacters.Struct.Character.set_equipment

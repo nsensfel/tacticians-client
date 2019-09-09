@@ -14,6 +14,7 @@ import Update.SendRoster
 import Update.SetArmor
 import Update.SetGlyph
 import Update.SetGlyphBoard
+import Update.SetGlyphSlot
 import Update.SetName
 import Update.SetPortrait
 import Update.SetRequestedHelp
@@ -104,12 +105,7 @@ update event model =
          (Update.SetGlyph.apply_to new_model ref)
 
       (Struct.Event.ClickedOnGlyph index) ->
-         (Update.SelectTab.apply_to
-            {model |
-               ui = (Struct.UI.set_glyph_slot index model.ui)
-            }
-            Struct.UI.GlyphSelectionTab
-         )
+         (Update.SetGlyphSlot.apply_to index model)
 
       (Struct.Event.SelectedGlyphBoard ref) ->
          (Update.SetGlyphBoard.apply_to new_model ref)

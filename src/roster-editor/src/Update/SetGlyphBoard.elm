@@ -43,7 +43,7 @@ apply_to model ref =
                {model |
                   edited_char =
                      (Just
-                        (Struct.Character.set_invalid_glyph_family_indices
+                        (Struct.Character.update_glyph_family_index_collections
                            updated_equipment
                            (Struct.Character.set_base_character
                               (BattleCharacters.Struct.Character.set_equipment

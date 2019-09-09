@@ -9,10 +9,7 @@ module Struct.UI exposing
       reset_displayed_tab,
       -- Which glyph slot is being edited?
       set_glyph_slot,
-      get_glyph_slot,
-      -- Display Tile Costs
-      get_display_tile_cost,
-      toggle_display_tile_cost
+      get_glyph_slot
    )
 
 --------------------------------------------------------------------------------
@@ -31,8 +28,7 @@ type Tab =
 type alias Type =
    {
       displayed_tab : Tab,
-      glyph_slot : Int,
-      display_tile_cost : Bool
+      glyph_slot : (Int, Int)
    }
 
 --------------------------------------------------------------------------------
@@ -46,8 +42,7 @@ default : Type
 default =
    {
       displayed_tab = CharacterSelectionTab,
-      glyph_slot = -1,
-      display_tile_cost = False
+      glyph_slot = (-1, 0)
    }
 
 -- Tab -------------------------------------------------------------------------
@@ -60,16 +55,8 @@ set_displayed_tab tab ui = {ui | displayed_tab = tab}
 reset_displayed_tab : Type -> Type
 reset_displayed_tab ui = {ui | displayed_tab = CharacterSelectionTab}
 
-get_glyph_slot : Type -> Int
+get_glyph_slot : Type -> (Int, Int)
 get_glyph_slot ui = ui.glyph_slot
 
-set_glyph_slot : Int -> Type -> Type
-set_glyph_slot tab ui = {ui | glyph_slot = tab}
-
--- Tile Cost -------------------------------------------------------------------
-toggle_display_tile_cost : Type -> Type
-toggle_display_tile_cost ui =
-   {ui | display_tile_cost = (not ui.display_tile_cost)}
-
-get_display_tile_cost : Type -> Bool
-get_display_tile_cost ui = ui.display_tile_cost
+set_glyph_slot : (Int, Int) -> Type -> Type
+set_glyph_slot slot_and_factor ui = {ui | glyph_slot = slot_and_factor}

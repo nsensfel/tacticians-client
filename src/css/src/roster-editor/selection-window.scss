@@ -38,3 +38,11 @@
    width: 16em;
    display: block;
 }
+.roster-editor-forbidden-glyph
+{
+   background-color: $RED-5;
+   border-radius: 6px;
+   border: solid 1px $RED-0;
+   padding: 2px;
+}
+
