@@ -346,43 +346,46 @@ get_relevant_atts omnimods atts =
          (Html.Attributes.class "character-card-atts"),
          (Html.Attributes.class "roster-editor-atts")
       ]
-      (
-         [
-            (
-               let
-                  damage_multiplier =
-                     (Battle.Struct.Attributes.get_damage_multiplier atts)
-               in
-                  (Html.div
-                     [
-                        (Html.Attributes.class "omnimod-attack-mods")
-                     ]
-                     (List.map
-                        (
-                           \(s, i) ->
-                           (get_mod_html
-                              (
-                                 s,
-                                 (ceiling ((toFloat i) * damage_multiplier))
-                              )
+      [
+         (
+            let
+               damage_multiplier =
+                  (Battle.Struct.Attributes.get_damage_multiplier atts)
+            in
+               (Html.div
+                  [
+                     (Html.Attributes.class "omnimod-attack-mods")
+                  ]
+                  (List.map
+                     (
+                        \(s, i) ->
+                        (get_mod_html
+                           (
+                              s,
+                              (ceiling ((toFloat i) * damage_multiplier))
                            )
                         )
-                        (Battle.Struct.Omnimods.get_attack_mods omnimods)
                      )
+                     (Battle.Struct.Omnimods.get_attack_mods omnimods)
                   )
-            ),
-            (Html.div
-               [
-                  (Html.Attributes.class "omnimod-defense-mods")
-               ]
-               (List.map
-                  (get_mod_html)
-                  (Battle.Struct.Omnimods.get_defense_mods omnimods)
                )
+         ),
+         (Html.div
+            [
+               (Html.Attributes.class "omnimod-defense-mods")
+            ]
+            (List.map
+               (get_mod_html)
+               (Battle.Struct.Omnimods.get_defense_mods omnimods)
             )
-         ]
-         ++ (Battle.View.Attribute.get_true_all_html atts)
-      )
+         ),
+         (Html.div
+            [
+               (Html.Attributes.class "character-card-actual-attributes")
+            ]
+            (Battle.View.Attribute.get_true_all_html atts)
+         )
+      ]
    )
 
 --------------------------------------------------------------------------------

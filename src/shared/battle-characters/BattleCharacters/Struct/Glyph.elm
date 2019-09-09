@@ -5,6 +5,7 @@ module BattleCharacters.Struct.Glyph exposing
       find,
       get_name,
       get_id,
+      get_family_id,
       get_omnimods,
       none,
       default,
@@ -27,6 +28,7 @@ type alias Type =
    {
       id : String,
       name : String,
+      family_id : String,
       omnimods : Battle.Struct.Omnimods.Type
    }
 
@@ -48,6 +50,9 @@ find dict ref =
 get_id : Type -> Ref
 get_id g = g.id
 
+get_family_id : Type -> Ref
+get_family_id g = g.family_id
+
 get_name : Type -> String
 get_name g = g.name
 
@@ -60,6 +65,7 @@ decoder =
       Type
       |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "fam" Json.Decode.string)
       |> (Json.Decode.Pipeline.required "omni" Battle.Struct.Omnimods.decoder)
    )
 
@@ -68,6 +74,7 @@ none =
    {
       id = "0",
       name = "Empty",
+      family_id = "0",
       omnimods = (Battle.Struct.Omnimods.none)
    }
 
