@@ -21,7 +21,7 @@ import Battle.Struct.Omnimods
 import Battle.Struct.Attributes
 
 import Battle.View.Gauge
-import Battle.View.Attribute
+import Battle.View.Omnimods
 import Battle.View.DamageType
 
 -- Battle Characters -----------------------------------------------------------
@@ -227,11 +227,11 @@ get_movement_bar char_turn char =
          (get_inactive_movement_bar char)
 
 get_weapon_field_header : (
-      Float ->
+      Bool ->
       BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_field_header damage_multiplier weapon =
+get_weapon_field_header is_active weapon =
    (Html.div
       [
          (Html.Attributes.class "character-card-header")
@@ -241,7 +241,16 @@ get_weapon_field_header damage_multiplier weapon =
             [
             ]
             [
-               (Html.text (BattleCharacters.Struct.Weapon.get_name weapon))
+               (Html.text
+                  (
+                     (
+                        if (is_active)
+                        then "(Equipped) "
+                        else ""
+                     )
+                     ++ (BattleCharacters.Struct.Weapon.get_name weapon)
+                  )
+               )
             ]
          ),
          (Html.div
@@ -250,21 +259,7 @@ get_weapon_field_header damage_multiplier weapon =
             [
                (Html.text
                   (
-                     "~"
-                     ++
-                     (String.fromInt
-                        (ceiling
-                           (
-                              (toFloat
-                                 (BattleCharacters.Struct.Weapon.get_damage_sum
-                                    weapon
-                                 )
-                              )
-                              * damage_multiplier
-                           )
-                        )
-                     )
-                     ++ " dmg @ ["
+                     "["
                      ++
                      (String.fromInt
                         (BattleCharacters.Struct.Weapon.get_defense_range
@@ -288,82 +283,39 @@ get_weapon_field_header damage_multiplier weapon =
 
 get_weapon_details : (
       Battle.Struct.Omnimods.Type ->
-      Float ->
       BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_details omnimods damage_multiplier weapon =
+get_weapon_details other_wp_omnimods weapon =
    (Html.div
       [
          (Html.Attributes.class "character-card-weapon")
       ]
       [
-         (get_weapon_field_header damage_multiplier weapon),
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-attack-mods")
-            ]
-            (List.map
-               (\(k, v) ->
-                  (Battle.View.DamageType.get_html
-                     (Battle.Struct.DamageType.decode k)
-                     (ceiling ((toFloat v) * damage_multiplier))
-                  )
+         (get_weapon_field_header False weapon),
+         (Battle.View.Omnimods.get_html
+            (Battle.Struct.Omnimods.merge
+               (Battle.Struct.Omnimods.scale
+                  -1
+                  other_wp_omnimods
                )
-               (Battle.Struct.Omnimods.get_attack_mods omnimods)
+               (BattleCharacters.Struct.Weapon.get_omnimods weapon)
             )
          )
       ]
    )
 
 get_weapon_summary : (
-      Float ->
       BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_summary damage_multiplier weapon =
+get_weapon_summary weapon =
    (Html.div
       [
          (Html.Attributes.class "character-card-weapon-summary")
       ]
       [
-         (get_weapon_field_header damage_multiplier weapon)
-      ]
-   )
-
-get_armor_details : (
-      Battle.Struct.Omnimods.Type ->
-      BattleCharacters.Struct.Armor.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_armor_details omnimods armor =
-   (Html.div
-      [
-         (Html.Attributes.class "character-card-armor")
-      ]
-      [
-         (Html.div
-            [
-               (Html.Attributes.class "character-card-armor-name")
-            ]
-            [
-               (Html.text (BattleCharacters.Struct.Armor.get_name armor))
-            ]
-         ),
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-defense-mods")
-            ]
-            (List.map
-               (\(k, v) ->
-                  (Battle.View.DamageType.get_html
-                     (Battle.Struct.DamageType.decode k)
-                     v
-                  )
-               )
-               (Battle.Struct.Omnimods.get_defense_mods omnimods)
-            )
-         )
+         (get_weapon_field_header True weapon)
       ]
    )
 
@@ -425,6 +377,8 @@ get_summary_html char_turn player_ix char =
          )
       omnimods = (BattleCharacters.Struct.Character.get_omnimods base_char)
       equipment = (BattleCharacters.Struct.Character.get_equipment base_char)
+      active_weapon =
+         (BattleCharacters.Struct.Character.get_active_weapon base_char)
    in
       (Html.div
          [
@@ -451,25 +405,12 @@ get_summary_html char_turn player_ix char =
                   (get_statuses char)
                ]
             ),
+            (Battle.View.Omnimods.get_html
+               omnimods
+            ),
+            (get_weapon_summary active_weapon),
             (get_weapon_details
-               omnimods
-               damage_multiplier
-               (BattleCharacters.Struct.Character.get_active_weapon
-                  base_char
-               )
-            ),
-            (get_armor_details
-               omnimods
-               (BattleCharacters.Struct.Equipment.get_armor equipment)
-            ),
-            (Html.div
-               [(Html.Attributes.class "character-card-atts")]
-               (Battle.View.Attribute.get_all_but_gauges_html
-                  char_attributes
-               )
-            ),
-            (get_weapon_summary
-               damage_multiplier
+               (BattleCharacters.Struct.Weapon.get_omnimods active_weapon)
                (BattleCharacters.Struct.Character.get_inactive_weapon
                   base_char
                )
@@ -493,6 +434,8 @@ get_full_html player_ix char =
          )
       omnimods = (BattleCharacters.Struct.Character.get_omnimods base_char)
       equipment = (BattleCharacters.Struct.Character.get_equipment base_char)
+      active_weapon =
+         (BattleCharacters.Struct.Character.get_active_weapon base_char)
    in
       (Html.div
          [
@@ -520,25 +463,16 @@ get_full_html player_ix char =
                   (get_statuses char)
                ]
             ),
-            (get_weapon_details
+            (Battle.View.Omnimods.get_html
                omnimods
-               damage_multiplier
+            ),
+            (get_weapon_summary
                (BattleCharacters.Struct.Character.get_active_weapon
                   base_char
                )
             ),
-            (get_armor_details
-               omnimods
-               (BattleCharacters.Struct.Equipment.get_armor equipment)
-            ),
-            (Html.div
-               [(Html.Attributes.class "character-card-atts")]
-               (Battle.View.Attribute.get_all_but_gauges_html
-                  char_attributes
-               )
-            ),
-            (get_weapon_summary
-               damage_multiplier
+            (get_weapon_details
+               (BattleCharacters.Struct.Weapon.get_omnimods active_weapon)
                (BattleCharacters.Struct.Character.get_inactive_weapon
                   base_char
                )
