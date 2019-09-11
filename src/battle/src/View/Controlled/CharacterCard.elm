@@ -438,7 +438,15 @@ get_summary_html char_turn player_ix char =
                ]
             ),
             (Battle.View.Omnimods.get_html
-               omnimods
+               (Battle.Struct.Omnimods.apply_damage_modifier
+                  (Battle.Struct.Omnimods.get_attribute_mod
+                     (Battle.Struct.Attributes.encode_category
+                        Battle.Struct.Attributes.DamageModifier
+                     )
+                     omnimods
+                  )
+                  omnimods
+               )
             ),
             (get_weapon_summary active_weapon),
             (get_weapon_details
@@ -497,7 +505,15 @@ get_full_html player_ix char =
                ]
             ),
             (Battle.View.Omnimods.get_html
-               omnimods
+               (Battle.Struct.Omnimods.apply_damage_modifier
+                  (Battle.Struct.Omnimods.get_attribute_mod
+                     (Battle.Struct.Attributes.encode_category
+                        Battle.Struct.Attributes.DamageModifier
+                     )
+                     omnimods
+                  )
+                  omnimods
+               )
             ),
             (get_weapon_summary
                (BattleCharacters.Struct.Character.get_active_weapon
