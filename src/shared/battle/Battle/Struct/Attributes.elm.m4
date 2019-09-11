@@ -168,29 +168,31 @@ default =
       damage_modifier = 0
    }
 
+m4_include(__MAKEFILE_DATA_DIR/names.m4.conf)
+
 decode_category : String -> Category
 decode_category str =
    case str of
-      "mheal" -> MaxHealth
-      "mpts" -> MovementPoints
-      "dodg" -> Dodges
-      "pary" -> Parries
-      "accu" -> Accuracy
-      "dhit" -> DoubleHits
-      "dmgm" -> DamageModifier
+      "__SN_MAX_HEALTH" -> MaxHealth
+      "__SN_MOVEMENT_POINTS" -> MovementPoints
+      "__SN_DODGE" -> Dodges
+      "__SN_PARRY" -> Parries
+      "__SN_ACCURACY" -> Accuracy
+      "__SN_DOUBLE_HITS" -> DoubleHits
+      "__SN_DAMAGE_MODIFIER" -> DamageModifier
       _  -> CriticalHits
 
 encode_category : Category -> String
 encode_category cat =
    case cat of
-      MaxHealth -> "mheal"
-      MovementPoints -> "mpts"
-      Dodges -> "dodg"
-      Parries -> "pary"
-      Accuracy -> "accu"
-      DoubleHits -> "dhit"
-      CriticalHits -> "crit"
-      DamageModifier -> "dmgm"
+      MaxHealth -> "__SN_MAX_HEALTH"
+      MovementPoints -> "__SN_MOVEMENT_POINTS"
+      Dodges -> "__SN_DODGE"
+      Parries -> "__SN_PARRY"
+      Accuracy -> "__SN_ACCURACY"
+      DoubleHits -> "__SN_DOUBLE_HITS"
+      CriticalHits -> "__SN_CRITICAL_HIT"
+      DamageModifier -> "__SN_DAMAGE_MODIFIER"
 
 is_percent : Category -> Bool
 is_percent cat = ((cat /= MaxHealth) && (cat /= MovementPoints))

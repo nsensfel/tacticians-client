@@ -8,9 +8,11 @@ module Battle.Struct.Omnimods exposing
       get_attack_damage,
       get_damage_sum,
       get_attribute_mods,
+      get_attribute_mod,
       get_attack_mods,
       get_defense_mods,
       get_all_mods,
+      apply_damage_modifier,
       scale,
       decoder
    )
@@ -174,6 +176,16 @@ get_attack_damage dmg_modifier atk_omni def_omni =
          atk_omni.attack
       )
 
+apply_damage_modifier : Int -> Type -> Type
+apply_damage_modifier damage_modifier omnimods =
+   {omnimods |
+      attack =
+         (Dict.map
+            (scale_dict_value ((toFloat damage_modifier) / 100.0))
+            omnimods.attack
+         )
+   }
+
 scale : Float -> Type -> Type
 scale multiplier omnimods =
    {omnimods |
@@ -182,6 +194,12 @@ scale multiplier omnimods =
       defense =
          (Dict.map (scale_dict_value multiplier) omnimods.defense)
    }
+
+get_attribute_mod : String -> Type -> Int
+get_attribute_mod att_name omnimods =
+   case (Dict.get att_name omnimods.attributes) of
+      (Just e) -> e
+      Nothing -> 0
 
 get_attribute_mods : Type -> (List (String, Int))
 get_attribute_mods omnimods = (Dict.toList omnimods.attributes)
