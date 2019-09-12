@@ -41,13 +41,6 @@ get_html attribute value =
                (Struct.HelpRequest.Attribute attribute)
             )
          ),
-         (Html.Attributes.class "omnimod-icon"),
-         (Html.Attributes.class
-            (
-               "omnimod-icon-"
-               ++ (Battle.Struct.Attributes.encode_category attribute)
-            )
-         ),
          (Html.Attributes.class
             (
                if (value < 0)
@@ -60,12 +53,32 @@ get_html attribute value =
          )
       ]
       [
-         (Html.text
-            (
-               if (Battle.Struct.Attributes.is_percent attribute)
-               then ((String.fromInt value) ++ "%")
-               else (String.fromInt value)
-            )
+         (Html.div
+            [
+               (Html.Attributes.class "omnimod-icon"),
+               (Html.Attributes.class
+                  (
+                     "omnimod-icon-"
+                     ++ (Battle.Struct.Attributes.encode_category attribute)
+                  )
+               )
+            ]
+            [
+            ]
+         ),
+         (Html.div
+            [
+               (Html.Attributes.class "omnimod-value")
+            ]
+            [
+               (Html.text
+                  (
+                     if (Battle.Struct.Attributes.is_percent attribute)
+                     then ((String.fromInt value) ++ "%")
+                     else (String.fromInt value)
+                  )
+               )
+            ]
          )
       ]
    )
@@ -83,13 +96,6 @@ get_signed_html attribute value =
             then (Html.Attributes.class "omnimod-negative")
             else (Html.Attributes.class "omnimod-positive")
          ),
-         (Html.Attributes.class "omnimod-icon"),
-         (Html.Attributes.class
-            (
-               "omnimod-icon-"
-               ++ (Battle.Struct.Attributes.encode_category attribute)
-            )
-         ),
          (Html.Events.onClick
             (Struct.Event.RequestedHelp
                (Struct.HelpRequest.Attribute attribute)
@@ -97,20 +103,40 @@ get_signed_html attribute value =
          )
       ]
       [
-         (Html.text
-            (
-               (
-                  if (value > 0)
-                  then ("+" ++ (String.fromInt value))
-                  else (String.fromInt value)
+         (Html.div
+            [
+               (Html.Attributes.class "omnimod-icon"),
+               (Html.Attributes.class
+                  (
+                     "omnimod-icon-"
+                     ++ (Battle.Struct.Attributes.encode_category attribute)
+                  )
                )
-               ++
-               (
-                  if (Battle.Struct.Attributes.is_percent attribute)
-                  then "%"
-                  else ""
+            ]
+            [
+            ]
+         ),
+         (Html.div
+            [
+               (Html.Attributes.class "omnimod-value")
+            ]
+            [
+               (Html.text
+                  (
+                     (
+                        if (value > 0)
+                        then ("+" ++ (String.fromInt value))
+                        else (String.fromInt value)
+                     )
+                     ++
+                     (
+                        if (Battle.Struct.Attributes.is_percent attribute)
+                        then "%"
+                        else ""
+                     )
+                  )
                )
-            )
+            ]
          )
       ]
    )
