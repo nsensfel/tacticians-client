@@ -33,6 +33,13 @@ get_html : (
 get_html damage_type value =
    (Html.div
       [
+         (Html.Attributes.class "omnimod-icon"),
+         (Html.Attributes.class
+            (
+               "omnimod-icon-"
+               ++ (Battle.Struct.DamageType.encode damage_type)
+            )
+         ),
          (Html.Events.onClick
             (Struct.Event.RequestedHelp
                (Struct.HelpRequest.DamageType damage_type)
@@ -40,27 +47,7 @@ get_html damage_type value =
          )
       ]
       [
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-icon"),
-               (Html.Attributes.class
-                  (
-                     "omnimod-icon-"
-                     ++ (Battle.Struct.DamageType.encode damage_type)
-                  )
-               )
-            ]
-            [
-            ]
-         ),
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-value")
-            ]
-            [
-               (Html.text (String.fromInt value))
-            ]
-         )
+         (Html.text (String.fromInt value))
       ]
    )
 
@@ -77,6 +64,13 @@ get_signed_html damage_type value =
             then (Html.Attributes.class "omnimod-negative")
             else (Html.Attributes.class "omnimod-positive")
          ),
+         (Html.Attributes.class "omnimod-icon"),
+         (Html.Attributes.class
+            (
+               "omnimod-icon-"
+               ++ (Battle.Struct.DamageType.encode damage_type)
+            )
+         ),
          (Html.Events.onClick
             (Struct.Event.RequestedHelp
                (Struct.HelpRequest.DamageType damage_type)
@@ -84,32 +78,12 @@ get_signed_html damage_type value =
          )
       ]
       [
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-icon"),
-               (Html.Attributes.class
-                  (
-                     "omnimod-icon-"
-                     ++ (Battle.Struct.DamageType.encode damage_type)
-                  )
-               )
-            ]
-            [
-            ]
-         ),
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-value")
-            ]
-            [
-               (Html.text
-                  (
-                     if (value > 0)
-                     then ("+" ++ (String.fromInt value))
-                     else (String.fromInt value)
-                  )
-               )
-            ]
+         (Html.text
+            (
+               if (value > 0)
+               then ("+" ++ (String.fromInt value))
+               else (String.fromInt value)
+            )
          )
       ]
    )
