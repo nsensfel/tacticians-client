@@ -19,8 +19,11 @@ module Battle.Struct.Attributes exposing
       get_true_double_hits,
       get_true_critical_hits,
       get_true_damage_modifier,
+      get,
+      get_true,
       decode_category,
       encode_category,
+      get_categories,
       mod,
       default,
       is_percent
@@ -154,19 +157,58 @@ mod cat v t =
       CriticalHits -> (mod_critical_hits v t)
       DamageModifier -> (mod_damage_modifier v t)
 
--- TODO: Link this to the server using tacticians-data.
+get : Category -> Type -> Int
+get cat t =
+   case cat of
+      MaxHealth -> (get_max_health t)
+      MovementPoints -> (get_movement_points t)
+      Dodges -> (get_dodges t)
+      Parries -> (get_parries t)
+      Accuracy -> (get_accuracy t)
+      DoubleHits -> (get_double_hits t)
+      CriticalHits -> (get_critical_hits t)
+      DamageModifier -> (get_damage_modifier t)
+
+get_true : Category -> Type -> Int
+get_true cat t =
+   case cat of
+      MaxHealth -> (get_true_max_health t)
+      MovementPoints -> (get_true_movement_points t)
+      Dodges -> (get_true_dodges t)
+      Parries -> (get_true_parries t)
+      Accuracy -> (get_true_accuracy t)
+      DoubleHits -> (get_true_double_hits t)
+      CriticalHits -> (get_true_critical_hits t)
+      DamageModifier -> (get_true_damage_modifier t)
+
+get_categories : (List Category)
+get_categories =
+   [
+      MovementPoints,
+      MaxHealth,
+      Dodges,
+      Parries,
+      Accuracy,
+      DoubleHits,
+      CriticalHits,
+      DamageModifier
+   ]
+
+m4_include(__MAKEFILE_DATA_DIR/attributes.m4.conf)
+
 default : Type
 default =
    {
-      movement_points = 8,
-      max_health = 1,
-      dodges = 0,
-      parries = 0,
-      accuracy = 0,
-      double_hits = 0,
-      critical_hits = 0,
-      damage_modifier = 0
+      movement_points = __ATT_MOVEMENT_POINTS_MIN,
+      max_health = __ATT_MAX_HEALTH_MIN,
+      dodges = __ATT_DODGE_MIN,
+      parries = __ATT_PARRY_MIN,
+      accuracy = __ATT_ACCURACY_MIN,
+      double_hits = __ATT_DOUBLE_HITS_MIN,
+      critical_hits = __ATT_CRITICAL_HIT_MIN,
+      damage_modifier = __ATT_DAMAGE_MODIFIER_MIN
    }
+
 
 m4_include(__MAKEFILE_DATA_DIR/names.m4.conf)
 

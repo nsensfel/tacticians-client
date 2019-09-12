@@ -3,6 +3,7 @@ module Battle.Struct.Omnimods exposing
       Type,
       new,
       merge,
+      merge_attributes,
       none,
       apply_to_attributes,
       get_attack_damage,
@@ -119,6 +120,25 @@ merge omni_a omni_b =
       attack = (merge_mods omni_a.attack omni_b.attack),
       defense = (merge_mods omni_a.defense omni_b.defense)
    }
+
+merge_attributes : Battle.Struct.Attributes.Type -> Type -> Type
+merge_attributes attributes omnimods =
+   (merge
+      omnimods
+      (new
+         (List.map
+            (\att ->
+               (
+                  (Battle.Struct.Attributes.encode_category att),
+                  (Battle.Struct.Attributes.get_true att attributes)
+               )
+            )
+            (Battle.Struct.Attributes.get_categories)
+         )
+         []
+         []
+      )
+   )
 
 apply_to_attributes : (
       Type ->

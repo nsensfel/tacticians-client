@@ -144,14 +144,18 @@ get_user_friendly_html : (
    )
 get_user_friendly_html omnimods =
    let
-      -- TODO: Add minimal values to omnimods (e.g. +1 to health).
+      omnimods_with_mins =
+         (Battle.Struct.Omnimods.merge_attributes
+            (Battle.Struct.Attributes.default)
+            omnimods
+         )
       scaled_omnimods =
          (Battle.Struct.Omnimods.apply_damage_modifier
             (Battle.Struct.Omnimods.get_attribute_mod
                Battle.Struct.Attributes.DamageModifier
-               omnimods
+               omnimods_with_mins
             )
-            omnimods
+            omnimods_with_mins
          )
    in
       (Html.div
@@ -167,7 +171,7 @@ get_user_friendly_html omnimods =
                   (\(k, v) ->
                      (Battle.View.DamageType.get_html
                         (Battle.Struct.DamageType.decode k)
-                        v
+                        (max 0 v)
                      )
                   )
                   (Battle.Struct.Omnimods.get_attack_mods scaled_omnimods)
@@ -181,10 +185,10 @@ get_user_friendly_html omnimods =
                   (\(k, v) ->
                      (Battle.View.DamageType.get_html
                         (Battle.Struct.DamageType.decode k)
-                        v
+                        (max 0 v)
                      )
                   )
-                  (Battle.Struct.Omnimods.get_defense_mods omnimods)
+                  (Battle.Struct.Omnimods.get_defense_mods scaled_omnimods)
                )
             ),
             (Html.div
@@ -195,10 +199,10 @@ get_user_friendly_html omnimods =
                   (\(k, v) ->
                      (Battle.View.Attribute.get_html
                         (Battle.Struct.Attributes.decode_category k)
-                        v
+                        (max 0 v)
                      )
                   )
-                  (Battle.Struct.Omnimods.get_attribute_mods omnimods)
+                  (Battle.Struct.Omnimods.get_attribute_mods scaled_omnimods)
                )
             )
          ]
