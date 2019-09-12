@@ -195,9 +195,14 @@ scale multiplier omnimods =
          (Dict.map (scale_dict_value multiplier) omnimods.defense)
    }
 
-get_attribute_mod : String -> Type -> Int
-get_attribute_mod att_name omnimods =
-   case (Dict.get att_name omnimods.attributes) of
+get_attribute_mod : Battle.Struct.Attributes.Category -> Type -> Int
+get_attribute_mod att omnimods =
+   case
+      (Dict.get
+         (Battle.Struct.Attributes.encode_category att)
+         omnimods.attributes
+      )
+   of
       (Just e) -> e
       Nothing -> 0
 

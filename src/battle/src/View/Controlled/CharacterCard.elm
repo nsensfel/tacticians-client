@@ -281,73 +281,44 @@ get_weapon_field_header is_active weapon =
       ]
    )
 
-get_weapon_details : (
+get_inactive_weapon_details : (
       Battle.Struct.Omnimods.Type ->
       Battle.Struct.Omnimods.Type ->
       BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_details omnimods other_wp_omnimods weapon =
-   let
-      other_wp_omnimods_scaled =
-         (Battle.Struct.Omnimods.scale
-            -1
-            (Battle.Struct.Omnimods.apply_damage_modifier
-               (Battle.Struct.Omnimods.get_attribute_mod
-                  (Battle.Struct.Attributes.encode_category
-                     Battle.Struct.Attributes.DamageModifier
-                  )
+get_inactive_weapon_details omnimods other_wp_omnimods weapon =
+   (Html.div
+      [
+         (Html.Attributes.class "character-card-weapon")
+      ]
+      [
+         (get_weapon_field_header False weapon),
+         (Battle.View.Omnimods.get_user_friendly_html
+            (Battle.Struct.Omnimods.merge
+               (Battle.Struct.Omnimods.merge
+                  (Battle.Struct.Omnimods.scale -1 other_wp_omnimods)
                   omnimods
                )
-               other_wp_omnimods
+               (BattleCharacters.Struct.Weapon.get_omnimods weapon)
             )
          )
-      omnimods_without_other_wp =
-         (Battle.Struct.Omnimods.merge
-            (Battle.Struct.Omnimods.scale -1 other_wp_omnimods)
-            omnimods
-         )
-      this_wp_omnimods = (BattleCharacters.Struct.Weapon.get_omnimods weapon)
-      omnimods_with_this_wp =
-         (Battle.Struct.Omnimods.merge
-            omnimods_without_other_wp
-            this_wp_omnimods
-         )
-   in
-      (Html.div
-         [
-            (Html.Attributes.class "character-card-weapon")
-         ]
-         [
-            (get_weapon_field_header False weapon),
-            (Battle.View.Omnimods.get_html
-               (Battle.Struct.Omnimods.merge
-                  other_wp_omnimods_scaled
-                  (Battle.Struct.Omnimods.apply_damage_modifier
-                     (Battle.Struct.Omnimods.get_attribute_mod
-                        (Battle.Struct.Attributes.encode_category
-                           Battle.Struct.Attributes.DamageModifier
-                        )
-                        omnimods_with_this_wp
-                     )
-                     this_wp_omnimods
-                  )
-               )
-            )
-         ]
-      )
+      ]
+   )
 
-get_weapon_summary : (
+get_active_weapon_details : (
+      Battle.Struct.Omnimods.Type ->
       BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_summary weapon =
+get_active_weapon_details omnimods weapon =
    (Html.div
       [
          (Html.Attributes.class "character-card-weapon-summary")
       ]
       [
-         (get_weapon_field_header True weapon)
+         (get_weapon_field_header True weapon),
+         (Battle.View.Omnimods.get_user_friendly_html omnimods)
       ]
    )
 
@@ -437,19 +408,8 @@ get_summary_html char_turn player_ix char =
                   (get_statuses char)
                ]
             ),
-            (Battle.View.Omnimods.get_html
-               (Battle.Struct.Omnimods.apply_damage_modifier
-                  (Battle.Struct.Omnimods.get_attribute_mod
-                     (Battle.Struct.Attributes.encode_category
-                        Battle.Struct.Attributes.DamageModifier
-                     )
-                     omnimods
-                  )
-                  omnimods
-               )
-            ),
-            (get_weapon_summary active_weapon),
-            (get_weapon_details
+            (get_active_weapon_details omnimods active_weapon),
+            (get_inactive_weapon_details
                omnimods
                (BattleCharacters.Struct.Weapon.get_omnimods active_weapon)
                (BattleCharacters.Struct.Character.get_inactive_weapon
@@ -504,23 +464,8 @@ get_full_html player_ix char =
                   (get_statuses char)
                ]
             ),
-            (Battle.View.Omnimods.get_html
-               (Battle.Struct.Omnimods.apply_damage_modifier
-                  (Battle.Struct.Omnimods.get_attribute_mod
-                     (Battle.Struct.Attributes.encode_category
-                        Battle.Struct.Attributes.DamageModifier
-                     )
-                     omnimods
-                  )
-                  omnimods
-               )
-            ),
-            (get_weapon_summary
-               (BattleCharacters.Struct.Character.get_active_weapon
-                  base_char
-               )
-            ),
-            (get_weapon_details
+            (get_active_weapon_details omnimods active_weapon),
+            (get_inactive_weapon_details
                omnimods
                (BattleCharacters.Struct.Weapon.get_omnimods active_weapon)
                (BattleCharacters.Struct.Character.get_inactive_weapon

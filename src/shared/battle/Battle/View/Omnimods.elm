@@ -1,7 +1,8 @@
 module Battle.View.Omnimods exposing
    (
       get_html_with_modifier,
-      get_html
+      get_html,
+      get_user_friendly_html
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -136,3 +137,69 @@ get_html omnimods =
          )
       ]
    )
+
+get_user_friendly_html : (
+      Battle.Struct.Omnimods.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_user_friendly_html omnimods =
+   let
+      -- TODO: Add minimal values to omnimods (e.g. +1 to health).
+      scaled_omnimods =
+         (Battle.Struct.Omnimods.apply_damage_modifier
+            (Battle.Struct.Omnimods.get_attribute_mod
+               Battle.Struct.Attributes.DamageModifier
+               omnimods
+            )
+            omnimods
+         )
+   in
+      (Html.div
+         [
+            (Html.Attributes.class "omnimod-listing")
+         ]
+         [
+            (Html.div
+               [
+                  (Html.Attributes.class "omnimod-attack-mods")
+               ]
+               (List.map
+                  (\(k, v) ->
+                     (Battle.View.DamageType.get_html
+                        (Battle.Struct.DamageType.decode k)
+                        v
+                     )
+                  )
+                  (Battle.Struct.Omnimods.get_attack_mods scaled_omnimods)
+               )
+            ),
+            (Html.div
+               [
+                  (Html.Attributes.class "omnimod-defense-mods")
+               ]
+               (List.map
+                  (\(k, v) ->
+                     (Battle.View.DamageType.get_html
+                        (Battle.Struct.DamageType.decode k)
+                        v
+                     )
+                  )
+                  (Battle.Struct.Omnimods.get_defense_mods omnimods)
+               )
+            ),
+            (Html.div
+               [
+                  (Html.Attributes.class "omnimod-attributes-mods")
+               ]
+               (List.map
+                  (\(k, v) ->
+                     (Battle.View.Attribute.get_html
+                        (Battle.Struct.Attributes.decode_category k)
+                        v
+                     )
+                  )
+                  (Battle.Struct.Omnimods.get_attribute_mods omnimods)
+               )
+            )
+         ]
+      )
