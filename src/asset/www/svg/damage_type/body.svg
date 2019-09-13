@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+    width="16mm"
+    height="16mm"
+    viewBox="0 0 16 16"
+    version="1.1"
+    id="svg8"
+    inkscape:version="0.92.2 2405546, 2018-03-11"
+    sodipodi:docname="body.svg">
+   <defs
+       id="defs2" />
+   <sodipodi:namedview
+       id="base"
+       pagecolor="#ffffff"
+       bordercolor="#666666"
+       borderopacity="1.0"
+       inkscape:pageopacity="0.0"
+       inkscape:pageshadow="2"
+       inkscape:zoom="8.00001"
+       inkscape:cx="16.3856"
+       inkscape:cy="23.2951"
+       inkscape:document-units="mm"
+       inkscape:current-layer="layer1"
+       showgrid="false"
+       inkscape:snap-global="false"
+       inkscape:snap-bbox="true"
+       inkscape:bbox-nodes="false"
+       inkscape:window-width="1678"
+       inkscape:window-height="1029"
+       inkscape:window-x="1"
+       inkscape:window-y="516"
+       inkscape:window-maximized="0"
+       inkscape:pagecheckerboard="true" />
+   <metadata
+       id="metadata5">
+      <rdf:RDF>
+         <cc:Work
+             rdf:about="">
+            <dc:format>image/svg+xml</dc:format>
+            <dc:type
+                rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+            <dc:title></dc:title>
+         </cc:Work>
+      </rdf:RDF>
+   </metadata>
+   <g
+       inkscape:label="Layer 1"
+       inkscape:groupmode="layer"
+       id="layer1"
+       transform="translate(0,-281)">
+      <g
+          id="g968"
+          transform="translate(0,-0.250048)">
+         <path
+             id="path916-9"
+             transform="matrix(0.264583,0,0,0.264583,0,281)"
+             d="M 30.2363,29.7227 A 22.6262,29.3137 0 0 0 7.60938,59.0371 22.6262,29.3137 0 0 0 7.64844,60.4727 H 52.8086 A 22.6262,29.3137 0 0 0 52.8633,59.0371 22.6262,29.3137 0 0 0 30.2363,29.7227 Z"
+             style="fill:#e9ddaf;stroke:#483e37;stroke-width:1.889766;stroke-linecap:square;paint-order:markers stroke fill"
+             inkscape:connector-curvature="0" />
+         <ellipse
+             ry="3.87344"
+             rx="3.87345"
+             cy="286.966"
+             cx="8"
+             id="path916"
+             style="fill:#e9ddaf;stroke:#483e37;stroke-width:0.5;stroke-linecap:square;paint-order:markers stroke fill" />
+      </g>
+   </g>
+</svg>
