@@ -37,22 +37,16 @@ get_html damage_type value =
             (Struct.Event.RequestedHelp
                (Struct.HelpRequest.DamageType damage_type)
             )
+         ),
+         (Html.Attributes.class "omnimod-icon"),
+         (Html.Attributes.class
+            (
+               "omnimod-icon-"
+               ++ (Battle.Struct.DamageType.encode damage_type)
+            )
          )
       ]
       [
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-icon"),
-               (Html.Attributes.class
-                  (
-                     "omnimod-icon-"
-                     ++ (Battle.Struct.DamageType.encode damage_type)
-                  )
-               )
-            ]
-            [
-            ]
-         ),
          (Html.div
             [
                (Html.Attributes.class "omnimod-value")
@@ -81,22 +75,16 @@ get_signed_html damage_type value =
             (Struct.Event.RequestedHelp
                (Struct.HelpRequest.DamageType damage_type)
             )
+         ),
+         (Html.Attributes.class "omnimod-icon"),
+         (Html.Attributes.class
+            (
+               "omnimod-icon-"
+               ++ (Battle.Struct.DamageType.encode damage_type)
+            )
          )
       ]
       [
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-icon"),
-               (Html.Attributes.class
-                  (
-                     "omnimod-icon-"
-                     ++ (Battle.Struct.DamageType.encode damage_type)
-                  )
-               )
-            ]
-            [
-            ]
-         ),
          (Html.div
             [
                (Html.Attributes.class "omnimod-value")

@@ -50,22 +50,16 @@ get_html attribute value =
                   then "omnimod-positive-value"
                   else "omnimod-nil-value"
             )
+         ),
+         (Html.Attributes.class "omnimod-icon"),
+         (Html.Attributes.class
+            (
+               "omnimod-icon-"
+               ++ (Battle.Struct.Attributes.encode_category attribute)
+            )
          )
       ]
       [
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-icon"),
-               (Html.Attributes.class
-                  (
-                     "omnimod-icon-"
-                     ++ (Battle.Struct.Attributes.encode_category attribute)
-                  )
-               )
-            ]
-            [
-            ]
-         ),
          (Html.div
             [
                (Html.Attributes.class "omnimod-value")
@@ -100,22 +94,16 @@ get_signed_html attribute value =
             (Struct.Event.RequestedHelp
                (Struct.HelpRequest.Attribute attribute)
             )
+         ),
+         (Html.Attributes.class "omnimod-icon"),
+         (Html.Attributes.class
+            (
+               "omnimod-icon-"
+               ++ (Battle.Struct.Attributes.encode_category attribute)
+            )
          )
       ]
       [
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-icon"),
-               (Html.Attributes.class
-                  (
-                     "omnimod-icon-"
-                     ++ (Battle.Struct.Attributes.encode_category attribute)
-                  )
-               )
-            ]
-            [
-            ]
-         ),
          (Html.div
             [
                (Html.Attributes.class "omnimod-value")

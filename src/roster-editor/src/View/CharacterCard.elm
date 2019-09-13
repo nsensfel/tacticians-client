@@ -345,59 +345,6 @@ get_glyph_board_details has_no_invalid_glyphs board =
       ]
    )
 
-get_relevant_atts : (
-      Battle.Struct.Omnimods.Type ->
-      Battle.Struct.Attributes.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_relevant_atts omnimods atts =
-   (Html.div
-      [
-         (Html.Attributes.class "character-card-atts"),
-         (Html.Attributes.class "roster-editor-atts")
-      ]
-      [
-         (
-            let
-               damage_multiplier =
-                  (Battle.Struct.Attributes.get_damage_multiplier atts)
-            in
-               (Html.div
-                  [
-                     (Html.Attributes.class "omnimod-attack-mods")
-                  ]
-                  (List.map
-                     (
-                        \(s, i) ->
-                        (get_mod_html
-                           (
-                              s,
-                              (ceiling ((toFloat i) * damage_multiplier))
-                           )
-                        )
-                     )
-                     (Battle.Struct.Omnimods.get_attack_mods omnimods)
-                  )
-               )
-         ),
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-defense-mods")
-            ]
-            (List.map
-               (get_mod_html)
-               (Battle.Struct.Omnimods.get_defense_mods omnimods)
-            )
-         ),
-         (Html.div
-            [
-               (Html.Attributes.class "character-card-actual-attributes")
-            ]
-            (Battle.View.Attribute.get_true_all_html atts)
-         )
-      ]
-   )
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -520,6 +467,6 @@ get_full_html current_tab char =
                )
                (BattleCharacters.Struct.Equipment.get_glyph_board equipment)
             ),
-            (get_relevant_atts omnimods char_attributes)
+            (Battle.View.Omnimods.get_user_friendly_html omnimods)
          ]
       )

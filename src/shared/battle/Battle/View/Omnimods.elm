@@ -123,7 +123,7 @@ get_html omnimods =
          ),
          (Html.div
             [
-               (Html.Attributes.class "omnimod-attributes-mods")
+               (Html.Attributes.class "omnimod-attribute-mods")
             ]
             (List.map
                (\(k, v) ->
@@ -193,7 +193,7 @@ get_user_friendly_html omnimods =
             ),
             (Html.div
                [
-                  (Html.Attributes.class "omnimod-attributes-mods")
+                  (Html.Attributes.class "omnimod-attribute-mods")
                ]
                (List.map
                   (\(k, v) ->

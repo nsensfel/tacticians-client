@@ -1,3 +1,5 @@
+@import 'colors';
+
 .omnimod-icon
 {
    display: inline-block;
@@ -7,6 +9,19 @@
    background-repeat: no-repeat;
    vertical-align: middle;
    background-position: center;
+}
+
+.omnimod-attack-mods .omnimod-icon,
+.omnimod-defense-mods .omnimod-icon,
+.omnimod-attribute-mods .omnimod-icon
+{
+   background-size: 2em;
+   background-position: 3.1em;
+}
+
+.omnimod-value
+{
+   display: inline-block;
 }
 
 .omnimod-icon-dmg,
@@ -40,13 +55,18 @@
    background-image: url(/asset/svg/damage_type/piercing.svg);
 }
 
+.omnimod-defense-mods
+{
+   background-size: 1.5em, 2em;
+   background-position: 3.4em, 3.1em;
+}
+
 .omnimod-defense-mods .omnimod-icon-slh
 {
    background-image:
       url(/asset/svg/damage_type/slash.svg),
       url(/asset/svg/damage_type/shield.svg)
    ;
-   background-size: 1em, 1.5em;
 }
 
 .omnimod-defense-mods .omnimod-icon-blu
@@ -55,7 +75,6 @@
       url(/asset/svg/damage_type/impact.svg),
       url(/asset/svg/damage_type/shield.svg)
    ;
-   background-size: 1em, 1.5em;
 }
 
 .omnimod-defense-mods .omnimod-icon-pie
@@ -64,16 +83,6 @@
       url(/asset/svg/damage_type/piercing.svg),
       url(/asset/svg/damage_type/shield.svg)
    ;
-   background-size: 1em, 1.5em;
-}
-
-.omnimod-defense-mods .omnimod-icon-bse
-{
-   background-image:
-      url(/asset/svg/damage_type/base.svg),
-      url(/asset/svg/damage_type/shield.svg)
-   ;
-   background-size: 1em, 1.5em;
 }
 
 .omnimod-icon-dodg
@@ -153,11 +162,25 @@
 
 .omnimod-attack-mods,
 .omnimod-defense-mods,
-.omnimod-attribute-mods,
+.omnimod-attribute-mods
+{
+   display: block;
+}
+
 .omnimod-attack-mods > *,
 .omnimod-defense-mods > *,
 .omnimod-attribute-mods > *
 {
-   display: flex;
-   flex-wrap: wrap;
+   display: inline-block;
+   background-color: $GLAUQUE-3;
+   color: $GLAUQUE-0;
+   line-height: 1.5em;
+   border-radius: 6px;
+   border: solid 1px $GLAUQUE-2;
+   text-shadow: none;
+   padding: 2px;
+   padding-right: 1.7em;
+   text-align: center;
+   margin: 1px;
+   width: 5em;
 }
