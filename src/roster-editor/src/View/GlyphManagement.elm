@@ -11,6 +11,7 @@ import Html.Events
 
 -- Battle ----------------------------------------------------------------------
 import Battle.View.Omnimods
+import Battle.Struct.Omnimods
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Glyph
@@ -76,7 +77,10 @@ get_glyph_html invalid_family_ids modifier (index, glyph) =
             )
          ),
          (Battle.View.Omnimods.get_html
-            (BattleCharacters.Struct.Glyph.get_omnimods glyph)
+            (Battle.Struct.Omnimods.scale
+               ((toFloat modifier) / 100.0)
+               (BattleCharacters.Struct.Glyph.get_omnimods glyph)
+            )
          )
       ]
    )
