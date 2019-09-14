@@ -1,6 +1,6 @@
 module Battle.View.DamageType exposing
    (
-      get_html,
+      get_unsigned_html,
       get_signed_html
    )
 
@@ -21,55 +21,21 @@ import Struct.HelpRequest
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
--- EXPORTED --------------------------------------------------------------------
---------------------------------------------------------------------------------
 get_html : (
+      Bool ->
       Battle.Struct.DamageType.Type ->
       Int ->
       (Html.Html Struct.Event.Type)
    )
-get_html damage_type value =
+get_html signed damage_type value =
    (Html.div
       [
-         (Html.Events.onClick
-            (Struct.Event.RequestedHelp
-               (Struct.HelpRequest.DamageType damage_type)
-            )
-         ),
-         (Html.Attributes.class "omnimod-icon"),
          (Html.Attributes.class
             (
-               "omnimod-icon-"
-               ++ (Battle.Struct.DamageType.encode damage_type)
+               if (value < 0)
+               then "omnimod-negative-value"
+               else "omnimod-positive-value"
             )
-         )
-      ]
-      [
-         (Html.div
-            [
-               (Html.Attributes.class "omnimod-value")
-            ]
-            [
-               (Html.text (String.fromInt value))
-            ]
-         )
-      ]
-   )
-
-get_signed_html : (
-      Battle.Struct.DamageType.Type ->
-      Int ->
-      (Html.Html Struct.Event.Type)
-   )
-get_signed_html damage_type value =
-   (Html.div
-      [
-         (
-            if (value < 0)
-            then (Html.Attributes.class "omnimod-negative")
-            else (Html.Attributes.class "omnimod-positive")
          ),
          (Html.Events.onClick
             (Struct.Event.RequestedHelp
@@ -92,7 +58,7 @@ get_signed_html damage_type value =
             [
                (Html.text
                   (
-                     if (value > 0)
+                     if ((value > 0) && signed)
                      then ("+" ++ (String.fromInt value))
                      else (String.fromInt value)
                   )
@@ -102,16 +68,22 @@ get_signed_html damage_type value =
       ]
    )
 
-get_all_html : (
-      (List (Battle.Struct.DamageType.Type, Int)) ->
-      (List (Html.Html Struct.Event.Type))
-   )
-get_all_html damage_types =
-   (List.map (\(d, v) -> (get_html d v)) damage_types)
 
-get_all_signed_html : (
-      (List (Battle.Struct.DamageType.Type, Int)) ->
-      (List (Html.Html Struct.Event.Type))
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
+get_unsigned_html : (
+      Battle.Struct.DamageType.Type ->
+      Int ->
+      (Html.Html Struct.Event.Type)
    )
-get_all_signed_html damage_types =
-   (List.map (\(d, v) -> (get_signed_html d v)) damage_types)
+get_unsigned_html damage_type value =
+   (get_html False damage_type value)
+
+get_signed_html : (
+      Battle.Struct.DamageType.Type ->
+      Int ->
+      (Html.Html Struct.Event.Type)
+   )
+get_signed_html damage_type value =
+   (get_html True damage_type value)

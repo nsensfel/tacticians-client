@@ -75,7 +75,7 @@ get_glyph_html invalid_family_ids factor glyph =
       ]
       [
          (Html.text (BattleCharacters.Struct.Glyph.get_name glyph)),
-         (Battle.View.Omnimods.get_html
+         (Battle.View.Omnimods.get_signed_html
             (Battle.Struct.Omnimods.scale
                factor
                (BattleCharacters.Struct.Glyph.get_omnimods glyph)

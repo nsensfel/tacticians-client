@@ -1,7 +1,7 @@
 module Battle.View.Omnimods exposing
    (
-      get_html_with_modifier,
-      get_html,
+      get_signed_html,
+      get_unsigned_html,
       get_user_friendly_html
    )
 
@@ -30,12 +30,8 @@ import Struct.Event
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html_with_modifier : (
-      Float ->
-      Battle.Struct.Omnimods.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_html_with_modifier attack_multiplier omnimods =
+get_signed_html : Battle.Struct.Omnimods.Type -> (Html.Html Struct.Event.Type)
+get_signed_html omnimods =
    (Html.div
       [
          (Html.Attributes.class "omnimod-listing")
@@ -49,7 +45,7 @@ get_html_with_modifier attack_multiplier omnimods =
                (\(k, v) ->
                   (Battle.View.DamageType.get_signed_html
                      (Battle.Struct.DamageType.decode k)
-                     (ceiling ((toFloat v) * attack_multiplier))
+                     v
                   )
                )
                (Battle.Struct.Omnimods.get_attack_mods omnimods)
@@ -86,8 +82,8 @@ get_html_with_modifier attack_multiplier omnimods =
       ]
    )
 
-get_html : Battle.Struct.Omnimods.Type -> (Html.Html Struct.Event.Type)
-get_html omnimods =
+get_unsigned_html : Battle.Struct.Omnimods.Type -> (Html.Html Struct.Event.Type)
+get_unsigned_html omnimods =
    (Html.div
       [
          (Html.Attributes.class "omnimod-listing")
@@ -99,7 +95,7 @@ get_html omnimods =
             ]
             (List.map
                (\(k, v) ->
-                  (Battle.View.DamageType.get_signed_html
+                  (Battle.View.DamageType.get_unsigned_html
                      (Battle.Struct.DamageType.decode k)
                      v
                   )
@@ -113,7 +109,7 @@ get_html omnimods =
             ]
             (List.map
                (\(k, v) ->
-                  (Battle.View.DamageType.get_signed_html
+                  (Battle.View.DamageType.get_unsigned_html
                      (Battle.Struct.DamageType.decode k)
                      v
                   )
@@ -127,7 +123,7 @@ get_html omnimods =
             ]
             (List.map
                (\(k, v) ->
-                  (Battle.View.Attribute.get_signed_html
+                  (Battle.View.Attribute.get_unsigned_html
                      (Battle.Struct.Attributes.decode_category k)
                      v
                   )
@@ -169,7 +165,7 @@ get_user_friendly_html omnimods =
                ]
                (List.map
                   (\(k, v) ->
-                     (Battle.View.DamageType.get_html
+                     (Battle.View.DamageType.get_unsigned_html
                         (Battle.Struct.DamageType.decode k)
                         (max 0 v)
                      )
@@ -183,7 +179,7 @@ get_user_friendly_html omnimods =
                ]
                (List.map
                   (\(k, v) ->
-                     (Battle.View.DamageType.get_html
+                     (Battle.View.DamageType.get_unsigned_html
                         (Battle.Struct.DamageType.decode k)
                         (max 0 v)
                      )
@@ -197,7 +193,7 @@ get_user_friendly_html omnimods =
                ]
                (List.map
                   (\(k, v) ->
-                     (Battle.View.Attribute.get_html
+                     (Battle.View.Attribute.get_unsigned_html
                         (Battle.Struct.Attributes.decode_category k)
                         (max 0 v)
                      )

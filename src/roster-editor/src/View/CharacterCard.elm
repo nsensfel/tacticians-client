@@ -203,38 +203,6 @@ get_weapon_field_header is_active_wp weapon =
       ]
    )
 
-get_mod_html : (String, Int) -> (Html.Html Struct.Event.Type)
-get_mod_html mod =
-   let
-      (category, value) = mod
-   in
-      (Html.div
-         [
-            (Html.Attributes.class "info-card-mod"),
-            (Html.Attributes.class
-               (
-                  if (value < 0)
-                  then "omnimod-negative-value"
-                  else
-                     if (value > 0)
-                     then "omnimod-positive-value"
-                     else "omnimod-nil-value"
-               )
-            )
-         ]
-         [
-            (Html.div
-               [
-                  (Html.Attributes.class "omnimod-icon"),
-                  (Html.Attributes.class ("omnimod-icon-" ++ category))
-               ]
-               [
-               ]
-            ),
-            (Html.text (String.fromInt value))
-         ]
-      )
-
 get_weapon_details : (
       Struct.UI.Tab ->
       Bool ->
@@ -259,7 +227,7 @@ get_weapon_details current_tab is_active_wp weapon =
          (
             if (is_active_wp && (current_tab == Struct.UI.WeaponSelectionTab))
             then
-               (Battle.View.Omnimods.get_html
+               (Battle.View.Omnimods.get_signed_html
                   (BattleCharacters.Struct.Weapon.get_omnimods weapon)
                )
             else (Util.Html.nothing)
@@ -293,7 +261,7 @@ get_armor_details current_tab armor =
          (
             if (current_tab == Struct.UI.ArmorSelectionTab)
             then
-               (Battle.View.Omnimods.get_html
+               (Battle.View.Omnimods.get_signed_html
                   (BattleCharacters.Struct.Armor.get_omnimods armor)
                )
             else (Util.Html.nothing)
@@ -467,6 +435,14 @@ get_full_html current_tab char =
                )
                (BattleCharacters.Struct.Equipment.get_glyph_board equipment)
             ),
-            (Battle.View.Omnimods.get_user_friendly_html omnimods)
+            (Battle.View.Omnimods.get_unsigned_html
+               (Battle.Struct.Omnimods.apply_damage_modifier
+                  (Battle.Struct.Omnimods.get_attribute_mod
+                     Battle.Struct.Attributes.DamageModifier
+                     omnimods
+                  )
+                  omnimods
+               )
+            )
          ]
       )

@@ -76,7 +76,7 @@ get_glyph_html invalid_family_ids modifier (index, glyph) =
                ++ "%)"
             )
          ),
-         (Battle.View.Omnimods.get_html
+         (Battle.View.Omnimods.get_signed_html
             (Battle.Struct.Omnimods.scale
                ((toFloat modifier) / 100.0)
                (BattleCharacters.Struct.Glyph.get_omnimods glyph)

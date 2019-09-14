@@ -25,28 +25,6 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_mod_html : (String, Int) -> (Html.Html Struct.Event.Type)
-get_mod_html mod =
-   let
-      (category, value) = mod
-   in
-      (Html.div
-         [
-            (Html.Attributes.class "info-card-mod")
-         ]
-         [
-            (Html.div
-               [
-                  (Html.Attributes.class "omnimod-icon"),
-                  (Html.Attributes.class ("omnimod-icon-" ++ category))
-               ]
-               [
-               ]
-            ),
-            (Html.text (String.fromInt value))
-         ]
-      )
-
 get_weapon_html : (
       BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
@@ -116,7 +94,7 @@ get_weapon_html weapon =
                )
             ]
          ),
-         (Battle.View.Omnimods.get_html
+         (Battle.View.Omnimods.get_signed_html
             (BattleCharacters.Struct.Weapon.get_omnimods weapon)
          )
       ]

@@ -7,9 +7,6 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Battle ----------------------------------------------------------------------
-import Battle.View.Omnimods
-
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.GlyphBoard
 
@@ -20,22 +17,6 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_mod_html : (String, Int) -> (Html.Html Struct.Event.Type)
-get_mod_html mod =
-   let
-      (category, value) = mod
-   in
-      (Html.div
-         [
-            (Html.Attributes.class "info-card-mod")
-         ]
-         [
-            (Html.text
-               (category ++ ": " ++ (String.fromInt value))
-            )
-         ]
-      )
-
 get_glyph_board_html : (
       BattleCharacters.Struct.GlyphBoard.Type ->
       (Html.Html Struct.Event.Type)

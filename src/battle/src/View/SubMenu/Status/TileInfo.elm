@@ -148,7 +148,7 @@ get_html model loc =
                      (get_cost tile)
                   ]
                ),
-               (Battle.View.Omnimods.get_html
+               (Battle.View.Omnimods.get_signed_html
                   ((Struct.Model.tile_omnimods_fun model) loc)
                )
             ]

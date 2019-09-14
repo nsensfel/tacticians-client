@@ -62,7 +62,7 @@ get_armor_html armor =
                )
             ]
          ),
-         (Battle.View.Omnimods.get_html
+         (Battle.View.Omnimods.get_signed_html
             (BattleCharacters.Struct.Armor.get_omnimods armor)
          )
       ]
