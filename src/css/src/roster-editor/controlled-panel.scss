@@ -25,13 +25,11 @@
 }
 
 
-.roster-editor-atts .omnimod-negative-value,
+.roster-editor-character-attributes .omnimod-negative-value,
 .roster-editor-invalid-glyph
 {
    background-color: $RED-2;
-   border-radius: 6px;
    border: solid 1px $RED-0;
-   padding: 2px;
 }
 
 .roster-editor-atts > *

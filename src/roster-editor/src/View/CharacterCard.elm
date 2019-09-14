@@ -435,14 +435,21 @@ get_full_html current_tab char =
                )
                (BattleCharacters.Struct.Equipment.get_glyph_board equipment)
             ),
-            (Battle.View.Omnimods.get_unsigned_html
-               (Battle.Struct.Omnimods.apply_damage_modifier
-                  (Battle.Struct.Omnimods.get_attribute_mod
-                     Battle.Struct.Attributes.DamageModifier
-                     omnimods
+            (Html.div
+               [
+                  (Html.Attributes.class "roster-editor-character-attributes")
+               ]
+               [
+                  (Battle.View.Omnimods.get_unsigned_html
+                     (Battle.Struct.Omnimods.apply_damage_modifier
+                        (Battle.Struct.Omnimods.get_attribute_mod
+                           Battle.Struct.Attributes.DamageModifier
+                           omnimods
+                        )
+                        omnimods
+                     )
                   )
-                  omnimods
-               )
+               ]
             )
          ]
       )
