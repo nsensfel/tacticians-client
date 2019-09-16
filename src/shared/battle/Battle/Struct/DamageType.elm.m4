@@ -14,11 +14,9 @@ module Battle.Struct.DamageType exposing
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type Type =
-   Base
-   | Slash
+   Slash
    | Blunt
    | Pierce
-   | None
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -27,29 +25,26 @@ type Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+
+m4_include(__MAKEFILE_DATA_DIR/names.m4.conf)
+
 decode : String -> Type
 decode str =
    case str of
-      "bse" -> Base
-      "slh" -> Slash
-      "pie" -> Pierce
-      "blu" -> Blunt
-      _ -> None
+      "__SN_SLASH" -> Slash
+      "__SN_PIERCE" -> Pierce
+      _ -> Blunt
 
 encode : Type -> String
 encode t =
    case t of
-      Base -> "bse"
-      Slash -> "slh"
-      Pierce -> "pie"
-      Blunt -> "blu"
-      None  -> "non"
+      Slash -> "__SN_SLASH"
+      Pierce -> "__SN_PIERCE"
+      Blunt -> "__SN_BLUNT"
 
 to_string : Type -> String
 to_string t =
    case t of
-      Base -> "Base"
       Slash -> "Slash"
       Pierce -> "Piercing"
       Blunt -> "Bludgeoning"
-      None  -> "ERROR"

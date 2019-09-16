@@ -315,9 +315,6 @@ get_damage_type_help : (
    )
 get_damage_type_help cat =
    case cat of
-      Battle.Struct.DamageType.Base ->
-         ((base), (base_help))
-
       Battle.Struct.DamageType.Slash ->
          ((slash), (slash_help))
 
@@ -326,5 +323,3 @@ get_damage_type_help cat =
 
       Battle.Struct.DamageType.Pierce ->
          ((pierce), (pierce_help))
-
-      _ -> ("None Damage", (Html.div [] [(Html.text "Should not appear.")]))

@@ -6,8 +6,6 @@ module Battle.Struct.Omnimods exposing
       merge_attributes,
       none,
       apply_to_attributes,
-      get_attack_damage,
-      get_damage_sum,
       get_attribute_mods,
       get_attribute_mod,
       get_attack_mods,
@@ -158,47 +156,6 @@ apply_to_attributes omnimods attributes =
       attributes
       omnimods.attributes
    )
-
-get_damage_sum : Type -> Int
-get_damage_sum omni =
-   (Dict.foldl (\t -> \v -> \result -> (result + v)) 0 omni.attack)
-
-get_attack_damage : Float -> Type -> Type -> Int
-get_attack_damage dmg_modifier atk_omni def_omni =
-   let
-      base_def =
-         (
-            case
-               (Dict.get
-                  (Battle.Struct.DamageType.encode
-                     Battle.Struct.DamageType.Base
-                  )
-                  def_omni.defense
-               )
-            of
-               (Just v) -> v
-               Nothing -> 0
-         )
-   in
-      (Dict.foldl
-         (\t -> \v -> \result ->
-            let
-               actual_atk =
-                  (max
-                     0
-                     (
-                        (ceiling ((toFloat v) * dmg_modifier))
-                        - base_def
-                     )
-                  )
-            in
-               case (Dict.get t def_omni.defense) of
-                  (Just def_v) -> (result + (max 0 (actual_atk - def_v)))
-                  Nothing -> (result + actual_atk)
-         )
-         0
-         atk_omni.attack
-      )
 
 apply_damage_modifier : Int -> Type -> Type
 apply_damage_modifier damage_modifier omnimods =

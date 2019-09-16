@@ -63,11 +63,6 @@ get_weapon_html weapon =
                   [
                   ]
                ),
-               (Html.text
-                  (String.fromInt
-                     (BattleCharacters.Struct.Weapon.get_damage_sum weapon)
-                  )
-               ),
                (Html.div
                   [
                      (Html.Attributes.class "omnimod-icon"),

@@ -9,7 +9,6 @@ module BattleCharacters.Struct.Weapon exposing
       get_attack_range,
       get_defense_range,
       get_omnimods,
-      get_damage_sum,
       decoder,
       default,
       none
@@ -34,8 +33,7 @@ type alias Type =
       is_primary : Bool,
       def_range : Int,
       atk_range : Int,
-      omnimods : Battle.Struct.Omnimods.Type,
-      damage_sum : Int
+      omnimods : Battle.Struct.Omnimods.Type
    }
 
 type alias Ref = String
@@ -71,25 +69,16 @@ get_defense_range wp = wp.def_range
 get_omnimods : Type -> Battle.Struct.Omnimods.Type
 get_omnimods wp = wp.omnimods
 
-get_damage_sum : Type -> Int
-get_damage_sum wp = wp.damage_sum
-
 decoder : (Json.Decode.Decoder Type)
 decoder =
-   (Json.Decode.map
-      (\e ->
-         {e | damage_sum = (Battle.Struct.Omnimods.get_damage_sum e.omnimods)}
-      )
-      (Json.Decode.succeed
-         Type
-         |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
-         |> (Json.Decode.Pipeline.required "pri" Json.Decode.bool)
-         |> (Json.Decode.Pipeline.required "rmi" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "rma" Json.Decode.int)
-         |> (Json.Decode.Pipeline.required "omni" Battle.Struct.Omnimods.decoder)
-         |> (Json.Decode.Pipeline.hardcoded 0)
-      )
+   (Json.Decode.succeed
+      Type
+      |> (Json.Decode.Pipeline.required "id" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "nam" Json.Decode.string)
+      |> (Json.Decode.Pipeline.required "pri" Json.Decode.bool)
+      |> (Json.Decode.Pipeline.required "rmi" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "rma" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "omni" Battle.Struct.Omnimods.decoder)
    )
 
 none : Type
@@ -100,8 +89,7 @@ none =
       is_primary = False,
       def_range = 0,
       atk_range = 0,
-      omnimods = (Battle.Struct.Omnimods.none),
-      damage_sum = 0
+      omnimods = (Battle.Struct.Omnimods.none)
    }
 
 default : Type
