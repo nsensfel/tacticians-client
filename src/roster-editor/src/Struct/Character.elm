@@ -133,26 +133,28 @@ get_is_valid char = char.is_valid
 
 set_is_valid : Type -> Type
 set_is_valid char =
-   {char |
-      is_valid =
-         (
-            (Set.isEmpty char.invalid_glyph_family_ids)
-            &&
-            (List.all
-               (\(s, i) -> (i >= 0))
-               (Battle.Struct.Omnimods.get_all_mods
-                  (BattleCharacters.Struct.Character.get_omnimods char.base)
-               )
-            )
-            &&
+   let
+      s0_base_char = char.base
+      s1_base_char =
+         if (BattleCharacters.Struct.Character.is_using_secondary s0_base_char)
+         then (BattleCharacters.Struct.Character.switch_weapons s0_base_char)
+         else s0_base_char
+   in
+      {char |
+         is_valid =
             (
-               (Battle.Struct.Attributes.get_max_health
-                  (BattleCharacters.Struct.Character.get_attributes char.base)
+               (Set.isEmpty char.invalid_glyph_family_ids)
+               &&
+               (List.all
+                  (\(s, i) -> (i >= 0))
+                  (Battle.Struct.Omnimods.get_all_mods
+                     (BattleCharacters.Struct.Character.get_omnimods
+                        s1_base_char
+                     )
+                  )
                )
-               > 0
             )
-         )
-   }
+      }
 
 get_invalid_glyph_family_indices : (
       Type ->
@@ -176,11 +178,12 @@ update_glyph_family_index_collections equipment char =
       (used_ids, overused_ids) =
          (compute_glyph_family_id_collections equipment)
    in
-      {char |
-         all_glyph_family_ids = used_ids,
-         invalid_glyph_family_ids = overused_ids,
-         is_valid = (char.is_valid && (Set.isEmpty overused_ids))
-      }
+      (set_is_valid
+         {char |
+            all_glyph_family_ids = used_ids,
+            invalid_glyph_family_ids = overused_ids
+         }
+      )
 
 resolve : (
       (

@@ -206,13 +206,21 @@ get_weapon_field_header is_active_wp weapon =
 get_weapon_details : (
       Struct.UI.Tab ->
       Bool ->
+      Bool ->
       BattleCharacters.Struct.Weapon.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_weapon_details current_tab is_active_wp weapon =
+get_weapon_details current_tab is_active_wp has_issue weapon =
    (Html.div
       [
          (Html.Attributes.class "character-card-weapon"),
+         (Html.Attributes.class
+            (
+               if (has_issue)
+               then "character-card-weapon-problem"
+               else "character-card-weapon-no-problem"
+            )
+         ),
          (Html.Attributes.class "clickable"),
          (Html.Events.onClick
             (
@@ -416,11 +424,16 @@ get_full_html current_tab char =
             (get_weapon_details
                current_tab
                (not is_using_secondary)
+               (
+                  is_using_secondary
+                  && (not (Struct.Character.get_is_valid char))
+               )
                (BattleCharacters.Struct.Equipment.get_primary_weapon equipment)
             ),
             (get_weapon_details
                current_tab
                is_using_secondary
+               False
                (BattleCharacters.Struct.Equipment.get_secondary_weapon
                   equipment
                )
@@ -437,17 +450,29 @@ get_full_html current_tab char =
             ),
             (Html.div
                [
-                  (Html.Attributes.class "roster-editor-character-attributes")
+                  (Html.Attributes.class "roster-editor-character-attributes"),
+                  (Html.Attributes.class
+                     (
+                        if (is_using_secondary)
+                        then "roster-editor-character-attributes-secondary"
+                        else "roster-editor-character-attributes-primary"
+                     )
+                  )
                ]
                [
-                  (Battle.View.Omnimods.get_unsigned_html
-                     (Battle.Struct.Omnimods.apply_damage_modifier
-                        (Battle.Struct.Omnimods.get_attribute_mod
-                           Battle.Struct.Attributes.DamageModifier
-                           omnimods
+                  (
+                     if (is_using_secondary)
+                     then (Battle.View.Omnimods.get_user_friendly_html omnimods)
+                     else
+                        (Battle.View.Omnimods.get_unsigned_html
+                           (Battle.Struct.Omnimods.apply_damage_modifier
+                              (Battle.Struct.Omnimods.get_attribute_mod
+                                 Battle.Struct.Attributes.DamageModifier
+                                 omnimods
+                              )
+                              omnimods
+                           )
                         )
-                        omnimods
-                     )
                   )
                ]
             )

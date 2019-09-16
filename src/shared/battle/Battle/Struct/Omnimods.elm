@@ -79,7 +79,11 @@ merge_mods a_mods b_mods =
 
 scale_dict_value : Float -> String -> Int -> Int
 scale_dict_value modifier entry_name value =
-   (ceiling ((toFloat value) * modifier))
+   let new_value = ((toFloat value) * modifier) in
+   if (new_value < 0)
+   then (floor new_value)
+   else (ceiling new_value)
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
