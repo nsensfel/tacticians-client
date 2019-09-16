@@ -58,14 +58,6 @@ get_weapon_html weapon =
                (Html.div
                   [
                      (Html.Attributes.class "omnimod-icon"),
-                     (Html.Attributes.class "omnimod-icon-dmg")
-                  ]
-                  [
-                  ]
-               ),
-               (Html.div
-                  [
-                     (Html.Attributes.class "omnimod-icon"),
                      (Html.Attributes.class "omnimod-icon-range")
                   ]
                   [
