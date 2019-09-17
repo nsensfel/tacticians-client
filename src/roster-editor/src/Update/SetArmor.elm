@@ -16,6 +16,27 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+equip : (
+      BattleCharacters.Struct.Armor.Type ->
+      Struct.Character.Type ->
+      Struct.Character.Type
+   )
+equip armor char =
+   let base_char = (Struct.Character.get_base_character char) in
+      (Struct.Character.set_is_valid
+         (Struct.Character.set_base_character
+            (BattleCharacters.Struct.Character.set_equipment
+               (BattleCharacters.Struct.Equipment.set_armor
+                  armor
+                  (BattleCharacters.Struct.Character.get_equipment
+                     base_char
+                  )
+               )
+               base_char
+            )
+            char
+         )
+      )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -30,24 +51,7 @@ apply_to model ref =
       (
          case (model.edited_char, (Dict.get ref model.armors)) of
             ((Just char), (Just armor)) ->
-               let base_char = (Struct.Character.get_base_character char) in
-               {model |
-                  edited_char =
-                     (Just
-                        (Struct.Character.set_base_character
-                           (BattleCharacters.Struct.Character.set_equipment
-                              (BattleCharacters.Struct.Equipment.set_armor
-                                 armor
-                                 (BattleCharacters.Struct.Character.get_equipment
-                                    base_char
-                                 )
-                              )
-                              base_char
-                           )
-                           char
-                        )
-                     )
-               }
+               {model | edited_char = (Just (equip armor char)) }
 
             _ -> model
       ),
