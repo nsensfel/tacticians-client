@@ -38,38 +38,6 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-weapon_getter : (
-      Struct.Model.Type ->
-      BattleCharacters.Struct.Weapon.Ref ->
-      BattleCharacters.Struct.Weapon.Type
-   )
-weapon_getter model ref =
-   case (Dict.get ref model.weapons) of
-      (Just w) -> w
-      Nothing -> BattleCharacters.Struct.Weapon.none
-
-armor_getter : (
-      Struct.Model.Type ->
-      BattleCharacters.Struct.Armor.Ref ->
-      BattleCharacters.Struct.Armor.Type
-   )
-armor_getter model ref =
-   case (Dict.get ref model.armors) of
-      (Just w) -> w
-      Nothing -> BattleCharacters.Struct.Armor.none
-
-portrait_getter : (
-      Struct.Model.Type ->
-      BattleCharacters.Struct.Portrait.Ref ->
-      BattleCharacters.Struct.Portrait.Type
-   )
-portrait_getter model ref =
-   case (Dict.get ref model.portraits) of
-      (Just w) -> w
-      Nothing -> BattleCharacters.Struct.Portrait.default
-
------------
-
 disconnected : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))

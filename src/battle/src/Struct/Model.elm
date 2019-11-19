@@ -10,6 +10,7 @@ module Struct.Model exposing
       add_portrait,
       add_glyph_board,
       add_glyph,
+      add_skill,
       add_player,
       add_tile,
       invalidate,
@@ -36,11 +37,12 @@ import Struct.Flags
 import Battle.Struct.Omnimods
 
 -- Battle Characters -----------------------------------------------------------
-import BattleCharacters.Struct.Character
 import BattleCharacters.Struct.Armor
-import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Character
 import BattleCharacters.Struct.Glyph
 import BattleCharacters.Struct.GlyphBoard
+import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Skill
 import BattleCharacters.Struct.Weapon
 
 -- Battle Map ------------------------------------------------------------------
@@ -96,6 +98,11 @@ type alias Type =
          (Dict.Dict
             BattleCharacters.Struct.Glyph.Ref
             BattleCharacters.Struct.Glyph.Type
+         ),
+      skills :
+         (Dict.Dict
+            BattleCharacters.Struct.Skill.Ref
+            BattleCharacters.Struct.Skill.Type
          ),
       tiles : (Dict.Dict BattleMap.Struct.Tile.Ref BattleMap.Struct.Tile.Type),
       error : (Maybe Struct.Error.Type),
@@ -184,6 +191,7 @@ new flags =
             portraits = (Dict.empty),
             glyph_boards = (Dict.empty),
             glyphs = (Dict.empty),
+            skills = (Dict.empty),
             tiles = (Dict.empty),
             players = (Array.empty),
             error = Nothing,
@@ -277,6 +285,17 @@ add_glyph pt model =
          )
    }
 
+add_skill : BattleCharacters.Struct.Skill.Type -> Type -> Type
+add_skill sk model =
+   {model |
+      skills =
+         (Dict.insert
+            (BattleCharacters.Struct.Skill.get_id sk)
+            sk
+            model.skills
+         )
+   }
+
 add_player : Struct.Player.Type -> Type -> Type
 add_player pl model =
    {model |
@@ -326,6 +345,7 @@ full_debug_reset model =
       portraits = (Dict.empty),
       glyph_boards = (Dict.empty),
       glyphs = (Dict.empty),
+      skills = (Dict.empty),
       tiles = (Dict.empty),
       error = Nothing,
       ui = (Struct.UI.default),

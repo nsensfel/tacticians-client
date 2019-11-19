@@ -8,6 +8,7 @@ module BattleCharacters.Struct.Equipment exposing
       get_portrait,
       get_glyph_board,
       get_glyphs,
+      get_skill,
       set_primary_weapon,
       set_secondary_weapon,
       set_armor,
@@ -15,6 +16,7 @@ module BattleCharacters.Struct.Equipment exposing
       set_glyph_board,
       set_glyphs,
       set_glyph,
+      set_skill,
       decoder,
       encode,
       resolve,
@@ -32,11 +34,12 @@ import Json.Decode.Pipeline
 import Json.Encode
 
 -- Battle ----------------------------------------------------------------------
-import BattleCharacters.Struct.Weapon
 import BattleCharacters.Struct.Armor
-import BattleCharacters.Struct.Portrait
 import BattleCharacters.Struct.Glyph
 import BattleCharacters.Struct.GlyphBoard
+import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Skill
+import BattleCharacters.Struct.Weapon
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -48,7 +51,8 @@ type alias Type =
       armor : BattleCharacters.Struct.Armor.Type,
       portrait : BattleCharacters.Struct.Portrait.Type,
       glyph_board : BattleCharacters.Struct.GlyphBoard.Type,
-      glyphs : (Array.Array BattleCharacters.Struct.Glyph.Type)
+      glyphs : (Array.Array BattleCharacters.Struct.Glyph.Type),
+      skill : BattleCharacters.Struct.Skill.Type
    }
 
 type alias Unresolved =
@@ -58,7 +62,8 @@ type alias Unresolved =
       armor : BattleCharacters.Struct.Armor.Ref,
       portrait : BattleCharacters.Struct.Portrait.Ref,
       glyph_board : BattleCharacters.Struct.GlyphBoard.Ref,
-      glyphs : (Array.Array BattleCharacters.Struct.Glyph.Ref)
+      glyphs : (Array.Array BattleCharacters.Struct.Glyph.Ref),
+      skill : BattleCharacters.Struct.Skill.Ref
    }
 
 --------------------------------------------------------------------------------
@@ -85,6 +90,9 @@ get_glyph_board equipment = equipment.glyph_board
 
 get_glyphs : Type -> (Array.Array BattleCharacters.Struct.Glyph.Type)
 get_glyphs equipment = equipment.glyphs
+
+get_skill : Type -> BattleCharacters.Struct.Skill.Type
+get_skill equipment = equipment.skill
 
 set_primary_weapon : BattleCharacters.Struct.Weapon.Type -> Type -> Type
 set_primary_weapon wp equipment = { equipment | primary = wp }
@@ -116,6 +124,9 @@ set_glyph : Int -> BattleCharacters.Struct.Glyph.Type -> Type -> Type
 set_glyph index glyph equipment =
    { equipment | glyphs = (Array.set index glyph equipment.glyphs) }
 
+set_skill : BattleCharacters.Struct.Skill.Type -> Type -> Type
+set_skill sk equipment = { equipment | skill = sk }
+
 decoder : (Json.Decode.Decoder Unresolved)
 decoder =
    (Json.Decode.succeed
@@ -130,6 +141,7 @@ decoder =
             "gl"
             (Json.Decode.array (Json.Decode.string))
          )
+      |> (Json.Decode.Pipeline.required "sk" Json.Decode.string)
    )
 
 encode : Unresolved -> Json.Encode.Value
@@ -166,17 +178,22 @@ resolve : (
          BattleCharacters.Struct.Glyph.Ref ->
          BattleCharacters.Struct.Glyph.Type
       ) ->
+      (
+         BattleCharacters.Struct.Skill.Ref ->
+         BattleCharacters.Struct.Skill.Type
+      ) ->
       Unresolved ->
       Type
    )
-resolve resolve_wp resolve_ar resolve_pt resolve_gb resolve_gl ref =
+resolve resolve_wp resolve_ar resolve_pt resolve_gb resolve_gl resolve_sk ref =
    {
       primary = (resolve_wp ref.primary),
       secondary = (resolve_wp ref.secondary),
       armor = (resolve_ar ref.armor),
       portrait = (resolve_pt ref.portrait),
       glyph_board = (resolve_gb ref.glyph_board),
-      glyphs = (Array.map (resolve_gl) ref.glyphs)
+      glyphs = (Array.map (resolve_gl) ref.glyphs),
+      skill = (resolve_sk ref.skill)
    }
 
 to_unresolved : Type -> Unresolved
@@ -189,6 +206,7 @@ to_unresolved equipment =
       glyph_board =
          (BattleCharacters.Struct.GlyphBoard.get_id equipment.glyph_board),
       glyphs =
-         (Array.map (BattleCharacters.Struct.Glyph.get_id) equipment.glyphs)
+         (Array.map (BattleCharacters.Struct.Glyph.get_id) equipment.glyphs),
+      skill = (BattleCharacters.Struct.Skill.get_id equipment.skill)
    }
 
