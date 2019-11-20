@@ -11,6 +11,7 @@ import BattleCharacters.Comm.AddArmor
 import BattleCharacters.Comm.AddGlyph
 import BattleCharacters.Comm.AddGlyphBoard
 import BattleCharacters.Comm.AddPortrait
+import BattleCharacters.Comm.AddSkill
 import BattleCharacters.Comm.AddWeapon
 
 -- Battle Map ------------------------------------------------------------------
@@ -38,16 +39,20 @@ internal_decoder : String -> (Json.Decode.Decoder Struct.ServerReply.Type)
 internal_decoder reply_type =
    case reply_type of
       "add_tile" -> (BattleMap.Comm.AddTile.decode)
-      "add_armor" -> (BattleCharacters.Comm.AddArmor.decode)
-      "add_char" -> (Comm.AddChar.decode)
-      "add_portrait" -> (BattleCharacters.Comm.AddPortrait.decode)
-      "add_glyph_board" -> (BattleCharacters.Comm.AddGlyphBoard.decode)
-      "add_glyph" -> (BattleCharacters.Comm.AddGlyph.decode)
-      "add_player" -> (Comm.AddPlayer.decode)
-      "add_weapon" -> (BattleCharacters.Comm.AddWeapon.decode)
       "set_map" -> (BattleMap.Comm.SetMap.decode)
-      "turn_results" -> (Comm.TurnResults.decode)
+
+      "add_armor" -> (BattleCharacters.Comm.AddArmor.decode)
+      "add_glyph" -> (BattleCharacters.Comm.AddGlyph.decode)
+      "add_glyph_board" -> (BattleCharacters.Comm.AddGlyphBoard.decode)
+      "add_portrait" -> (BattleCharacters.Comm.AddPortrait.decode)
+      "add_skill" -> (BattleCharacters.Comm.AddSkill.decode)
+      "add_weapon" -> (BattleCharacters.Comm.AddWeapon.decode)
+
+      "add_char" -> (Comm.AddChar.decode)
+      "add_player" -> (Comm.AddPlayer.decode)
       "set_timeline" -> (Comm.SetTimeline.decode)
+      "turn_results" -> (Comm.TurnResults.decode)
+
       "disconnected" -> (Json.Decode.succeed Struct.ServerReply.Disconnected)
       "okay" -> (Json.Decode.succeed Struct.ServerReply.Okay)
 

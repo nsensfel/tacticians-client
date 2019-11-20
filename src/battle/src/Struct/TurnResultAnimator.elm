@@ -98,6 +98,74 @@ maybe_go_to_next_animation tra =
 
       (_, _) -> Nothing
 
+initialize_animator : Type -> Type
+initialize_animator model =
+   let
+      timeline_list = (Array.toList model.timeline)
+      (characters, players) =
+         (List.foldr
+            (\event (pcharacters, pplayers) ->
+               (Struct.TurnResult.apply_inverse_step
+                  (tile_omnimods_fun model)
+                  event
+                  pcharacters
+                  pplayers
+               )
+            )
+            (model.characters, model.players)
+            timeline_list
+         )
+   in
+      {model |
+         animator =
+            (Struct.TurnResultAnimator.maybe_new
+               (List.reverse timeline_list)
+               True
+            ),
+         ui = (Struct.UI.default),
+         characters = characters,
+         players = players
+      }
+
+move_animator_to_next_step : Type -> Type
+move_animator_to_next_step model =
+   case model.animator of
+      Nothing -> model
+      (Just animator) ->
+         case (Struct.TurnResultAnimator.maybe_trigger_next_step animator) of
+            Nothing ->
+               (Set.foldl
+                  (regenerate_attack_of_opportunity_markers)
+                  {model | animator = Nothing }
+                  (Struct.TurnResultAnimator.get_animated_character_indices
+                     animator
+                  )
+               )
+
+            just_next_animator -> {model | animator = just_next_animator }
+
+apply_animator_step : Type -> Type
+apply_animator_step model =
+   case model.animator of
+      Nothing -> model
+      (Just animator) ->
+         case (Struct.TurnResultAnimator.get_current_animation animator) of
+            (Struct.TurnResultAnimator.TurnResult turn_result) ->
+               let
+                  (characters, players) =
+                     (Struct.TurnResult.apply_step
+                        (tile_omnimods_fun model)
+                        turn_result
+                        model.characters
+                        model.players
+                     )
+               in
+                  {model |
+                     characters = characters,
+                     players = players
+                  }
+            _ -> model
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------

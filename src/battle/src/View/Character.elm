@@ -48,11 +48,14 @@ get_alliance_class : (
       (Html.Attribute Struct.Event.Type)
    )
 get_alliance_class model char =
-   if ((Struct.Character.get_player_index char) == model.player_ix)
-   then
-      (Html.Attributes.class "character-ally")
-   else
-      (Html.Attributes.class "character-enemy")
+   if
+   (
+      (Struct.Character.get_player_index char) == model.player_i
+      ==
+      (Struct.Battle.get_own_player_index model.battle)
+   )
+   then (Html.Attributes.class "character-ally")
+   else (Html.Attributes.class "character-enemy")
 
 get_position_style : (
       Struct.Character.Type ->

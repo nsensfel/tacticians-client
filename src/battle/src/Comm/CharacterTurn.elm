@@ -3,11 +3,15 @@ module Comm.CharacterTurn exposing (try)
 -- Elm -------------------------------------------------------------------------
 import Json.Encode
 
+-- Shared ----------------------------------------------------------------------
+import Struct.Flags
+
 -- Local Module ----------------------------------------------------------------
 import Constants.IO
 
 import Comm.Send
 
+import Struct.Battle
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
@@ -27,9 +31,24 @@ try_encoding model =
          (Just
             (Json.Encode.object
                [
-                  ("stk", (Json.Encode.string model.session_token)),
-                  ("pid", (Json.Encode.string model.player_id)),
-                  ("bid", (Json.Encode.string model.battle_id)),
+                  (
+                     "stk",
+                     (Json.Encode.string
+                        (Struct.Flags.get_session_token model.flags)
+                     )
+                  ),
+                  (
+                     "pid",
+                     (Json.Encode.string
+                        (Struct.Flags.get_user_id model.flags)
+                     )
+                  ),
+                  (
+                     "bid",
+                     (Json.Encode.string
+                        (Struct.Battle.get_id model.battle)
+                     )
+                  ),
                   (
                      "cix",
                      (Json.Encode.int (Struct.Character.get_index char))

@@ -5,6 +5,7 @@ import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.Glyph
 import BattleCharacters.Struct.GlyphBoard
 import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Skill
 import BattleCharacters.Struct.Weapon
 
 -- Battle Map ------------------------------------------------------------------
@@ -26,6 +27,7 @@ type Type =
    | AddPortrait BattleCharacters.Struct.Portrait.Type
    | AddGlyphBoard BattleCharacters.Struct.GlyphBoard.Type
    | AddGlyph BattleCharacters.Struct.Glyph.Type
+   | AddSkill BattleCharacters.Struct.Skill.Type
    | AddPlayer Struct.Player.Type
    | AddWeapon BattleCharacters.Struct.Weapon.Type
    | AddCharacter Struct.Character.Unresolved

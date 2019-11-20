@@ -1,4 +1,4 @@
-module BattleCharacters.Struct.Inventory exposing
+module BattleCharacters.Struct.DataSet exposing
    (
       Type,
       new,
@@ -75,47 +75,23 @@ type alias Type =
 new : Type
 new =
    {
-      weapons :
-         (Dict.Dict
-            BattleCharacters.Struct.Weapon.Ref
-            BattleCharacters.Struct.Weapon.Type
-         ),
-      armors :
-         (Dict.Dict
-            BattleCharacters.Struct.Armor.Ref
-            BattleCharacters.Struct.Armor.Type
-         ),
-      glyphs :
-         (Dict.Dict
-            BattleCharacters.Struct.Glyph.Ref
-            BattleCharacters.Struct.Glyph.Type
-         ),
-      glyph_boards :
-         (Dict.Dict
-            BattleCharacters.Struct.GlyphBoard.Ref
-            BattleCharacters.Struct.GlyphBoard.Type
-         ),
-      portraits :
-         (Dict.Dict
-            BattleCharacters.Struct.Portrait.Ref
-            BattleCharacters.Struct.Portrait.Type
-         ),
-      skills :
-         (Dict.Dict
-            BattleCharacters.Struct.Portrait.Ref
-            BattleCharacters.Struct.Portrait.Type
-         ),
+      weapons = (Dict.new),
+      armors = (Dict.new),
+      glyphs = (Dict.new),
+      glyph_boards = (Dict.new),
+      portraits = (Dict.new),
+      skills = (Dict.new)
    }
 
 is_ready : Type -> Bool
-is_ready inventory =
+is_ready data_set =
    (
-      (inventory.portraits /= (Dict.empty))
-      && (inventory.weapons /= (Dict.empty))
-      && (inventory.armors /= (Dict.empty))
-      && (inventory.glyph_boards /= (Dict.empty))
-      && (inventory.glyphs /= (Dict.empty))
-      && (inventory.skills /= (Dict.empty))
+      (data_set.portraits /= (Dict.empty))
+      && (data_set.weapons /= (Dict.empty))
+      && (data_set.armors /= (Dict.empty))
+      && (data_set.glyph_boards /= (Dict.empty))
+      && (data_set.glyphs /= (Dict.empty))
+      && (data_set.skills /= (Dict.empty))
    )
 
 ---- Accessors -----------------------------------------------------------------
@@ -128,19 +104,19 @@ get_weapon : (
       Type ->
       BattleCharacters.Struct.Weapon.Type
    )
-get_weapon wp_id inventory =
-   case (Dict.get wp_id inventory.weapons) of
+get_weapon wp_id data_set =
+   case (Dict.get wp_id data_set.weapons) of
       (Just wp) -> wp
       Nothing -> BattleCharacters.Struct.Weapon.none
 
 add_weapon : BattleCharacters.Struct.Weapon.Type -> Type -> Type
-add_weapon wp inventory =
-   {inventory |
+add_weapon wp data_set =
+   {data_set |
       weapons =
          (Dict.insert
             (BattleCharacters.Struct.Weapon.get_id wp)
             wp
-            inventory.weapons
+            data_set.weapons
          )
    }
 
@@ -152,19 +128,19 @@ get_armor : (
       Type ->
       BattleCharacters.Struct.Armor.Type
    )
-get_armor ar_id inventory =
-   case (Dict.get ar_id inventory.armors) of
+get_armor ar_id data_set =
+   case (Dict.get ar_id data_set.armors) of
       (Just ar) -> ar
       Nothing -> BattleCharacters.Struct.Armor.none
 
 add_armor : BattleCharacters.Struct.Armor.Type -> Type -> Type
-add_armor ar inventory =
-   {inventory |
+add_armor ar data_set =
+   {data_set |
       armors =
          (Dict.insert
             (BattleCharacters.Struct.Armor.get_id ar)
             ar
-            inventory.armors
+            data_set.armors
          )
    }
 
@@ -176,19 +152,19 @@ get_portrait : (
       Type ->
       BattleCharacters.Struct.Portrait.Type
    )
-get_portrait pt_id inventory =
-   case (Dict.get pt_id inventory.portraits) of
+get_portrait pt_id data_set =
+   case (Dict.get pt_id data_set.portraits) of
       (Just pt) -> pt
       Nothing -> BattleCharacters.Struct.Portrait.none
 
 add_portrait : BattleCharacters.Struct.Portrait.Type -> Type -> Type
-add_portrait pt inventory =
-   {inventory |
+add_portrait pt data_set =
+   {data_set |
       portraits =
          (Dict.insert
             (BattleCharacters.Struct.Portrait.get_id pt)
             pt
-            inventory.portraits
+            data_set.portraits
          )
    }
 
@@ -200,19 +176,19 @@ get_glyph : (
       Type ->
       BattleCharacters.Struct.Glyph.Type
    )
-get_glyph gl_id inventory =
-   case (Dict.get gl_id inventory.glyphs) of
+get_glyph gl_id data_set =
+   case (Dict.get gl_id data_set.glyphs) of
       (Just gl) -> gl
       Nothing -> BattleCharacters.Struct.Glyph.none
 
 add_glyph : BattleCharacters.Struct.Glyph.Type -> Type -> Type
-add_glyph gl inventory =
-   {inventory |
+add_glyph gl data_set =
+   {data_set |
       glyphs =
          (Dict.insert
             (BattleCharacters.Struct.Glyph.get_id gl)
             gl
-            inventory.glyphs
+            data_set.glyphs
          )
    }
 
@@ -224,19 +200,19 @@ get_glyph_board : (
       Type ->
       BattleCharacters.Struct.GlyphBoard.Type
    )
-get_glyph_board gb_id inventory =
-   case (Dict.get gb_id inventory.glyph_boards) of
+get_glyph_board gb_id data_set =
+   case (Dict.get gb_id data_set.glyph_boards) of
       (Just gb) -> gb
       Nothing -> BattleCharacters.Struct.GlyphBoard.none
 
 add_glyph_board : BattleCharacters.Struct.GlyphBoard.Type -> Type -> Type
-add_glyph_board glb inventory =
-   {inventory |
+add_glyph_board glb data_set =
+   {data_set |
       glyph_boards =
          (Dict.insert
             (BattleCharacters.Struct.GlyphBoard.get_id glb)
             glb
-            inventory.glyph_boards
+            data_set.glyph_boards
          )
    }
 
@@ -248,19 +224,19 @@ get_skill : (
       Type ->
       BattleCharacters.Struct.Skill.Type
    )
-get_skill sk_id inventory =
-   case (Dict.get sk_id inventory.skills) of
+get_skill sk_id data_set =
+   case (Dict.get sk_id data_set.skills) of
       (Just sk) -> sk
       Nothing -> BattleCharacters.Struct.Skill.none
 
 add_skill : BattleCharacters.Struct.Skill.Type -> Type -> Type
-add_skill sk inventory =
-   {inventory |
+add_skill sk data_set =
+   {data_set |
       skills =
          (Dict.insert
             (BattleCharacters.Struct.Skill.get_id sk)
             sk
-            inventory.skills
+            data_set.skills
          )
    }
 

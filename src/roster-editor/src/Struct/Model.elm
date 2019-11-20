@@ -44,18 +44,19 @@ import Struct.UI
 type alias Type =
    {
       flags : Struct.Flags.Type,
+      error : (Maybe Struct.Error.Type),
+      ui : Struct.UI.Type
       help_request : Struct.HelpRequest.Type,
+      edited_char : (Maybe Struct.Character.Type),
+
+      roster_id : String,
+      battle_order : (Array.Array Int),
+
       characters : (Array.Array Struct.Character.Type),
       unresolved_characters : (List Struct.Character.Unresolved),
-      inventory : BattleCharacters.Struct.Inventory.Type,
-      error : (Maybe Struct.Error.Type),
-      battle_order : (Array.Array Int),
-      player_id : String,
-      roster_id : String,
-      edited_char : (Maybe Struct.Character.Type),
       inventory : Struct.Inventory.Type,
-      session_token : String,
-      ui : Struct.UI.Type
+
+      characters_data_set : BattleCharacters.Struct.DataSet.Type,
    }
 
 --------------------------------------------------------------------------------
@@ -83,7 +84,7 @@ has_loaded_data : Type -> Bool
 has_loaded_data model =
    (
       ((Array.length model.characters) > 0)
-      || (BattleCharacters.Struct.Inventory.is_ready model.inventory)
+      || (BattleCharacters.Struct.DataSet.is_ready model.characters_data_set)
    )
 
 --------------------------------------------------------------------------------

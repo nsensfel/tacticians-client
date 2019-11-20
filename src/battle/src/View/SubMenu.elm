@@ -11,6 +11,7 @@ import Html.Lazy
 import Util.Html
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Battle
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
@@ -37,10 +38,9 @@ get_inner_html model tab =
          (View.SubMenu.Status.get_html model)
 
       Struct.UI.CharactersTab ->
-         (Html.Lazy.lazy2
+         (Html.Lazy.lazy
             (View.SubMenu.Characters.get_html)
-            model.characters
-            model.player_ix
+            model.battle
          )
 
       Struct.UI.SettingsTab ->
@@ -71,9 +71,12 @@ get_html model =
                         [
                            (Html.text "Targeting:"),
                            (Html.Lazy.lazy3
-                              (View.Controlled.CharacterCard.get_summary_html)
+                              (View.Controlled.CharacterCard.get_summary_html
+                                 (Struct.Battle.get_own_player_index
+                                    model.battle
+                                 )
+                              )
                               model.char_turn
-                              model.player_ix
                               char
                            )
                         ]

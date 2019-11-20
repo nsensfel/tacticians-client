@@ -3,7 +3,9 @@ module Struct.Flags exposing
       Type,
       maybe_get_param,
       force_get_param,
-      get_params_as_url
+      get_params_as_url,
+      get_session_token,
+      get_user_id
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -63,3 +65,9 @@ get_params_as_url flags =
       ""
       flags.url_params
    )
+
+get_session_token : Type -> String
+get_session_token flags = flags.token
+
+get_user_id : Type -> String
+get_user_id flags = flags.user_id
