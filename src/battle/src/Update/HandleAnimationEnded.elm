@@ -12,6 +12,7 @@ import Task
 -- Local Module ----------------------------------------------------------------
 import Action.Scroll
 
+import Struct.Battle
 import Struct.Character
 import Struct.Event
 import Struct.Model
@@ -28,7 +29,7 @@ handle_char_focus : (
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 handle_char_focus model animator char_index =
-   case (Array.get char_index model.characters) of
+   case (Struct.Battle.get_character char_index model.battle) of
       (Just char) ->
          if (Struct.TurnResultAnimator.waits_for_focus animator)
          then
@@ -123,5 +124,4 @@ apply_to model =
    in
       case new_model.animator of
          Nothing -> (new_model, Cmd.none)
-         (Just animator) ->
-            (prepare_next_animation new_model animator)
+         (Just animator) -> (prepare_next_animation new_model animator)

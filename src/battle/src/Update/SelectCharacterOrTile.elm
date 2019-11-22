@@ -7,6 +7,7 @@ import Util.Array
 import BattleMap.Struct.Location
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Battle
 import Struct.Character
 import Struct.Event
 import Struct.Model
@@ -39,7 +40,7 @@ apply_to model loc_ref =
                (Struct.Character.is_alive c)
             )
          )
-         model.characters
+         (Struct.Battle.get_characters model.battle)
       )
    of
       (Just char) ->

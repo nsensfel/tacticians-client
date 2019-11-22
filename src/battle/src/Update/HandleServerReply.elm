@@ -22,24 +22,28 @@ import Util.Http
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.DataSet
 import BattleCharacters.Struct.Equipment
 import BattleCharacters.Struct.Glyph
 import BattleCharacters.Struct.GlyphBoard
 import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.Skill
 import BattleCharacters.Struct.Weapon
 
 -- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.DataSet
 import BattleMap.Struct.Map
 import BattleMap.Struct.Tile
 
 -- Local Module ----------------------------------------------------------------
 import Constants.IO
 
-import Struct.Player
+import Struct.Battle
 import Struct.Character
 import Struct.Error
 import Struct.Event
 import Struct.Model
+import Struct.Player
 import Struct.ServerReply
 import Struct.TurnResult
 import Struct.TurnResultAnimator
@@ -84,7 +88,16 @@ add_armor : (
    )
 add_armor ar current_state =
    let (model, cmds) = current_state in
-      ((Struct.Model.add_armor ar model), cmds)
+      (
+         {model |
+            characters_dataset =
+               (BattleCharacters.Struct.DataSet.add_armor
+                  ar
+                  model.characters_dataset
+               )
+         },
+         cmds
+      )
 
 add_portrait : (
       BattleCharacters.Struct.Portrait.Type ->
@@ -93,34 +106,52 @@ add_portrait : (
    )
 add_portrait pt current_state =
    let (model, cmds) = current_state in
-      ((Struct.Model.add_portrait pt model), cmds)
+      (
+         {model |
+            characters_dataset =
+               (BattleCharacters.Struct.DataSet.add_portrait
+                  pt
+                  model.characters_dataset
+               )
+         },
+         cmds
+      )
 
 add_glyph_board : (
       BattleCharacters.Struct.GlyphBoard.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-add_glyph_board pt current_state =
+add_glyph_board gb current_state =
    let (model, cmds) = current_state in
-      ((Struct.Model.add_glyph_board pt model), cmds)
+      (
+         {model |
+            characters_dataset =
+               (BattleCharacters.Struct.DataSet.add_glyph_board
+                  gb
+                  model.characters_dataset
+               )
+         },
+         cmds
+      )
 
 add_glyph : (
       BattleCharacters.Struct.Glyph.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-add_glyph pt current_state =
+add_glyph gl current_state =
    let (model, cmds) = current_state in
-      ((Struct.Model.add_glyph pt model), cmds)
-
-add_tile : (
-      BattleMap.Struct.Tile.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
-   )
-add_tile tl current_state =
-   let (model, cmds) = current_state in
-      ((Struct.Model.add_tile tl model), cmds)
+      (
+         {model |
+            characters_dataset =
+               (BattleCharacters.Struct.DataSet.add_glyph
+                  gl
+                  model.characters_dataset
+               )
+         },
+         cmds
+      )
 
 add_weapon : (
       BattleCharacters.Struct.Weapon.Type ->
@@ -129,7 +160,49 @@ add_weapon : (
    )
 add_weapon wp current_state =
    let (model, cmds) = current_state in
-      ((Struct.Model.add_weapon wp model), cmds)
+      (
+         {model |
+            characters_dataset =
+               (BattleCharacters.Struct.DataSet.add_weapon
+                  wp
+                  model.characters_dataset
+               )
+         },
+         cmds
+      )
+
+add_skill : (
+      BattleCharacters.Struct.Skill.Type ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+add_skill sk current_state =
+   let (model, cmds) = current_state in
+      (
+         {model |
+            characters_dataset =
+               (BattleCharacters.Struct.DataSet.add_skill
+                  sk
+                  model.characters_dataset
+               )
+         },
+         cmds
+      )
+
+add_tile : (
+      BattleMap.Struct.Tile.Type ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+add_tile tl current_state =
+   let (model, cmds) = current_state in
+      (
+         {model |
+            map_dataset =
+               (BattleMap.Struct.DataSet.add_tile tl model.map_dataset)
+         },
+         cmds
+      )
 
 add_player : (
       Struct.Player.Type ->
@@ -138,7 +211,12 @@ add_player : (
    )
 add_player pl current_state =
    let (model, cmds) = current_state in
-      ((Struct.Model.add_player pl model), cmds)
+      (
+         {model |
+            battle = (Struct.Battle.add_player model.flags pl model.battle)
+         },
+         cmds
+      )
 
 add_character : (
       Struct.Character.Unresolved ->
@@ -148,20 +226,17 @@ add_character : (
 add_character unresolved_char current_state =
    let (model, cmds) = current_state in
       (
-         (Struct.Model.add_character
-            (Struct.Character.resolve
-               (Struct.Model.tile_omnimods_fun model)
-               (BattleCharacters.Struct.Equipment.resolve
-                  (BattleCharacters.Struct.Weapon.find model.weapons)
-                  (BattleCharacters.Struct.Armor.find model.armors)
-                  (BattleCharacters.Struct.Portrait.find model.portraits)
-                  (BattleCharacters.Struct.GlyphBoard.find model.glyph_boards)
-                  (BattleCharacters.Struct.Glyph.find model.glyphs)
+         {model |
+            battle =
+               (Struct.Battle.add_character
+                  (Struct.Character.resolve
+                     (Struct.Model.tile_omnimods_fun model)
+                     model.characters_dataset
+                     unresolved_char
+                  )
+                  model.battle
                )
-               unresolved_char
-            )
-            model
-         ),
+         },
          cmds
       )
 
@@ -174,7 +249,14 @@ set_map map current_state =
    let (model, cmds) = current_state in
       (
          {model |
-            map = (BattleMap.Struct.Map.solve_tiles model.tiles map)
+            battle =
+               (Struct.Battle.set_map
+                  (BattleMap.Struct.Map.solve_tiles
+                     model.map_dataset
+                     (Struct.Battle.get_map model.battle)
+                  )
+                  model.battle
+               )
          },
          cmds
       )
@@ -193,15 +275,18 @@ add_to_timeline turn_results current_state =
                   (List.reverse turn_results)
                   False
                ),
-            timeline =
-               (Array.append
-                  (Array.fromList turn_results)
-                  model.timeline
-               ),
             ui =
                (Struct.UI.set_displayed_tab
                   Struct.UI.TimelineTab
                   model.ui
+               ),
+            battle =
+               (Struct.Battle.set_timeline
+                  (Array.append
+                     (Array.fromList turn_results)
+                     (Struct.Battle.get_timeline model.battle)
+                  )
+                  model.battle
                )
          },
          (
@@ -218,7 +303,13 @@ set_timeline : (
 set_timeline turn_results current_state =
    let (model, cmds) = current_state in
       (
-         {model | timeline = (Array.fromList turn_results)},
+         {model |
+            battle =
+               (Struct.Battle.set_timeline
+                  (Array.fromList turn_results)
+                  model.battle
+               )
+         },
          cmds
       )
 
@@ -239,6 +330,9 @@ apply_command command current_state =
 
       (Struct.ServerReply.AddPortrait pt) ->
          (add_portrait pt current_state)
+
+      (Struct.ServerReply.AddSkill sk) ->
+         (add_skill sk current_state)
 
       (Struct.ServerReply.AddGlyphBoard pt) ->
          (add_glyph_board pt current_state)

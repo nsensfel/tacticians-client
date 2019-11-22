@@ -10,13 +10,15 @@ import Html.Lazy
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Location
 
+import BattleMap.View.TileInfo
+
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
 import Struct.UI
 
 import View.SubMenu.Status.CharacterInfo
-import View.SubMenu.Status.TileInfo
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -34,9 +36,11 @@ get_html model =
       [
          (case (Struct.UI.get_previous_action model.ui) of
             (Just (Struct.UI.SelectedLocation loc)) ->
-               (View.SubMenu.Status.TileInfo.get_html
-                  model
-                  (BattleMap.Struct.Location.from_ref loc)
+               (Html.Lazy.lazy3
+                  (BattleMap.View.TileInfo.get_html)
+                  model.map_dataset
+                  loc
+                  model.battle.map
                )
 
             (Just (Struct.UI.SelectedCharacter target_char)) ->

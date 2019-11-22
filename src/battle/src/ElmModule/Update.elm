@@ -20,7 +20,6 @@ import Update.SelectTab
 import Update.SelectTile
 import Update.SendLoadBattleRequest
 import Update.SetRequestedHelp
-import Update.SwitchTeam
 import Update.SwitchWeapon
 import Update.TestAnimation
 import Update.UndoAction
@@ -83,14 +82,8 @@ update event model =
       (Struct.Event.TabSelected tab) ->
          (Update.SelectTab.apply_to new_model tab)
 
-      Struct.Event.DebugTeamSwitchRequest ->
-         (Update.SwitchTeam.apply_to new_model)
-
       Struct.Event.DebugTestAnimation ->
          (Update.TestAnimation.apply_to new_model)
-
-      (Struct.Event.DebugLoadBattleRequest) ->
-         (Update.SendLoadBattleRequest.apply_to new_model)
 
       (Struct.Event.ServerReplied result) ->
          (Update.HandleServerReply.apply_to model result)

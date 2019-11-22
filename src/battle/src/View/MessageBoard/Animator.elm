@@ -7,8 +7,8 @@ import Html
 import Util.Html
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Battle
 import Struct.Event
-import Struct.Model
 import Struct.TurnResult
 import Struct.TurnResultAnimator
 
@@ -18,15 +18,15 @@ import View.MessageBoard.Animator.Attack
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_turn_result_html : (
-      Struct.Model.Type ->
+      Struct.Battle.Type ->
       Struct.TurnResult.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_turn_result_html model turn_result =
+get_turn_result_html battle turn_result =
    case turn_result of
       (Struct.TurnResult.Attacked attack) ->
          (View.MessageBoard.Animator.Attack.get_html
-            model
+            battle
             (Struct.TurnResult.get_actor_index turn_result)
             (Struct.TurnResult.get_attack_defender_index attack)
             (Struct.TurnResult.maybe_get_attack_next_step attack)
@@ -38,18 +38,18 @@ get_turn_result_html model turn_result =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
-      Struct.Model.Type ->
+      Struct.Battle.Type ->
       Struct.TurnResultAnimator.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_html model animator =
+get_html battle animator =
    case (Struct.TurnResultAnimator.get_current_animation animator) of
       (Struct.TurnResultAnimator.TurnResult turn_result) ->
-         (get_turn_result_html model turn_result)
+         (get_turn_result_html battle turn_result)
 
       (Struct.TurnResultAnimator.AttackSetup (attacker_id, defender_id)) ->
          (View.MessageBoard.Animator.Attack.get_html
-            model
+            battle
             attacker_id
             defender_id
             Nothing

@@ -99,17 +99,16 @@ maybe_print_navigator interactive maybe_nav =
 
 get_characters_html : (
       Struct.Model.Type ->
-      (Array.Array Struct.Character.Type) ->
       (Html.Html Struct.Event.Type)
    )
-get_characters_html model characters =
+get_characters_html model =
    (Html.div
       [
          (Html.Attributes.class "characters")
       ]
       (List.map
          (View.Map.Character.get_html model)
-         (Array.toList model.characters)
+         (Array.toList (Struct.Battle.get_characters model.battle))
       )
    )
 
@@ -142,10 +141,8 @@ get_html model =
          )
       ]
       [
-         (Html.Lazy.lazy (get_tiles_html) model.map),
-         -- Not in lazy mode, because I can't easily get rid of that 'model'
-         -- parameter.
-         (get_characters_html model model.characters),
+         (Html.Lazy.lazy (get_tiles_html) model.battle.map),
+         (Html.Lazy.lazy (get_characters_html model)),
          (Html.Lazy.lazy2
             (maybe_print_navigator)
             True
@@ -154,7 +151,7 @@ get_html model =
          (Html.Lazy.lazy2
             (maybe_print_navigator)
             False
-            (Struct.UI.try_getting_displayed_nav model.ui)
+            model.ui.displayed_nav
          )
       ]
    )

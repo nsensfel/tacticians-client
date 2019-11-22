@@ -10,21 +10,21 @@ import Html.Attributes
 import Battle.Struct.Attributes
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Battle
 import Struct.Character
 import Struct.Event
-import Struct.Model
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
 get_target_info_html : (
-      Struct.Model.Type ->
+      Struct.Battle.Type ->
       Struct.Character.Ref ->
       (Html.Html Struct.Event.Type)
    )
-get_target_info_html model char_ref =
-   case (Dict.get char_ref model.characters) of
+get_target_info_html battle char_ref =
+   case (Struct.Battle.get_character char_ref battle) of
       Nothing -> (Html.text "Error: Unknown character selected.")
       (Just char) ->
          (Html.text
@@ -61,14 +61,14 @@ get_target_info_html model char_ref =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
-      Struct.Model.Type ->
+      Struct.Battle.Type ->
       Struct.Character.Ref ->
       (Html.Html Struct.Event.Type)
    )
-get_html model target_ref =
+get_html battle target_ref =
    (Html.div
       [
          (Html.Attributes.class "side-bar-targets")
       ]
-      [(get_target_info_html model target_ref)]
+      [(get_target_info_html battle target_ref)]
    )

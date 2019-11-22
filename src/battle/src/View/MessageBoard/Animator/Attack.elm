@@ -11,9 +11,9 @@ import BattleCharacters.Struct.Character
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Attack
+import Struct.Battle
 import Struct.Character
 import Struct.Event
-import Struct.Model
 
 import View.Controlled.CharacterCard
 
@@ -120,10 +120,8 @@ get_attack_animation_class : (
    )
 get_attack_animation_class attack char =
    if (attack.critical)
-   then
-      "animated-portrait-attack-critical"
-   else
-      "animated-portrait-attacks"
+   then "animated-portrait-attack-critical"
+   else "animated-portrait-attacks"
 
 get_defense_animation_class : (
       Struct.Attack.Type ->
@@ -134,23 +132,17 @@ get_defense_animation_class attack char =
    if (attack.damage == 0)
    then
       if (attack.precision == Struct.Attack.Miss)
-      then
-         "animated-portrait-dodges"
-      else
-         "animated-portrait-undamaged"
+      then "animated-portrait-dodges"
+      else "animated-portrait-undamaged"
    else if ((Struct.Character.get_current_health char) > 0)
    then
       if (attack.precision == Struct.Attack.Graze)
-      then
-         "animated-portrait-grazed-damage"
-      else
-         "animated-portrait-damaged"
+      then "animated-portrait-grazed-damage"
+      else "animated-portrait-damaged"
    else
       if (attack.precision == Struct.Attack.Graze)
-      then
-         "animated-portrait-grazed-death"
-      else
-         "animated-portrait-dies"
+      then "animated-portrait-grazed-death"
+      else "animated-portrait-dies"
 
 get_attacker_card : (
       (Maybe Struct.Attack.Type) ->
@@ -297,11 +289,16 @@ get_placeholder_html characters attacker_ix defender_ix maybe_attack =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
-      Struct.Model.Type ->
+      Struct.Battle.Type ->
       Int ->
       Int ->
       (Maybe Struct.Attack.Type) ->
       (Html.Html Struct.Event.Type)
    )
-get_html model attacker_ix defender_ix maybe_attack =
-   (get_placeholder_html model.characters attacker_ix defender_ix maybe_attack)
+get_html battle attacker_ix defender_ix maybe_attack =
+   (get_placeholder_html
+      (Struct.Battle.get_characters battle)
+      attacker_ix
+      defender_ix
+      maybe_attack
+   )

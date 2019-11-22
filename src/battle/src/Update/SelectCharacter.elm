@@ -31,11 +31,11 @@ import Struct.UI
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_character_navigator : (
-      Struct.Model.Type ->
+      Struct.Battle.Type ->
       Struct.Character.Type ->
       Struct.Navigator.Type
    )
-get_character_navigator model char =
+get_character_navigator battle char =
    let
       base_char = (Struct.Character.get_base_character char)
       weapon = (BattleCharacters.Struct.Character.get_active_weapon base_char)
@@ -48,10 +48,12 @@ get_character_navigator model char =
          (BattleCharacters.Struct.Weapon.get_defense_range weapon)
          (BattleCharacters.Struct.Weapon.get_attack_range weapon)
          (BattleMap.Struct.Map.get_tile_data_function
-            model.map
+            (Struct.Battle.get_map battle)
             (List.map
                (Struct.Character.get_location)
-               (Array.toList model.characters)
+               (Array.toList
+                  (Struct.Battle.get_characters battle)
+               )
             )
             (Struct.Character.get_location char)
          )
@@ -92,7 +94,7 @@ ctrl_or_focus_character model target_char_id target_char =
             (case (Struct.UI.try_getting_displayed_nav model.ui) of
                (Just dnav) -> dnav
                Nothing ->
-                  (get_character_navigator model target_char)
+                  (get_character_navigator model.battle target_char)
             )
       in
          {model |
@@ -117,7 +119,7 @@ ctrl_or_focus_character model target_char_id target_char =
             (Struct.UI.set_previous_action
                (Just (Struct.UI.SelectedCharacter target_char_id))
                (Struct.UI.set_displayed_nav
-                  (get_character_navigator model target_char)
+                  (get_character_navigator model.battle target_char)
                   model.ui
                )
             )
@@ -162,7 +164,7 @@ second_click_on : (
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 second_click_on model target_char_id =
-   case (Array.get target_char_id model.characters) of
+   case (Struct.Battle.get_character target_char_id model.battle) of
       (Just target_char) ->
          case
             (
@@ -253,7 +255,7 @@ first_click_on model target_char_id =
    then
       (model, Cmd.none)
    else
-      case (Array.get target_char_id model.characters) of
+      case (Struct.Battle.get_character target_char_id model.battle) of
          (Just target_char) ->
             (
                {model |
@@ -263,7 +265,7 @@ first_click_on model target_char_id =
                         (Struct.UI.set_displayed_tab
                            Struct.UI.StatusTab
                            (Struct.UI.set_displayed_nav
-                              (get_character_navigator model target_char)
+                              (get_character_navigator model.battle target_char)
                               model.ui
                            )
                         )
@@ -299,7 +301,5 @@ apply_to model target_char_id =
       ==
       (Just (Struct.UI.SelectedCharacter target_char_id))
    )
-   then
-      (second_click_on model target_char_id)
-   else
-      (first_click_on model target_char_id)
+   then (second_click_on model target_char_id)
+   else (first_click_on model target_char_id)

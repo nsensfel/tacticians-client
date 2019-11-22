@@ -33,7 +33,7 @@ make_it_so model char nav =
       (Just cmd) ->
          (
             (Struct.Model.reset
-               (Struct.Model.update_character_fun
+               (Struct.Model.update_character
                   (Struct.Character.get_index char)
                   (maybe_disable_char)
                   model

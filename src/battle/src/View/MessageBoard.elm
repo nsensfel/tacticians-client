@@ -25,6 +25,6 @@ get_html model =
       Nothing ->
          case model.animator of
             (Just animator) ->
-               (View.MessageBoard.Animator.get_html model animator)
+               (View.MessageBoard.Animator.get_html model.battle animator)
 
             Nothing -> (View.MessageBoard.Help.get_html model)

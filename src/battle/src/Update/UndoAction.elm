@@ -14,6 +14,7 @@ import BattleCharacters.Struct.Weapon
 import BattleMap.Struct.Map
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Battle
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
@@ -24,11 +25,11 @@ import Struct.Navigator
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_character_navigator : (
-      Struct.Model.Type ->
+      Struct.Battle.Type ->
       Struct.Character.Type ->
       Struct.Navigator.Type
    )
-get_character_navigator model char =
+get_character_navigator battle char =
    let
       base_char = (Struct.Character.get_base_character char)
       weapon = (BattleCharacters.Struct.Character.get_active_weapon base_char)
@@ -44,7 +45,7 @@ get_character_navigator model char =
             model.map
             (List.map
                (Struct.Character.get_location)
-               (Array.toList model.characters)
+               (Array.toList (Struct.Battle.get_characters battle))
             )
             (Struct.Character.get_location char)
          )
@@ -57,16 +58,16 @@ handle_reset_character_turn model =
 
       (Just current_char) ->
          case
-            (Array.get
+            (Struct.Battle.get_character
                (Struct.Character.get_index current_char)
-               model.characters
+               model.battle
             )
          of
             Nothing -> model.char_turn
 
             (Just reset_char) ->
                (Struct.CharacterTurn.set_navigator
-                  (get_character_navigator model reset_char)
+                  (get_character_navigator model.battle reset_char)
                   (Struct.CharacterTurn.set_active_character
                      reset_char
                      (Struct.CharacterTurn.new)
@@ -98,14 +99,13 @@ handle_undo_switched_weapons model =
 
 handle_undo_chose_target : Struct.Model.Type -> Struct.CharacterTurn.Type
 handle_undo_chose_target model =
-   let
-      tile_omnimods = (Struct.Model.tile_omnimods_fun model)
-   in
-      (Struct.CharacterTurn.lock_path
-         (Struct.CharacterTurn.unlock_path
-            (Struct.CharacterTurn.set_target Nothing model.char_turn)
-         )
-      )
+   (Struct.CharacterTurn.set_target Nothing model.char_turn
+-- Was previously something like below, but that looks really wrong:
+--   (Struct.CharacterTurn.lock_path
+--      (Struct.CharacterTurn.unlock_path
+--         model.char_turn
+--      )
+--   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

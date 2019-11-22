@@ -1,4 +1,4 @@
-module View.SubMenu.Status.TileInfo exposing (get_html)
+module BattleMap.View.TileInfo exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Dict
@@ -32,7 +32,7 @@ import Struct.Model
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_icon : (BattleMap.Struct.TileInstance.Type -> (Html.Html Struct.Event.Type))
-get_icon tile =
+get_icon tile_instance =
    (Html.div
       [
          (Html.Attributes.class "tile-card-icon"),
@@ -42,38 +42,30 @@ get_icon tile =
                "tile-variant-"
                ++
                (String.fromInt
-                  (BattleMap.Struct.TileInstance.get_local_variant_ix tile)
+                  (BattleMap.Struct.TileInstance.get_local_variant_ix
+                     tile_instance
+                  )
                )
             )
          )
       ]
-      (BattleMap.View.Tile.get_content_html tile)
+      (BattleMap.View.Tile.get_content_html tile_instance)
    )
 
-get_name : (
-      Struct.Model.Type ->
-      BattleMap.Struct.TileInstance.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_name model tile_inst =
-   case
-      (Dict.get
-         (BattleMap.Struct.TileInstance.get_class_id tile_inst)
-         model.tiles
-      )
-   of
-      Nothing -> (Util.Html.nothing)
-      (Just tile) ->
-         (Html.div
-            [
-               (Html.Attributes.class "info-card-name"),
-               (Html.Attributes.class "info-card-text-field"),
-               (Html.Attributes.class "tile-card-name")
-            ]
-            [
-               (Html.text (BattleMap.Struct.Tile.get_name tile))
-            ]
+get_name : BattleMap.Struct.Tile.Type -> (Html.Html Struct.Event.Type)
+get_name tile =
+   (Html.div
+      [
+         (Html.Attributes.class "info-card-name"),
+         (Html.Attributes.class "info-card-text-field"),
+         (Html.Attributes.class "tile-card-name")
+      ]
+      [
+         (Html.text
+            (BattleMap.Struct.Tile.get_name tile)
          )
+      ]
+   )
 
 get_cost : BattleMap.Struct.TileInstance.Type -> (Html.Html Struct.Event.Type)
 get_cost tile_inst =
@@ -81,10 +73,8 @@ get_cost tile_inst =
       cost = (BattleMap.Struct.TileInstance.get_cost tile_inst)
       text =
          if (cost > Constants.Movement.max_points)
-         then
-            "Obstructed"
-         else
-            ("Cost: " ++ (String.fromInt cost))
+         then "Obstructed"
+         else ("Cost: " ++ (String.fromInt cost))
    in
       (Html.div
          [
@@ -96,11 +86,12 @@ get_cost tile_inst =
          ]
       )
 
-get_location : BattleMap.Struct.TileInstance.Type -> (Html.Html Struct.Event.Type)
+get_location : (
+      BattleMap.Struct.TileInstance.Type ->
+      (Html.Html Struct.Event.Type)
+   )
 get_location tile_inst =
-   let
-      tile_location = (BattleMap.Struct.TileInstance.get_location tile_inst)
-   in
+   let tile_location = (BattleMap.Struct.TileInstance.get_location tile_inst) in
       (Html.div
          [
             (Html.Attributes.class "info-card-text-field"),
@@ -123,35 +114,43 @@ get_location tile_inst =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
-      Struct.Model.Type ->
-      BattleMap.Struct.Location.Type ->
+      BattleMap.Struct.DataSet.Type ->
+      BattleMap.Struct.Location.Ref ->
+      BattleMap.Struct.Map.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_html model loc =
-   case (BattleMap.Struct.Map.try_getting_tile_at loc model.map) of
-      (Just tile) ->
-         (Html.div
-            [
-               (Html.Attributes.class "info-card"),
-               (Html.Attributes.class "tile-card")
-            ]
-            [
-               (get_name model tile),
+get_html dataset loc_ref map =
+   let loc = (BattleMap.Struct.Location.from_ref loc_ref) in
+      case (BattleMap.Struct.Map.try_getting_tile_at loc map) of
+         (Just tile_instance) ->
+            let
+               tile_data =
+                  (BattleMap.Struct.DataSet.get_tile
+                     (BattleMap.Struct.TileInstance.get_class_id tile_instance)
+                  )
+            in
                (Html.div
                   [
-                     (Html.Attributes.class "info-card-top"),
-                     (Html.Attributes.class "tile-card-top")
+                     (Html.Attributes.class "info-card"),
+                     (Html.Attributes.class "tile-card")
                   ]
                   [
-                     (get_icon tile),
-                     (get_location tile),
-                     (get_cost tile)
+                     (get_name dataset tile_data),
+                     (Html.div
+                        [
+                           (Html.Attributes.class "info-card-top"),
+                           (Html.Attributes.class "tile-card-top")
+                        ]
+                        [
+                           (get_icon tile_instance),
+                           (get_location tile_instance),
+                           (get_cost tile_instance)
+                        ]
+                     ),
+                     (Battle.View.Omnimods.get_signed_html
+                        (BattleMap.Struct.Tile.get_omnimods tile_data)
+                     )
                   ]
-               ),
-               (Battle.View.Omnimods.get_signed_html
-                  ((Struct.Model.tile_omnimods_fun model) loc)
                )
-            ]
-         )
 
-      Nothing -> (Html.text "Error: Unknown tile location selected.")
+         Nothing -> (Html.text "Error: Unknown tile location selected.")

@@ -7,6 +7,7 @@ import Task
 -- Local Module ----------------------------------------------------------------
 import Action.Scroll
 
+import Struct.Battle
 import Struct.Character
 import Struct.Event
 import Struct.Model
@@ -17,7 +18,7 @@ import Struct.UI
 --------------------------------------------------------------------------------
 scroll_to_char : Struct.Model.Type -> Int -> (Cmd Struct.Event.Type)
 scroll_to_char model char_ix =
-   case (Array.get char_ix model.characters) of
+   case (Struct.Battle.get_character char_ix model.battle) of
       (Just char) ->
          (Task.attempt
             (Struct.Event.attempted)

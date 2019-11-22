@@ -127,44 +127,47 @@ initialize_animator model =
          players = players
       }
 
-move_animator_to_next_step : Type -> Type
-move_animator_to_next_step model =
-   case model.animator of
-      Nothing -> model
+move_animator_to_next_step : (Maybe Type) -> (Maybe Type)
+move_animator_to_next_step maybe_animator =
+   case maybe_animator of
+      Nothing -> maybe_animator
       (Just animator) ->
-         case (Struct.TurnResultAnimator.maybe_trigger_next_step animator) of
-            Nothing ->
-               (Set.foldl
-                  (regenerate_attack_of_opportunity_markers)
-                  {model | animator = Nothing }
-                  (Struct.TurnResultAnimator.get_animated_character_indices
-                     animator
-                  )
+         (Struct.TurnResultAnimator.maybe_trigger_next_step animator)
+
+--         case (Struct.TurnResultAnimator.maybe_trigger_next_step animator) of
+--            Nothing ->
+--               (Set.foldl
+--                  (regenerate_attack_of_opportunity_markers)
+--                  {model | animator = Nothing }
+--                  (Struct.TurnResultAnimator.get_animated_character_indices
+--                     animator
+--                  )
+--               )
+--
+--            just_next_animator -> {model | animator = just_next_animator }
+
+apply_animator_step : (
+      BattleMap.Struct.DataSet.Type ->
+      Battle.Struct.Type ->
+      Battle.Struct.Type
+   )
+apply_animator_step dataset animator battle =
+   case (Struct.TurnResultAnimator.get_current_animation animator) of
+      (Struct.TurnResultAnimator.TurnResult turn_result) ->
+         let
+            (characters, players) =
+               (Struct.TurnResult.apply_step
+                  (Struct.Battle.get_tile_omnimods_fun dataset battle)
+                  turn_result
+                  battle
                )
+         in
+            (Struct.Battle.set_players
+               players
+               (Struct.Battle.set_characters characters battle)
+            )
 
-            just_next_animator -> {model | animator = just_next_animator }
-
-apply_animator_step : Type -> Type
-apply_animator_step model =
-   case model.animator of
-      Nothing -> model
-      (Just animator) ->
-         case (Struct.TurnResultAnimator.get_current_animation animator) of
-            (Struct.TurnResultAnimator.TurnResult turn_result) ->
-               let
-                  (characters, players) =
-                     (Struct.TurnResult.apply_step
-                        (tile_omnimods_fun model)
-                        turn_result
-                        model.characters
-                        model.players
-                     )
-               in
-                  {model |
-                     characters = characters,
-                     players = players
-                  }
-            _ -> model
+      _ -> battle
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

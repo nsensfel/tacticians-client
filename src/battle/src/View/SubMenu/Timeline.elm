@@ -8,6 +8,7 @@ import Html.Attributes
 import Html.Lazy
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Battle
 import Struct.Character
 import Struct.Event
 import Struct.TurnResult
@@ -61,13 +62,8 @@ get_turn_result_html characters player_ix turn_result =
       (Struct.TurnResult.PlayerTurnStarted pturns) ->
          (View.SubMenu.Timeline.PlayerTurnStart.get_html pturns)
 
-true_get_html : (
-      (Array.Array Struct.Character.Type) ->
-      Int ->
-      (Array.Array Struct.TurnResult.Type) ->
-      (Html.Html Struct.Event.Type)
-   )
-true_get_html characters player_ix turn_results =
+true_get_html : Struct.Battle.Type -> (Html.Html Struct.Event.Type)
+true_get_html battle =
    (Html.div
       [
          (Html.Attributes.class "tabmenu-content"),
@@ -75,8 +71,11 @@ true_get_html characters player_ix turn_results =
       ]
       (Array.toList
          (Array.map
-            (get_turn_result_html characters player_ix)
-            turn_results
+            (get_turn_result_html
+               (Struct.Battle.get_characters battle)
+               (Struct.Battle.get_own_player_index battle)
+            )
+            (Struct.Battle.get_turn_results battle)
          )
       )
    )
@@ -86,9 +85,4 @@ true_get_html characters player_ix turn_results =
 --------------------------------------------------------------------------------
 get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
-   (Html.Lazy.lazy3
-      (true_get_html)
-      model.characters
-      model.player_ix
-      model.timeline
-   )
+   (Html.Lazy.lazy (true_get_html) model.battle)
