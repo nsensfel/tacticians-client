@@ -8,8 +8,12 @@ import Set
 import Dict
 
 import Html
+import Html.Lazy
 import Html.Attributes
 import Html.Events
+
+-- Shared ----------------------------------------------------------------------
+import Util.Html
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
@@ -17,6 +21,7 @@ import Battle.Struct.Omnimods
 import Battle.View.Omnimods
 
 -- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.DataSet
 import BattleCharacters.Struct.Character
 import BattleCharacters.Struct.Equipment
 import BattleCharacters.Struct.Glyph
@@ -84,23 +89,23 @@ get_glyph_html invalid_family_ids factor glyph =
       ]
    )
 
---------------------------------------------------------------------------------
--- EXPORTED --------------------------------------------------------------------
---------------------------------------------------------------------------------
-get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
-get_html model =
-   (Html.div
-      [
-         (Html.Attributes.class "selection-window"),
-         (Html.Attributes.class "glyph-management")
-      ]
-      (
-         case model.edited_char of
-            Nothing -> [ (Html.text "Choose a character first.") ]
-            (Just char) ->
+true_get_html : (
+      (Maybe Struct.Character.Type) ->
+      Int ->
+      BattleCharacters.Struct.DataSet.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+true_get_html maybe_char glyph_modifier dataset =
+   case maybe_char of
+      Nothing -> (Util.Html.nothing)
+      (Just char) ->
+         (Html.div
+            [
+               (Html.Attributes.class "selection-window"),
+               (Html.Attributes.class "glyph-management")
+            ]
+            (
                let
-                  (slot_index, glyph_modifier) =
-                     (Struct.UI.get_glyph_slot model.ui)
                   glyph_multiplier =
                      ((toFloat glyph_modifier) / 100.0)
                   used_glyph_family_indices =
@@ -117,9 +122,26 @@ get_html model =
                               used_glyph_family_indices
                               glyph_multiplier
                            )
-                           (Dict.values model.glyphs)
+                           (Dict.values
+                              (BattleCharacters.Struct.DataSet.get_glyphs
+                                 dataset
+                              )
+                           )
                         )
                      )
                   ]
+            )
+         )
+
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
+get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
+get_html model =
+   let (slot_index, glyph_modifier) = (Struct.UI.get_glyph_slot model.ui) in
+      (Html.Lazy.lazy3
+         (true_get_html)
+         model.edited_char
+         glyph_modifier
+         model.characters_dataset
       )
-   )

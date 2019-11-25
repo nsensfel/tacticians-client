@@ -1,10 +1,10 @@
-module Comm.AddTile exposing (decode)
+module BattleMap.Comm.AddDataSetItem exposing (prefix, get_decoder_for)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode
 
 -- Battle Map ------------------------------------------------------------------
-import BattleMap.Struct.Tile
+import BattleMap.Comm.AddTile
 
 -- Local Module ----------------------------------------------------------------
 import Struct.ServerReply
@@ -16,11 +16,23 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-internal_decoder : BattleMap.Struct.Tile.Type -> Struct.ServerReply.Type
-internal_decoder wp = (Struct.ServerReply.AddTile wp)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.map (internal_decoder) (BattleMap.Struct.Tile.decoder))
+prefix : String
+prefix = "amds"
+
+get_decoder_for : String -> (Json.Decode.Decoder Struct.ServerReply.Type)
+get_decoder_for reply_type =
+   case reply_type of
+      "amds_tile" -> (BattleMap.Comm.AddTile.decode)
+
+      other ->
+         (Json.Decode.fail
+            (
+               "Unknown server command \""
+               ++ other
+               ++ "\""
+            )
+         )

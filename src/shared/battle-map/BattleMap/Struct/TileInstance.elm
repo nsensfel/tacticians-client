@@ -36,6 +36,7 @@ import Json.Decode
 import Json.Decode.Pipeline
 
 -- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.DataSet
 import BattleMap.Struct.Tile
 import BattleMap.Struct.Location
 
@@ -147,25 +148,13 @@ get_local_variant_ix tile_inst =
       )
    )
 
-solve : (
-      (Dict.Dict BattleMap.Struct.Tile.Ref BattleMap.Struct.Tile.Type) ->
-      Type ->
-      Type
-   )
-solve tiles tile_inst =
-   case (Dict.get tile_inst.class_id tiles) of
-      (Just tile) ->
-         {tile_inst |
-            crossing_cost = (BattleMap.Struct.Tile.get_cost tile),
-            family = (BattleMap.Struct.Tile.get_family tile)
-         }
-
-      Nothing ->
-         {tile_inst |
-            crossing_cost = -1,
-            family = "-1"
-         }
-
+solve : BattleMap.Struct.DataSet.Type -> Type -> Type
+solve dataset tile_inst =
+   let tile = (BattleMap.Struct.DataSet.get_tile tile_inst.class_id dataset) in
+      {tile_inst |
+         crossing_cost = (BattleMap.Struct.Tile.get_cost tile),
+         family = (BattleMap.Struct.Tile.get_family tile)
+      }
 
 list_to_borders : (
       (List String) ->

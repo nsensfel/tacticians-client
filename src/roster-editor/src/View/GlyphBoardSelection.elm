@@ -4,10 +4,12 @@ module View.GlyphBoardSelection exposing (get_html)
 import Dict
 
 import Html
+import Html.Lazy
 import Html.Attributes
 import Html.Events
 
 -- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.DataSet
 import BattleCharacters.Struct.GlyphBoard
 
 -- Local Module ----------------------------------------------------------------
@@ -46,11 +48,11 @@ get_glyph_board_html glyph_board =
       ]
    )
 
---------------------------------------------------------------------------------
--- EXPORTED --------------------------------------------------------------------
---------------------------------------------------------------------------------
-get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
-get_html model =
+true_get_html : (
+      BattleCharacters.Struct.DataSet.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+true_get_html dataset =
    (Html.div
       [
          (Html.Attributes.class "selection-window"),
@@ -62,7 +64,21 @@ get_html model =
             [
                (Html.Attributes.class "selection-window-listing")
             ]
-            (List.map (get_glyph_board_html) (Dict.values model.glyph_boards))
+            (List.map
+               (get_glyph_board_html)
+               (Dict.values
+                  (BattleCharacters.Struct.DataSet.get_glyph_boards dataset)
+               )
+            )
          )
       ]
+   )
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
+get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
+get_html model =
+   (Html.Lazy.lazy
+      (true_get_html)
+      model.characters_dataset
    )

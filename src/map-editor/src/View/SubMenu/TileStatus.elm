@@ -10,9 +10,10 @@ import Html.Attributes
 import Util.Html
 
 -- Battle ----------------------------------------------------------------------
-import Battle.Struct.Omnimods
+import Battle.View.Omnimods
 
 -- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.DataSet
 import BattleMap.Struct.Location
 import BattleMap.Struct.Map
 import BattleMap.Struct.Tile
@@ -50,29 +51,28 @@ get_icon tile =
    )
 
 get_name : (
-      Struct.Model.Type ->
+      BattleMap.Struct.DataSet.Type ->
       BattleMap.Struct.TileInstance.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_name model tile_inst =
-   case
-      (Dict.get
-         (BattleMap.Struct.TileInstance.get_class_id tile_inst)
-         model.tiles
-      )
-   of
-      Nothing -> (Util.Html.nothing)
-      (Just tile) ->
-         (Html.div
-            [
-               (Html.Attributes.class "info-card-name"),
-               (Html.Attributes.class "info-card-text-field"),
-               (Html.Attributes.class "tile-card-name")
-            ]
-            [
-               (Html.text (BattleMap.Struct.Tile.get_name tile))
-            ]
+get_name dataset tile_inst =
+   (Html.div
+      [
+         (Html.Attributes.class "info-card-name"),
+         (Html.Attributes.class "info-card-text-field"),
+         (Html.Attributes.class "tile-card-name")
+      ]
+      [
+         (Html.text
+            (BattleMap.Struct.Tile.get_name
+               (BattleMap.Struct.DataSet.get_tile
+                  (BattleMap.Struct.TileInstance.get_class_id tile_inst)
+                  dataset
+               )
+            )
          )
+      ]
+   )
 
 get_cost : BattleMap.Struct.TileInstance.Type -> (Html.Html Struct.Event.Type)
 get_cost tile_inst =
@@ -121,53 +121,6 @@ get_location tile_inst =
          ]
       )
 
-get_mod_html : (String, Int) -> (Html.Html Struct.Event.Type)
-get_mod_html mod =
-   let
-      (category, value) = mod
-   in
-      (Html.div
-         [
-            (Html.Attributes.class "info-card-mod")
-         ]
-         [
-            (Html.text
-               (category ++ ": " ++ (String.fromInt value))
-            )
-         ]
-      )
-
-get_omnimods_listing : (List (String, Int)) -> (Html.Html Struct.Event.Type)
-get_omnimods_listing mod_list =
-   (Html.div
-      [
-         (Html.Attributes.class "info-card-omnimods-listing")
-      ]
-      (List.map (get_mod_html) mod_list)
-   )
-
-get_omnimods : Battle.Struct.Omnimods.Type -> (Html.Html Struct.Event.Type)
-get_omnimods omnimods =
-   (Html.div
-      [
-         (Html.Attributes.class "info-card-omnimods")
-      ]
-      [
-         (Html.text "Attributes Modifiers"),
-         (get_omnimods_listing
-            (Battle.Struct.Omnimods.get_attribute_mods omnimods)
-         ),
-         (Html.text "Attack Modifiers"),
-         (get_omnimods_listing
-            (Battle.Struct.Omnimods.get_attack_mods omnimods)
-         ),
-         (Html.text "Defense Modifiers"),
-         (get_omnimods_listing
-            (Battle.Struct.Omnimods.get_defense_mods omnimods)
-         )
-      ]
-   )
-
 get_tile_info_html : (
       Struct.Model.Type ->
       BattleMap.Struct.Location.Type ->
@@ -182,7 +135,7 @@ get_tile_info_html model loc =
                (Html.Attributes.class "tile-card")
             ]
             [
-               (get_name model tile),
+               (get_name model.map_dataset tile),
                (Html.div
                   [
                      (Html.Attributes.class "info-card-top"),
@@ -194,7 +147,13 @@ get_tile_info_html model loc =
                      (get_cost tile)
                   ]
                ),
-               (get_omnimods ((Struct.Model.tile_omnimods_fun model) loc))
+               (Battle.View.Omnimods.get_signed_html
+                  (BattleMap.Struct.Map.get_omnimods_at
+                     loc
+                     model.map_dataset
+                     model.map
+                  )
+               )
             ]
          )
 

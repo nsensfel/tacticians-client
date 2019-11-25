@@ -7,11 +7,7 @@ import Json.Decode
 import Json.Encode
 
 --- Battle Characters ----------------------------------------------------------
-import BattleCharacters.Comm.AddArmor
-import BattleCharacters.Comm.AddGlyph
-import BattleCharacters.Comm.AddGlyphBoard
-import BattleCharacters.Comm.AddPortrait
-import BattleCharacters.Comm.AddWeapon
+import BattleCharacters.Comm.AddDataSetItem
 
 --- Local Module ---------------------------------------------------------------
 import Comm.GoTo
@@ -36,24 +32,25 @@ internal_decoder reply_type =
 
       "add_char" -> (Comm.AddChar.decode)
 
-      "add_armor" -> (BattleCharacters.Comm.AddArmor.decode)
-      "add_weapon" -> (BattleCharacters.Comm.AddWeapon.decode)
-      "add_portrait" -> (BattleCharacters.Comm.AddPortrait.decode)
-      "add_glyph" -> (BattleCharacters.Comm.AddGlyph.decode)
-      "add_glyph_board" -> (BattleCharacters.Comm.AddGlyphBoard.decode)
-
       "disconnected" -> (Json.Decode.succeed Struct.ServerReply.Disconnected)
       "goto" -> (Comm.GoTo.decode)
       "okay" -> (Json.Decode.succeed Struct.ServerReply.Okay)
 
       other ->
-         (Json.Decode.fail
-            (
-               "Unknown server command \""
-               ++ other
-               ++ "\""
-            )
+         if
+         (String.startsWith
+            (BattleCharacters.Comm.AddDataSetItem.prefix)
+            reply_type
          )
+         then (BattleCharacters.Comm.AddDataSetItem.get_decoder_for reply_type)
+         else
+            (Json.Decode.fail
+               (
+                  "Unknown server command \""
+                  ++ other
+                  ++ "\""
+               )
+            )
 
 decode : (Json.Decode.Decoder Struct.ServerReply.Type)
 decode =

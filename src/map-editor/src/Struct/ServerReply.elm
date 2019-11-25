@@ -2,7 +2,7 @@ module Struct.ServerReply exposing (Type(..))
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Map
-import BattleMap.Struct.Tile
+import BattleMap.Struct.DataSetItem
 
 -- Local Module ----------------------------------------------------------------
 import Struct.TilePattern
@@ -14,7 +14,7 @@ import Struct.TilePattern
 type Type =
    Okay
    | Disconnected
-   | AddTile BattleMap.Struct.Tile.Type
+   | AddMapDataSetItem BattleMap.Struct.DataSetItem.Type
    | AddTilePattern Struct.TilePattern.Type
    | SetMap BattleMap.Struct.Map.Type
 

@@ -4,6 +4,7 @@ module Update.SetToolboxTemplate exposing (apply_to)
 import Dict
 
 -- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.DataSet
 import BattleMap.Struct.TileInstance
 
 -- Local Module ----------------------------------------------------------------
@@ -29,10 +30,11 @@ apply_to model main_class_id variant_id =
       {model |
          toolbox =
             (Struct.Toolbox.set_template
-               (
-                  case (Dict.get main_class_id model.tiles) of
-                     (Just tile) -> (BattleMap.Struct.TileInstance.default tile)
-                     _ -> (BattleMap.Struct.TileInstance.error 0 0)
+               (BattleMap.Struct.TileInstance.default
+                  (BattleMap.Struct.DataSet.get_tile
+                     main_class_id
+                     model.map_dataset
+                  )
                )
                model.toolbox
             )

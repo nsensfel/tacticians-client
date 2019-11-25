@@ -28,8 +28,16 @@ try_encoding model =
    (Just
       (Json.Encode.object
          [
-            ("stk", (Json.Encode.string model.session_token)),
-            ("pid", (Json.Encode.string model.player_id)),
+            ("stk",
+               (Json.Encode.string
+                  (Struct.Flags.get_session_token model.flags)
+               )
+            ),
+            ("pid",
+               (Json.Encode.string
+                  (Struct.Flags.get_user_id model.flags)
+               )
+            ),
             (
                "six",
                (Json.Encode.int

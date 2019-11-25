@@ -14,7 +14,7 @@ import Util.Http
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Map
-import BattleMap.Struct.Tile
+import BattleMap.Struct.DataSetItem
 
 -- Local Module ----------------------------------------------------------------
 import Constants.IO
@@ -57,14 +57,20 @@ disconnected current_state =
          ]
       )
 
-add_tile : (
-      BattleMap.Struct.Tile.Type ->
+add_map_dataset_item : (
+      BattleMap.Struct.DataSetItem.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-add_tile tl current_state =
+add_map_dataset_item item current_state =
    let (model, cmds) = current_state in
-      ((Struct.Model.add_tile tl model), cmds)
+      (
+         {model |
+            map_dataset =
+               (BattleMap.Struct.DataSetItem.add_to item model.map_dataset)
+         },
+         cmds
+      )
 
 add_tile_pattern : (
       Struct.TilePattern.Type ->
@@ -82,7 +88,12 @@ set_map : (
    )
 set_map map current_state =
    let (model, cmds) = current_state in
-      ({model | map = (BattleMap.Struct.Map.solve_tiles model.tiles map)}, cmds)
+      (
+         {model |
+            map = (BattleMap.Struct.Map.solve_tiles model.map_dataset model.map)
+         },
+         cmds
+      )
 
 refresh_map : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
@@ -92,7 +103,7 @@ refresh_map current_state =
    let (model, cmds) = current_state in
       (
          {model |
-            map = (BattleMap.Struct.Map.solve_tiles model.tiles model.map)
+            map = (BattleMap.Struct.Map.solve_tiles model.map_dataset model.map)
          },
          cmds
       )
@@ -106,8 +117,8 @@ apply_command command current_state =
    case command of
       Struct.ServerReply.Disconnected -> (disconnected current_state)
 
-      (Struct.ServerReply.AddTile tl) ->
-         (add_tile tl current_state)
+      (Struct.ServerReply.AddMapDataSetItem it) ->
+         (add_map_dataset_item it current_state)
 
       (Struct.ServerReply.AddTilePattern tp) ->
          (add_tile_pattern tp current_state)

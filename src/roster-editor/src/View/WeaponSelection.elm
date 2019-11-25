@@ -4,6 +4,7 @@ module View.WeaponSelection exposing (get_html)
 import Dict
 
 import Html
+import Html.Lazy
 import Html.Attributes
 import Html.Events
 
@@ -15,6 +16,7 @@ import Battle.View.Omnimods
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Character
+import BattleCharacters.Struct.DataSet
 import BattleCharacters.Struct.Weapon
 
 -- Local Module ----------------------------------------------------------------
@@ -87,6 +89,59 @@ get_weapon_html weapon =
       ]
    )
 
+get_weapon_htmls : (
+      Bool ->
+      BattleCharacters.Struct.DataSet.Type ->
+      (List (Html.Html Struct.Event.Type))
+   )
+get_weapon_htmls is_selecting_secondary dataset =
+   if (is_selecting_secondary)
+   then
+      (List.filterMap
+         (\wp ->
+            if (BattleCharacters.Struct.Weapon.get_is_primary wp)
+            then Nothing
+            else (Just (get_weapon_html wp))
+         )
+         (Dict.values
+            (BattleCharacters.Struct.DataSet.get_weapons dataset)
+         )
+      )
+   else
+      (List.map
+         (get_weapon_html)
+         (Dict.values
+            (BattleCharacters.Struct.DataSet.get_weapons dataset)
+         )
+      )
+
+true_get_html : (
+      Bool ->
+      BattleCharacters.Struct.DataSet.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+true_get_html is_selecting_secondary dataset =
+   (Html.div
+      [
+         (Html.Attributes.class "selection-window"),
+         (Html.Attributes.class "weapon-selection")
+      ]
+      [
+         (Html.text
+            (
+               if (is_selecting_secondary)
+               then "Secondary Weapon Selection"
+               else "Primary Weapon Selection"
+            )
+         ),
+         (Html.div
+            [
+               (Html.Attributes.class "selection-window-listing")
+            ]
+            (get_weapon_htmls is_selecting_secondary dataset)
+         )
+      ]
+   )
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -101,40 +156,8 @@ get_html model =
                   (Struct.Character.get_base_character char)
                )
          in
-            (Html.div
-               [
-                  (Html.Attributes.class "selection-window"),
-                  (Html.Attributes.class "weapon-selection")
-               ]
-               [
-                  (Html.text
-                     (
-                        if (is_selecting_secondary)
-                        then "Secondary Weapon Selection"
-                        else "Primary Weapon Selection"
-                     )
-                  ),
-                  (Html.div
-                     [
-                        (Html.Attributes.class "selection-window-listing")
-                     ]
-                     (List.map
-                        (get_weapon_html)
-                        (List.filter
-                           (\e ->
-                              (not
-                                 (
-                                    is_selecting_secondary
-                                    &&
-                                    (BattleCharacters.Struct.Weapon.get_is_primary
-                                       e
-                                    )
-                                 )
-                              )
-                           )
-                           (Dict.values model.weapons)
-                        )
-                     )
-                  )
-               ]
+            (Html.Lazy.lazy2
+               (true_get_html)
+               is_selecting_secondary
+               model.characters_dataset
             )

@@ -3,6 +3,9 @@ module Comm.LoadRoster exposing (try)
 -- Elm -------------------------------------------------------------------------
 import Json.Encode
 
+-- Shared ----------------------------------------------------------------------
+import Struct.Flags
+
 -- Local Module ----------------------------------------------------------------
 import Comm.Send
 
@@ -23,8 +26,16 @@ try_encoding model =
    (Just
       (Json.Encode.object
          [
-            ("stk", (Json.Encode.string model.session_token)),
-            ("pid", (Json.Encode.string model.player_id)),
+            ("stk",
+               (Json.Encode.string
+                  (Struct.Flags.get_session_token model.flags)
+               )
+            ),
+            ("pid",
+               (Json.Encode.string
+                  (Struct.Flags.get_user_id model.flags)
+               )
+            ),
             ("rid", (Json.Encode.string model.roster_id))
          ]
       )

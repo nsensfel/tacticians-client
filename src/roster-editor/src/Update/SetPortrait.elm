@@ -5,6 +5,7 @@ import Dict
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Character
+import BattleCharacters.Struct.DataSet
 import BattleCharacters.Struct.Equipment
 import BattleCharacters.Struct.Portrait
 
@@ -25,11 +26,11 @@ apply_to : (
       BattleCharacters.Struct.Portrait.Ref ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model ref =
+apply_to model portrait_id =
    (
       (
-         case (model.edited_char, (Dict.get ref model.portraits)) of
-            ((Just char), (Just portrait)) ->
+         case model.edited_char of
+            (Just char) ->
                let base_char = (Struct.Character.get_base_character char) in
                {model |
                   edited_char =
@@ -37,7 +38,10 @@ apply_to model ref =
                         (Struct.Character.set_base_character
                            (BattleCharacters.Struct.Character.set_equipment
                               (BattleCharacters.Struct.Equipment.set_portrait
-                                 portrait
+                                 (BattleCharacters.Struct.DataSet.get_portrait
+                                    portrait_id
+                                    model.characters_dataset
+                                 )
                                  (BattleCharacters.Struct.Character.get_equipment
                                     base_char
                                  )

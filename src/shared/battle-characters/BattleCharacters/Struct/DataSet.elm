@@ -4,16 +4,22 @@ module BattleCharacters.Struct.DataSet exposing
       new,
       is_ready,
       get_weapon,
+      get_weapons,
       add_weapon,
       get_armor,
+      get_armors,
       add_armor,
       get_portrait,
+      get_portraits,
       add_portrait,
       get_glyph,
+      get_glyphs,
       add_glyph,
       get_glyph_board,
+      get_glyph_boards,
       add_glyph_board,
       get_skill,
+      get_skills,
       add_skill
    )
 
@@ -99,6 +105,15 @@ is_ready data_set =
 ----------------
 ---- Weapon ----
 ----------------
+get_weapons : (
+      Type ->
+      (Dict.Dict
+         BattleCharacters.Struct.Weapon.Ref
+         BattleCharacters.Struct.Weapon.Type
+      )
+   )
+get_weapons data_set = data_set.weapons
+
 get_weapon : (
       BattleCharacters.Struct.Weapon.Ref ->
       Type ->
@@ -123,6 +138,15 @@ add_weapon wp data_set =
 ---------------
 ---- Armor ----
 ---------------
+get_armors : (
+      Type ->
+      (Dict.Dict
+         BattleCharacters.Struct.Armor.Ref
+         BattleCharacters.Struct.Armor.Type
+      )
+   )
+get_armors data_set = data_set.armors
+
 get_armor : (
       BattleCharacters.Struct.Armor.Ref ->
       Type ->
@@ -147,6 +171,15 @@ add_armor ar data_set =
 ------------------
 ---- Portrait ----
 ------------------
+get_portraits : (
+      Type ->
+      (Dict.Dict
+         BattleCharacters.Struct.Portrait.Ref
+         BattleCharacters.Struct.Portrait.Type
+      )
+   )
+get_portraits data_set = data_set.portraits
+
 get_portrait : (
       BattleCharacters.Struct.Portrait.Ref ->
       Type ->
@@ -171,6 +204,15 @@ add_portrait pt data_set =
 ---------------
 ---- Glyph ----
 ---------------
+get_glyphs : (
+      Type ->
+      (Dict.Dict
+         BattleCharacters.Struct.Glyph.Ref
+         BattleCharacters.Struct.Glyph.Type
+      )
+   )
+get_glyphs data_set = data_set.glyphs
+
 get_glyph : (
       BattleCharacters.Struct.Glyph.Ref ->
       Type ->
@@ -195,6 +237,15 @@ add_glyph gl data_set =
 ---------------------
 ---- Glyph Board ----
 ---------------------
+get_glyph_boards : (
+      Type ->
+      (Dict.Dict
+         BattleCharacters.Struct.GlyphBoard.Ref
+         BattleCharacters.Struct.GlyphBoard.Type
+      )
+   )
+get_glyph_boards data_set = data_set.glyph_boards
+
 get_glyph_board : (
       BattleCharacters.Struct.GlyphBoard.Ref ->
       Type ->
@@ -219,6 +270,15 @@ add_glyph_board glb data_set =
 ---------------
 ---- Skill ----
 ---------------
+get_skills : (
+      Type ->
+      (Dict.Dict
+         BattleCharacters.Struct.Skill.Ref
+         BattleCharacters.Struct.Skill.Type
+      )
+   )
+get_skills data_set = data_set.skills
+
 get_skill : (
       BattleCharacters.Struct.Skill.Ref ->
       Type ->

@@ -4,11 +4,13 @@ module View.SubMenu.Tiles exposing (get_html)
 import Dict
 
 import Html
+import Html.Lazy
 import Html.Attributes
 import Html.Events
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Tile
+import BattleMap.Struct.DataSet
 import BattleMap.Struct.TileInstance
 
 import BattleMap.View.Tile
@@ -42,11 +44,8 @@ get_icon_html (ref, tile) =
       )
    )
 
---------------------------------------------------------------------------------
--- EXPORTED --------------------------------------------------------------------
---------------------------------------------------------------------------------
-get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
-get_html model =
+true_get_html : BattleMap.Struct.DataSet.Type -> (Html.Html Struct.Event.Type)
+true_get_html dataset =
    (Html.div
       [
          (Html.Attributes.class "tabmenu-content"),
@@ -54,6 +53,15 @@ get_html model =
       ]
       (List.map
          (get_icon_html)
-         (Dict.toList model.tiles)
+         (Dict.toList (BattleMap.Struct.DataSet.get_tiles dataset))
       )
+   )
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
+get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
+get_html model =
+   (Html.Lazy.lazy
+      (true_get_html)
+      model.map_dataset
    )

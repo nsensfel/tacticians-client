@@ -6,12 +6,14 @@ import Dict
 import Html
 import Html.Attributes
 import Html.Events
+import Html.Lazy
 
 -- Battle ----------------------------------------------------------------------
 import Battle.View.Omnimods
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.DataSet
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
@@ -68,11 +70,11 @@ get_armor_html armor =
       ]
    )
 
---------------------------------------------------------------------------------
--- EXPORTED --------------------------------------------------------------------
---------------------------------------------------------------------------------
-get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
-get_html model =
+true_get_html : (
+      BattleCharacters.Struct.DataSet.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+true_get_html dataset =
    (Html.div
       [
          (Html.Attributes.class "selection-window"),
@@ -84,7 +86,22 @@ get_html model =
             [
                (Html.Attributes.class "selection-window-listing")
             ]
-            (List.map (get_armor_html) (Dict.values model.armors))
+            (List.map
+               (get_armor_html)
+               (Dict.values
+                  (BattleCharacters.Struct.DataSet.get_armors dataset)
+               )
+            )
          )
       ]
+   )
+
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
+get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
+get_html model =
+   (Html.Lazy.lazy
+      (true_get_html)
+      model.characters_dataset
    )

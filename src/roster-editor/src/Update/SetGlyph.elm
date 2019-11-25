@@ -4,9 +4,10 @@ module Update.SetGlyph exposing (apply_to)
 import Dict
 
 -- Battle Characters -----------------------------------------------------------
-import BattleCharacters.Struct.Glyph
-import BattleCharacters.Struct.Equipment
 import BattleCharacters.Struct.Character
+import BattleCharacters.Struct.DataSet
+import BattleCharacters.Struct.Equipment
+import BattleCharacters.Struct.Glyph
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Character
@@ -26,11 +27,11 @@ apply_to : (
       BattleCharacters.Struct.Glyph.Ref ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model ref =
+apply_to model glyph_id =
    (
       (
-         case (model.edited_char, (Dict.get ref model.glyphs)) of
-            ((Just char), (Just glyph)) ->
+         case model.edited_char of
+            (Just char) ->
                let
                   base_char = (Struct.Character.get_base_character char)
                   (glyph_slot, glyph_modifier) =
@@ -38,7 +39,10 @@ apply_to model ref =
                   updated_equipment =
                      (BattleCharacters.Struct.Equipment.set_glyph
                         glyph_slot
-                        glyph
+                        (BattleCharacters.Struct.DataSet.get_glyph
+                           glyph_id
+                           model.characters_dataset
+                        )
                         (BattleCharacters.Struct.Character.get_equipment
                            base_char
                         )

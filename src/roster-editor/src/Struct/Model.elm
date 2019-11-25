@@ -24,13 +24,8 @@ import Struct.Flags
 import Util.Array
 
 -- Battle Characters -----------------------------------------------------------
-import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.DataSet
 import BattleCharacters.Struct.Equipment
-import BattleCharacters.Struct.Glyph
-import BattleCharacters.Struct.GlyphBoard
-import BattleCharacters.Struct.Portrait
-import BattleCharacters.Struct.Weapon
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Character

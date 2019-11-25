@@ -4,6 +4,7 @@ module BattleMap.Comm.AddTile exposing (decode)
 import Json.Decode
 
 -- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.DataSetItem
 import BattleMap.Struct.Tile
 
 -- Local Module ----------------------------------------------------------------
@@ -17,7 +18,8 @@ import Struct.ServerReply
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 internal_decoder : BattleMap.Struct.Tile.Type -> Struct.ServerReply.Type
-internal_decoder wp = (Struct.ServerReply.AddTile wp)
+internal_decoder tl =
+   (Struct.ServerReply.AddMapDataSetItem (BattleMap.Struct.DataSetItem.Tile tl))
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

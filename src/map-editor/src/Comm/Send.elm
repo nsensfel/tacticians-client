@@ -6,11 +6,13 @@ import Http
 import Json.Decode
 import Json.Encode
 
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Comm.AddDataSetItem
+import BattleMap.Comm.SetMap
+
 -- Local Module ----------------------------------------------------------------
-import Comm.AddTile
 import Comm.AddTilePattern
 import Comm.Okay
-import Comm.SetMap
 
 import Struct.Event
 import Struct.ServerReply
@@ -26,19 +28,25 @@ import Struct.Model
 internal_decoder : String -> (Json.Decode.Decoder Struct.ServerReply.Type)
 internal_decoder reply_type =
    case reply_type of
-      "add_tile" -> (Comm.AddTile.decode)
       "add_tile_pattern" -> (Comm.AddTilePattern.decode)
-      "set_map" -> (Comm.SetMap.decode)
+      "set_map" -> (BattleMap.Comm.SetMap.decode)
       "okay" -> (Comm.Okay.decode)
       "disconnected" -> (Json.Decode.succeed Struct.ServerReply.Disconnected)
       other ->
-         (Json.Decode.fail
-            (
-               "Unknown server command \""
-               ++ other
-               ++ "\""
-            )
+         if
+         (String.startsWith
+            (BattleMap.Comm.AddDataSetItem.prefix)
+            reply_type
          )
+         then (BattleMap.Comm.AddDataSetItem.get_decoder_for reply_type)
+         else
+            (Json.Decode.fail
+               (
+                  "Unknown server command \""
+                  ++ other
+                  ++ "\""
+               )
+            )
 
 decode : (Json.Decode.Decoder Struct.ServerReply.Type)
 decode =

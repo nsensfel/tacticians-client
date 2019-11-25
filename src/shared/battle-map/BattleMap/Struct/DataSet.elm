@@ -4,6 +4,7 @@ module BattleMap.Struct.DataSet exposing
       new,
       is_ready,
       get_tile,
+      get_tiles,
       add_tile
    )
 
@@ -45,6 +46,12 @@ is_ready data_set =
 --------------
 ---- Tile ----
 --------------
+get_tiles : (
+      Type ->
+      (Dict.Dict BattleMap.Struct.Tile.Ref BattleMap.Struct.Tile.Type)
+   )
+get_tiles dataset = dataset.tiles
+
 get_tile : (
       BattleMap.Struct.Tile.Ref ->
       Type ->

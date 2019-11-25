@@ -5,6 +5,7 @@ import Dict
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Character
+import BattleCharacters.Struct.DataSet
 import BattleCharacters.Struct.Equipment
 import BattleCharacters.Struct.Weapon
 
@@ -57,12 +58,23 @@ apply_to : (
       BattleCharacters.Struct.Weapon.Ref ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model ref =
+apply_to model weapon_id =
    (
       (
-         case (model.edited_char, (Dict.get ref model.weapons)) of
-            ((Just char), (Just weapon)) ->
-               {model | edited_char = (Just (equip weapon char)) }
+         case model.edited_char of
+            (Just char) ->
+               {model |
+                  edited_char =
+                     (Just
+                        (equip
+                           (BattleCharacters.Struct.DataSet.get_weapon
+                              weapon_id
+                              model.characters_dataset
+                           )
+                           char
+                        )
+                     )
+               }
 
             _ -> model
       ),

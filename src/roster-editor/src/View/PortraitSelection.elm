@@ -6,11 +6,13 @@ import Dict
 import Html
 import Html.Attributes
 import Html.Events
+import Html.Lazy
 
 import List
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Portrait
+import BattleCharacters.Struct.DataSet
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
@@ -88,11 +90,11 @@ get_portrait_html pt =
       ]
    )
 
---------------------------------------------------------------------------------
--- EXPORTED --------------------------------------------------------------------
---------------------------------------------------------------------------------
-get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
-get_html model =
+true_get_html : (
+      BattleCharacters.Struct.DataSet.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+true_get_html dataset =
    (Html.div
       [
          (Html.Attributes.class "selection-window"),
@@ -106,8 +108,19 @@ get_html model =
             ]
             (List.map
                (get_portrait_html)
-               (Dict.values model.portraits)
+               (Dict.values
+                  (BattleCharacters.Struct.DataSet.get_portraits dataset)
+               )
             )
          )
       ]
+   )
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
+get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
+get_html model =
+   (Html.Lazy.lazy
+      (true_get_html)
+      model.characters_dataset
    )

@@ -5,6 +5,7 @@ import Dict
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Character
+import BattleCharacters.Struct.DataSet
 import BattleCharacters.Struct.Equipment
 import BattleCharacters.Struct.GlyphBoard
 
@@ -25,16 +26,19 @@ apply_to : (
       BattleCharacters.Struct.GlyphBoard.Ref ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model ref =
+apply_to model glyph_board_id =
    (
       (
-         case (model.edited_char, (Dict.get ref model.glyph_boards)) of
-            ((Just char), (Just glyph_board)) ->
+         case model.edited_char of
+            (Just char) ->
                let
                   base_char = (Struct.Character.get_base_character char)
                   updated_equipment =
                      (BattleCharacters.Struct.Equipment.set_glyph_board
-                        glyph_board
+                        (BattleCharacters.Struct.DataSet.get_glyph_board
+                           glyph_board_id
+                           model.characters_dataset
+                        )
                         (BattleCharacters.Struct.Character.get_equipment
                            base_char
                         )

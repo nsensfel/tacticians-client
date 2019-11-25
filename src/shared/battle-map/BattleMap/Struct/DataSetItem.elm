@@ -1,17 +1,14 @@
-module Comm.SetMap exposing (decode)
-
--- Elm -------------------------------------------------------------------------
-import Json.Decode
+module BattleMap.Struct.DataSetItem exposing (Type(..), add_to)
 
 -- Battle Map ------------------------------------------------------------------
-import BattleMap.Struct.Map
-
--- Local Module ----------------------------------------------------------------
-import Struct.ServerReply
+import BattleMap.Struct.DataSet
+import BattleMap.Struct.Tile
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+type Type =
+   Tile BattleMap.Struct.Tile.Type
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -20,9 +17,11 @@ import Struct.ServerReply
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode =
-   (Json.Decode.map
-      (\map -> (Struct.ServerReply.SetMap map))
-      (BattleMap.Struct.Map.decoder)
+add_to : (
+      Type ->
+      BattleMap.Struct.DataSet.Type ->
+      BattleMap.Struct.DataSet.Type
    )
+add_to item dataset =
+   case item of
+      (Tile tl) -> (BattleMap.Struct.DataSet.add_tile tl dataset)

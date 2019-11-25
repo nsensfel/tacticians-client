@@ -169,16 +169,12 @@ try_getting_tile_at loc map =
    then (Array.get (location_to_index loc map) map.content)
    else Nothing
 
-solve_tiles : (
-      (Dict.Dict BattleMap.Struct.Tile.Ref BattleMap.Struct.Tile.Type) ->
-      Type ->
-      Type
-   )
-solve_tiles tiles map =
+solve_tiles : BattleMap.Struct.DataSet.Type -> Type -> Type
+solve_tiles dataset map =
    {map |
       content =
          (Array.map
-            (BattleMap.Struct.TileInstance.solve tiles) map.content
+            (BattleMap.Struct.TileInstance.solve dataset) map.content
          )
    }
 

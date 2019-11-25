@@ -1,10 +1,8 @@
 module Struct.Model exposing
    (
       Type,
-      tile_omnimods_fun,
       new,
       invalidate,
-      add_tile,
       add_tile_pattern,
       reset,
       clear_error
@@ -20,6 +18,7 @@ import Struct.Flags
 import Battle.Struct.Omnimods
 
 -- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.DataSet
 import BattleMap.Struct.Location
 import BattleMap.Struct.Map
 import BattleMap.Struct.Tile
@@ -46,12 +45,11 @@ type alias Type =
             BattleMap.Struct.Tile.VariantID
          ),
       wild_tile_patterns : (List Struct.TilePattern.Type),
-      tiles : (Dict.Dict BattleMap.Struct.Tile.Ref BattleMap.Struct.Tile.Type),
       error : (Maybe Struct.Error.Type),
-      player_id : String,
       map_id : String,
-      session_token : String,
-      ui : Struct.UI.Type
+      ui : Struct.UI.Type,
+
+      map_dataset : (BattleMap.Struct.DataSet.Type)
    }
 
 --------------------------------------------------------------------------------
@@ -61,13 +59,6 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-tile_omnimods_fun : (
-      Type ->
-      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type)
-   )
-tile_omnimods_fun model =
-   (\loc -> (BattleMap.Struct.Map.get_omnimods_at loc model.tiles model.map))
-
 new : Struct.Flags.Type -> Type
 new flags =
    let
@@ -78,19 +69,12 @@ new flags =
             toolbox = (Struct.Toolbox.default),
             help_request = Struct.HelpRequest.None,
             map = (BattleMap.Struct.Map.empty),
-            tiles = (Dict.empty),
             tile_patterns = (Dict.empty),
             wild_tile_patterns = [],
             error = Nothing,
             map_id = "",
-            player_id =
-               (
-                  if (flags.user_id == "")
-                  then "0"
-                  else flags.user_id
-               ),
-            session_token = flags.token,
-            ui = (Struct.UI.default)
+            ui = (Struct.UI.default),
+            map_dataset = (BattleMap.Struct.DataSet.new)
          }
    in
       case maybe_map_id of
@@ -104,17 +88,6 @@ new flags =
             )
 
          (Just id) -> {model | map_id = id}
-
-add_tile : BattleMap.Struct.Tile.Type -> Type -> Type
-add_tile tl model =
-   {model |
-      tiles =
-         (Dict.insert
-            (BattleMap.Struct.Tile.get_id tl)
-            tl
-            model.tiles
-         )
-   }
 
 add_tile_pattern : Struct.TilePattern.Type -> Type -> Type
 add_tile_pattern tp model =
