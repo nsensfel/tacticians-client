@@ -5,6 +5,7 @@ import Json.Decode
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.DataSetItem
 
 -- Local Module ----------------------------------------------------------------
 import Struct.ServerReply
@@ -17,7 +18,10 @@ import Struct.ServerReply
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 internal_decoder : BattleCharacters.Struct.Armor.Type -> Struct.ServerReply.Type
-internal_decoder ar = (Struct.ServerReply.AddArmor ar)
+internal_decoder ar =
+   (Struct.ServerReply.AddCharactersDataSetItem
+      (BattleCharacters.Struct.DataSetItem.Armor ar)
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

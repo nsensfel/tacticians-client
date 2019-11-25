@@ -4,6 +4,7 @@ module BattleCharacters.Comm.AddPortrait exposing (decode)
 import Json.Decode
 
 -- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.DataSetItem
 import BattleCharacters.Struct.Portrait
 
 -- Local Module ----------------------------------------------------------------
@@ -20,7 +21,10 @@ internal_decoder : (
       BattleCharacters.Struct.Portrait.Type ->
       Struct.ServerReply.Type
    )
-internal_decoder pt = (Struct.ServerReply.AddPortrait pt)
+internal_decoder pt =
+   (Struct.ServerReply.AddCharactersDataSetItem
+      (BattleCharacters.Struct.DataSetItem.Portrait pt)
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

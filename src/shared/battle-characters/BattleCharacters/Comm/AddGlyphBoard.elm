@@ -4,6 +4,7 @@ module BattleCharacters.Comm.AddGlyphBoard exposing (decode)
 import Json.Decode
 
 -- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.DataSetItem
 import BattleCharacters.Struct.GlyphBoard
 
 -- Local Module-----------------------------------------------------------------
@@ -20,7 +21,10 @@ internal_decoder : (
       BattleCharacters.Struct.GlyphBoard.Type ->
       Struct.ServerReply.Type
    )
-internal_decoder glb = (Struct.ServerReply.AddGlyphBoard glb)
+internal_decoder gb =
+   (Struct.ServerReply.AddCharactersDataSetItem
+      (BattleCharacters.Struct.DataSetItem.GlyphBoard gb)
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

@@ -4,6 +4,7 @@ module BattleCharacters.Comm.AddWeapon exposing (decode)
 import Json.Decode
 
 -- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.DataSetItem
 import BattleCharacters.Struct.Weapon
 
 -- Local Module ----------------------------------------------------------------
@@ -20,7 +21,10 @@ internal_decoder : (
       BattleCharacters.Struct.Weapon.Type ->
       Struct.ServerReply.Type
    )
-internal_decoder wp = (Struct.ServerReply.AddWeapon wp)
+internal_decoder wp =
+   (Struct.ServerReply.AddCharactersDataSetItem
+      (BattleCharacters.Struct.DataSetItem.Weapon wp)
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

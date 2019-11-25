@@ -21,14 +21,7 @@ import Struct.Flags
 import Util.Http
 
 -- Battle Characters -----------------------------------------------------------
-import BattleCharacters.Struct.Armor
-import BattleCharacters.Struct.DataSet
-import BattleCharacters.Struct.Equipment
-import BattleCharacters.Struct.Glyph
-import BattleCharacters.Struct.GlyphBoard
-import BattleCharacters.Struct.Portrait
-import BattleCharacters.Struct.Skill
-import BattleCharacters.Struct.Weapon
+import BattleCharacters.Struct.DataSetItem
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.DataSet
@@ -81,108 +74,18 @@ disconnected current_state =
          ]
       )
 
-add_armor : (
-      BattleCharacters.Struct.Armor.Type ->
+add_characters_dataset_item : (
+      BattleCharacters.Struct.DataSetItem.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-add_armor ar current_state =
+add_weapon item current_state =
    let (model, cmds) = current_state in
       (
          {model |
             characters_dataset =
-               (BattleCharacters.Struct.DataSet.add_armor
-                  ar
-                  model.characters_dataset
-               )
-         },
-         cmds
-      )
-
-add_portrait : (
-      BattleCharacters.Struct.Portrait.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
-   )
-add_portrait pt current_state =
-   let (model, cmds) = current_state in
-      (
-         {model |
-            characters_dataset =
-               (BattleCharacters.Struct.DataSet.add_portrait
-                  pt
-                  model.characters_dataset
-               )
-         },
-         cmds
-      )
-
-add_glyph_board : (
-      BattleCharacters.Struct.GlyphBoard.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
-   )
-add_glyph_board gb current_state =
-   let (model, cmds) = current_state in
-      (
-         {model |
-            characters_dataset =
-               (BattleCharacters.Struct.DataSet.add_glyph_board
-                  gb
-                  model.characters_dataset
-               )
-         },
-         cmds
-      )
-
-add_glyph : (
-      BattleCharacters.Struct.Glyph.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
-   )
-add_glyph gl current_state =
-   let (model, cmds) = current_state in
-      (
-         {model |
-            characters_dataset =
-               (BattleCharacters.Struct.DataSet.add_glyph
-                  gl
-                  model.characters_dataset
-               )
-         },
-         cmds
-      )
-
-add_weapon : (
-      BattleCharacters.Struct.Weapon.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
-   )
-add_weapon wp current_state =
-   let (model, cmds) = current_state in
-      (
-         {model |
-            characters_dataset =
-               (BattleCharacters.Struct.DataSet.add_weapon
-                  wp
-                  model.characters_dataset
-               )
-         },
-         cmds
-      )
-
-add_skill : (
-      BattleCharacters.Struct.Skill.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
-   )
-add_skill sk current_state =
-   let (model, cmds) = current_state in
-      (
-         {model |
-            characters_dataset =
-               (BattleCharacters.Struct.DataSet.add_skill
-                  sk
+               (BattleCharacters.Struct.Weapon.DataSetItem.add_to
+                  item
                   model.characters_dataset
                )
          },

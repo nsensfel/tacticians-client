@@ -15,11 +15,7 @@ import Struct.Flags
 import Util.Http
 
 -- Battle Characters -----------------------------------------------------------
-import BattleCharacters.Struct.Armor
-import BattleCharacters.Struct.Portrait
-import BattleCharacters.Struct.Weapon
-import BattleCharacters.Struct.Glyph
-import BattleCharacters.Struct.GlyphBoard
+import BattleCharacters.Struct.DataSetItem
 
 -- Local Module ----------------------------------------------------------------
 import Constants.IO
@@ -77,50 +73,23 @@ goto url current_state =
          ]
       )
 
-add_armor : (
-      BattleCharacters.Struct.Armor.Type ->
+add_characters_dataset_item : (
+      BattleCharacters.Struct.DataSetItem.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-add_armor ar current_state =
+add_characters_dataset_item item current_state =
    let (model, cmds) = current_state in
-      ((Struct.Model.add_armor ar model), cmds)
-
-add_portrait : (
-      BattleCharacters.Struct.Portrait.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
-   )
-add_portrait pt current_state =
-   let (model, cmds) = current_state in
-      ((Struct.Model.add_portrait pt model), cmds)
-
-add_glyph : (
-      BattleCharacters.Struct.Glyph.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
-   )
-add_glyph gl current_state =
-   let (model, cmds) = current_state in
-      ((Struct.Model.add_glyph gl model), cmds)
-
-add_glyph_board : (
-      BattleCharacters.Struct.GlyphBoard.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
-   )
-add_glyph_board glb current_state =
-   let (model, cmds) = current_state in
-      ((Struct.Model.add_glyph_board glb model), cmds)
-
-add_weapon : (
-      BattleCharacters.Struct.Weapon.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
-   )
-add_weapon wp current_state =
-   let (model, cmds) = current_state in
-      ((Struct.Model.add_weapon wp model), cmds)
+      (
+         {model |
+            characters_dataset =
+               (BattleCharacters.Struct.DataSetItem.add_to
+                  item
+                  model.characters_dataset
+               )
+         },
+         cmds
+      )
 
 set_inventory : (
       Struct.Inventory.Type ->
@@ -154,23 +123,11 @@ apply_command command current_state =
 
       (Struct.ServerReply.GoTo url) -> (goto url current_state)
 
-      (Struct.ServerReply.AddWeapon wp) ->
-         (add_weapon wp current_state)
-
       (Struct.ServerReply.SetInventory inv) ->
          (set_inventory inv current_state)
 
-      (Struct.ServerReply.AddArmor ar) ->
-         (add_armor ar current_state)
-
-      (Struct.ServerReply.AddPortrait pt) ->
-         (add_portrait pt current_state)
-
-      (Struct.ServerReply.AddGlyph gl) ->
-         (add_glyph gl current_state)
-
-      (Struct.ServerReply.AddGlyphBoard glb) ->
-         (add_glyph_board glb current_state)
+      (Struct.ServerReply.AddCharactersDataSetItem it) ->
+         (add_characters_dataset_item it current_state)
 
       (Struct.ServerReply.AddCharacter char) ->
          (add_character char current_state)

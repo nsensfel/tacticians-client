@@ -25,11 +25,12 @@ import Util.Array
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.DataSet
+import BattleCharacters.Struct.Equipment
+import BattleCharacters.Struct.Glyph
+import BattleCharacters.Struct.GlyphBoard
 import BattleCharacters.Struct.Portrait
 import BattleCharacters.Struct.Weapon
-import BattleCharacters.Struct.Glyph
-import BattleCharacters.Struct.Equipment
-import BattleCharacters.Struct.GlyphBoard
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Character
@@ -45,7 +46,7 @@ type alias Type =
    {
       flags : Struct.Flags.Type,
       error : (Maybe Struct.Error.Type),
-      ui : Struct.UI.Type
+      ui : Struct.UI.Type,
       help_request : Struct.HelpRequest.Type,
       edited_char : (Maybe Struct.Character.Type),
 
@@ -56,7 +57,7 @@ type alias Type =
       unresolved_characters : (List Struct.Character.Unresolved),
       inventory : Struct.Inventory.Type,
 
-      characters_data_set : BattleCharacters.Struct.DataSet.Type,
+      characters_dataset : BattleCharacters.Struct.DataSet.Type
    }
 
 --------------------------------------------------------------------------------
@@ -67,7 +68,7 @@ add_character_from_unresolved char_ref model =
    let
       char =
          (Struct.Character.resolve
-            (BattleCharacters.Struct.Equipment.resolve model.inventory)
+            (BattleCharacters.Struct.Equipment.resolve model.characters_dataset)
             char_ref
          )
    in
@@ -84,7 +85,7 @@ has_loaded_data : Type -> Bool
 has_loaded_data model =
    (
       ((Array.length model.characters) > 0)
-      || (BattleCharacters.Struct.DataSet.is_ready model.characters_data_set)
+      || (BattleCharacters.Struct.DataSet.is_ready model.characters_dataset)
    )
 
 --------------------------------------------------------------------------------
@@ -97,15 +98,8 @@ new flags =
       help_request = Struct.HelpRequest.None,
       characters = (Array.empty),
       unresolved_characters = [],
-      inventory = (BattleCharacters.Struct.Inventory.new),
       error = Nothing,
       roster_id = "",
-      player_id =
-         (
-            if (flags.user_id == "")
-            then "0"
-            else flags.user_id
-         ),
       battle_order =
          (Array.repeat
             (
@@ -118,10 +112,10 @@ new flags =
             )
             -1
          ),
-      session_token = flags.token,
       edited_char = Nothing,
       inventory = (Struct.Inventory.empty),
-      ui = (Struct.UI.default)
+      ui = (Struct.UI.default),
+      characters_dataset = (BattleCharacters.Struct.DataSet.new)
    }
 
 add_unresolved_character : Struct.Character.Unresolved -> Type -> Type

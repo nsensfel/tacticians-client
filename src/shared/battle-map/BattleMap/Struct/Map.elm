@@ -195,6 +195,7 @@ get_omnimods_at loc dataset map =
          (BattleMap.Struct.Tile.get_omnimods
             (BattleMap.Struct.DataSet.get_tile
                (BattleMap.Struct.TileInstance.get_class_id tile_inst)
+               dataset
             )
          )
 

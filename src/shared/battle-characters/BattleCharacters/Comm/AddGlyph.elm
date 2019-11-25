@@ -4,8 +4,8 @@ module BattleCharacters.Comm.AddGlyph exposing (decode)
 import Json.Decode
 
 -- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.DataSetItem
 import BattleCharacters.Struct.Glyph
-import BattleCharacters.Struct.GlyphBoard
 
 -- Local Module ----------------------------------------------------------------
 import Struct.ServerReply
@@ -18,7 +18,10 @@ import Struct.ServerReply
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 internal_decoder : BattleCharacters.Struct.Glyph.Type -> Struct.ServerReply.Type
-internal_decoder gl = (Struct.ServerReply.AddGlyph gl)
+internal_decoder gl =
+   (Struct.ServerReply.AddCharactersDataSetItem
+      (BattleCharacters.Struct.DataSetItem.Glyph gl)
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

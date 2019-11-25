@@ -33,8 +33,9 @@ import Json.Decode.Pipeline
 
 import Json.Encode
 
--- Battle ----------------------------------------------------------------------
+-- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
+import BattleCharacters.Struct.DataSet
 import BattleCharacters.Struct.Glyph
 import BattleCharacters.Struct.GlyphBoard
 import BattleCharacters.Struct.Portrait
@@ -157,43 +158,30 @@ encode ref =
       ]
    )
 
-resolve : (
-      (
-         BattleCharacters.Struct.Weapon.Ref ->
-         BattleCharacters.Struct.Weapon.Type
-      ) ->
-      (
-         BattleCharacters.Struct.Armor.Ref ->
-         BattleCharacters.Struct.Armor.Type
-      ) ->
-      (
-         BattleCharacters.Struct.Portrait.Ref ->
-         BattleCharacters.Struct.Portrait.Type
-      ) ->
-      (
-         BattleCharacters.Struct.GlyphBoard.Ref ->
-         BattleCharacters.Struct.GlyphBoard.Type
-      ) ->
-      (
-         BattleCharacters.Struct.Glyph.Ref ->
-         BattleCharacters.Struct.Glyph.Type
-      ) ->
-      (
-         BattleCharacters.Struct.Skill.Ref ->
-         BattleCharacters.Struct.Skill.Type
-      ) ->
-      Unresolved ->
-      Type
-   )
-resolve resolve_wp resolve_ar resolve_pt resolve_gb resolve_gl resolve_sk ref =
+resolve : BattleCharacters.Struct.DataSet.Type -> Unresolved -> Type
+resolve dataset ref =
    {
-      primary = (resolve_wp ref.primary),
-      secondary = (resolve_wp ref.secondary),
-      armor = (resolve_ar ref.armor),
-      portrait = (resolve_pt ref.portrait),
-      glyph_board = (resolve_gb ref.glyph_board),
-      glyphs = (Array.map (resolve_gl) ref.glyphs),
-      skill = (resolve_sk ref.skill)
+      primary =
+         (BattleCharacters.Struct.DataSet.get_weapon ref.primary dataset),
+      secondary =
+         (BattleCharacters.Struct.DataSet.get_weapon ref.secondary dataset),
+      armor =
+         (BattleCharacters.Struct.DataSet.get_armor ref.armor dataset),
+      portrait =
+         (BattleCharacters.Struct.DataSet.get_portrait ref.portrait dataset),
+      glyph_board =
+         (BattleCharacters.Struct.DataSet.get_glyph_board
+            ref.glyph_board dataset
+         ),
+      glyphs =
+         (Array.map
+            (\gl_id ->
+               (BattleCharacters.Struct.DataSet.get_glyph gl_id dataset)
+            )
+            ref.glyphs
+         ),
+      skill =
+         (BattleCharacters.Struct.DataSet.get_skill ref.skill dataset)
    }
 
 to_unresolved : Type -> Unresolved
