@@ -9,6 +9,7 @@ module BattleMap.Struct.Tile exposing
       get_cost,
       get_omnimods,
       get_family,
+      none,
       decoder
    )
 
@@ -75,3 +76,14 @@ decoder =
       |> (Json.Decode.Pipeline.required "de" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "omni" Battle.Struct.Omnimods.decoder)
    )
+
+none : Type
+none =
+   {
+      id = "-1",
+      name = "Not Found",
+      crossing_cost = 999,
+      family = "-1",
+      depth = 0,
+      omnimods = (Battle.Struct.Omnimods.none)
+   }

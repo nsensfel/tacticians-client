@@ -230,7 +230,13 @@ add_character unresolved_char current_state =
             battle =
                (Struct.Battle.add_character
                   (Struct.Character.resolve
-                     (Struct.Model.tile_omnimods_fun model)
+                     (\loc ->
+                        (BattleMap.Struct.Map.tile_omnimods_fun
+                           loc
+                           model.map_dataset
+                           (Struct.Battle.get_map model.battle)
+                        )
+                     )
                      model.characters_dataset
                      unresolved_char
                   )

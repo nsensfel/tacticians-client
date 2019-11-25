@@ -10,9 +10,14 @@ module Struct.TurnResultAnimator exposing
    )
 
 -- Elm -------------------------------------------------------------------------
+import Array
 import Set
 
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.DataSet
+
 -- Local Module ----------------------------------------------------------------
+import Struct.Battle
 import Struct.TurnResult
 
 --------------------------------------------------------------------------------
@@ -148,8 +153,9 @@ move_animator_to_next_step maybe_animator =
 
 apply_animator_step : (
       BattleMap.Struct.DataSet.Type ->
-      Battle.Struct.Type ->
-      Battle.Struct.Type
+      Type ->
+      Struct.Battle.Type ->
+      Struct.Battle.Type
    )
 apply_animator_step dataset animator battle =
    case (Struct.TurnResultAnimator.get_current_animation animator) of

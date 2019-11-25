@@ -105,7 +105,7 @@ allows equipment inv =
       )
       &&
       (List.all
-         (e -> (has_glyph e inv))
+         (\e -> (has_glyph e inv))
          (Array.toList (BattleCharacters.Struct.Equipment.get_glyphs equipment))
       )
       &&

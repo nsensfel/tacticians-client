@@ -24,9 +24,7 @@ module Struct.Battle exposing
 
       get_id,
 
-      get_own_player_index,
-
-      tile_omnimods_fun
+      get_own_player_index
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -39,10 +37,17 @@ import Set
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
 
+-- Elm -------------------------------------------------------------------------
+import Array
+
+-- Shared ----------------------------------------------------------------------
+import Struct.Flags
+
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Location
 import BattleMap.Struct.Map
 import BattleMap.Struct.Marker
+import BattleMap.Struct.DataSet
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Character
@@ -121,13 +126,6 @@ regenerate_attack_of_opportunity_markers char_ix battle =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-tile_omnimods_fun : (
-      BattleMap.Struct.DataSet.Type ->
-      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type)
-   )
-tile_omnimods_fun dataset battle =
-   (\loc -> (BattleMap.Struct.Map.get_omnimods_at loc dataset battle.map))
-
 new : Type
 new =
    {
@@ -180,10 +178,10 @@ set_characters chars battle = {battle | characters = chars}
 add_player : Struct.Flags.Type -> Struct.Player.Type -> Type -> Type
 add_player flags pl battle =
    {battle |
-      players = (Array.push pl battle.players)
+      players = (Array.push pl battle.players),
       own_player_ix =
-         if (Struct.Player.get_id == (Struct.Flags.get_player_id flags))
-         then (Array.size battle.players)
+         if ((Struct.Player.get_id pl) == (Struct.Flags.get_user_id flags))
+         then (Array.length battle.players)
          else battle.own_player_ix
    }
 

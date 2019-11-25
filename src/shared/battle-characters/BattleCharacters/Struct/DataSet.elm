@@ -75,23 +75,23 @@ type alias Type =
 new : Type
 new =
    {
-      weapons = (Dict.new),
-      armors = (Dict.new),
-      glyphs = (Dict.new),
-      glyph_boards = (Dict.new),
-      portraits = (Dict.new),
-      skills = (Dict.new)
+      weapons = (Dict.empty),
+      armors = (Dict.empty),
+      glyphs = (Dict.empty),
+      glyph_boards = (Dict.empty),
+      portraits = (Dict.empty),
+      skills = (Dict.empty)
    }
 
 is_ready : Type -> Bool
 is_ready data_set =
    (
-      (data_set.portraits /= (Dict.empty))
-      && (data_set.weapons /= (Dict.empty))
-      && (data_set.armors /= (Dict.empty))
-      && (data_set.glyph_boards /= (Dict.empty))
-      && (data_set.glyphs /= (Dict.empty))
-      && (data_set.skills /= (Dict.empty))
+      (not (Dict.isEmpty data_set.portraits))
+      && (not (Dict.isEmpty data_set.weapons))
+      && (not (Dict.isEmpty data_set.armors))
+      && (not (Dict.isEmpty data_set.glyph_boards))
+      && (not (Dict.isEmpty data_set.glyphs))
+      && (not (Dict.isEmpty data_set.skills))
    )
 
 ---- Accessors -----------------------------------------------------------------

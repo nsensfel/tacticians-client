@@ -34,6 +34,7 @@ import Util.Array
 import Battle.Struct.Omnimods
 
 -- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.DataSet
 import BattleMap.Struct.Location
 import BattleMap.Struct.Marker
 import BattleMap.Struct.Tile
@@ -183,22 +184,19 @@ solve_tiles tiles map =
 
 get_omnimods_at : (
       BattleMap.Struct.Location.Type ->
-      (Dict.Dict BattleMap.Struct.Tile.Ref BattleMap.Struct.Tile.Type) ->
+      BattleMap.Struct.DataSet.Type ->
       Type ->
       Battle.Struct.Omnimods.Type
    )
-get_omnimods_at loc tiles_solver map =
+get_omnimods_at loc dataset map =
    case (try_getting_tile_at loc map) of
       Nothing -> (Battle.Struct.Omnimods.none)
       (Just tile_inst) ->
-         case
-            (Dict.get
+         (BattleMap.Struct.Tile.get_omnimods
+            (BattleMap.Struct.DataSet.get_tile
                (BattleMap.Struct.TileInstance.get_class_id tile_inst)
-               tiles_solver
             )
-         of
-            Nothing -> (Battle.Struct.Omnimods.none)
-            (Just tile) -> (BattleMap.Struct.Tile.get_omnimods tile)
+         )
 
 decoder : (Json.Decode.Decoder Type)
 decoder =

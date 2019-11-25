@@ -3,7 +3,7 @@ module BattleCharacters.Struct.Portrait exposing
       Type,
       Ref,
       find,
-      default,
+      none,
       get_id,
       get_name,
       get_body_id,
@@ -41,10 +41,10 @@ find : (Dict.Dict Ref Type) -> Ref -> Type
 find dict ref =
    case (Dict.get ref dict) of
       (Just e) -> e
-      Nothing -> default
+      Nothing -> none
 
-default : Type
-default =
+none : Type
+none =
    {
       id = "cat",
       name = "Black Cat",

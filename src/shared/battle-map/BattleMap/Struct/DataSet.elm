@@ -31,13 +31,13 @@ type alias Type =
 new : Type
 new =
    {
-      tiles = (Dict.new)
+      tiles = (Dict.empty)
    }
 
 is_ready : Type -> Bool
 is_ready data_set =
    (
-      (data_set.tiles /= (Dict.empty))
+      (not (Dict.isEmpty data_set.tiles))
    )
 
 ---- Accessors -----------------------------------------------------------------
