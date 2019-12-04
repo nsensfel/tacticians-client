@@ -23,164 +23,102 @@ import Struct.TurnResult
 --------------------------------------------------------------------------------
 type Type =
    Inactive
-   | Targetting (Int, Int)
-   | Hit  
+   | Target (Int, Int)
+   | Hit Struct.Attack.Type
    | Focus Int
-   | TurnResult Struct.TurnResult.Type
+   | Move (Int, Battle.Struct.Direction)
+   | SwapWeapons Int
    | RefreshCharacter Int
+   | Sequence (List Type)
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-turn_result_to_actions : Struct.TurnResult.Type -> (List Action)
-turn_result_to_actions turn_result =
-   case turn_result of
-      (Struct.TurnResult.Attacked attack) ->
-         let
-            attacker_ix = (Struct.TurnResult.get_actor_index turn_result)
-            defender_ix = (Struct.TurnResult.get_attack_defender_index attack)
-         in
+from_attacked : Struct.Attack.Type -> (List Type)
+from_attacked attack =
+   let
+      attacker_ix = (Struct.TurnResult.get_actor_index turn_result)
+      defender_ix = (Struct.TurnResult.get_attack_defender_index attack)
+   in
+      [
+         (Focus attacker_ix),
+         (Focus defender_ix),
+         (Hit attack),
+         (Sequence
             [
-               (Focus attacker_ix),
-               (Focus defender_ix),
-               (AttackSetup (attacker_ix, defender_ix)),
-               (TurnResult turn_result),
                (RefreshCharacter attacker_ix),
                (RefreshCharacter defender_ix)
             ]
-
-      _ ->
-         let actor_ix = (Struct.TurnResult.get_actor_index turn_result) in
-            [
-               (Focus actor_ix),
-               (TurnResult turn_result),
-               (RefreshCharacter actor_ix)
-            ]
-
-initialize_animator : Type -> Type
-initialize_animator model =
-   let
-      timeline_list = (Array.toList model.timeline)
-      (characters, players) =
-         (List.foldr
-            (\event (pcharacters, pplayers) ->
-               (Struct.TurnResult.apply_inverse_step
-                  (tile_omnimods_fun model)
-                  event
-                  pcharacters
-                  pplayers
-               )
-            )
-            (model.characters, model.players)
-            timeline_list
          )
-   in
-      {model |
-         animator =
-            (Struct.TurnResultAnimator.maybe_new
-               (List.reverse timeline_list)
-               True
-            ),
-         ui = (Struct.UI.default),
-         characters = characters,
-         players = players
-      }
+      ]
 
-move_animator_to_next_step : (Maybe Type) -> (Maybe Type)
-move_animator_to_next_step maybe_animator =
-   case maybe_animator of
-      Nothing -> maybe_animator
-      (Just animator) ->
-         (Struct.TurnResultAnimator.maybe_trigger_next_step animator)
+from_moved : Struct.TurnResult.Movement -> (List Type)
+from_moved movement =
+   let actor_ix = (Struct.TurnResult.get_movement_actor movement) in
+      (
+         [
+            (Focus actor_ix),
+            | (List.map (\dir -> (Move (actor_ix, dir))))
+         ]
+         ++
+         [ (RefreshCharacter actor_ix) ]
+      )
 
---         case (Struct.TurnResultAnimator.maybe_trigger_next_step animator) of
---            Nothing ->
---               (Set.foldl
---                  (regenerate_attack_of_opportunity_markers)
---                  {model | animator = Nothing }
---                  (Struct.TurnResultAnimator.get_animated_character_indices
---                     animator
---                  )
---               )
---
---            just_next_animator -> {model | animator = just_next_animator }
+from_switched_weapon : Struct.TurnResult.WeaponSwitch -> (List Type)
+from_switched_weapon weapon_switch =
+   let actor_ix = (Struct.TurnResult.get_weapon_switch_actor weapon_switch) in
+      [
+         (Focus actor_ix),
+         (SwapWeapons actor_ix)
+      ]
 
-apply_animator_step : (
-      BattleMap.Struct.DataSet.Type ->
-      Type ->
-      Struct.Battle.Type ->
-      Struct.Battle.Type
-   )
-apply_animator_step dataset animator battle =
-   case (Struct.TurnResultAnimator.get_current_animation animator) of
-      (Struct.TurnResultAnimator.TurnResult turn_result) ->
-         let
-            (characters, players) =
-               (Struct.TurnResult.apply_step
-                  (Struct.Battle.get_tile_omnimods_fun dataset battle)
-                  turn_result
-                  battle
-               )
-         in
-            (Struct.Battle.set_players
-               players
-               (Struct.Battle.set_characters characters battle)
-            )
+from_player_won : Struct.TurnResult.PlayerVictory -> (List Type)
+from_player_won player_victory = []
 
-      _ -> battle
+from_player_lost : Struct.TurnResult.PlayerLoss -> (List Type)
+from_player_lost player_loss = []
 
-pop : Type -> (Type, (Maybe Action))
-pop puppeteer =
-   case (Util.List.pop puppeteer.remaining_animations) of
-      Nothing -> (puppeteer, Nothing)
-      (Just (action, remaining_animations)) ->
-         (
-            {puppeteer |
-               remaining_animations = remaining_animations,
-               primed =
-                  if (List.isEmpty remaining_animations)
-                  then False
-                  else puppeteer.primed
-            },
-            action
-         )
+from_player_turn_started : Struct.TurnResult.PlayerTurnStart -> (List Type)
+from_player_turn_started player_turn_started = []
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Type
-new =
-   {
-      remaining_animations = [],
-      primed = False
-   }
+from_turn_results : Struct.TurnResult.Type -> (List Type)
+from_turn_results turn_result =
+   case turn_result of
+      (Struct.TurnResult.Moved movement) -> (from_moved movement)
+      (Struct.TurnResult.Attacked attack) -> (from_attacked attack)
+      (Struct.TurnResult.SwitchedWeapon weapon_switch) ->
+         (from_switched_weapon movement)
 
-append : (List Struct.TurnResult.Type) -> Type -> Type
-append turn_results puppeteer =
-   {puppeteer |
-      remaining_animations =
-         (List.concat
-            puppeteer.remaining_animations
-            (List.map (turn_result_to_actions) turn_results)
-         )
-   }
+      (Struct.TurnResult.PlayerWon player_victory) ->
+         (from_player_won player_victory)
 
-is_active : Type -> Bool
-is_active puppeteer = (not (List.isEmpty puppeteer.remaining_animations))
+      (Struct.TurnResult.PlayerLost player_loss) ->
+         (from_player_lost player_loss)
 
-requires_priming : Type -> Bool
-requires_priming puppeteer = (is_active and (not puppeteer.is_primed))
+      (Struct.TurnResult.PlayerTurnStarted player_turn_start) ->
+         (from_player_turn_started player_turn_start)
 
-forward : Struct.Battle.Type -> Type -> (Struct.Battle.Type, Type)
-forward battle puppeteer =
-   case (pop puppeteer) of
-      (next_puppeteer, Nothing) -> (battle, next_puppeteer)
-      (next_puppeteer, (Just action)) ->
-         ((apply_action action battle), next_puppeteer)
+forward : Type -> Struct.Battle.Type -> Struct.Battle.Type
+forward puppeteer_action battle =
+   case puppeteer_action of
+      Inactive -> battle
+      (Target (actor_ix, target_ix)) ->
+         (forward_target actor_ix target_ix battle)
+      (Hit attack) -> (forward_hit attack battle)
+      (Focus actor_ix) -> (forward_focus actor_ix battle)
+      (Move (actor_ix, direction)) -> (forward_move actor_ix direction battle)
+      (SwapWeapons actor_ix) -> (forward_swap_weapons actor_ix battle)
+      (RefreshCharacter actor_ix) -> (forward_refresh_character actor_ix battle)
+      (Sequence list) -> (List.foldl (forward) battle list)
 
-forward : Struct.Battle.Type -> Type -> (Struct.Battle.Type, Type)
-forward battle puppeteer =
-   case (pop puppeteer) of
-      (next_puppeteer, Nothing) -> (battle, next_puppeteer)
-      (next_puppeteer, (Just action)) ->
-         ((apply_action action battle), next_puppeteer)
+backward : Type -> Struct.Battle.Type -> Struct.Battle.Type
+backward puppeteer_action battle =
+   case puppeteer_action of
+      (Hit attack) -> (backward_hit attack battle)
+      (Move (actor_ix, direction)) -> (backward_move actor_ix direction battle)
+      (SwapWeapons actor_ix) -> (backward_swap_weapons actor_ix battle)
+      (Sequence list) -> (List.foldr (backward) battle list)
+      _ -> battle

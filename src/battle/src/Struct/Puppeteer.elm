@@ -4,7 +4,7 @@ module Struct.Puppeteer exposing
       new,
       append,
       is_active,
-      requires_priming,
+      requires_priming
    )
 
 -- Elm -------------------------------------------------------------------------
