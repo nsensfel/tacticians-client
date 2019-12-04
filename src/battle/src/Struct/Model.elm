@@ -20,6 +20,7 @@ import BattleMap.Struct.DataSet
 import Struct.CharacterTurn
 import Struct.Error
 import Struct.HelpRequest
+import Struct.Puppeteer
 import Struct.TurnResult
 import Struct.TurnResultAnimator
 import Struct.UI
@@ -32,6 +33,7 @@ type alias Type =
       flags : Struct.Flags.Type,
       help_request : Struct.HelpRequest.Type,
       animator : (Maybe Struct.TurnResultAnimator.Type),
+      puppeteer : Struct.Puppeteer.Type,
       ui : Struct.UI.Type,
       char_turn : Struct.CharacterTurn.Type,
       error : (Maybe Struct.Error.Type),
@@ -58,6 +60,7 @@ new flags =
             flags = flags,
             help_request = Struct.HelpRequest.None,
             animator = Nothing,
+            puppeteer = (Struct.Puppeteer.new),
             ui = (Struct.UI.default),
             char_turn = (Struct.CharacterTurn.new),
             error = Nothing,
