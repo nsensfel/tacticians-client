@@ -1,7 +1,7 @@
 module Struct.PuppeteerAction exposing
    (
-      Type,
-      Action(..),
+      Type(..),
+      Group(..),
       from_turn_result,
       forward,
       backward
@@ -21,15 +21,20 @@ import Struct.TurnResult
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-type Type =
-   Inactive
-   | Target (Int, Int)
-   | Hit Struct.Attack.Type
+type Effect =
+   AnnounceLoss Int
+   | AnnounceVictory Int
    | Focus Int
+   | Hit Struct.Attack.Type
    | Move (Int, Battle.Struct.Direction)
-   | SwapWeapons Int
    | RefreshCharacter Int
-   | Sequence (List Type)
+   | StartTurn Int
+   | SwapWeapons Int
+   | Target (Int, Int)
+
+type Type =
+   Perform (List Effect)
+   | PerformFor (Float, (List Effect))
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -41,10 +46,12 @@ from_attacked attack =
       defender_ix = (Struct.TurnResult.get_attack_defender_index attack)
    in
       [
-         (Focus attacker_ix),
-         (Focus defender_ix),
-         (Hit attack),
-         (Sequence
+         (PerformFor (2.0, [(Focus attacker_ix)])),
+         (PerformFor (2.0, [(Focus defender_ix)])),
+         (List.map
+            (PerformFor (..., (Hit attack)))
+         ),
+         (Perform
             [
                (RefreshCharacter attacker_ix),
                (RefreshCharacter defender_ix)
@@ -57,29 +64,77 @@ from_moved movement =
    let actor_ix = (Struct.TurnResult.get_movement_actor movement) in
       (
          [
-            (Focus actor_ix),
-            | (List.map (\dir -> (Move (actor_ix, dir))))
+            (PerformFor (1.0, [(Focus actor_ix)])),
+            |
+            (List.map
+               (\dir ->
+                  (PerformFor
+                     (
+                        0.5,
+                        [(Move (actor_ix, dir))]
+                     )
+                  )
+               )
+            )
          ]
          ++
-         [ (RefreshCharacter actor_ix) ]
+         [ (Perform [(RefreshCharacter actor_ix)]) ]
       )
 
 from_switched_weapon : Struct.TurnResult.WeaponSwitch -> (List Type)
 from_switched_weapon weapon_switch =
    let actor_ix = (Struct.TurnResult.get_weapon_switch_actor weapon_switch) in
       [
-         (Focus actor_ix),
-         (SwapWeapons actor_ix)
+         (PerformFor (1.0, [(Focus actor_ix)])),
+         (PerformFor (2.0, [(SwapWeapons actor_ix)]))
       ]
 
 from_player_won : Struct.TurnResult.PlayerVictory -> (List Type)
-from_player_won player_victory = []
+from_player_won player_victory =
+   [
+      (PerformFor
+         (
+            2.0,
+            [
+               (AnnounceVictory
+                  (Struct.TurnResult.get_player_victory_index player_victory)
+               )
+            ]
+         )
+      )
+   ]
 
 from_player_lost : Struct.TurnResult.PlayerLoss -> (List Type)
-from_player_lost player_loss = []
+from_player_lost player_loss =
+   [
+      (PerformFor
+         (
+            2.0,
+            [
+               (AnnounceLoss
+                  (Struct.TurnResult.get_player_loss_index player_loss)
+               )
+            ]
+         )
+      )
+   ]
 
 from_player_turn_started : Struct.TurnResult.PlayerTurnStart -> (List Type)
-from_player_turn_started player_turn_started = []
+from_player_turn_started player_turn_started =
+   [
+      (PerformFor
+         (
+            2.0,
+            [
+               (StartPlayerTurn
+                  (Struct.TurnResult.get_player_start_of_turn_index
+                     player_turn_started
+                  )
+               )
+            ]
+         )
+      )
+   ]
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
