@@ -79,12 +79,12 @@ add_characters_dataset_item : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-add_weapon item current_state =
+add_characters_dataset_item item current_state =
    let (model, cmds) = current_state in
       (
          {model |
             characters_dataset =
-               (BattleCharacters.Struct.Weapon.DataSetItem.add_to
+               (BattleCharacters.Struct.DataSetItem.add_to
                   item
                   model.characters_dataset
                )
@@ -92,17 +92,20 @@ add_weapon item current_state =
          cmds
       )
 
-add_tile : (
+add_map_dataset_item : (
       BattleMap.Struct.Tile.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-add_tile tl current_state =
+add_map_dataset_item item current_state =
    let (model, cmds) = current_state in
       (
          {model |
             map_dataset =
-               (BattleMap.Struct.DataSet.add_tile tl model.map_dataset)
+               (BattleMap.Struct.DataSetItem.add_to
+                  item
+                  model.map_dataset
+               )
          },
          cmds
       )
@@ -231,29 +234,14 @@ apply_command command current_state =
    case command of
       Struct.ServerReply.Disconnected -> (disconnected current_state)
 
-      (Struct.ServerReply.AddWeapon wp) ->
-         (add_weapon wp current_state)
+      (Struct.ServerReply.AddCharactersDataSetItem item) ->
+         (add_characters_dataset_item item current_state)
 
-      (Struct.ServerReply.AddArmor ar) ->
-         (add_armor ar current_state)
-
-      (Struct.ServerReply.AddPortrait pt) ->
-         (add_portrait pt current_state)
-
-      (Struct.ServerReply.AddSkill sk) ->
-         (add_skill sk current_state)
-
-      (Struct.ServerReply.AddGlyphBoard pt) ->
-         (add_glyph_board pt current_state)
-
-      (Struct.ServerReply.AddGlyph pt) ->
-         (add_glyph pt current_state)
+      (Struct.ServerReply.AddMapDataSetItem item) ->
+         (add_map_dataset_item item current_state)
 
       (Struct.ServerReply.AddPlayer pl) ->
          (add_player pl current_state)
-
-      (Struct.ServerReply.AddTile tl) ->
-         (add_tile tl current_state)
 
       (Struct.ServerReply.AddCharacter char) ->
          (add_character char current_state)

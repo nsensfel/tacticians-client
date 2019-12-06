@@ -1,4 +1,7 @@
-module Update.Puppeteer.Focus exposing (forward, backward)
+module Update.Puppeteer.SwapWeapons exposing (forward, backward)
+
+-- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Character
 
 -- Local Module ----------------------------------------------------------------
 import Action.Scroll
@@ -22,20 +25,23 @@ forward : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 forward actor_ix model =
-   (
-      model,
-      [
-         (Task.attempt
-            (Struct.Event.attempted)
-            (Action.Scroll.to
-               (Struct.Character.get_location
-                  (Struct.Battle.get_character actor_ix model.battle)
+   let character = (Struct.Battle.get_character actor_ix model.battle) in
+      (
+         {model |
+            battle =
+               (Struct.Battle.set_character
+                  actor_ix
+                  (Struct.Character.set_base_character
+                     (BattleCharacters.Struct.Character.dirty_switch_weapons
+                        (Struct.Character.get_base_character character)
+                     )
+                     character
+                  )
+                  model.battle
                )
-               model.ui
-            )
-         )
-      ]
-   )
+         },
+         []
+      )
 
 
 backward : (
@@ -43,4 +49,4 @@ backward : (
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-backward actor_ix model = (model, [])
+backward actor_ix model = (forward actor_ix model)
