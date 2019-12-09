@@ -1,7 +1,11 @@
-module Update.Puppeteer.RefreshCharacter exposing (forward, backward)
+module Update.Puppeteer.RefreshCharactersOfPlayer exposing (forward, backward)
+
+-- Elm -------------------------------------------------------------------------
+import Array
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Battle
+import Struct.Character
 import Struct.Event
 import Struct.Model
 
@@ -13,13 +17,27 @@ perform : (
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-perform actor_ix model =
+perform player_ix model =
    (
       {model |
-         battle = (Struct.Battle.refresh_character actor_ix model.battle)
+         battle =
+            (Array.foldl
+               (\actor battle ->
+                  if ((Struct.Character.get_player_index actor) == player_ix)
+                  then
+                     (Struct.Battle.refresh_character
+                        (Struct.Character.get_index actor)
+                        battle
+                     )
+                  else battle
+               )
+               model.battle
+               (Struct.Battle.get_characters model.battle)
+            )
       },
       []
    )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -29,19 +47,17 @@ forward : (
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-forward is_forward actor_ix model =
+forward is_forward player_ix model =
    if (is_forward)
-   then (perform actor_ix model)
+   then (perform player_ix model)
    else (model, [])
 
-
 backward : (
-      Bool ->
       Int ->
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-backward is_forward actor_ix model = (model, [])
+backward is_forward player_ix model =
    if (is_forward)
    then (model, [])
-   else (perform actor_ix model)
+   else (perform player_ix model)

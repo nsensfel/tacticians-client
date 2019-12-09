@@ -25,7 +25,8 @@ type Effect =
    | Focus Int
    | Hit Struct.Attack.Type
    | Move (Int, Battle.Struct.Direction)
-   | RefreshCharacter Int
+   | RefreshCharacter (Boolean, Int)
+   | RefreshCharactersOf (Boolean, Int)
    | StartTurn Int
    | SwapWeapons Int
    | Target (Int, Int)
@@ -44,6 +45,12 @@ from_attacked attack =
       defender_ix = (Struct.TurnResult.get_attack_defender_index attack)
    in
       [
+         (Perform
+            [
+               (RefreshCharacter (False, attacker_ix)),
+               (RefreshCharacter (False, defender_ix))
+            ]
+         ),
          (PerformFor (2.0, [(Focus attacker_ix)])),
          (PerformFor (2.0, [(Focus defender_ix)])),
          (List.map
@@ -51,8 +58,8 @@ from_attacked attack =
          ),
          (Perform
             [
-               (RefreshCharacter attacker_ix),
-               (RefreshCharacter defender_ix)
+               (RefreshCharacter (True, attacker_ix)),
+               (RefreshCharacter (True, defender_ix))
             ]
          )
       ]
@@ -63,6 +70,7 @@ from_moved movement =
       (
          [
             (PerformFor (1.0, [(Focus actor_ix)])),
+            (Perform [(RefreshCharacter (False, actor_ix))]),
             |
             (List.map
                (\dir ->
@@ -76,7 +84,7 @@ from_moved movement =
             )
          ]
          ++
-         [ (Perform [(RefreshCharacter actor_ix)]) ]
+         [ (Perform [(RefreshCharacter (True, actor_ix))]) ]
       )
 
 from_switched_weapon : Struct.TurnResult.WeaponSwitch -> (List Type)
@@ -84,7 +92,16 @@ from_switched_weapon weapon_switch =
    let actor_ix = (Struct.TurnResult.get_weapon_switch_actor weapon_switch) in
       [
          (PerformFor (1.0, [(Focus actor_ix)])),
-         (PerformFor (2.0, [(SwapWeapons actor_ix)]))
+         (PerformFor
+            (
+               2.0,
+               [
+                  (RefreshCharacter (False, actor_ix)),
+                  (SwapWeapons actor_ix)
+                  (RefreshCharacter (True, actor_ix))
+               ]
+            )
+         )
       ]
 
 from_player_won : Struct.TurnResult.PlayerVictory -> (List Type)
@@ -109,9 +126,11 @@ from_player_lost player_loss =
          (
             2.0,
             [
+               (RefreshCharactersOf (False, player_ix)),
                (AnnounceLoss
                   (Struct.TurnResult.get_player_loss_index player_loss)
-               )
+               ),
+               (RefreshCharactersOf (True, player_ix))
             ]
          )
       )
@@ -124,11 +143,13 @@ from_player_turn_started player_turn_started =
          (
             2.0,
             [
+               (RefreshCharactersOf (False, player_ix)),
                (StartPlayerTurn
                   (Struct.TurnResult.get_player_start_of_turn_index
                      player_turn_started
                   )
-               )
+               ),
+               (RefreshCharactersOf (True, player_ix))
             ]
          )
       )
