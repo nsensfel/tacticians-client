@@ -1,5 +1,11 @@
 module Update.Puppeteer.RefreshCharacter exposing (forward, backward)
 
+-- FIXME: This might not be the way to go about it. This works when going
+-- forward, as all the "dirty" changes have applied before the character is
+-- refreshed, but this step will appear *before* the changes when going
+-- backward, which means those changes are not taken into account during the
+-- "refresh".
+
 -- Local Module ----------------------------------------------------------------
 import Action.Scroll
 
@@ -29,9 +35,6 @@ forward actor_ix model =
                (Struct.Battle.set_character
                   actor_ix
                   (Struct.Character.set_location
-                     -- TODO:
-                     -- Handle both Struct.Character.dirty_set_location and
-                     -- BattleCharacters.Struct.Character.dirty_switch_weapons.
                      (Struct.Character.get_location character)
                      character
                   )

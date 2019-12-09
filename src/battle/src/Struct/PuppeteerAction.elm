@@ -2,9 +2,7 @@ module Struct.PuppeteerAction exposing
    (
       Type(..),
       Group(..),
-      from_turn_result,
-      forward,
-      backward
+      from_turn_result
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -155,25 +153,3 @@ from_turn_results turn_result =
 
       (Struct.TurnResult.PlayerTurnStarted player_turn_start) ->
          (from_player_turn_started player_turn_start)
-
-forward : Type -> Struct.Battle.Type -> Struct.Battle.Type
-forward puppeteer_action battle =
-   case puppeteer_action of
-      Inactive -> battle
-      (Target (actor_ix, target_ix)) ->
-         (forward_target actor_ix target_ix battle)
-      (Hit attack) -> (forward_hit attack battle)
-      (Focus actor_ix) -> (forward_focus actor_ix battle)
-      (Move (actor_ix, direction)) -> (forward_move actor_ix direction battle)
-      (SwapWeapons actor_ix) -> (forward_swap_weapons actor_ix battle)
-      (RefreshCharacter actor_ix) -> (forward_refresh_character actor_ix battle)
-      (Sequence list) -> (List.foldl (forward) battle list)
-
-backward : Type -> Struct.Battle.Type -> Struct.Battle.Type
-backward puppeteer_action battle =
-   case puppeteer_action of
-      (Hit attack) -> (backward_hit attack battle)
-      (Move (actor_ix, direction)) -> (backward_move actor_ix direction battle)
-      (SwapWeapons actor_ix) -> (backward_swap_weapons actor_ix battle)
-      (Sequence list) -> (List.foldr (backward) battle list)
-      _ -> battle
