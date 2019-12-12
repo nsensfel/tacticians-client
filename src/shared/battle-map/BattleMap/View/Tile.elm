@@ -63,11 +63,7 @@ get_content_html tile =
             (Html.Attributes.class "tile-icon-dg")
          ]
          (
-            case
-               (Set.size
-                  (BattleMap.Struct.TileInstance.get_triggers tile)
-               )
-            of
+            case (Set.size (BattleMap.Struct.TileInstance.get_tags tile)) of
                0 -> []
                other -> [(Html.text (String.fromInt other))]
          )

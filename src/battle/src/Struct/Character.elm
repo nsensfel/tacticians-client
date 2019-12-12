@@ -20,6 +20,7 @@ module Struct.Character exposing
       get_base_character,
       set_base_character,
       get_melee_attack_range,
+      refresh_omnimods,
       decoder,
       resolve
    )
@@ -180,6 +181,29 @@ set_location location omnimods char =
 
 dirty_set_location : BattleMap.Struct.Location.Type -> Type -> Type
 dirty_set_location location char = { char | location = location }
+
+refresh_omnimods : (
+      (BattleMap.Struct.Location.Type -> Battle.Struct.Omnimods.Type) ->
+      Type ->
+      Type
+   )
+refresh_omnimods omnimods_fun character =
+   let
+      previous_max_health =
+         (Battle.Struct.Attributes.get_max_health
+            (BattleCharacters.Struct.Character.get_attributes char.base)
+         )
+   in
+      (fix_health
+         previous_max_health
+         {char |
+            base =
+               (BattleCharacters.Struct.Character.set_extra_omnimods
+                  (omnimods_fun char.location)
+                  char.base
+               )
+         }
+      )
 
 get_base_character : Type -> BattleCharacters.Struct.Character.Type
 get_base_character char = char.base

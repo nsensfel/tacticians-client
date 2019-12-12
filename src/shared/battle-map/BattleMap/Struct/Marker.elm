@@ -38,6 +38,7 @@ type alias SpawnZoneStruct =
 type DataType =
    MeleeAttackZone MeleeAttackZoneStruct
    | SpawnZone SpawnZoneStruct
+   | Tag
    | None
 
 type alias Type =
@@ -52,15 +53,6 @@ type alias Type =
 decoder_internals : String -> (Json.Decode.Decoder DataType)
 decoder_internals t =
    case t of
-      "matk" ->
-         (Json.Decode.map
-            (\e -> (MeleeAttackZone e))
-            (Json.Decode.map
-               MeleeAttackZoneStruct
-               (Json.Decode.field "cix" (Json.Decode.int))
-            )
-         )
-
       "spawn" ->
          (Json.Decode.map
             (\e -> (SpawnZone e))
@@ -150,20 +142,9 @@ encode marker =
                         ]
                      )
 
-                  MeleeAttackZone zone ->
-                     (Json.Encode.object
-                        [
-                           ("t", (Json.Encode.string "matk")),
-                           ("cix", (Json.Encode.int zone.character_ix))
-                        ]
-                     )
-
-                  None ->
-                     (Json.Encode.object
-                        [
-                           ("t", (Json.Encode.string "none"))
-                        ]
-                     )
+                  -- TODO/FIXME: Do not encode those, since they should not be
+                  -- sent to the server.
+                  _ -> (Json.Encode.null)
             )
          )
       ]

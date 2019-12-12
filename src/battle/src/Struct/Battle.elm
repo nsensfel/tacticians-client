@@ -6,6 +6,7 @@ module Struct.Battle exposing
       add_character,
       get_character,
       set_character,
+      refresh_character,
       update_character,
       get_characters,
       set_characters,
@@ -74,54 +75,42 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
--- TODO: move this elsewhere, this is too complicated a function for a module
--- that's not solely focused on attacks of opportunity.
-regenerate_attack_of_opportunity_markers_of_char : (
+regenerate_attack_of_opportunity_tags_for_char : (
       Int ->
       Struct.Character.Type ->
       Type ->
       Type
    )
-regenerate_attack_of_opportunity_markers_of_char char_ix char battle =
-   if ((Struct.Character.get_player_index char) == battle.own_player_ix)
-   then battle
-   else
-      let
-         marker_name = ("matk_c" ++ (String.fromInt char_ix))
-         map_without_this_marker =
-            (BattleMap.Struct.Map.remove_marker marker_name battle.map)
-      in
-         case (Struct.Character.get_melee_attack_range char) of
-            0 -> {battle | map = map_without_this_marker}
-            attack_range ->
-                  {battle |
-                     map =
-                        (BattleMap.Struct.Map.add_marker
-                           marker_name
-                           (BattleMap.Struct.Marker.new_melee_attack
-                              char_ix
-                              (BattleMap.Struct.Location.add_neighborhood_to_set
-                                 (BattleMap.Struct.Map.get_width
-                                    map_without_this_marker
-                                 )
-                                 (BattleMap.Struct.Map.get_height
-                                    map_without_this_marker
-                                 )
-                                 attack_range
-                                 (Struct.Character.get_location char)
-                                 (Set.empty)
+regenerate_attack_of_opportunity_tags_for_char char_ix char battle =
+   let
+      tag_name = ("matk_c" ++ (String.fromInt char_ix))
+      map_without_this_tag =
+         (BattleMap.Struct.Map.remove_tag tag_name battle.map)
+   in
+      case (Struct.Character.get_melee_attack_range char) of
+         0 -> {battle | map = map_without_this_tag}
+         attack_range ->
+               {battle |
+                  map =
+                     (BattleMap.Struct.Map.add_tag
+                        tag_name
+                        (BattleMap.Struct.Marker.new_melee_attack
+                           char_ix
+                           (BattleMap.Struct.Location.add_neighborhood_to_set
+                              (BattleMap.Struct.Map.get_width
+                                 map_without_this_tag
                               )
+                              (BattleMap.Struct.Map.get_height
+                                 map_without_this_tag
+                              )
+                              attack_range
+                              (Struct.Character.get_location char)
+                              (Set.empty)
                            )
-                           map_without_this_marker
                         )
-                  }
-
-regenerate_attack_of_opportunity_markers : Int -> Type -> Type
-regenerate_attack_of_opportunity_markers char_ix battle =
-   case (Array.get char_ix battle.characters) of
-      Nothing -> battle
-      (Just char) ->
-         (regenerate_attack_of_opportunity_markers_of_char char_ix char battle)
+                        map_without_this_tag
+                     )
+               }
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -171,6 +160,24 @@ get_characters battle = battle.characters
 
 set_characters : (Array.Array Struct.Character.Type) -> Type -> Type
 set_characters chars battle = {battle | characters = chars}
+
+refresh_character : BattleMap.Struct.DataSet.Type -> Int -> Type -> Type
+refresh_character map_dataset ix battle =
+   let
+      character = (get_character ix battle)
+      refreshed_character =
+         (Struct.Character.refresh_omnimods
+            (\loc ->
+               (BattleMap.Struct.Map.get_omnimods_at loc map_dataset battle.map)
+            )
+            character
+         )
+   in
+      (regenerate_attack_of_opportunity_tags_for_char
+         ix
+         refreshed_character
+         (set_character ix refreshed_character battle)
+      )
 
 -----------------
 ---- Players ----

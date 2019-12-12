@@ -103,7 +103,7 @@ remove_marker marker_name map =
                            (BattleMap.Struct.Location.from_ref loc)
                            map
                         )
-                        (BattleMap.Struct.TileInstance.remove_trigger
+                        (BattleMap.Struct.TileInstance.remove_tag
                            marker_name
                         )
                         array
@@ -126,7 +126,7 @@ add_marker marker_name marker map =
                      (BattleMap.Struct.Location.from_ref loc)
                      map
                   )
-                  (BattleMap.Struct.TileInstance.add_trigger marker_name)
+                  (BattleMap.Struct.TileInstance.add_tag marker_name)
                   array
                )
             )
@@ -247,8 +247,8 @@ get_tile_data_function bmap occupied_tiles start_loc loc =
                   else (BattleMap.Struct.TileInstance.get_cost tile)
                ),
                (Set.foldl
-                  (\trigger dangers_count ->
-                     case (Dict.get trigger bmap.markers) of
+                  (\tag dangers_count ->
+                     case (Dict.get tag bmap.markers) of
                         Nothing -> dangers_count
                         (Just marker) ->
                            if (BattleMap.Struct.Marker.is_dangerous marker)
@@ -256,7 +256,7 @@ get_tile_data_function bmap occupied_tiles start_loc loc =
                            else dangers_count
                   )
                   0
-                  (BattleMap.Struct.TileInstance.get_triggers tile)
+                  (BattleMap.Struct.TileInstance.get_tags tile)
                )
             )
 

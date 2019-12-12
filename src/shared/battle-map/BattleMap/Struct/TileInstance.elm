@@ -15,9 +15,12 @@ module BattleMap.Struct.TileInstance exposing
       get_border_variant_id,
       get_border_class_id,
       get_local_variant_ix,
-      remove_trigger,
-      add_trigger,
-      get_triggers,
+--      remove_status_indicator,
+--      add_status_indicator,
+--      get_status_indicators,
+      remove_tag,
+      add_tag,
+      get_tags,
       error,
       solve,
       set_location_from_index,
@@ -44,7 +47,6 @@ import BattleMap.Struct.Location
 import Constants.UI
 import Constants.Movement
 
-
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -55,7 +57,7 @@ type alias Type =
       family : BattleMap.Struct.Tile.FamilyID,
       class_id : BattleMap.Struct.Tile.Ref,
       variant_id : BattleMap.Struct.Tile.VariantID,
-      triggers : (Set.Set String),
+      tags : (Set.Set String),
       borders : (List Border)
    }
 
@@ -97,7 +99,7 @@ default tile =
       variant_id = "0",
       crossing_cost = (BattleMap.Struct.Tile.get_cost tile),
       family = (BattleMap.Struct.Tile.get_family tile),
-      triggers = (Set.empty),
+      tags = (Set.empty),
       borders = []
    }
 
@@ -109,7 +111,7 @@ error x y =
       variant_id = "0",
       family = "0",
       crossing_cost = Constants.Movement.cost_when_out_of_bounds,
-      triggers = (Set.empty),
+      tags = (Set.empty),
       borders = []
    }
 
@@ -183,14 +185,7 @@ decoder =
                   |> (Json.Decode.Pipeline.hardcoded "") -- Family
                   |> (Json.Decode.Pipeline.hardcoded tile_id)
                   |> (Json.Decode.Pipeline.hardcoded variant_id)
-                  |>
-                     (Json.Decode.Pipeline.required
-                        "t"
-                        (Json.Decode.map
-                           (Set.fromList)
-                           (Json.Decode.list (Json.Decode.string))
-                        )
-                     )
+                  |> (Json.Decode.Pipeline.hardcoded (Set.empty)) -- tags
                   |>
                      (Json.Decode.Pipeline.hardcoded
                         (list_to_borders borders [])
@@ -245,23 +240,23 @@ encode tile_inst =
             "t",
             (Json.Encode.list
                (Json.Encode.string)
-               (Set.toList tile_inst.triggers)
+               (Set.toList tile_inst.tags)
             )
          )
       ]
    )
 
-get_triggers : Type -> (Set.Set String)
-get_triggers tile_inst = tile_inst.triggers
+get_tags : Type -> (Set.Set String)
+get_tags tile_inst = tile_inst.tags
 
-add_trigger : String -> Type -> Type
-add_trigger trigger tile_inst =
+add_tag : String -> Type -> Type
+add_tag tag tile_inst =
    {tile_inst |
-      triggers = (Set.insert trigger tile_inst.triggers)
+      tags = (Set.insert tag tile_inst.tags)
    }
 
-remove_trigger : String -> Type -> Type
-remove_trigger trigger tile_inst =
+remove_tag : String -> Type -> Type
+remove_tag tag tile_inst =
    {tile_inst |
-      triggers = (Set.remove trigger tile_inst.triggers)
+      tags = (Set.remove tag tile_inst.tags)
    }
