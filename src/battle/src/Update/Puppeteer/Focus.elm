@@ -37,7 +37,6 @@ forward actor_ix model =
       ]
    )
 
-
 backward : (
       Int ->
       Struct.Model.Type ->

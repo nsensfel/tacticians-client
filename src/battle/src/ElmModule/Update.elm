@@ -10,9 +10,9 @@ import Update.ChangeScale
 import Update.DisplayCharacterInfo
 import Update.EndTurn
 import Update.GoToMainMenu
-import Update.HandleAnimationEnded
 import Update.HandleServerReply
 import Update.LookForCharacter
+import Update.Puppeteer
 import Update.RequestDirection
 import Update.SelectCharacter
 import Update.SelectCharacterOrTile
@@ -53,7 +53,7 @@ update event model =
          (Update.AttackWithoutMoving.apply_to new_model)
 
       Struct.Event.AnimationEnded ->
-         (Update.HandleAnimationEnded.apply_to model)
+         (Update.Puppeteer.apply_to model)
 
       (Struct.Event.DirectionRequested d) ->
          (Update.RequestDirection.apply_to new_model d)

@@ -42,6 +42,8 @@ import Struct.TurnResult
 import Struct.TurnResultAnimator
 import Struct.UI
 
+import Update.Puppeteer
+
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -179,32 +181,40 @@ add_to_timeline : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 add_to_timeline turn_results current_state =
-   let (model, cmds) = current_state in
-      (
-         {model |
-            animator =
-               (Struct.TurnResultAnimator.maybe_new
-                  (List.reverse turn_results)
-                  False
-               ),
-            ui =
-               (Struct.UI.set_displayed_tab
-                  Struct.UI.TimelineTab
-                  model.ui
-               ),
-            battle =
-               (Struct.Battle.set_timeline
-                  (Array.append
-                     (Array.fromList turn_results)
-                     (Struct.Battle.get_timeline model.battle)
-                  )
-                  model.battle
-               )
-         },
-         (
-            (Delay.after 1 Delay.Millisecond Struct.Event.AnimationEnded)
-            :: cmds
+   let
+      (model, cmds) = current_state
+      (next_model, more_cmds) =
+         (Update.Puppeteer.apply_to
+            (
+               {model |
+                  puppeteer =
+                     (List.foldl
+                        (\tr puppeteer ->
+                           (Struct.Puppeteer.append_forward
+                              (Struct.PuppeteerAction.from_turn_result tr)
+                              puppeteer
+                           )
+                        )
+                        model.puppeteer
+                        turn_results
+                     ),
+                  battle =
+                     (Struct.Battle.set_timeline
+                        (Array.append
+                           (Array.fromList turn_results)
+                           (Struct.Battle.get_timeline model.battle)
+                        )
+                        model.battle
+                     )
+               }
+            )
          )
+   in
+      (
+         next_model,
+         if (mode_cmds == Cmd.none)
+         then cmd
+         else [more_cmds|cmd]
       )
 
 set_timeline : (
@@ -216,6 +226,17 @@ set_timeline turn_results current_state =
    let (model, cmds) = current_state in
       (
          {model |
+            puppeteer =
+               (List.foldr
+                  (\tr puppeteer ->
+                     (Struct.Puppeteer.append_backward
+                        (Struct.PuppeteerAction.from_turn_result tr)
+                        puppeteer
+                     )
+                  )
+                  model.puppeteer
+                  turn_results
+               ),
             battle =
                (Struct.Battle.set_timeline
                   (Array.fromList turn_results)
