@@ -1,217 +1,43 @@
-module View.Character exposing
-   (
-      get_portrait_html,
-      get_icon_html
-   )
+module View.Character exposing (get_portrait_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html
 import Html.Attributes
 import Html.Events
 
--- Shared ----------------------------------------------------------------------
-import Util.Html
-
 -- Battle Characters -----------------------------------------------------------
-import BattleCharacters.Struct.Character
-import BattleCharacters.Struct.Equipment
-import BattleCharacters.Struct.Portrait
-
 import BattleCharacters.View.Portrait
 
 -- Local Module ----------------------------------------------------------------
-import Constants.UI
-
 import Struct.Character
-import Struct.CharacterTurn
 import Struct.Event
-import Struct.Model
-import Struct.UI
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_activation_level_class : (
-      Struct.Character.Type ->
-      (Html.Attribute Struct.Event.Type)
-   )
-get_activation_level_class char =
-   if (Struct.Character.is_enabled char)
-   then
-      (Html.Attributes.class "character-icon-enabled")
-   else
-      (Html.Attributes.class "character-icon-disabled")
-
-get_alliance_class : (
-      Struct.Model.Type ->
-      Struct.Character.Type ->
-      (Html.Attribute Struct.Event.Type)
-   )
-get_alliance_class model char =
-   if
-   (
-      (Struct.Character.get_player_index char) == model.player_i
-      ==
-      (Struct.Battle.get_own_player_index model.battle)
-   )
-   then (Html.Attributes.class "character-ally")
-   else (Html.Attributes.class "character-enemy")
-
-get_position_style : (
-      Struct.Character.Type ->
-      (List (Html.Attribute Struct.Event.Type))
-   )
-get_position_style char =
-   let char_loc = (Struct.Character.get_location char) in
-      [
-         (Html.Attributes.style
-            "top"
-            ((String.fromInt (char_loc.y * Constants.UI.tile_size)) ++ "px")
-         ),
-         (Html.Attributes.style
-            "left"
-            ((String.fromInt (char_loc.x * Constants.UI.tile_size)) ++ "px")
-         )
-      ]
-
-get_focus_class : (
-      Struct.Model.Type ->
-      Struct.Character.Type ->
-      (Html.Attribute Struct.Event.Type)
-   )
-get_focus_class model char =
-   if
-   (
-      (Struct.UI.get_previous_action model.ui)
-      ==
-      (Just (Struct.UI.SelectedCharacter (Struct.Character.get_index char)))
-   )
-   then
-      (Html.Attributes.class "character-selected")
-   else
-      if
-      (
-         (Struct.CharacterTurn.try_getting_target model.char_turn)
-         ==
-         (Just (Struct.Character.get_index char))
-      )
-      then
-         (Html.Attributes.class "character-targeted")
-      else
-         (Html.Attributes.class "")
-
-get_icon_body_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
-get_icon_body_html char =
-   (Html.div
-      [
-         (Html.Attributes.class "character-icon-body"),
-         (Html.Attributes.class
-            (
-               "asset-character-team-body-"
-               ++ (String.fromInt (Struct.Character.get_player_index char))
-            )
-         )
-      ]
-      [
-      ]
-   )
-
-get_icon_head_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
-get_icon_head_html char =
-   (Html.div
-      [
-         (Html.Attributes.class "character-icon-head"),
-         (Html.Attributes.class
-            (
-               "asset-character-icon-"
-               ++
-               (BattleCharacters.Struct.Portrait.get_icon_id
-                  (BattleCharacters.Struct.Equipment.get_portrait
-                     (BattleCharacters.Struct.Character.get_equipment
-                        (Struct.Character.get_base_character char)
-                     )
-                  )
-               )
-            )
-         )
-      ]
-      [
-      ]
-   )
-
-get_icon_actual_html : (
-      Struct.Model.Type ->
-      Struct.Character.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_icon_actual_html model char =
-      (Html.div
-         (
-            [
-               (Html.Attributes.class "tiled"),
-               (Html.Attributes.class "character-icon"),
-               (get_activation_level_class char),
-               (get_alliance_class model char),
-               (get_focus_class model char),
-               (Html.Attributes.class "clickable"),
-               (Html.Events.onClick
-                  (Struct.Event.CharacterSelected
-                     (Struct.Character.get_index char)
-                  )
-               )
-            ]
-            ++ (get_position_style char)
-         )
-         [
-            (get_icon_body_html char),
-            (get_icon_head_html char)
-         ]
-      )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_portrait_html : (
-      Int ->
-      Struct.Character.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_portrait_html viewer_ix char =
+get_portrait_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
+get_portrait_html char =
    (BattleCharacters.View.Portrait.get_html
       [
-         (Html.Attributes.class
-            (
-               if ((Struct.Character.get_player_index char) == viewer_ix)
-               then
-                  "character-ally"
-               else
-                  "character-enemy"
-            )
-         ),
-         (Html.Attributes.class
-            (
-               "character-portrait-team-"
-               ++
-               (String.fromInt (Struct.Character.get_player_index char))
-            )
-         ),
          (Html.Events.onClick
             (Struct.Event.LookingForCharacter (Struct.Character.get_index char))
+         )
+         |
+         (List.map
+            (
+               \effect_name ->
+               (Html.Attributes.class
+                  ("character-portrait-effect-" ++ effect_name)
+               )
+            )
+            (Struct.Character.get_extra_display_effects_list char)
          )
       ]
       (BattleCharacters.Struct.Character.get_equipment
          (Struct.Character.get_base_character char)
       )
    )
-
-get_icon_html : (
-      Struct.Model.Type ->
-      Struct.Character.Type ->
-      (Html.Html Struct.Event.Type)
-   )
-get_icon_html model char =
-   if (Struct.Character.is_alive char)
-   then
-      (get_icon_actual_html model char)
-   else
-      (Util.Html.nothing)

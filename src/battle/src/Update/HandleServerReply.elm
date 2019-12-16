@@ -39,7 +39,6 @@ import Struct.Model
 import Struct.Player
 import Struct.ServerReply
 import Struct.TurnResult
-import Struct.TurnResultAnimator
 import Struct.UI
 
 import Update.Puppeteer

@@ -1,4 +1,4 @@
-module Update.Puppeteer.RefreshCharactersOfPlayer exposing (forward, backward)
+module Update.Puppeteer.RefreshCharactersOf exposing (forward, backward)
 
 -- Elm -------------------------------------------------------------------------
 import Array

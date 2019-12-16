@@ -21,6 +21,11 @@ module Struct.Character exposing
       set_base_character,
       get_melee_attack_range,
       refresh_omnimods,
+      add_extra_display_effect,
+      remove_extra_display_effect,
+      get_extra_display_effects,
+      get_extra_display_effects_list,
+      reset_extra_display_effects,
       decoder,
       resolve
    )
@@ -60,7 +65,8 @@ type alias Type =
       player_ix : Int,
       enabled : Bool,
       defeated : Bool,
-      base : BattleCharacters.Struct.Character.Type
+      base : BattleCharacters.Struct.Character.Type,
+      extra_display_effects : (Set.Set String)
    }
 
 type alias Unresolved =
@@ -236,6 +242,52 @@ set_enabled enabled char = {char | enabled = enabled}
 set_defeated : Bool -> Type -> Type
 set_defeated defeated char = {char | defeated = defeated}
 
+add_extra_display_effect : String -> Type -> Type
+add_extra_display_effect effect_name char =
+   {char |
+      extra_display_effects =
+         (Set.insert effect_name char.extra_display_effects)
+   }
+
+remove_extra_display_effect : String -> Type -> Type
+remove_extra_display_effect effect_name char =
+   {char |
+      extra_display_effects =
+         (Set.remove effect_name char.extra_display_effects)
+   }
+
+get_extra_display_effects : Type -> (Set.Set String)
+get_extra_display_effects char = char.extra_display_effects
+
+get_extra_display_effects_list : Type -> (Set.Set String)
+get_extra_display_effects_list char = (Set.toList char.extra_display_effects)
+
+reset_extra_display_effects : Int -> Type -> Type
+reset_extra_display_effects viewer_ix char =
+   {char |
+      extra_display_effects =
+         (Set.fromList
+            [
+               (
+                  if (viewer_ix == char.player_ix)
+                  then "ally"
+                  else "enemy"
+               ),
+               ("team-" ++ char.player_ix),
+               (
+                  if (char.enabled)
+                  then "enabled"
+                  else "disabled"
+               ),
+               (
+                  if (is_alive)
+                  then "alive"
+                  else "dead"
+               )
+            ]
+         )
+   }
+
 decoder : (Json.Decode.Decoder Unresolved)
 decoder =
    (Json.Decode.succeed
@@ -284,5 +336,6 @@ resolve location_omnimod_resolver equipment_resolver ref =
             (equipment_resolver)
             (location_omnimod_resolver ref.location)
             ref.base
-         )
+         ),
+      extra_display_effects = (Set.empty)
    }
