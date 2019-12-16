@@ -131,12 +131,19 @@ new =
 ---- Characters ----
 --------------------
 add_character : Struct.Character.Type -> Type -> Type
-add_character char battle =
-   let characters = battle.characters in
+add_character s0char battle =
+   let
+      s1char =
+         (Struct.Character.reset_extra_display_effects
+            battle.own_player_ix
+            s0char
+         )
+      characters = battle.characters
+   in
       (regenerate_attack_of_opportunity_markers_of_char
          (Array.length characters)
-         char
-         {battle | characters = (Array.push char characters)}
+         s1char
+         {battle | characters = (Array.push s1char characters)}
       )
 
 get_character : Int -> Type -> (Maybe Struct.Character.Type)

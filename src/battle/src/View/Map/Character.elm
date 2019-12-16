@@ -16,12 +16,8 @@ import BattleCharacters.Struct.Equipment
 -- Local Module ----------------------------------------------------------------
 import Constants.UI
 
-import Struct.Battle
 import Struct.Character
-import Struct.CharacterTurn
 import Struct.Event
-import Struct.TurnResult
-import Struct.TurnResultAnimator
 import Struct.UI
 
 --------------------------------------------------------------------------------
