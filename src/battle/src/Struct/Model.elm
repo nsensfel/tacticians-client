@@ -19,9 +19,9 @@ import BattleMap.Struct.DataSet
 -- Local Module ----------------------------------------------------------------
 import Struct.CharacterTurn
 import Struct.Error
-import Struct.HelpRequest
-import Struct.TurnResult
+import Struct.MessageBoard
 import Struct.Puppeteer
+import Struct.TurnResult
 import Struct.UI
 
 --------------------------------------------------------------------------------
@@ -30,11 +30,10 @@ import Struct.UI
 type alias Type =
    {
       flags : Struct.Flags.Type,
-      help_request : Struct.HelpRequest.Type,
       puppeteer : Struct.Puppeteer.Type,
       ui : Struct.UI.Type,
       char_turn : Struct.CharacterTurn.Type,
-      error : (Maybe Struct.Error.Type),
+      message_board : Struct.MessageBoard.Type,
 
       battle : Struct.Battle.Type,
 
@@ -56,11 +55,10 @@ new flags =
       model =
          {
             flags = flags,
-            help_request = Struct.HelpRequest.None,
             puppeteer = (Struct.Puppeteer.new),
             ui = (Struct.UI.default),
             char_turn = (Struct.CharacterTurn.new),
-            error = Nothing,
+            message_board = (Struct.MessageBoard.new),
 
             characters_data_set = (BattleCharacters.Struct.DataSet.new),
             map_data_set = (BattleMap.Struct.DataSet.new),
@@ -86,8 +84,7 @@ new flags =
 clear : Type -> Type
 clear model =
    {model |
-      help_request = Struct.HelpRequest.None,
-      error = Nothing,
+      message_board = (Struct.MessageBoard.clear),
       ui =
          (Struct.UI.reset_displayed_nav
             (Struct.UI.set_previous_action Nothing model.ui)
@@ -98,8 +95,9 @@ clear model =
 invalidate : Struct.Error.Type -> Type -> Type
 invalidate err model =
    {model |
-      error = (Just err)
+      message_board =
+         (Struct.MessageBoard.display
+            (Struct.MessageBoard.Error err)
+            model.message_board
+         )
    }
-
-clear_error : Type -> Type
-clear_error model = {model | error = Nothing}
