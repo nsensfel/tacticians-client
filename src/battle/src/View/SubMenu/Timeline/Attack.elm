@@ -153,8 +153,8 @@ get_html characters player_ix attack =
             ]
             (
                [
-                  (View.Character.get_portrait_html player_ix atkchar),
-                  (View.Character.get_portrait_html player_ix defchar),
+                  (View.Character.get_portrait_html atkchar),
+                  (View.Character.get_portrait_html defchar),
                   (get_title_html atkchar defchar)
                ]
                ++

@@ -1,4 +1,4 @@
-module View.MessageBoard.Animator.Attack exposing (get_html)
+module View.MessageBoard.Attack exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Array
@@ -14,6 +14,7 @@ import Struct.Attack
 import Struct.Battle
 import Struct.Character
 import Struct.Event
+import Struct.Model
 
 import View.Controlled.CharacterCard
 
@@ -145,45 +146,30 @@ get_defense_animation_class attack char =
       else "animated-portrait-dies"
 
 get_attacker_card : (
-      (Maybe Struct.Attack.Type) ->
+      Struct.Attack.Type ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_attacker_card maybe_attack char =
+get_attacker_card attack char =
    (Html.div
-      (case maybe_attack of
-         Nothing ->
-            if ((Struct.Character.get_current_health char) > 0)
-            then
-               [
-                  (Html.Attributes.class "animated-portrait")
-               ]
-            else
-               [
-                  (Html.Attributes.class "animated-portrait-absent"),
-                  (Html.Attributes.class "animated-portrait")
-               ]
+      [
+         (Html.Attributes.class
+            (case (attack.order, attack.parried) of
+               (Struct.Attack.Counter, True) ->
+                  (get_attack_animation_class attack char)
 
-         (Just attack) ->
-            [
-               (Html.Attributes.class
-                  (case (attack.order, attack.parried) of
-                     (Struct.Attack.Counter, True) ->
-                        (get_attack_animation_class attack char)
+               (Struct.Attack.Counter, _) ->
+                  (get_defense_animation_class attack char)
 
-                     (Struct.Attack.Counter, _) ->
-                        (get_defense_animation_class attack char)
+               (_, True) ->
+                  (get_defense_animation_class attack char)
 
-                     (_, True) ->
-                        (get_defense_animation_class attack char)
-
-                     (_, _) ->
-                        (get_attack_animation_class attack char)
-                  )
-               ),
-               (Html.Attributes.class "animated-portrait")
-            ]
-      )
+               (_, _) ->
+                  (get_attack_animation_class attack char)
+            )
+         ),
+         (Html.Attributes.class "animated-portrait")
+      ]
       [
          (View.Controlled.CharacterCard.get_minimal_html
             (Struct.Character.get_player_index char)
@@ -193,61 +179,43 @@ get_attacker_card maybe_attack char =
    )
 
 get_defender_card : (
-      (Maybe Struct.Attack.Type) ->
+      Struct.Attack.Type ->
       Struct.Character.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_defender_card maybe_attack char =
+get_defender_card attack char =
    (Html.div
-      (case maybe_attack of
-         Nothing ->
-            if ((Struct.Character.get_current_health char) > 0)
-            then
-               [
-                  (Html.Attributes.class "animated-portrait")
-               ]
-            else
-               [
-                  (Html.Attributes.class "animated-portrait-absent"),
-                  (Html.Attributes.class "animated-portrait")
-               ]
+      [
+         (Html.Attributes.class
+            (case (attack.order, attack.parried) of
+               (Struct.Attack.Counter, True) ->
+                  (get_defense_animation_class attack char)
 
-         (Just attack) ->
-            [
-               (Html.Attributes.class
-                  (case (attack.order, attack.parried) of
-                     (Struct.Attack.Counter, True) ->
-                        (get_defense_animation_class attack char)
+               (Struct.Attack.Counter, _) ->
+                  (get_attack_animation_class attack char)
 
-                     (Struct.Attack.Counter, _) ->
-                        (get_attack_animation_class attack char)
+               (_, True) ->
+                  (get_attack_animation_class attack char)
 
-                     (_, True) ->
-                        (get_attack_animation_class attack char)
-
-                     (_, _) ->
-                        (get_defense_animation_class attack char)
-                  )
-               ),
-               (Html.Attributes.class "animated-portrait")
-            ]
-      )
+               (_, _) ->
+                  (get_defense_animation_class attack char)
+            )
+         ),
+         (Html.Attributes.class "animated-portrait")
+      ]
       [
          (View.Controlled.CharacterCard.get_minimal_html -1 char)
       ]
    )
 
---------------------------------------------------------------------------------
--- EXPORTED --------------------------------------------------------------------
---------------------------------------------------------------------------------
 get_placeholder_html : (
       (Array.Array Struct.Character.Type) ->
       Int ->
       Int ->
-      (Maybe Struct.Attack.Type) ->
+      Struct.Attack.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_placeholder_html characters attacker_ix defender_ix maybe_attack =
+get_placeholder_html characters attacker_ix defender_ix attack =
    case
       (
          (Array.get attacker_ix characters),
@@ -262,16 +230,9 @@ get_placeholder_html characters attacker_ix defender_ix maybe_attack =
             ]
             (
                [
-                  (get_attacker_card maybe_attack atkchar),
-                  (
-                     case maybe_attack of
-                        (Just attack) ->
-                           (get_attack_html atkchar defchar attack)
-
-                        Nothing ->
-                           (get_empty_attack_html)
-                  ),
-                  (get_defender_card maybe_attack defchar)
+                  (get_attacker_card attack atkchar),
+                  (get_attack_html atkchar defchar attack),
+                  (get_defender_card attack defchar)
                ]
             )
          )
@@ -284,21 +245,18 @@ get_placeholder_html characters attacker_ix defender_ix maybe_attack =
                (Html.text "Error: Attack with unknown characters")
             ]
          )
-
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 get_html : (
-      Struct.Battle.Type ->
-      Int ->
-      Int ->
-      (Maybe Struct.Attack.Type) ->
+      Struct.Model.Type ->
+      Struct.Attack.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_html battle attacker_ix defender_ix maybe_attack =
+get_html model attack =
    (get_placeholder_html
-      (Struct.Battle.get_characters battle)
-      attacker_ix
-      defender_ix
-      maybe_attack
+      (Struct.Battle.get_characters model.battle)
+      0 -- TODO: get attacker IX
+      0 -- TODO: get defender IX
+      attack
    )

@@ -11,8 +11,10 @@ import Set
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.DataSet
+import BattleMap.Struct.Direction
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Attack
 import Struct.Battle
 import Struct.TurnResult
 
@@ -24,9 +26,9 @@ type Effect =
    | AnnounceVictory Int
    | Focus Int
    | Hit Struct.Attack.Type
-   | Move (Int, Battle.Struct.Direction)
-   | RefreshCharacter (Boolean, Int)
-   | RefreshCharactersOf (Boolean, Int)
+   | Move (Int, BattleMap.Struct.Direction.Type)
+   | RefreshCharacter (Bool, Int)
+   | RefreshCharactersOf (Bool, Int)
    | StartTurn Int
    | SwapWeapons Int
    | Target (Int, Int)
@@ -54,7 +56,7 @@ from_attacked attack =
          (PerformFor (2.0, [(Focus attacker_ix)])),
          (PerformFor (2.0, [(Focus defender_ix)])),
          (List.map
-            (PerformFor (..., (Hit attack)))
+            (PerformFor (5.0, (Hit attack)))
          ),
          (Perform
             [
@@ -70,8 +72,10 @@ from_moved movement =
       (
          [
             (PerformFor (1.0, [(Focus actor_ix)])),
-            (Perform [(RefreshCharacter (False, actor_ix))]),
-            |
+            (Perform [(RefreshCharacter (False, actor_ix))])
+         ]
+         ++
+         [
             (List.map
                (\dir ->
                   (PerformFor

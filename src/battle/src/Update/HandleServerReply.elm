@@ -39,7 +39,7 @@ import Struct.Model
 import Struct.Player
 import Struct.Puppeteer
 import Struct.ServerReply
-import Struct.UI
+import Struct.TurnResult
 
 import Update.Puppeteer
 

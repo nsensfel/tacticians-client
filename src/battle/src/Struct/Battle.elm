@@ -85,14 +85,14 @@ regenerate_attack_of_opportunity_tags_for_char char_ix char battle =
    let
       tag_name = ("matk_c" ++ (String.fromInt char_ix))
       map_without_this_tag =
-         (BattleMap.Struct.Map.remove_tag tag_name battle.map)
+         (BattleMap.Struct.Map.remove_marker tag_name battle.map)
    in
       case (Struct.Character.get_melee_attack_range char) of
          0 -> {battle | map = map_without_this_tag}
          attack_range ->
                {battle |
                   map =
-                     (BattleMap.Struct.Map.add_tag
+                     (BattleMap.Struct.Map.add_marker
                         tag_name
                         (BattleMap.Struct.Marker.new_melee_attack
                            char_ix
@@ -131,12 +131,19 @@ new =
 ---- Characters ----
 --------------------
 add_character : Struct.Character.Type -> Type -> Type
-add_character char battle =
-   let characters = battle.characters in
-      (regenerate_attack_of_opportunity_markers_of_char
+add_character s0char battle =
+   let
+      s1char =
+         (Struct.Character.reset_extra_display_effects
+            battle.own_player_ix
+            s0char
+         )
+      characters = battle.characters
+   in
+      (regenerate_attack_of_opportunity_tags_for_char
          (Array.length characters)
-         char
-         {battle | characters = (Array.push char characters)}
+         s1char
+         {battle | characters = (Array.push s1char characters)}
       )
 
 get_character : Int -> Type -> (Maybe Struct.Character.Type)
@@ -163,21 +170,27 @@ set_characters chars battle = {battle | characters = chars}
 
 refresh_character : BattleMap.Struct.DataSet.Type -> Int -> Type -> Type
 refresh_character map_dataset ix battle =
-   let
-      character = (get_character ix battle)
-      refreshed_character =
-         (Struct.Character.refresh_omnimods
-            (\loc ->
-               (BattleMap.Struct.Map.get_omnimods_at loc map_dataset battle.map)
+   case (get_character ix battle) of
+      Nothing -> battle
+      (Just character) ->
+         let
+            refreshed_character =
+               (Struct.Character.refresh_omnimods
+                  (\loc ->
+                     (BattleMap.Struct.Map.get_omnimods_at
+                        loc
+                        map_dataset
+                        battle.map
+                     )
+                  )
+                  character
+               )
+         in
+            (regenerate_attack_of_opportunity_tags_for_char
+               ix
+               refreshed_character
+               (set_character ix refreshed_character battle)
             )
-            character
-         )
-   in
-      (regenerate_attack_of_opportunity_tags_for_char
-         ix
-         refreshed_character
-         (set_character ix refreshed_character battle)
-      )
 
 -----------------
 ---- Players ----
