@@ -50,35 +50,35 @@ new =
 append_forward : (List Struct.PuppeteerAction.Type) -> Type -> Type
 append_forward actions puppeteer =
    {puppeteer |
-      forward_actions = (List.concat puppeteer.forward_actions actions)
+      forward_actions = (puppeteer.forward_actions ++ actions)
    }
 
 append_backward : (List Struct.PuppeteerAction.Type) -> Type -> Type
 append_backward actions puppeteer =
    {puppeteer |
-      backward_actions = (List.concat actions puppeteer.backward_actions)
+      backward_actions = (actions ++ puppeteer.backward_actions)
    }
 
 forward : Type -> Type
 forward puppeteer =
    case (Util.List.pop puppeteer.forward_actions) of
-      ([], Nothing) -> puppeteer
-      (forward_actions, (Just action)) ->
+      Nothing -> puppeteer
+      (Just (action, forward_actions)) ->
          {puppeteer |
             forward_actions = forward_actions,
-            backward_actions = [action|puppeteer.backward_actions],
-            is_playing_forward = true
+            backward_actions = (action :: puppeteer.backward_actions),
+            is_playing_forward = True
          }
 
 backward : Type -> Type
 backward puppeteer =
    case (Util.List.pop puppeteer.backward_actions) of
-      ([], Nothing) -> puppeteer
-      (backward_actions, (Just action)) ->
+      Nothing -> puppeteer
+      (Just (action, backward_actions)) ->
          {puppeteer |
-            forward_actions = [action|forward_actions],
+            forward_actions = (action :: puppeteer.forward_actions),
             backward_actions = backward_actions,
-            is_playing_forward = false
+            is_playing_forward = False
          }
 
 step : Type -> Type

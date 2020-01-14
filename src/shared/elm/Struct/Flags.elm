@@ -1,6 +1,7 @@
 module Struct.Flags exposing
    (
       Type,
+      -- TODO: refactor into try_getting_parameter and so on.
       maybe_get_param,
       force_get_param,
       get_params_as_url,
