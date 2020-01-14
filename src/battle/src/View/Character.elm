@@ -6,6 +6,8 @@ import Html.Attributes
 import Html.Events
 
 -- Battle Characters -----------------------------------------------------------
+import BattleCharacters.Struct.Character
+
 import BattleCharacters.View.Portrait
 
 -- Local Module ----------------------------------------------------------------
@@ -22,11 +24,11 @@ import Struct.Event
 get_portrait_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_portrait_html char =
    (BattleCharacters.View.Portrait.get_html
-      [
+      (
          (Html.Events.onClick
             (Struct.Event.LookingForCharacter (Struct.Character.get_index char))
          )
-         |
+         ::
          (List.map
             (
                \effect_name ->
@@ -36,7 +38,7 @@ get_portrait_html char =
             )
             (Struct.Character.get_extra_display_effects_list char)
          )
-      ]
+      )
       (BattleCharacters.Struct.Character.get_equipment
          (Struct.Character.get_base_character char)
       )

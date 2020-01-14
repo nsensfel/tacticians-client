@@ -352,7 +352,7 @@ get_minimal_html player_ix char =
                      (Html.Attributes.class "info-card-picture")
                   ]
                   [
-                     (View.Character.get_portrait_html player_ix char)
+                     (View.Character.get_portrait_html char)
                   ]
                ),
                (get_health_bar char),
@@ -400,7 +400,7 @@ get_summary_html char_turn player_ix char =
                         (Html.Attributes.class "info-card-picture")
                      ]
                      [
-                        (View.Character.get_portrait_html player_ix char)
+                        (View.Character.get_portrait_html char)
                      ]
                   ),
                   (get_health_bar char),
@@ -456,7 +456,7 @@ get_full_html player_ix char =
                         (Html.Attributes.class "info-card-picture")
                      ]
                      [
-                        (View.Character.get_portrait_html player_ix char)
+                        (View.Character.get_portrait_html char)
                      ]
                   ),
                   (get_health_bar char),

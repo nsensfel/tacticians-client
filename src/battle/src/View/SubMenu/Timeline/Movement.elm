@@ -38,7 +38,7 @@ get_html characters player_ix movement =
                (Html.Attributes.class "timeline-movement")
             ]
             [
-               (View.Character.get_portrait_html player_ix char),
+               (View.Character.get_portrait_html char),
                (Html.text
                   (
                      (BattleCharacters.Struct.Character.get_name

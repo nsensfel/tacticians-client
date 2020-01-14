@@ -193,7 +193,7 @@ refresh_omnimods : (
       Type ->
       Type
    )
-refresh_omnimods omnimods_fun character =
+refresh_omnimods omnimods_fun char =
    let
       previous_max_health =
          (Battle.Struct.Attributes.get_max_health
@@ -259,7 +259,7 @@ remove_extra_display_effect effect_name char =
 get_extra_display_effects : Type -> (Set.Set String)
 get_extra_display_effects char = char.extra_display_effects
 
-get_extra_display_effects_list : Type -> (Set.Set String)
+get_extra_display_effects_list : Type -> (List String)
 get_extra_display_effects_list char = (Set.toList char.extra_display_effects)
 
 reset_extra_display_effects : Int -> Type -> Type
@@ -273,14 +273,14 @@ reset_extra_display_effects viewer_ix char =
                   then "ally"
                   else "enemy"
                ),
-               ("team-" ++ char.player_ix),
+               ("team-" ++ (String.fromInt char.player_ix)),
                (
                   if (char.enabled)
                   then "enabled"
                   else "disabled"
                ),
                (
-                  if (is_alive)
+                  if (is_alive char)
                   then "alive"
                   else "dead"
                )
