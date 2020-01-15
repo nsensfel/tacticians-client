@@ -135,7 +135,7 @@ select_characters_html battle_req =
             (
                "/roster-editor/"
                ++
-               (Struct.BattleRequest.get_url_params battle_req)
+               (Struct.BattleRequest.get_url_parameters battle_req)
             )
          )
       ]

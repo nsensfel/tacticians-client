@@ -67,7 +67,7 @@ disconnected current_state =
                   (Url.percentEncode
                      (
                         "/battle/?"
-                        ++ (Struct.Flags.get_params_as_url model.flags)
+                        ++ (Struct.Flags.get_parameters_as_url model.flags)
                      )
                   )
                )

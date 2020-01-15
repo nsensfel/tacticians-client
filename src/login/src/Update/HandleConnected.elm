@@ -26,7 +26,7 @@ apply_to model =
       (Action.Ports.go_to
          (Constants.IO.base_url ++
             (
-               case (Struct.Flags.maybe_get_param "goto" model.flags) of
+               case (Struct.Flags.maybe_get_parameter "goto" model.flags) of
                   Nothing -> "/main-menu/"
                   (Just string) ->
                      case (Url.percentDecode string) of

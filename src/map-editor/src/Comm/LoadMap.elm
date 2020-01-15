@@ -49,5 +49,5 @@ try model =
    (Comm.Send.maybe_send
       model
       Constants.IO.map_loading_handler
-      maybe_encod
+      maybe_encode
    )

@@ -66,5 +66,5 @@ try model =
    (Comm.Send.maybe_send
       model
       Constants.IO.roster_update_handler
-      maybe_encod
+      maybe_encode
    )

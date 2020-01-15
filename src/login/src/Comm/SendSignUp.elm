@@ -38,5 +38,5 @@ try model =
    (Comm.Send.maybe_send
       model
       Constants.IO.login_sign_up_handler
-      maybe_encod
+      maybe_encode
    )

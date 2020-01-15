@@ -41,5 +41,5 @@ try model =
    (Comm.Send.maybe_send
       model
       Constants.IO.player_loading_handler
-      maybe_encod
+      maybe_encode
    )

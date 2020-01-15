@@ -44,7 +44,7 @@ maybe_encode model =
                   (
                      case
                         (String.toInt
-                           (Struct.Flags.force_get_param "six" model.flags)
+                           (Struct.Flags.force_get_parameter "six" model.flags)
                         )
                      of
                         (Just ix) -> ix
@@ -55,25 +55,25 @@ maybe_encode model =
             (
                "cat",
                (Json.Encode.string
-                  (Struct.Flags.force_get_param "cat" model.flags)
+                  (Struct.Flags.force_get_parameter "cat" model.flags)
                )
             ),
             (
                "mod",
                (Json.Encode.string
-                  (Struct.Flags.force_get_param "mod" model.flags)
+                  (Struct.Flags.force_get_parameter "mod" model.flags)
                )
             ),
             (
                "s",
                (Json.Encode.string
-                  (Struct.Flags.force_get_param "s" model.flags)
+                  (Struct.Flags.force_get_parameter "s" model.flags)
                )
             ),
             (
                "map_id",
                (Json.Encode.string
-                  (Struct.Flags.force_get_param "map_id" model.flags)
+                  (Struct.Flags.force_get_parameter "map_id" model.flags)
                )
             ),
             (
@@ -98,5 +98,5 @@ try model =
    (Comm.Send.maybe_send
       model
       Constants.IO.join_battle_handler
-      maybe_encod
+      maybe_encode
    )

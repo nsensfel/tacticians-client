@@ -12,7 +12,7 @@ module Struct.BattleRequest exposing
       set_category,
       set_size,
       set_map_id,
-      get_url_params
+      get_url_parameters
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -81,8 +81,8 @@ get_map_id ir = ir.map_id
 set_map_id : String -> Type -> Type
 set_map_id id ir = {ir | map_id = id}
 
-get_url_params : Type -> String
-get_url_params ir =
+get_url_parameters : Type -> String
+get_url_parameters ir =
    (
       "?six="
       ++ (String.fromInt ir.ix)

@@ -98,7 +98,7 @@ new flags =
       battle_order =
          (Array.repeat
             (
-               case (Struct.Flags.maybe_get_param "s" flags) of
+               case (Struct.Flags.maybe_get_parameter "s" flags) of
                   Nothing -> 0
                   (Just "s") -> 8
                   (Just "m") -> 16

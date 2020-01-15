@@ -22,7 +22,7 @@ init flags =
    let
       new_model = (Struct.Model.new flags)
    in
-      case (Struct.Flags.maybe_get_param "action" flags) of
+      case (Struct.Flags.maybe_get_parameter "action" flags) of
          (Just "disconnect") -> (Update.Disconnect.apply_to new_model)
          _ ->
             if (flags.user_id == "")

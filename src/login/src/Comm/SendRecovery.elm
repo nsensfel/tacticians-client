@@ -36,5 +36,5 @@ try model =
    (Comm.Send.maybe_send
       model
       Constants.IO.login_recovery_handler
-      maybe_encod
+      maybe_encode
    )

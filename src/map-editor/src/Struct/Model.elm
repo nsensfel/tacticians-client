@@ -62,7 +62,7 @@ type alias Type =
 new : Struct.Flags.Type -> Type
 new flags =
    let
-      maybe_map_id = (Struct.Flags.maybe_get_param "id" flags)
+      maybe_map_id = (Struct.Flags.maybe_get_parameter "id" flags)
       model =
          {
             flags = flags,

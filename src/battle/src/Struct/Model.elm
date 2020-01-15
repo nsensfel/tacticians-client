@@ -66,7 +66,7 @@ new flags =
             battle = (Struct.Battle.new)
          }
    in
-      case (Struct.Flags.maybe_get_param "id" flags) of
+      case (Struct.Flags.maybe_get_parameter "id" flags) of
          Nothing ->
             (invalidate
                (Struct.Error.new

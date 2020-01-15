@@ -44,7 +44,7 @@ disconnected current_state =
                   (Url.percentEncode
                      (
                         "/main-menu/?"
-                        ++ (Struct.Flags.get_params_as_url model.flags)
+                        ++ (Struct.Flags.get_parameters_as_url model.flags)
                      )
                   )
                )
