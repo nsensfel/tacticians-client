@@ -21,7 +21,7 @@ import View.Controlled.ManualControls
 --------------------------------------------------------------------------------
 has_a_path : Struct.CharacterTurn.Type -> Bool
 has_a_path char_turn =
-   case (Struct.CharacterTurn.try_getting_navigator char_turn) of
+   case (Struct.CharacterTurn.maybe_get_navigator char_turn) of
       (Just nav) -> ((Struct.Navigator.get_path nav) /= [])
       Nothing -> False
 
@@ -126,7 +126,7 @@ get_available_actions char_turn =
 get_html : Struct.CharacterTurn.Type -> Int -> (Html.Html Struct.Event.Type)
 get_html char_turn player_ix =
    case
-      (Struct.CharacterTurn.try_getting_active_character char_turn)
+      (Struct.CharacterTurn.maybe_get_active_character char_turn)
    of
       (Just char) ->
          (Html.div

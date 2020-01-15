@@ -26,7 +26,7 @@ make_it_so : (
       Struct.Model.Type
    )
 make_it_so model char navigator dir =
-   case (Struct.Navigator.try_adding_step dir navigator) of
+   case (Struct.Navigator.maybe_add_step dir navigator) of
       (Just new_navigator) ->
          {model |
             char_turn =
@@ -75,8 +75,8 @@ apply_to : (
 apply_to model dir =
    case
       (
-         (Struct.CharacterTurn.try_getting_navigator model.char_turn),
-         (Struct.CharacterTurn.try_getting_active_character model.char_turn)
+         (Struct.CharacterTurn.maybe_get_navigator model.char_turn),
+         (Struct.CharacterTurn.maybe_get_active_character model.char_turn)
       )
    of
       ((Just navigator), (Just char)) ->

@@ -19,15 +19,15 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try_autopiloting : (
+maybe_autopilot : (
       BattleMap.Struct.Direction.Type ->
       (Maybe Struct.Navigator.Type) ->
       (Maybe Struct.Navigator.Type)
    )
-try_autopiloting dir maybe_navigator =
+maybe_autopilot dir maybe_navigator =
    case maybe_navigator of
       (Just navigator) ->
-         (Struct.Navigator.try_adding_step dir navigator)
+         (Struct.Navigator.maybe_add_step dir navigator)
 
       Nothing -> Nothing
 
@@ -77,11 +77,11 @@ go_to_another_tile : (
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 go_to_another_tile model char navigator loc_ref =
-   case (Struct.Navigator.try_getting_path_to loc_ref navigator) of
+   case (Struct.Navigator.maybe_get_path_to loc_ref navigator) of
       (Just path) ->
          case
             (List.foldr
-               (try_autopiloting)
+               (maybe_autopilot)
                (Just (Struct.Navigator.clear_path navigator))
                path
             )
@@ -165,8 +165,8 @@ apply_to : (
 apply_to model loc_ref =
    case
       (
-         (Struct.CharacterTurn.try_getting_navigator model.char_turn),
-         (Struct.CharacterTurn.try_getting_active_character model.char_turn)
+         (Struct.CharacterTurn.maybe_get_navigator model.char_turn),
+         (Struct.CharacterTurn.maybe_get_active_character model.char_turn)
       )
    of
       ((Just navigator), (Just char)) ->

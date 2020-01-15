@@ -24,9 +24,9 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try_encoding : Struct.Model.Type -> (Maybe Json.Encode.Value)
-try_encoding model =
-   case (Struct.CharacterTurn.try_getting_active_character model.char_turn) of
+maybe_encode : Struct.Model.Type -> (Maybe Json.Encode.Value)
+maybe_encode model =
+   case (Struct.CharacterTurn.maybe_get_active_character model.char_turn) of
       (Just char) ->
          (Just
             (Json.Encode.object
@@ -66,8 +66,8 @@ try_encoding model =
 --------------------------------------------------------------------------------
 try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
 try model =
-   (Comm.Send.try_sending
+   (Comm.Send.maybe_send
       model
       Constants.IO.character_turn_handler
-      try_encoding
+      maybe_encod
    )

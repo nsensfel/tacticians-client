@@ -8,7 +8,7 @@ module Struct.CharacterTurn exposing
       has_switched_weapons,
       get_path,
       get_state,
-      try_getting_target,
+      maybe_get_target,
       lock_path,
       unlock_path,
       show_attack_range_navigator,
@@ -16,8 +16,8 @@ module Struct.CharacterTurn exposing
       set_active_character,
       set_active_character_no_reset,
       set_navigator,
-      try_getting_active_character,
-      try_getting_navigator,
+      maybe_get_active_character,
+      maybe_get_navigator,
       encode
    )
 
@@ -73,8 +73,8 @@ new =
       has_switched_weapons = False
    }
 
-try_getting_active_character : Type -> (Maybe Struct.Character.Type)
-try_getting_active_character ct = ct.active_character
+maybe_get_active_character : Type -> (Maybe Struct.Character.Type)
+maybe_get_active_character ct = ct.active_character
 
 can_select_target : Type -> Bool
 can_select_target ct = (ct.state == MovedCharacter)
@@ -157,8 +157,8 @@ show_attack_range_navigator range_min range_max ct =
                   )
             }
 
-try_getting_navigator : Type -> (Maybe Struct.Navigator.Type)
-try_getting_navigator ct = ct.navigator
+maybe_get_navigator : Type -> (Maybe Struct.Navigator.Type)
+maybe_get_navigator ct = ct.navigator
 
 set_navigator : Struct.Navigator.Type -> Type -> Type
 set_navigator navigator ct =
@@ -199,8 +199,8 @@ set_target target ct =
             target = target
          }
 
-try_getting_target : Type -> (Maybe Int)
-try_getting_target ct = ct.target
+maybe_get_target : Type -> (Maybe Int)
+maybe_get_target ct = ct.target
 
 encode : Type -> (Json.Encode.Value)
 encode ct =

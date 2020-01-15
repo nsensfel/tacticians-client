@@ -53,7 +53,7 @@ get_character_navigator battle char =
 
 handle_reset_character_turn : Struct.Model.Type -> Struct.CharacterTurn.Type
 handle_reset_character_turn model =
-   case (Struct.CharacterTurn.try_getting_active_character model.char_turn) of
+   case (Struct.CharacterTurn.maybe_get_active_character model.char_turn) of
       Nothing -> model.char_turn
 
       (Just current_char) ->
@@ -76,7 +76,7 @@ handle_reset_character_turn model =
 
 handle_undo_switched_weapons : Struct.Model.Type -> Struct.CharacterTurn.Type
 handle_undo_switched_weapons model =
-   case (Struct.CharacterTurn.try_getting_active_character model.char_turn) of
+   case (Struct.CharacterTurn.maybe_get_active_character model.char_turn) of
       Nothing -> model.char_turn
 
       (Just char) ->

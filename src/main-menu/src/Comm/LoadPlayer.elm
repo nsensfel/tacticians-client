@@ -18,8 +18,8 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try_encoding : Struct.Model.Type -> (Maybe Json.Encode.Value)
-try_encoding model =
+maybe_encode : Struct.Model.Type -> (Maybe Json.Encode.Value)
+maybe_encode model =
    let
       player_id = (Json.Encode.string model.player_id)
    in
@@ -38,8 +38,8 @@ try_encoding model =
 --------------------------------------------------------------------------------
 try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
 try model =
-   (Comm.Send.try_sending
+   (Comm.Send.maybe_send
       model
       Constants.IO.player_loading_handler
-      try_encoding
+      maybe_encod
    )

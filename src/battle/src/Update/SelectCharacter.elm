@@ -91,7 +91,7 @@ ctrl_or_focus_character model target_char_id target_char =
    then
       let
          nav =
-            (case (Struct.UI.try_getting_displayed_nav model.ui) of
+            (case (Struct.UI.maybe_get_displayed_nav model.ui) of
                (Just dnav) -> dnav
                Nothing ->
                   (get_character_navigator model.battle target_char)
@@ -137,13 +137,13 @@ can_target_character model target =
       &&
       (
          case
-            (Struct.CharacterTurn.try_getting_navigator
+            (Struct.CharacterTurn.maybe_get_navigator
                model.char_turn
             )
          of
             (Just nav) ->
                case
-                  (Struct.Navigator.try_getting_path_to
+                  (Struct.Navigator.maybe_get_path_to
                      (BattleMap.Struct.Location.get_ref
                         (Struct.Character.get_location target)
                      )
@@ -168,10 +168,10 @@ second_click_on model target_char_id =
       (Just target_char) ->
          case
             (
-               (Struct.CharacterTurn.try_getting_active_character
+               (Struct.CharacterTurn.maybe_get_active_character
                   model.char_turn
                ),
-               (Struct.CharacterTurn.try_getting_target model.char_turn)
+               (Struct.CharacterTurn.maybe_get_target model.char_turn)
             )
          of
             ((Just _), (Just char_turn_target_id)) ->
@@ -248,7 +248,7 @@ first_click_on : (
 first_click_on model target_char_id =
    if
    (
-      (Struct.CharacterTurn.try_getting_target model.char_turn)
+      (Struct.CharacterTurn.maybe_get_target model.char_turn)
       ==
       (Just target_char_id)
    )

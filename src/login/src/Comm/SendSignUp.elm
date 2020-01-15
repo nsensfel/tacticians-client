@@ -18,8 +18,8 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try_encoding : Struct.Model.Type -> (Maybe Json.Encode.Value)
-try_encoding model =
+maybe_encode : Struct.Model.Type -> (Maybe Json.Encode.Value)
+maybe_encode model =
    (Just
       (Json.Encode.object
          [
@@ -35,8 +35,8 @@ try_encoding model =
 --------------------------------------------------------------------------------
 try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
 try model =
-   (Comm.Send.try_sending
+   (Comm.Send.maybe_send
       model
       Constants.IO.login_sign_up_handler
-      try_encoding
+      maybe_encod
    )

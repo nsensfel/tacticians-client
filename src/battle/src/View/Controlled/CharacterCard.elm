@@ -207,7 +207,7 @@ get_movement_bar : (
       (Html.Html Struct.Event.Type)
    )
 get_movement_bar char_turn char =
-   case (Struct.CharacterTurn.try_getting_active_character char_turn) of
+   case (Struct.CharacterTurn.maybe_get_active_character char_turn) of
       (Just active_char) ->
          if
          (
@@ -217,7 +217,7 @@ get_movement_bar char_turn char =
          )
          then
             (get_active_movement_bar
-               (Struct.CharacterTurn.try_getting_navigator char_turn)
+               (Struct.CharacterTurn.maybe_get_navigator char_turn)
                active_char
             )
          else

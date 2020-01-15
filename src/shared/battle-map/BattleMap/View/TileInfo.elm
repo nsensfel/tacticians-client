@@ -121,7 +121,7 @@ get_html : (
    )
 get_html dataset loc_ref map =
    let loc = (BattleMap.Struct.Location.from_ref loc_ref) in
-      case (BattleMap.Struct.Map.try_getting_tile_at loc map) of
+      case (BattleMap.Struct.Map.maybe_get_tile_at loc map) of
          (Just tile_instance) ->
             let
                tile_data =

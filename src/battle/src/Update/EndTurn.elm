@@ -53,10 +53,10 @@ apply_to model =
    case
       (
          (Struct.CharacterTurn.get_state model.char_turn),
-         (Struct.CharacterTurn.try_getting_active_character
+         (Struct.CharacterTurn.maybe_get_active_character
             model.char_turn
          ),
-         (Struct.CharacterTurn.try_getting_navigator model.char_turn)
+         (Struct.CharacterTurn.maybe_get_navigator model.char_turn)
       )
    of
       (

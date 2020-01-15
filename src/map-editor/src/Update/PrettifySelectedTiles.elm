@@ -31,7 +31,7 @@ neighborhood_tile_instances : (
 neighborhood_tile_instances loc map =
    (List.map
       (\e ->
-         case (BattleMap.Struct.Map.try_getting_tile_at e map) of
+         case (BattleMap.Struct.Map.maybe_get_tile_at e map) of
             Nothing -> (BattleMap.Struct.TileInstance.error -1 -1)
             (Just t) -> t
       )
@@ -106,7 +106,7 @@ apply_to_location : (
       BattleMap.Struct.Map.Type
    )
 apply_to_location model loc map =
-   case (BattleMap.Struct.Map.try_getting_tile_at loc map) of
+   case (BattleMap.Struct.Map.maybe_get_tile_at loc map) of
       Nothing -> map
       (Just base) ->
          let

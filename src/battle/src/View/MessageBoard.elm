@@ -35,6 +35,6 @@ display model message =
 --------------------------------------------------------------------------------
 get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
-   case (Struct.MessageBoard.try_getting_current_message model.message_board) of
+   case (Struct.MessageBoard.maybe_get_current_message model.message_board) of
       Nothing -> (Util.Html.nothing)
       (Just message) -> (display model message)

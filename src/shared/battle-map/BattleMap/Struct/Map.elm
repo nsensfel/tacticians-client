@@ -15,7 +15,7 @@ module BattleMap.Struct.Map exposing
       new,
       set_tile_to,
       solve_tiles,
-      try_getting_tile_at
+      maybe_get_tile_at
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -159,12 +159,12 @@ new width height tiles =
       markers = (Dict.empty)
    }
 
-try_getting_tile_at : (
+maybe_get_tile_at : (
       BattleMap.Struct.Location.Type ->
       Type ->
       (Maybe BattleMap.Struct.TileInstance.Type)
    )
-try_getting_tile_at loc map =
+maybe_get_tile_at loc map =
    if (has_location loc map)
    then (Array.get (location_to_index loc map) map.content)
    else Nothing
@@ -185,7 +185,7 @@ get_omnimods_at : (
       Battle.Struct.Omnimods.Type
    )
 get_omnimods_at loc dataset map =
-   case (try_getting_tile_at loc map) of
+   case (maybe_get_tile_at loc map) of
       Nothing -> (Battle.Struct.Omnimods.none)
       (Just tile_inst) ->
          (BattleMap.Struct.Tile.get_omnimods

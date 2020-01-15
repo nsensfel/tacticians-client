@@ -145,7 +145,7 @@ get_filled_tiles : (
       (List BattleMap.Struct.Location.Type)
    )
 get_filled_tiles selection map loc =
-   case (BattleMap.Struct.Map.try_getting_tile_at loc map) of
+   case (BattleMap.Struct.Map.maybe_get_tile_at loc map) of
       Nothing -> []
       (Just target) ->
          let
@@ -153,7 +153,7 @@ get_filled_tiles selection map loc =
                (BattleMap.Struct.TileInstance.get_class_id target)
             map_match_fun =
                (\e ->
-                  (case (BattleMap.Struct.Map.try_getting_tile_at e map) of
+                  (case (BattleMap.Struct.Map.maybe_get_tile_at e map) of
                      Nothing -> False
                      (Just t) ->
                         (

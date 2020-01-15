@@ -9,13 +9,13 @@ module Struct.UI exposing
       reset_zoom_level,
       mod_zoom_level,
       -- Tab
-      try_getting_displayed_tab,
+      maybe_get_displayed_tab,
       set_displayed_tab,
       reset_displayed_tab,
       to_string,
       get_all_tabs,
       -- Navigator
-      try_getting_displayed_nav,
+      maybe_get_displayed_nav,
       set_displayed_nav,
       reset_displayed_nav,
       -- Manual Controls
@@ -83,8 +83,8 @@ mod_zoom_level : Float -> Type -> Type
 mod_zoom_level mod ui = {ui | zoom_level = (mod * ui.zoom_level)}
 
 -- Tab -------------------------------------------------------------------------
-try_getting_displayed_tab : Type -> (Maybe Tab)
-try_getting_displayed_tab ui = ui.displayed_tab
+maybe_get_displayed_tab : Type -> (Maybe Tab)
+maybe_get_displayed_tab ui = ui.displayed_tab
 
 set_displayed_tab : Tab -> Type -> Type
 set_displayed_tab tab ui = {ui | displayed_tab = (Just tab)}
@@ -105,8 +105,8 @@ get_all_tabs =
    [StatusTab, CharactersTab, SettingsTab, TimelineTab]
 
 -- Navigator -------------------------------------------------------------------
-try_getting_displayed_nav : Type -> (Maybe Struct.Navigator.Type)
-try_getting_displayed_nav ui = ui.displayed_nav
+maybe_get_displayed_nav : Type -> (Maybe Struct.Navigator.Type)
+maybe_get_displayed_nav ui = ui.displayed_nav
 
 set_displayed_nav : Struct.Navigator.Type -> Type -> Type
 set_displayed_nav nav ui = {ui | displayed_nav = (Just nav)}

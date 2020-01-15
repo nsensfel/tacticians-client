@@ -9,7 +9,7 @@ module Struct.Puppeteer exposing
       step,
       get_is_playing_forward,
       set_is_playing_forward,
-      try_getting_current_action
+      maybe_get_current_action
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -93,8 +93,8 @@ get_is_playing_forward puppeteer = puppeteer.is_playing_forward
 set_is_playing_forward : Bool -> Type -> Type
 set_is_playing_forward val puppeteer = {puppeteer | is_playing_forward = val}
 
-try_getting_current_action : Type -> (Maybe (Struct.PuppeteerAction.Type))
-try_getting_current_action puppeteer =
+maybe_get_current_action : Type -> (Maybe (Struct.PuppeteerAction.Type))
+maybe_get_current_action puppeteer =
    if (puppeteer.is_playing_forward)
    then (List.head puppeteer.forward_actions)
    else (List.head puppeteer.backward_actions)

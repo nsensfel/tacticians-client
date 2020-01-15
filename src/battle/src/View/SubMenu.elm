@@ -54,7 +54,7 @@ get_inner_html model tab =
 --------------------------------------------------------------------------------
 get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
-   case (Struct.UI.try_getting_displayed_tab model.ui) of
+   case (Struct.UI.maybe_get_displayed_tab model.ui) of
       (Just tab) ->
          (Html.div
             [(Html.Attributes.class "sub-menu")]
@@ -62,7 +62,7 @@ get_html model =
          )
 
       Nothing ->
-         case (Struct.CharacterTurn.try_getting_target model.char_turn) of
+         case (Struct.CharacterTurn.maybe_get_target model.char_turn) of
             (Just char_ref) ->
                case (Array.get char_ref model.characters) of
                   (Just char) ->

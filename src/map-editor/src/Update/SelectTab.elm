@@ -18,7 +18,7 @@ apply_to : (
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model tab =
-   if ((Struct.UI.try_getting_displayed_tab model.ui) == (Just tab))
+   if ((Struct.UI.maybe_get_displayed_tab model.ui) == (Just tab))
    then
       (
          {model | ui = (Struct.UI.reset_displayed_tab model.ui)},

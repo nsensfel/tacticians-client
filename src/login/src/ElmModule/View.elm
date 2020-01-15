@@ -38,10 +38,10 @@ view model =
             ]
             [
                (View.MainMenu.get_html
-                  (Struct.UI.try_getting_displayed_tab model.ui)
+                  (Struct.UI.maybe_get_displayed_tab model.ui)
                ),
                (
-                  case (Struct.UI.try_getting_displayed_tab model.ui) of
+                  case (Struct.UI.maybe_get_displayed_tab model.ui) of
                      (Just Struct.UI.SignInTab) -> (View.SignIn.get_html model)
                      (Just Struct.UI.SignUpTab) -> (View.SignUp.get_html model)
                      (Just Struct.UI.RecoveryTab) ->

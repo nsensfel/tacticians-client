@@ -3,7 +3,7 @@ module Struct.MessageBoard exposing
       Type,
       Message(..),
       display,
-      try_getting_current_message,
+      maybe_get_current_message,
       clear_current_message,
       new,
       clear
@@ -46,8 +46,8 @@ display message board =
             secondary_messages = (message :: board.secondary_messages)
          }
 
-try_getting_current_message : Type -> (Maybe Message)
-try_getting_current_message board =
+maybe_get_current_message : Type -> (Maybe Message)
+maybe_get_current_message board =
    case board.secondary_messages of
       [] -> board.main_message
       (secondary_message :: _) -> (Just secondary_message)

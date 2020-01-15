@@ -65,7 +65,7 @@ encode_map model =
 
 try : Struct.Model.Type -> (Maybe (Cmd Struct.Event.Type))
 try model =
-   (Comm.Send.try_sending
+   (Comm.Send.maybe_send
       model
       Constants.IO.map_update_handler
       encode_map

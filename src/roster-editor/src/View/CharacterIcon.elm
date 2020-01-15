@@ -115,7 +115,7 @@ get_focus_class model char =
    else
       if
       (
-         (Struct.CharacterTurn.try_getting_target model.char_turn)
+         (Struct.CharacterTurn.maybe_get_target model.char_turn)
          ==
          (Just (Struct.Character.get_index char))
       )

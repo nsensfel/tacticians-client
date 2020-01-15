@@ -5,7 +5,7 @@ module Struct.Path exposing
       get_current_location,
       get_remaining_points,
       get_summary,
-      try_following_direction
+      maybe_follow_direction
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -51,14 +51,14 @@ has_been_to path location =
       )
    )
 
-try_moving_to : (
+maybe_mov_to : (
       Type ->
       BattleMap.Struct.Direction.Type ->
       BattleMap.Struct.Location.Type ->
       Int ->
       (Maybe Type)
    )
-try_moving_to path dir next_loc cost =
+maybe_mov_to path dir next_loc cost =
    let
       remaining_points = (path.remaining_points - cost)
    in
@@ -81,13 +81,13 @@ try_moving_to path dir next_loc cost =
       else
          Nothing
 
-try_backtracking_to : (
+maybe_backtrack_to : (
       Type ->
       BattleMap.Struct.Direction.Type ->
       BattleMap.Struct.Location.Type ->
       (Maybe Type)
    )
-try_backtracking_to path dir location =
+maybe_backtrack_to path dir location =
    case
       (
          (Util.List.pop path.previous_directions),
@@ -144,13 +144,13 @@ get_remaining_points path = path.remaining_points
 get_summary : Type -> (List BattleMap.Struct.Direction.Type)
 get_summary path = path.previous_directions
 
-try_following_direction : (
+maybe_follow_direction : (
       (BattleMap.Struct.Location.Type -> (Int, Int)) ->
       (Maybe Type) ->
       BattleMap.Struct.Direction.Type ->
       (Maybe Type)
    )
-try_following_direction tile_data_fun maybe_path dir =
+maybe_follow_direction tile_data_fun maybe_path dir =
    case maybe_path of
       (Just path) ->
          let
@@ -166,9 +166,9 @@ try_following_direction tile_data_fun maybe_path dir =
             then
                if (has_been_to path next_location)
                then
-                  (try_backtracking_to path dir next_location)
+                  (maybe_backtrack_to path dir next_location)
                else
-                  (try_moving_to
+                  (maybe_mov_to
                      path
                      dir
                      next_location

@@ -4,7 +4,7 @@ module Struct.UI exposing
       Tab(..),
       default,
       -- Tab
-      try_getting_displayed_tab,
+      maybe_get_displayed_tab,
       set_displayed_tab,
       reset_displayed_tab,
       to_string,
@@ -43,8 +43,8 @@ default =
    }
 
 -- Tab -------------------------------------------------------------------------
-try_getting_displayed_tab : Type -> (Maybe Tab)
-try_getting_displayed_tab ui = ui.displayed_tab
+maybe_get_displayed_tab : Type -> (Maybe Tab)
+maybe_get_displayed_tab ui = ui.displayed_tab
 
 set_displayed_tab : Tab -> Type -> Type
 set_displayed_tab tab ui = {ui | displayed_tab = (Just tab)}

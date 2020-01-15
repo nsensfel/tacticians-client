@@ -18,8 +18,8 @@ make_it_so : Struct.Model.Type -> Struct.Model.Type
 make_it_so model =
    case
       (
-         (Struct.CharacterTurn.try_getting_active_character model.char_turn),
-         (Struct.CharacterTurn.try_getting_navigator model.char_turn)
+         (Struct.CharacterTurn.maybe_get_active_character model.char_turn),
+         (Struct.CharacterTurn.maybe_get_navigator model.char_turn)
       )
    of
       ((Just char), (Just nav)) ->

@@ -1,9 +1,9 @@
 module Struct.Flags exposing
    (
       Type,
-      maybe_get_param,
-      force_get_param,
-      get_params_as_url,
+      maybe_get_parameter,
+      force_get_parameter,
+      get_parameters_as_url,
       get_session_token,
       get_user_id
    )
@@ -21,27 +21,27 @@ type alias Type =
    {
       user_id : String,
       token : String,
-      url_params : (List (List String))
+      url_parameters : (List (List String))
    }
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-param_as_url : (List String) -> String
-param_as_url param =
-   case param of
+parameter_as_url : (List String) -> String
+parameter_as_url parameter =
+   case parameter of
       [name, value] -> (name ++ "=" ++ value)
       _ -> ""
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-maybe_get_param : String -> Type -> (Maybe String)
-maybe_get_param param flags =
+maybe_get_parameter : String -> Type -> (Maybe String)
+maybe_get_parameter parameter flags =
    case
       (Util.List.get_first
-         (\e -> ((List.head e) == (Just param)))
-         flags.url_params
+         (\e -> ((List.head e) == (Just parameter)))
+         flags.url_parameters
       )
    of
       Nothing -> Nothing
@@ -50,20 +50,20 @@ maybe_get_param param flags =
             Nothing -> Nothing
             (Just b) -> (List.head b)
 
-force_get_param : String -> Type -> String
-force_get_param param flags =
-   case (maybe_get_param param flags) of
+force_get_parameter : String -> Type -> String
+force_get_parameter parameter flags =
+   case (maybe_get_parameter parameter flags) of
       Nothing -> ""
       (Just str) -> str
 
-get_params_as_url : Type -> String
-get_params_as_url flags =
+get_parameters_as_url : Type -> String
+get_parameters_as_url flags =
    (List.foldl
-      (\param -> \current_params ->
-         (current_params ++ "&" ++ (param_as_url param))
+      (\parameter -> \current_parameters ->
+         (current_parameters ++ "&" ++ (parameter_as_url parameter))
       )
       ""
-      flags.url_params
+      flags.url_parameters
    )
 
 get_session_token : Type -> String

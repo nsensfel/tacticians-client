@@ -13,8 +13,8 @@ module Struct.Navigator exposing
       lock_path,
       unlock_path,
       lock_path_with_new_attack_ranges,
-      try_adding_step,
-      try_getting_path_to
+      maybe_add_step,
+      maybe_get_path_to
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -190,18 +190,18 @@ lock_path_with_new_attack_ranges range_min range_max navigator =
       locked_path = True
    }
 
-try_adding_step : (
+maybe_add_step : (
       BattleMap.Struct.Direction.Type ->
       Type ->
       (Maybe Type)
    )
-try_adding_step dir navigator =
+maybe_add_step dir navigator =
    if (navigator.locked_path)
    then
       Nothing
    else
       case
-         (Struct.Path.try_following_direction
+         (Struct.Path.maybe_follow_direction
             (navigator.tile_data_fun)
             (Just navigator.path)
             dir
@@ -211,12 +211,12 @@ try_adding_step dir navigator =
             (Just {navigator | path = path})
          Nothing -> Nothing
 
-try_getting_path_to : (
+maybe_get_path_to : (
       BattleMap.Struct.Location.Ref ->
       Type ->
       (Maybe (List BattleMap.Struct.Direction.Type))
    )
-try_getting_path_to loc_ref navigator =
+maybe_get_path_to loc_ref navigator =
    case (Dict.get loc_ref navigator.range_indicators) of
       (Just target) ->
          (Just (Struct.RangeIndicator.get_path target))

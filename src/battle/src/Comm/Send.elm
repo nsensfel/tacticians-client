@@ -1,4 +1,4 @@
-module Comm.Send exposing (try_sending)
+module Comm.Send exposing (maybe_send)
 
 -- Elm -------------------------------------------------------------------------
 import Http
@@ -73,14 +73,14 @@ decode =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-try_sending : (
+maybe_send : (
       Struct.Model.Type ->
       String ->
       (Struct.Model.Type -> (Maybe Json.Encode.Value)) ->
       (Maybe (Cmd Struct.Event.Type))
    )
-try_sending model recipient try_encoding_fun =
-   case (try_encoding_fun model) of
+maybe_send model recipient maybe_encod_fun =
+   case (maybe_encod_fun model) of
       (Just serial) ->
          (Just
             (Http.post
