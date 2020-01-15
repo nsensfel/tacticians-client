@@ -1,8 +1,8 @@
 module Struct.PuppeteerAction exposing
    (
       Type(..),
-      Group(..),
-      from_turn_result
+      Effect(..),
+      from_turn_results
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -40,60 +40,70 @@ type Type =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-from_attacked : Struct.Attack.Type -> (List Type)
+from_attacked : Struct.TurnResult.Attack -> (List Type)
 from_attacked attack =
    let
-      attacker_ix = (Struct.TurnResult.get_actor_index turn_result)
-      defender_ix = (Struct.TurnResult.get_attack_defender_index attack)
+      attacker_ix = (Struct.TurnResult.get_attack_actor_index attack)
+      defender_ix = (Struct.TurnResult.get_attack_target_index attack)
    in
-      [
-         (Perform
-            [
-               (RefreshCharacter (False, attacker_ix)),
-               (RefreshCharacter (False, defender_ix))
-            ]
-         ),
-         (PerformFor (2.0, [(Focus attacker_ix)])),
-         (PerformFor (2.0, [(Focus defender_ix)])),
+      (
+         [
+            (Perform
+               [
+                  (RefreshCharacter (False, attacker_ix)),
+                  (RefreshCharacter (False, defender_ix))
+               ]
+            ),
+            (PerformFor (2.0, [(Focus attacker_ix)])),
+            (PerformFor (2.0, [(Focus defender_ix)]))
+         ]
+         ++
          (List.map
-            (PerformFor (5.0, (Hit attack)))
-         ),
-         (Perform
-            [
-               (RefreshCharacter (True, attacker_ix)),
-               (RefreshCharacter (True, defender_ix))
-            ]
+            (\hit->
+               (PerformFor (5.0, [(Hit hit)]))
+            )
+            (Struct.TurnResult.get_attack_sequence attack)
          )
-      ]
+         ++
+         [
+            (Perform
+               [
+                  (RefreshCharacter (True, attacker_ix)),
+                  (RefreshCharacter (True, defender_ix))
+               ]
+            )
+         ]
+      )
 
 from_moved : Struct.TurnResult.Movement -> (List Type)
 from_moved movement =
-   let actor_ix = (Struct.TurnResult.get_movement_actor movement) in
+   let actor_ix = (Struct.TurnResult.get_movement_actor_index movement) in
       (
          [
             (PerformFor (1.0, [(Focus actor_ix)])),
             (Perform [(RefreshCharacter (False, actor_ix))])
          ]
          ++
-         [
-            (List.map
-               (\dir ->
-                  (PerformFor
-                     (
-                        0.5,
-                        [(Move (actor_ix, dir))]
-                     )
+         (List.map
+            (\dir ->
+               (PerformFor
+                  (
+                     0.5,
+                     [(Move (actor_ix, dir))]
                   )
                )
             )
-         ]
+            (Struct.TurnResult.get_movement_path movement)
+         )
          ++
          [ (Perform [(RefreshCharacter (True, actor_ix))]) ]
       )
 
 from_switched_weapon : Struct.TurnResult.WeaponSwitch -> (List Type)
 from_switched_weapon weapon_switch =
-   let actor_ix = (Struct.TurnResult.get_weapon_switch_actor weapon_switch) in
+   let
+      actor_ix = (Struct.TurnResult.get_weapon_switch_actor_index weapon_switch)
+   in
       [
          (PerformFor (1.0, [(Focus actor_ix)])),
          (PerformFor
@@ -101,7 +111,7 @@ from_switched_weapon weapon_switch =
                2.0,
                [
                   (RefreshCharacter (False, actor_ix)),
-                  (SwapWeapons actor_ix)
+                  (SwapWeapons actor_ix),
                   (RefreshCharacter (True, actor_ix))
                ]
             )
@@ -109,55 +119,54 @@ from_switched_weapon weapon_switch =
       ]
 
 from_player_won : Struct.TurnResult.PlayerVictory -> (List Type)
-from_player_won player_victory =
+from_player_won victory =
    [
       (PerformFor
          (
             2.0,
             [
                (AnnounceVictory
-                  (Struct.TurnResult.get_player_victory_index player_victory)
+                  (Struct.TurnResult.get_victory_player_index victory)
                )
             ]
          )
       )
    ]
 
-from_player_lost : Struct.TurnResult.PlayerLoss -> (List Type)
-from_player_lost player_loss =
-   [
-      (PerformFor
-         (
-            2.0,
-            [
-               (RefreshCharactersOf (False, player_ix)),
-               (AnnounceLoss
-                  (Struct.TurnResult.get_player_loss_index player_loss)
-               ),
-               (RefreshCharactersOf (True, player_ix))
-            ]
+from_player_lost : Struct.TurnResult.PlayerDefeat -> (List Type)
+from_player_lost loss =
+   let player_ix = (Struct.TurnResult.get_loss_player_index loss) in
+      [
+         (PerformFor
+            (
+               2.0,
+               [
+                  (RefreshCharactersOf (False, player_ix)),
+                  (AnnounceLoss player_ix),
+                  (RefreshCharactersOf (True, player_ix))
+               ]
+            )
          )
-      )
-   ]
+      ]
 
 from_player_turn_started : Struct.TurnResult.PlayerTurnStart -> (List Type)
-from_player_turn_started player_turn_started =
-   [
-      (PerformFor
-         (
-            2.0,
-            [
-               (RefreshCharactersOf (False, player_ix)),
-               (StartPlayerTurn
-                  (Struct.TurnResult.get_player_start_of_turn_index
-                     player_turn_started
-                  )
-               ),
-               (RefreshCharactersOf (True, player_ix))
-            ]
+from_player_turn_started turn_started =
+   let
+      player_ix =
+         (Struct.TurnResult.get_start_of_turn_player_index turn_started)
+   in
+      [
+         (PerformFor
+            (
+               2.0,
+               [
+                  (RefreshCharactersOf (False, player_ix)),
+                  (StartTurn player_ix),
+                  (RefreshCharactersOf (True, player_ix))
+               ]
+            )
          )
-      )
-   ]
+      ]
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -168,7 +177,7 @@ from_turn_results turn_result =
       (Struct.TurnResult.Moved movement) -> (from_moved movement)
       (Struct.TurnResult.Attacked attack) -> (from_attacked attack)
       (Struct.TurnResult.SwitchedWeapon weapon_switch) ->
-         (from_switched_weapon movement)
+         (from_switched_weapon weapon_switch)
 
       (Struct.TurnResult.PlayerWon player_victory) ->
          (from_player_won player_victory)

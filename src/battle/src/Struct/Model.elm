@@ -3,8 +3,7 @@ module Struct.Model exposing
       Type,
       new,
       invalidate,
-      clear,
-      clear_error
+      clear
    )
 
 -- Shared ----------------------------------------------------------------------
@@ -17,6 +16,7 @@ import BattleCharacters.Struct.DataSet
 import BattleMap.Struct.DataSet
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Battle
 import Struct.CharacterTurn
 import Struct.Error
 import Struct.MessageBoard
@@ -51,7 +51,7 @@ type alias Type =
 --------------------------------------------------------------------------------
 new : Struct.Flags.Type -> Type
 new flags =
-   let maybe_battle_id =
+   let
       model =
          {
             flags = flags,
@@ -66,7 +66,7 @@ new flags =
             battle = (Struct.Battle.new)
          }
    in
-      case maybe_battle_id of
+      case (Struct.Flags.maybe_get_param "id" flags) of
          Nothing ->
             (invalidate
                (Struct.Error.new
@@ -78,13 +78,13 @@ new flags =
 
          (Just id) ->
             {model |
-               battle = (Struct.Battle.set_battle_id id model.battle)
+               battle = (Struct.Battle.set_id id model.battle)
             }
 
 clear : Type -> Type
 clear model =
    {model |
-      message_board = (Struct.MessageBoard.clear),
+      message_board = (Struct.MessageBoard.clear model.message_board),
       ui =
          (Struct.UI.reset_displayed_nav
             (Struct.UI.set_previous_action Nothing model.ui)

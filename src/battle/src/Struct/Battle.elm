@@ -24,6 +24,7 @@ module Struct.Battle exposing
       set_map,
 
       get_id,
+      set_id,
 
       get_own_player_index
    )
@@ -250,6 +251,9 @@ set_map map battle = {battle | map = map}
 ------------
 get_id : Type -> String
 get_id battle = battle.id
+
+set_id : String -> Type -> Type
+set_id id battle = {battle | id = id}
 
 --------------------------
 ---- Own Player Index ----

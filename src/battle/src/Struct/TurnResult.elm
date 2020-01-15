@@ -7,6 +7,15 @@ module Struct.TurnResult exposing
       PlayerVictory,
       PlayerDefeat,
       PlayerTurnStart,
+      get_start_of_turn_player_index,
+      get_victory_player_index,
+      get_loss_player_index,
+      get_weapon_switch_actor_index,
+      get_movement_actor_index,
+      get_movement_path,
+      get_attack_actor_index,
+      get_attack_target_index,
+      get_attack_sequence,
       decoder
    )
 
@@ -185,3 +194,30 @@ decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.field "t" Json.Decode.string)
    |> (Json.Decode.andThen internal_decoder)
+
+get_start_of_turn_player_index : PlayerTurnStart -> Int
+get_start_of_turn_player_index start_of_turn = start_of_turn.player_index
+
+get_victory_player_index : PlayerVictory -> Int
+get_victory_player_index player_victory = player_victory.player_index
+
+get_loss_player_index : PlayerDefeat -> Int
+get_loss_player_index player_loss = player_loss.player_index
+
+get_weapon_switch_actor_index : WeaponSwitch -> Int
+get_weapon_switch_actor_index weapon_switch = weapon_switch.character_index
+
+get_movement_actor_index : Movement -> Int
+get_movement_actor_index movement = movement.character_index
+
+get_movement_path : Movement -> (List BattleMap.Struct.Direction.Type)
+get_movement_path movement = movement.path
+
+get_attack_actor_index : Attack -> Int
+get_attack_actor_index attack = attack.attacker_index
+
+get_attack_target_index : Attack -> Int
+get_attack_target_index attack = attack.defender_index
+
+get_attack_sequence : Attack -> (List Struct.Attack.Type)
+get_attack_sequence attack = attack.sequence
