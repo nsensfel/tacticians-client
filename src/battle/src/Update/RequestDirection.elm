@@ -2,6 +2,7 @@ module Update.RequestDirection exposing (apply_to)
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Direction
+import BattleMap.Struct.Map
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Character
@@ -35,11 +36,12 @@ make_it_so model char navigator dir =
                   (Struct.CharacterTurn.set_active_character_no_reset
                      (Struct.Character.set_base_character
                         (BattleCharacters.Struct.Character.set_extra_omnimods
-                           (Struct.Model.tile_omnimods_fun
-                              model
+                           (BattleMap.Struct.Map.get_omnimods_at
                               (Struct.Navigator.get_current_location
                                  new_navigator
                               )
+                              model.map_data_set
+                              (Struct.Battle.get_map model.battle)
                            )
                            (Struct.Character.get_base_character char)
                         )

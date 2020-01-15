@@ -23,15 +23,19 @@ import View.MessageBoard.Help.Rank
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
-get_html model =
+get_html : (
+      Struct.Model.Type ->
+      Struct.HelpRequest.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+get_html model help_request =
    (Html.div
       [
          (Html.Attributes.class "message-board"),
          (Html.Attributes.class "message-board-help")
       ]
       (
-         case model.help_request of
+         case help_request of
             Struct.HelpRequest.None ->
                (View.MessageBoard.Help.Guide.get_html_contents model)
 

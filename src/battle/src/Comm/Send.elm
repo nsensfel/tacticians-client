@@ -79,8 +79,8 @@ maybe_send : (
       (Struct.Model.Type -> (Maybe Json.Encode.Value)) ->
       (Maybe (Cmd Struct.Event.Type))
    )
-maybe_send model recipient maybe_encod_fun =
-   case (maybe_encod_fun model) of
+maybe_send model recipient maybe_encode_fun =
+   case (maybe_encode_fun model) of
       (Just serial) ->
          (Just
             (Http.post

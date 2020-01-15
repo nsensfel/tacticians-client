@@ -95,11 +95,12 @@ go_to_another_tile model char navigator loc_ref =
                            (Struct.CharacterTurn.set_active_character
                               (Struct.Character.set_base_character
                                  (BattleCharacters.Struct.Character.set_extra_omnimods
-                                    (Struct.Model.tile_omnimods_fun
-                                       model
+                                    (BattleMap.Struct.Map.get_omnimods_at
                                        (Struct.Navigator.get_current_location
                                           new_navigator
                                        )
+                                       model.map_data_set
+                                       (Struct.Battle.get_map model.battle)
                                     )
                                     (Struct.Character.get_base_character char)
                                  )
@@ -133,7 +134,12 @@ go_to_another_tile model char navigator loc_ref =
                )
 
       Nothing -> -- Clicked outside of the range indicator
-         ((Struct.Model.reset model), Cmd.none)
+         (
+            {model |
+               char_turn = (Struct.CharacterTurn.new)
+            },
+            Cmd.none
+         )
 
 go_to_tile : (
       Struct.Model.Type ->

@@ -69,5 +69,5 @@ try model =
    (Comm.Send.maybe_send
       model
       Constants.IO.character_turn_handler
-      maybe_encod
+      maybe_encode
    )

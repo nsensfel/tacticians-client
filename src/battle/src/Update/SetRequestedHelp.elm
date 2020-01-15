@@ -3,6 +3,7 @@ module Update.SetRequestedHelp exposing (apply_to)
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.HelpRequest
+import Struct.MessageBoard
 import Struct.Model
 
 --------------------------------------------------------------------------------
@@ -18,4 +19,13 @@ apply_to : (
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model help_request =
-   ({model | help_request = help_request}, Cmd.none)
+   (
+      {model |
+         message_board =
+            (Struct.MessageBoard.display
+               (Struct.MessageBoard.Help help_request)
+               model.message_board
+            )
+      },
+      Cmd.none
+   )

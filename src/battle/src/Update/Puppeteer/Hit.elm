@@ -1,8 +1,12 @@
 module Update.Puppeteer.Hit exposing (forward, backward)
 
+-- Elm -------------------------------------------------------------------------
+import Array
+
 -- Local Module ----------------------------------------------------------------
 import Action.Scroll
 
+import Struct.Attack
 import Struct.Battle
 import Struct.Character
 import Struct.Event
@@ -26,7 +30,7 @@ apply_damage_to_character damage char =
 apply_to_characters : (
       Int ->
       Int ->
-      Type ->
+      Struct.Attack.Type ->
       (Array.Array Struct.Character.Type) ->
       (Array.Array Struct.Character.Type)
    )
@@ -56,7 +60,7 @@ apply_to_characters attacker_ix defender_ix attack characters =
 apply_inverse_to_characters : (
       Int ->
       Int ->
-      Type ->
+      Struct.Attack.Type ->
       (Array.Array Struct.Character.Type) ->
       (Array.Array Struct.Character.Type)
    )

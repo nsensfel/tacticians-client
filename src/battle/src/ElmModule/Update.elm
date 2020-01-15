@@ -18,10 +18,8 @@ import Update.SelectCharacter
 import Update.SelectCharacterOrTile
 import Update.SelectTab
 import Update.SelectTile
-import Update.SendLoadBattleRequest
 import Update.SetRequestedHelp
 import Update.SwitchWeapon
-import Update.TestAnimation
 import Update.UndoAction
 
 --------------------------------------------------------------------------------

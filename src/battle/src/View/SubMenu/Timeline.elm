@@ -75,7 +75,7 @@ true_get_html battle =
                (Struct.Battle.get_characters battle)
                (Struct.Battle.get_own_player_index battle)
             )
-            (Struct.Battle.get_turn_results battle)
+            (Struct.Battle.get_timeline battle)
          )
       )
    )

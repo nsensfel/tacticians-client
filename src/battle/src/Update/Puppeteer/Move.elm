@@ -18,7 +18,7 @@ import Struct.UI
 --------------------------------------------------------------------------------
 apply_direction_to_character : (
       Int ->
-      Battle.Struct.Direction ->
+      BattleMap.Struct.Direction.Type ->
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
@@ -47,7 +47,7 @@ apply_direction_to_character actor_ix direction model =
 --------------------------------------------------------------------------------
 forward : (
       Int ->
-      BattleMap.Struct.Direction ->
+      BattleMap.Struct.Direction.Type ->
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
@@ -60,7 +60,7 @@ forward actor_ix direction model =
 
 backward : (
       Int ->
-      BattleMap.Struct.Direction ->
+      BattleMap.Struct.Direction.Type ->
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )

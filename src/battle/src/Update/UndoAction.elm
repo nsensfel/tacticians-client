@@ -99,7 +99,7 @@ handle_undo_switched_weapons model =
 
 handle_undo_chose_target : Struct.Model.Type -> Struct.CharacterTurn.Type
 handle_undo_chose_target model =
-   (Struct.CharacterTurn.set_target Nothing model.char_turn
+   (Struct.CharacterTurn.set_target Nothing model.char_turn)
 -- Was previously something like below, but that looks really wrong:
 --   (Struct.CharacterTurn.lock_path
 --      (Struct.CharacterTurn.unlock_path
