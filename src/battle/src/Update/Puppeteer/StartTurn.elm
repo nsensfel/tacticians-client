@@ -1,5 +1,8 @@
 module Update.Puppeteer.StartTurn exposing (forward, backward)
 
+-- Elm -------------------------------------------------------------------------
+import Array
+
 -- Local Module ----------------------------------------------------------------
 import Struct.Battle
 import Struct.Character
@@ -22,12 +25,17 @@ set_player_characters_are_enabled val player_ix model =
             (Struct.Battle.set_characters
                (Array.map
                   (\character ->
-                     if ((Struct.Character.get_player_index c) == player_ix)
+                     if
+                     (
+                        (Struct.Character.get_player_index character)
+                        == player_ix
+                     )
                      then (Struct.Character.set_enabled val character)
                      else character
                   )
+                  (Struct.Battle.get_characters model.battle)
                )
-               (Struct.Battle.get_characters model.battle)
+               model.battle
             )
       },
       []

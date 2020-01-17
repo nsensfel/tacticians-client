@@ -15,6 +15,7 @@ import Battle.Struct.Omnimods
 import Battle.View.Omnimods
 
 -- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.DataSet
 import BattleMap.Struct.Location
 import BattleMap.Struct.Map
 import BattleMap.Struct.Tile
@@ -127,6 +128,7 @@ get_html dataset loc_ref map =
                tile_data =
                   (BattleMap.Struct.DataSet.get_tile
                      (BattleMap.Struct.TileInstance.get_class_id tile_instance)
+                     dataset
                   )
             in
                (Html.div
@@ -135,7 +137,7 @@ get_html dataset loc_ref map =
                      (Html.Attributes.class "tile-card")
                   ]
                   [
-                     (get_name dataset tile_data),
+                     (get_name tile_data),
                      (Html.div
                         [
                            (Html.Attributes.class "info-card-top"),

@@ -15,6 +15,19 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+make_it_so : (Maybe Struct.Character.Type) -> (Maybe Struct.Character.Type)
+make_it_so maybe_character =
+   case maybe_character of
+      Nothing -> Nothing
+      (Just character) ->
+         (Just
+            (Struct.Character.set_base_character
+               (BattleCharacters.Struct.Character.dirty_switch_weapons
+                  (Struct.Character.get_base_character character)
+               )
+               character
+            )
+         )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -25,23 +38,13 @@ forward : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 forward actor_ix model =
-   let character = (Struct.Battle.get_character actor_ix model.battle) in
-      (
-         {model |
-            battle =
-               (Struct.Battle.set_character
-                  actor_ix
-                  (Struct.Character.set_base_character
-                     (BattleCharacters.Struct.Character.dirty_switch_weapons
-                        (Struct.Character.get_base_character character)
-                     )
-                     character
-                  )
-                  model.battle
-               )
-         },
-         []
-      )
+   (
+      {model |
+         battle =
+            (Struct.Battle.update_character actor_ix (make_it_so) model.battle)
+      },
+      []
+   )
 
 
 backward : (

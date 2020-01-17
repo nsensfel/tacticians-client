@@ -20,6 +20,7 @@ import BattleMap.View.Tile
 -- Local Module ----------------------------------------------------------------
 import Constants.UI
 
+import Struct.Battle
 import Struct.Character
 import Struct.Event
 import Struct.Model
@@ -98,17 +99,17 @@ maybe_print_navigator interactive maybe_nav =
             (Util.Html.nothing)
 
 get_characters_html : (
-      Struct.Model.Type ->
+      Struct.Battle.Type ->
       (Html.Html Struct.Event.Type)
    )
-get_characters_html model =
+get_characters_html battle =
    (Html.div
       [
          (Html.Attributes.class "characters")
       ]
       (List.map
-         (View.Map.Character.get_html model)
-         (Array.toList (Struct.Battle.get_characters model.battle))
+         (View.Map.Character.get_html)
+         (Array.toList (Struct.Battle.get_characters battle))
       )
    )
 
@@ -142,7 +143,7 @@ get_html model =
       ]
       [
          (Html.Lazy.lazy (get_tiles_html) model.battle.map),
-         (Html.Lazy.lazy (get_characters_html model)),
+         (Html.Lazy.lazy (get_characters_html) model.battle),
          (Html.Lazy.lazy2
             (maybe_print_navigator)
             True

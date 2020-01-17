@@ -42,7 +42,7 @@ get_character_navigator battle char =
          (BattleCharacters.Struct.Weapon.get_defense_range weapon)
          (BattleCharacters.Struct.Weapon.get_attack_range weapon)
          (BattleMap.Struct.Map.get_tile_data_function
-            model.map
+            (Struct.Battle.get_map battle)
             (List.map
                (Struct.Character.get_location)
                (Array.toList (Struct.Battle.get_characters battle))

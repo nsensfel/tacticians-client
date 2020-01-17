@@ -16,7 +16,12 @@ perform : (
 perform actor_ix model =
    (
       {model |
-         battle = (Struct.Battle.refresh_character actor_ix model.battle)
+         battle =
+            (Struct.Battle.refresh_character
+               model.map_data_set
+               actor_ix
+               model.battle
+            )
       },
       []
    )
@@ -41,7 +46,7 @@ backward : (
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-backward is_forward actor_ix model = (model, [])
+backward is_forward actor_ix model =
    if (is_forward)
    then (model, [])
    else (perform actor_ix model)

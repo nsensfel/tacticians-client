@@ -25,9 +25,13 @@ display : (
    )
 display model message =
    case message of
-      (Error error_msg) -> (View.MessageBoard.Error.get_html model error_msg)
-      (AttackReport attack) -> (View.MessageBoard.Attack.get_html model attack)
-      (Help help_request) ->
+      (Struct.MessageBoard.Error error_msg) ->
+         (View.MessageBoard.Error.get_html model error_msg)
+
+      (Struct.MessageBoard.AttackReport attack) ->
+         (View.MessageBoard.Attack.get_html model attack)
+
+      (Struct.MessageBoard.Help help_request) ->
          (View.MessageBoard.Help.get_html model help_request)
 
 --------------------------------------------------------------------------------

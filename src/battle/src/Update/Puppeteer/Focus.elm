@@ -1,5 +1,8 @@
 module Update.Puppeteer.Focus exposing (forward, backward)
 
+-- Elm -------------------------------------------------------------------------
+import Task
+
 -- Local Module ----------------------------------------------------------------
 import Action.Scroll
 
@@ -22,20 +25,21 @@ forward : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 forward actor_ix model =
-   (
-      model,
-      [
-         (Task.attempt
-            (Struct.Event.attempted)
-            (Action.Scroll.to
-               (Struct.Character.get_location
-                  (Struct.Battle.get_character actor_ix model.battle)
+   case (Struct.Battle.get_character actor_ix model.battle) of
+      Nothing -> (model, [])
+      (Just character) ->
+         (
+            model,
+            [
+               (Task.attempt
+                  (Struct.Event.attempted)
+                  (Action.Scroll.to
+                     (Struct.Character.get_location character)
+                     model.ui
+                  )
                )
-               model.ui
-            )
+            ]
          )
-      ]
-   )
 
 backward : (
       Int ->

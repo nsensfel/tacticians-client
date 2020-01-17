@@ -3,6 +3,7 @@ module Update.EndTurn exposing (apply_to)
 -- Local Module ----------------------------------------------------------------
 import Comm.CharacterTurn
 
+import Struct.Battle
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error
@@ -32,13 +33,15 @@ make_it_so model char nav =
    case (Comm.CharacterTurn.try model) of
       (Just cmd) ->
          (
-            (Struct.Model.reset
-               (Struct.Model.update_character
-                  (Struct.Character.get_index char)
-                  (maybe_disable_char)
-                  model
-               )
-            ),
+            {model |
+               char_turn = (Struct.CharacterTurn.new),
+               battle =
+                  (Struct.Battle.update_character
+                     (Struct.Character.get_index char)
+                     (maybe_disable_char)
+                     model.battle
+                  )
+            },
             cmd
          )
 

@@ -3,11 +3,13 @@ module Update.SelectTile exposing (apply_to)
 -- Battle Map -------------------------------------------------------------------
 import BattleMap.Struct.Direction
 import BattleMap.Struct.Location
+import BattleMap.Struct.Map
 
 -- Battle Characters ------------------------------------------------------------
 import BattleCharacters.Struct.Character
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Battle
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error

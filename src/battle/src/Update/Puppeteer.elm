@@ -23,95 +23,145 @@ import Update.Puppeteer.Target
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_effect_forward : (
+forward : (
       Struct.PuppeteerAction.Effect ->
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-apply_effect_forward effect model =
+forward effect model =
    case effect of
-      (AnnounceLoss player_ix) ->
-         (Update.PuppeteerAction.AnnounceLoss.forward player_ix model)
+      (Struct.PuppeteerAction.AnnounceLoss player_ix) ->
+         (Update.Puppeteer.AnnounceLoss.forward player_ix model)
 
-      (AnnounceVictory player_ix) ->
-         (Update.PuppeteerAction.AnnounceVictory.forward player_ix model)
+      (Struct.PuppeteerAction.AnnounceVictory player_ix) ->
+         (Update.Puppeteer.AnnounceVictory.forward player_ix model)
 
-      (Focus character_ix) ->
-         (Update.PuppeteerAction.Focus.forward character_ix model)
+      (Struct.PuppeteerAction.Focus character_ix) ->
+         (Update.Puppeteer.Focus.forward character_ix model)
 
-      (Hit attack) ->
-         (Update.PuppeteerAction.Hit.forward attack model)
+      (Struct.PuppeteerAction.Hit attack) ->
+         (Update.Puppeteer.Hit.forward attack model)
 
-      (Move (character_ix, direction)) ->
-         (Update.PuppeteerAction.Move.forward character_ix direction model)
+      (Struct.PuppeteerAction.Move (character_ix, direction)) ->
+         (Update.Puppeteer.Move.forward character_ix direction model)
 
-      (RefreshCharacter (on_forward, character_ix)) ->
-         (Update.PuppeteerAction.RefreshCharacter.forward
+      (Struct.PuppeteerAction.RefreshCharacter (on_forward, character_ix)) ->
+         (Update.Puppeteer.RefreshCharacter.forward
             on_forward
             character_ix
             model
          )
 
-      (RefreshCharactersOf (on_forward, player_ix)) ->
-         (Update.PuppeteerAction.RefreshCharactersOf.forward
+      (Struct.PuppeteerAction.RefreshCharactersOf (on_forward, player_ix)) ->
+         (Update.Puppeteer.RefreshCharactersOf.forward
             on_forward
             player_ix
             model
          )
 
-      (StartTurn player_ix) ->
-         (Update.PuppeteerAction.StartTurn.forward player_ix model)
+      (Struct.PuppeteerAction.StartTurn player_ix) ->
+         (Update.Puppeteer.StartTurn.forward player_ix model)
 
-      (SwapWeapons character_ix) ->
-         (Update.PuppeteerAction.SwapWeapons.forward character_ix model)
+      (Struct.PuppeteerAction.SwapWeapons character_ix) ->
+         (Update.Puppeteer.SwapWeapons.forward character_ix model)
 
-      (Target (actor_ix, target_ix)) ->
-         (Update.PuppeteerAction.Target.forward actor_ix target_ix model)
+      (Struct.PuppeteerAction.Target (actor_ix, target_ix)) ->
+         (Update.Puppeteer.Target.forward actor_ix target_ix model)
 
-apply_effect_backward : (
+backward : (
       Struct.PuppeteerAction.Effect ->
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-apply_effect_backward effect model =
+backward effect model =
    case effect of
-      (AnnounceLoss player_ix) ->
-         (Update.PuppeteerAction.AnnounceLoss.backward player_ix model)
+      (Struct.PuppeteerAction.AnnounceLoss player_ix) ->
+         (Update.Puppeteer.AnnounceLoss.backward player_ix model)
 
-      (AnnounceVictory player_ix) ->
-         (Update.PuppeteerAction.AnnounceVictory.backward player_ix model)
+      (Struct.PuppeteerAction.AnnounceVictory player_ix) ->
+         (Update.Puppeteer.AnnounceVictory.backward player_ix model)
 
-      (Focus character_ix) ->
-         (Update.PuppeteerAction.Focus.backward character_ix model)
+      (Struct.PuppeteerAction.Focus character_ix) ->
+         (Update.Puppeteer.Focus.backward character_ix model)
 
-      (Hit attack) ->
-         (Update.PuppeteerAction.Hit.backward attack model)
+      (Struct.PuppeteerAction.Hit attack) ->
+         (Update.Puppeteer.Hit.backward attack model)
 
-      (Move (character_ix, direction)) ->
-         (Update.PuppeteerAction.Move.backward character_ix direction model)
+      (Struct.PuppeteerAction.Move (character_ix, direction)) ->
+         (Update.Puppeteer.Move.backward character_ix direction model)
 
-      (RefreshCharacter (on_forward, character_ix)) ->
-         (Update.PuppeteerAction.RefreshCharacter.backward
-            on_backward
+      (Struct.PuppeteerAction.RefreshCharacter (on_forward, character_ix)) ->
+         (Update.Puppeteer.RefreshCharacter.backward
+            on_forward
             character_ix
             model
          )
 
-      (RefreshCharactersOf (on_forward, player_ix)) ->
-         (Update.PuppeteerAction.RefreshCharactersOf.backward
+      (Struct.PuppeteerAction.RefreshCharactersOf (on_forward, player_ix)) ->
+         (Update.Puppeteer.RefreshCharactersOf.backward
             on_forward
             player_ix
             model
          )
 
-      (StartTurn player_ix) ->
-         (Update.PuppeteerAction.StartTurn.backward player_ix model)
+      (Struct.PuppeteerAction.StartTurn player_ix) ->
+         (Update.Puppeteer.StartTurn.backward player_ix model)
 
-      (SwapWeapons character_ix) ->
-         (Update.PuppeteerAction.SwapWeapons.backward character_ix model)
+      (Struct.PuppeteerAction.SwapWeapons character_ix) ->
+         (Update.Puppeteer.SwapWeapons.backward character_ix model)
 
-      (Target (actor_ix, target_ix)) ->
-         (Update.PuppeteerAction.Target.backward actor_ix target_ix model)
+      (Struct.PuppeteerAction.Target (actor_ix, target_ix)) ->
+         (Update.Puppeteer.Target.backward actor_ix target_ix model)
+
+apply_effects_forward : (
+      (List Struct.PuppeteerAction.Effect) ->
+      Struct.Model.Type ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+apply_effects_forward effects model =
+   (List.foldl
+      (\effect (current_model, current_cmds) ->
+         let
+            (updated_model, new_commands) = (forward effect current_model)
+         in
+            (
+               {updated_model|
+                  puppeteer =
+                     (Struct.Puppeteer.forward
+                        updated_model.puppeteer
+                     )
+               },
+               (new_commands ++ current_cmds)
+            )
+      )
+      (model, [])
+      effects
+   )
+
+apply_effects_backward : (
+      (List Struct.PuppeteerAction.Effect) ->
+      Struct.Model.Type ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+apply_effects_backward effects model =
+   (List.foldr
+      (\effect (current_model, current_cmds) ->
+         let
+            (updated_model, new_commands) = (backward effect current_model)
+         in
+            (
+               {updated_model|
+                  puppeteer =
+                     (Struct.Puppeteer.backward
+                        updated_model.puppeteer
+                     )
+               },
+               (current_cmds ++ new_commands)
+            )
+      )
+      (model, [])
+      effects
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -125,56 +175,55 @@ apply_to model =
       Nothing -> (model, (Cmd.none))
       (Just action) ->
          case action of
-            (Perform effects) ->
-               if (Struct.Puppeteer.get_is_playing_forward model.puppeteer)
-               then
-                  -- TODO: iterate over the effects
-                  let updated_model = (forward effect model) in
-                     (apply_to
-                        {updated_model|
-                           puppeteer =
-                              (Struct.Puppeteer.forward
-                                 updated_model.puppeteer
-                              )
-                        }
+            (Struct.PuppeteerAction.Perform effects) ->
+               let
+                  (new_model, cmds) =
+                     (
+                        if
+                           (Struct.Puppeteer.get_is_playing_forward
+                              model.puppeteer
+                           )
+                        then (apply_effects_forward effects model)
+                        else (apply_effects_backward effects model)
                      )
-               else
-                  -- TODO: iterate over the effects
-                  let updated_model = (backward effect model) in
-                     (apply_to
-                        {updated_model|
-                           puppeteer =
-                              (Struct.Puppeteer.backward
-                                 updated_model.puppeteer
-                              )
-                        }
-                     )
-
-            (PerformFor (time, effects)) ->
-               (
+               in
                   (
-                     if
-                        (Struct.Puppeteer.get_is_playing_forward
-                           model.puppeteer
-                        )
+                     new_model,
+                     if (List.isEmpty cmds)
+                     then (Cmd.none)
+                     else (Cmd.batch cmds)
+                  )
+
+            (Struct.PuppeteerAction.PerformFor (time, effects)) ->
+               let
+                  (new_model, cmds) =
+                     (
+                        if
+                           (Struct.Puppeteer.get_is_playing_forward
+                              model.puppeteer
+                           )
+                        then (apply_effects_forward effects model)
+                        else (apply_effects_backward effects model)
+                     )
+               in
+                  (
+                     new_model,
+                     if (List.isEmpty cmds)
                      then
-                     -- TODO: iterate over the effects
-                        let updated_model = (forward effect model) in
-                           {updated_model|
-                              puppeteer =
-                                 (Struct.Puppeteer.forward
-                                    updated_model.puppeteer
-                                 )
-                           }
+                        (Delay.after
+                           time
+                           Delay.Second
+                           Struct.Event.AnimationEnded
+                        )
                      else
-                        -- TODO: iterate over the effects
-                        let updated_model = (backward effect model) in
-                           {updated_model|
-                              puppeteer =
-                                 (Struct.Puppeteer.backward
-                                    updated_model.puppeteer
-                                 )
-                           }
-                     ),
-                     (Delay.after time Delay.Second Struct.Event.AnimationEnded)
-               )
+                        (Cmd.batch
+                           (
+                              (Delay.after
+                                 time
+                                 Delay.Second
+                                 Struct.Event.AnimationEnded
+                              )
+                              :: cmds
+                           )
+                        )
+                  )

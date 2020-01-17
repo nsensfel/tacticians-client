@@ -25,6 +25,7 @@ import BattleCharacters.Struct.DataSetItem
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.DataSet
+import BattleMap.Struct.DataSetItem
 import BattleMap.Struct.Map
 import BattleMap.Struct.Tile
 
@@ -38,6 +39,7 @@ import Struct.Event
 import Struct.Model
 import Struct.Player
 import Struct.Puppeteer
+import Struct.PuppeteerAction
 import Struct.ServerReply
 import Struct.TurnResult
 
@@ -138,7 +140,7 @@ add_character unresolved_char current_state =
                (Struct.Battle.add_character
                   (Struct.Character.resolve
                      (\loc ->
-                        (BattleMap.Struct.Map.tile_omnimods_fun
+                        (BattleMap.Struct.Map.get_omnimods_at
                            loc
                            model.map_dataset
                            (Struct.Battle.get_map model.battle)
@@ -182,20 +184,17 @@ add_to_timeline : (
 add_to_timeline turn_results current_state =
    let
       (model, cmds) = current_state
-      (next_model, more_cmds) =
+      (next_model, new_cmd) =
          (Update.Puppeteer.apply_to
             (
                {model |
                   puppeteer =
                      (List.foldl
-                        (\tr puppeteer ->
-                           (Struct.Puppeteer.append_forward
-                              (Struct.PuppeteerAction.from_turn_result tr)
-                              puppeteer
-                           )
+                        (\action puppeteer ->
+                           (Struct.Puppeteer.append_forward action puppeteer)
                         )
                         model.puppeteer
-                        turn_results
+                        (Struct.PuppeteerAction.from_turn_results turn_results)
                      ),
                   battle =
                      (Struct.Battle.set_timeline
@@ -211,9 +210,9 @@ add_to_timeline turn_results current_state =
    in
       (
          next_model,
-         if (mode_cmds == Cmd.none)
-         then cmd
-         else [more_cmds|cmd]
+         if (new_cmd == Cmd.none)
+         then cmds
+         else (new_cmd :: cmds)
       )
 
 set_timeline : (
@@ -227,14 +226,11 @@ set_timeline turn_results current_state =
          {model |
             puppeteer =
                (List.foldr
-                  (\tr puppeteer ->
-                     (Struct.Puppeteer.append_backward
-                        (Struct.PuppeteerAction.from_turn_result tr)
-                        puppeteer
-                     )
+                  (\action puppeteer ->
+                     (Struct.Puppeteer.append_backward action puppeteer)
                   )
                   model.puppeteer
-                  turn_results
+                  (Struct.PuppeteerAction.from_turn_results turn_results)
                ),
             battle =
                (Struct.Battle.set_timeline

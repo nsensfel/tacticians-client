@@ -19,6 +19,7 @@ import BattleMap.Struct.Location
 -- Local Module ----------------------------------------------------------------
 import Action.Scroll
 
+import Struct.Battle
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error

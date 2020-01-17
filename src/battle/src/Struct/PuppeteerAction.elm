@@ -171,8 +171,8 @@ from_player_turn_started turn_started =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-from_turn_results : Struct.TurnResult.Type -> (List Type)
-from_turn_results turn_result =
+from_turn_result : Struct.TurnResult.Type -> (List Type)
+from_turn_result turn_result =
    case turn_result of
       (Struct.TurnResult.Moved movement) -> (from_moved movement)
       (Struct.TurnResult.Attacked attack) -> (from_attacked attack)

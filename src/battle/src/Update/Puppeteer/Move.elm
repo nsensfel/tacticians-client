@@ -9,6 +9,7 @@ import Action.Scroll
 
 import Struct.Battle
 import Struct.Character
+import Struct.Error
 import Struct.Event
 import Struct.Model
 import Struct.UI
@@ -23,24 +24,37 @@ apply_direction_to_character : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 apply_direction_to_character actor_ix direction model =
-   let character = (Struct.Battle.get_character actor_ix model.battle) in
-      (
-         {model |
-            battle =
-               (Struct.Battle.set_character
-                  actor_ix
-                  (Struct.Character.dirty_set_location
-                     (BattleMap.Struct.Location.neighbor
-                        direction
-                        (Struct.Character.get_location character)
-                     )
-                     character
-                  )
-                  model.battle
+   case (Struct.Battle.get_character actor_ix model.battle) of
+      Nothing ->
+         (
+            (Struct.Model.invalidate
+               (Struct.Error.new
+                  Struct.Error.Failure
+                  ("Could not find character " ++ (String.fromInt actor_ix))
                )
-         },
-         []
-      )
+               model
+            ),
+            []
+         )
+
+      (Just character) ->
+         (
+            {model |
+               battle =
+                  (Struct.Battle.set_character
+                     actor_ix
+                     (Struct.Character.dirty_set_location
+                        (BattleMap.Struct.Location.neighbor
+                           direction
+                           (Struct.Character.get_location character)
+                        )
+                        character
+                     )
+                     model.battle
+                  )
+            },
+            []
+         )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -52,11 +66,7 @@ forward : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 forward actor_ix direction model =
-   (
-      (apply_direction_to_character actor_ix direction model),
-      []
-   )
-
+   (apply_direction_to_character actor_ix direction model)
 
 backward : (
       Int ->
@@ -65,11 +75,8 @@ backward : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 backward actor_ix direction model =
-   (
-      (apply_direction_to_character
-         actor_ix
-         (BattleMap.Struct.Direction.opposite_of direction)
-         model
-      ),
-      []
+   (apply_direction_to_character
+      actor_ix
+      (BattleMap.Struct.Direction.opposite_of direction)
+      model
    )

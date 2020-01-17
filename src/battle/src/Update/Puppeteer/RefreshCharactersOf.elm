@@ -26,6 +26,7 @@ perform player_ix model =
                   if ((Struct.Character.get_player_index actor) == player_ix)
                   then
                      (Struct.Battle.refresh_character
+                        model.map_data_set
                         (Struct.Character.get_index actor)
                         battle
                      )
@@ -53,6 +54,7 @@ forward is_forward player_ix model =
    else (model, [])
 
 backward : (
+      Bool ->
       Int ->
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))

@@ -13,6 +13,7 @@ import BattleMap.Struct.Location
 import BattleMap.View.TileInfo
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Battle
 import Struct.Event
 import Struct.Model
 import Struct.UI
@@ -38,17 +39,16 @@ get_html model =
             (Just (Struct.UI.SelectedLocation loc)) ->
                (Html.Lazy.lazy3
                   (BattleMap.View.TileInfo.get_html)
-                  model.map_dataset
+                  model.map_data_set
                   loc
                   model.battle.map
                )
 
             (Just (Struct.UI.SelectedCharacter target_char)) ->
-               case (Array.get target_char model.characters) of
+               case (Struct.Battle.get_character target_char model.battle) of
                   (Just char) ->
-                     (Html.Lazy.lazy2
+                     (Html.Lazy.lazy
                         (View.SubMenu.Status.CharacterInfo.get_html)
-                        model.player_ix
                         char
                      )
 

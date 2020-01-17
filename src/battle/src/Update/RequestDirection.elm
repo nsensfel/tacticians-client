@@ -8,6 +8,7 @@ import BattleMap.Struct.Map
 import BattleCharacters.Struct.Character
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Battle
 import Struct.Character
 import Struct.CharacterTurn
 import Struct.Error

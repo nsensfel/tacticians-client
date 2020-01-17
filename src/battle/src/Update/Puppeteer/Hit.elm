@@ -35,7 +35,7 @@ apply_to_characters : (
       (Array.Array Struct.Character.Type)
    )
 apply_to_characters attacker_ix defender_ix attack characters =
-   if ((attack.order == Counter) == attack.parried)
+   if ((attack.order == Struct.Attack.Counter) == attack.parried)
    then
       case (Array.get defender_ix characters) of
          (Just char) ->
@@ -65,7 +65,7 @@ apply_inverse_to_characters : (
       (Array.Array Struct.Character.Type)
    )
 apply_inverse_to_characters attacker_ix defender_ix attack characters =
-   if ((attack.order == Counter) == attack.parried)
+   if ((attack.order == Struct.Attack.Counter) == attack.parried)
    then
       case (Array.get defender_ix characters) of
          (Just char) ->
@@ -91,18 +91,16 @@ apply_inverse_to_characters attacker_ix defender_ix attack characters =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 forward : (
-      Int ->
       Struct.Attack.Type ->
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-forward actor_ix hit model = (model, [])
+forward hit model = (model, [])
 
 
 backward : (
-      Int ->
       Struct.Attack.Type ->
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-backward actor_ix hit model = (model, [])
+backward hit model = (model, [])
