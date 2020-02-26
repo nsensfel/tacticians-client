@@ -22,6 +22,7 @@ import Util.Http
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.DataSetItem
+import BattleCharacters.Struct.Equipment
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.DataSet
@@ -77,38 +78,35 @@ disconnected current_state =
          ]
       )
 
-add_characters_dataset_item : (
+add_characters_data_set_item : (
       BattleCharacters.Struct.DataSetItem.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-add_characters_dataset_item item current_state =
+add_characters_data_set_item item current_state =
    let (model, cmds) = current_state in
       (
          {model |
-            characters_dataset =
+            characters_data_set =
                (BattleCharacters.Struct.DataSetItem.add_to
                   item
-                  model.characters_dataset
+                  model.characters_data_set
                )
          },
          cmds
       )
 
-add_map_dataset_item : (
-      BattleMap.Struct.Tile.Type ->
+add_map_data_set_item : (
+      BattleMap.Struct.DataSetItem.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-add_map_dataset_item item current_state =
+add_map_data_set_item item current_state =
    let (model, cmds) = current_state in
       (
          {model |
-            map_dataset =
-               (BattleMap.Struct.DataSetItem.add_to
-                  item
-                  model.map_dataset
-               )
+            map_data_set =
+               (BattleMap.Struct.DataSetItem.add_to item model.map_data_set)
          },
          cmds
       )
@@ -142,11 +140,13 @@ add_character unresolved_char current_state =
                      (\loc ->
                         (BattleMap.Struct.Map.get_omnimods_at
                            loc
-                           model.map_dataset
+                           model.map_data_set
                            (Struct.Battle.get_map model.battle)
                         )
                      )
-                     model.characters_dataset
+                     (BattleCharacters.Struct.Equipment.resolve
+                        model.characters_data_set
+                     )
                      unresolved_char
                   )
                   model.battle
@@ -167,7 +167,7 @@ set_map map current_state =
             battle =
                (Struct.Battle.set_map
                   (BattleMap.Struct.Map.solve_tiles
-                     model.map_dataset
+                     model.map_data_set
                      (Struct.Battle.get_map model.battle)
                   )
                   model.battle
@@ -190,11 +190,16 @@ add_to_timeline turn_results current_state =
                {model |
                   puppeteer =
                      (List.foldl
-                        (\action puppeteer ->
-                           (Struct.Puppeteer.append_forward action puppeteer)
+                        (\turn_result puppeteer ->
+                           (Struct.Puppeteer.append_forward
+                              (Struct.PuppeteerAction.from_turn_result
+                                 turn_result
+                              )
+                              puppeteer
+                           )
                         )
                         model.puppeteer
-                        (Struct.PuppeteerAction.from_turn_results turn_results)
+                        turn_results
                      ),
                   battle =
                      (Struct.Battle.set_timeline
@@ -226,11 +231,14 @@ set_timeline turn_results current_state =
          {model |
             puppeteer =
                (List.foldr
-                  (\action puppeteer ->
-                     (Struct.Puppeteer.append_backward action puppeteer)
+                  (\turn_result puppeteer ->
+                     (Struct.Puppeteer.append_backward
+                        (Struct.PuppeteerAction.from_turn_result turn_result)
+                        puppeteer
+                     )
                   )
                   model.puppeteer
-                  (Struct.PuppeteerAction.from_turn_results turn_results)
+                  turn_results
                ),
             battle =
                (Struct.Battle.set_timeline
@@ -251,10 +259,10 @@ apply_command command current_state =
       Struct.ServerReply.Disconnected -> (disconnected current_state)
 
       (Struct.ServerReply.AddCharactersDataSetItem item) ->
-         (add_characters_dataset_item item current_state)
+         (add_characters_data_set_item item current_state)
 
       (Struct.ServerReply.AddMapDataSetItem item) ->
-         (add_map_dataset_item item current_state)
+         (add_map_data_set_item item current_state)
 
       (Struct.ServerReply.AddPlayer pl) ->
          (add_player pl current_state)

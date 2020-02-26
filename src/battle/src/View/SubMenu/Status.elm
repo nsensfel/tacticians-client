@@ -47,8 +47,9 @@ get_html model =
             (Just (Struct.UI.SelectedCharacter target_char)) ->
                case (Struct.Battle.get_character target_char model.battle) of
                   (Just char) ->
-                     (Html.Lazy.lazy
+                     (Html.Lazy.lazy2
                         (View.SubMenu.Status.CharacterInfo.get_html)
+                        model.battle.own_player_ix
                         char
                      )
 

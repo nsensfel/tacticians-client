@@ -2,7 +2,7 @@ module Struct.PuppeteerAction exposing
    (
       Type(..),
       Effect(..),
-      from_turn_results
+      from_turn_result
    )
 
 -- Elm -------------------------------------------------------------------------
