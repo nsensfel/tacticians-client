@@ -28,6 +28,7 @@ import Battle.View.DamageType
 import BattleCharacters.Struct.Armor
 import BattleCharacters.Struct.Character
 import BattleCharacters.Struct.Equipment
+import BattleCharacters.Struct.Skill
 import BattleCharacters.Struct.Weapon
 
 -- Local Module ----------------------------------------------------------------
@@ -58,10 +59,7 @@ get_name base_char =
       ]
    )
 
-get_health_bar : (
-      Struct.Character.Type ->
-      (Html.Html Struct.Event.Type)
-   )
+get_health_bar : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_health_bar char =
    let
       current = (Struct.Character.get_sane_current_health char)
@@ -90,31 +88,37 @@ get_health_bar char =
          []
       )
 
-get_rank_status : Struct.Character.Rank -> (Html.Html Struct.Event.Type)
-get_rank_status rank =
-   (Html.div
-      [
-         (Html.Attributes.class "character-card-status"),
-         (Html.Attributes.class "clickable"),
-         (Html.Events.onClick
-            (Struct.Event.RequestedHelp (Struct.HelpRequest.Rank rank))
-         ),
-         (Html.Attributes.class
-            (
-               case rank of
-                  Struct.Character.Commander ->
-                     "character-card-commander-status"
-
-                  Struct.Character.Target ->
-                     "character-card-target-status"
-
-                  Struct.Character.Optional -> ""
+get_skill_points_bar : Struct.Character.Type -> (Html.Html Struct.Event.Type)
+get_skill_points_bar char =
+   let
+      current = (Struct.Character.get_current_skill_points char)
+      max =
+         (BattleCharacters.Struct.Skill.get_reserve
+            (BattleCharacters.Struct.Equipment.get_skill
+               (BattleCharacters.Struct.Character.get_equipment
+                  (Struct.Character.get_base_character char)
+               )
             )
          )
-      ]
-      [
-      ]
-   )
+   in
+      (Battle.View.Gauge.get_html
+         ("SP: " ++ (String.fromInt current) ++ "/" ++ (String.fromInt max))
+         (100.0 * ((toFloat current)/(toFloat max)))
+         [
+            (Html.Attributes.class "character-card-skill-points"),
+            (Html.Attributes.class "clickable")
+            -- TODO: Clicking should display help about skill points.
+--            (Html.Events.onClick
+--               (Struct.Event.RequestedHelp
+--                  (Struct.HelpRequest.Attribute
+--                     Battle.Struct.Attributes.SkillPoints
+--                  )
+--               )
+--            )
+         ]
+         []
+         []
+      )
 
 get_statuses : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_statuses char =
@@ -123,11 +127,6 @@ get_statuses char =
          (Html.Attributes.class "character-card-statuses")
       ]
       [
-         (
-            case (Struct.Character.get_rank char) of
-               Struct.Character.Optional -> (Util.Html.nothing)
-               other -> (get_rank_status other)
-         )
       ]
    )
 
@@ -357,6 +356,7 @@ get_minimal_html player_ix char =
                ),
                (get_health_bar char),
                (get_inactive_movement_bar char),
+               (get_skill_points_bar char),
                (get_statuses char)
             ]
          )
@@ -405,6 +405,7 @@ get_summary_html char_turn player_ix char =
                   ),
                   (get_health_bar char),
                   (get_movement_bar char_turn char),
+                  (get_skill_points_bar char),
                   (get_statuses char)
                ]
             ),
@@ -461,6 +462,7 @@ get_full_html player_ix char =
                   ),
                   (get_health_bar char),
                   (get_inactive_movement_bar char),
+                  (get_skill_points_bar char),
                   (get_statuses char)
                ]
             ),

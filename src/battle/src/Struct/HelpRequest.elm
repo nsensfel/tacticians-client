@@ -14,6 +14,5 @@ import Struct.Character
 --------------------------------------------------------------------------------
 type Type =
    None
-   | Rank Struct.Character.Rank
    | Attribute Battle.Struct.Attributes.Category
    | DamageType Battle.Struct.DamageType.Type

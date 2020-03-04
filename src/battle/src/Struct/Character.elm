@@ -1,14 +1,14 @@
 module Struct.Character exposing
    (
       Type,
-      Rank(..),
       Unresolved,
       get_index,
       get_player_index,
-      get_rank,
       get_current_health,
       get_sane_current_health,
       set_current_health,
+      get_current_skill_points,
+      set_current_skill_points,
       get_location,
       set_location,
       dirty_set_location,
@@ -43,6 +43,7 @@ import Battle.Struct.Attributes
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Character
 import BattleCharacters.Struct.Equipment
+import BattleCharacters.Struct.StatusIndicator
 import BattleCharacters.Struct.Weapon
 
 -- Battle Map ------------------------------------------------------------------
@@ -51,17 +52,13 @@ import BattleMap.Struct.Location
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-type Rank =
-   Optional
-   | Target
-   | Commander
-
 type alias Type =
    {
       ix : Int,
-      rank : Rank,
       location : BattleMap.Struct.Location.Type,
       health : Int,
+      skill_points : Int,
+      status_indicators : (List BattleCharacters.Struct.StatusIndicator.Type),
       player_ix : Int,
       enabled : Bool,
       defeated : Bool,
@@ -72,9 +69,10 @@ type alias Type =
 type alias Unresolved =
    {
       ix : Int,
-      rank : Rank,
       location : BattleMap.Struct.Location.Type,
       health : Int,
+      skill_points : Int,
+      status_indicators : (List BattleCharacters.Struct.StatusIndicator.Type),
       player_ix : Int,
       enabled : Bool,
       defeated : Bool,
@@ -84,13 +82,6 @@ type alias Unresolved =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-str_to_rank : String -> Rank
-str_to_rank str =
-   case str of
-      "t" -> Target
-      "c" -> Commander
-      _ -> Optional
-
 fix_health : Int -> Type -> Type
 fix_health previous_max_health char =
    let
@@ -142,9 +133,6 @@ get_melee_attack_range c =
 get_index : Type -> Int
 get_index c = c.ix
 
-get_rank : Type -> Rank
-get_rank c = c.rank
-
 get_player_index : Type -> Int
 get_player_index c = c.player_ix
 
@@ -156,6 +144,12 @@ get_sane_current_health c = (max 0 c.health)
 
 set_current_health : Int -> Type -> Type
 set_current_health health c = {c | health = health}
+
+get_current_skill_points : Type -> Int
+get_current_skill_points c = c.skill_points
+
+set_current_skill_points : Int -> Type -> Type
+set_current_skill_points skill_points c = {c | skill_points = skill_points}
 
 get_location : Type -> BattleMap.Struct.Location.Type
 get_location t = t.location
@@ -293,16 +287,14 @@ decoder =
    (Json.Decode.succeed
       Unresolved
       |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
-      |>
-         (Json.Decode.Pipeline.required
-            "rnk"
-            (Json.Decode.map
-               (str_to_rank)
-               (Json.Decode.string)
-            )
-         )
       |> (Json.Decode.Pipeline.required "lc" BattleMap.Struct.Location.decoder)
       |> (Json.Decode.Pipeline.required "hea" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "sp" Json.Decode.int)
+      |>
+         (Json.Decode.Pipeline.required
+            "sti"
+            (Json.Decode.list (BattleCharacters.Struct.StatusIndicator.decoder))
+         )
       |> (Json.Decode.Pipeline.required "pla" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "ena" Json.Decode.bool)
       |> (Json.Decode.Pipeline.required "dea" Json.Decode.bool)
@@ -325,10 +317,11 @@ resolve : (
 resolve location_omnimod_resolver equipment_resolver ref =
    {
       ix = ref.ix,
-      rank = ref.rank,
       location = ref.location,
       health = ref.health,
+      skill_points = ref.skill_points,
       player_ix = ref.player_ix,
+      status_indicators = ref.status_indicators,
       enabled = ref.enabled,
       defeated = ref.defeated,
       base =

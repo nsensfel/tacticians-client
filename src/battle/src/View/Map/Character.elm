@@ -79,28 +79,8 @@ get_head_html char =
 
 get_banner_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_banner_html char =
-   case (Struct.Character.get_rank char) of
-      Struct.Character.Commander ->
-         (Html.div
-            [
-               (Html.Attributes.class "character-icon-banner"),
-               (Html.Attributes.class "asset-character-icon-commander-banner")
-            ]
-            [
-            ]
-         )
-
-      Struct.Character.Target ->
-         (Html.div
-            [
-               (Html.Attributes.class "character-icon-banner"),
-               (Html.Attributes.class "asset-character-icon-target-banner")
-            ]
-            [
-            ]
-         )
-
-      _ -> (Util.Html.nothing)
+   -- TODO: Banner from some status indicator
+   (Util.Html.nothing)
 
 get_actual_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_actual_html char =
