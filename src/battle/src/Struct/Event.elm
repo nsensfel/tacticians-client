@@ -23,9 +23,6 @@ type Type =
    | CharacterInfoRequested Int
    | CharacterOrTileSelected BattleMap.Struct.Location.Ref
    | CharacterSelected Int
-   | DebugLoadBattleRequest
-   | DebugTeamSwitchRequest
-   | DebugTestAnimation
    | DirectionRequested BattleMap.Struct.Direction.Type
    | Failed Struct.Error.Type
    | GoToMainMenu

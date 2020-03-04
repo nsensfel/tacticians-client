@@ -38,9 +38,10 @@ get_inner_html model tab =
          (View.SubMenu.Status.get_html model)
 
       Struct.UI.CharactersTab ->
-         (Html.Lazy.lazy
+         (Html.Lazy.lazy2
             (View.SubMenu.Characters.get_html)
-            model.battle
+            model.battle.characters
+            model.battle.own_player_ix
          )
 
       Struct.UI.SettingsTab ->
@@ -64,19 +65,16 @@ get_html model =
       Nothing ->
          case (Struct.CharacterTurn.maybe_get_target model.char_turn) of
             (Just char_ref) ->
-               case (Array.get char_ref model.characters) of
+               case (Struct.Battle.get_character char_ref model.battle) of
                   (Just char) ->
                      (Html.div
                         [(Html.Attributes.class "sub-menu")]
                         [
                            (Html.text "Targeting:"),
                            (Html.Lazy.lazy3
-                              (View.Controlled.CharacterCard.get_summary_html
-                                 (Struct.Battle.get_own_player_index
-                                    model.battle
-                                 )
-                              )
+                              (View.Controlled.CharacterCard.get_summary_html)
                               model.char_turn
+                              model.battle.own_player_ix
                               char
                            )
                         ]

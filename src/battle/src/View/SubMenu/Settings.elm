@@ -36,24 +36,6 @@ get_html model =
       [
          (scale_button (0.75) "Zoom -"),
          (scale_button 0 "Zoom Reset"),
-         (scale_button (1.15) "Zoom +"),
-         (Html.button
-            [
-               (Html.Events.onClick Struct.Event.DebugTeamSwitchRequest)
-            ]
-            [ (Html.text "[DEBUG] Switch team") ]
-         ),
-         (Html.button
-            [
-               (Html.Events.onClick Struct.Event.DebugLoadBattleRequest)
-            ]
-            [ (Html.text "[DEBUG] Load map") ]
-         ),
-         (Html.button
-            [
-               (Html.Events.onClick Struct.Event.DebugTestAnimation)
-            ]
-            [ (Html.text "[DEBUG] Test animations") ]
-         )
+         (scale_button (1.15) "Zoom +")
       ]
    )
