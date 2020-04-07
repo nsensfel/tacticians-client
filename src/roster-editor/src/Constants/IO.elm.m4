@@ -27,5 +27,8 @@ glyph_boards_data_url = (base_url ++ "/asset/data/glyph_boards.json")
 glyphs_data_url : String
 glyphs_data_url = (base_url ++ "/asset/data/glyphs.json")
 
+skills_data_url : String
+skills_data_url = (base_url ++ "/asset/data/skills.json")
+
 portraits_data_url : String
 portraits_data_url = (base_url ++ "/asset/data/portraits.json")

@@ -3,6 +3,7 @@ module BattleCharacters.Struct.Character exposing
       Type,
       Unresolved,
       get_name,
+      get_unresolved_name,
       set_name,
       get_equipment,
       set_equipment,
@@ -112,6 +113,9 @@ get_inactive_weapon char =
 
 get_name : Type -> String
 get_name c = c.name
+
+get_unresolved_name : Unresolved -> String
+get_unresolved_name c = c.name
 
 set_name : String -> Type -> Type
 set_name name char = {char | name = name}

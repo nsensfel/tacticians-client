@@ -6,6 +6,7 @@ module Struct.Character exposing
       get_battle_index,
       set_battle_index,
       get_base_character,
+      get_unresolved_base_character,
       set_base_character,
       set_was_edited,
       get_was_edited,
@@ -118,6 +119,12 @@ set_battle_index battle_ix c = {c | battle_ix = battle_ix}
 
 get_base_character : Type -> BattleCharacters.Struct.Character.Type
 get_base_character c = c.base
+
+get_unresolved_base_character : (
+      Unresolved ->
+      BattleCharacters.Struct.Character.Unresolved
+   )
+get_unresolved_base_character c = c.base
 
 set_base_character : BattleCharacters.Struct.Character.Type -> Type -> Type
 set_base_character base c = {c | base = base }
