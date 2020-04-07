@@ -154,6 +154,7 @@ encode ref =
          ("ar", (Json.Encode.string ref.armor)),
          ("pt", (Json.Encode.string ref.portrait)),
          ("gb", (Json.Encode.string ref.glyph_board)),
+         ("sk", (Json.Encode.string ref.skill)),
          ("gl", (Json.Encode.array (Json.Encode.string) ref.glyphs))
       ]
    )
