@@ -282,13 +282,13 @@ reset_extra_display_effects viewer_ix char =
          )
    }
 
-decoder : (Json.Decode.Decoder Unresolved)
-decoder =
+decoder : Int -> (Json.Decode.Decoder Unresolved)
+decoder ix =
    (Json.Decode.succeed
       Unresolved
-      |> (Json.Decode.Pipeline.required "ix" Json.Decode.int)
+      |> (Json.Decode.Pipeline.hardcoded ix)
       |> (Json.Decode.Pipeline.required "lc" BattleMap.Struct.Location.decoder)
-      |> (Json.Decode.Pipeline.required "hea" Json.Decode.int)
+      |> (Json.Decode.Pipeline.required "he" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "sp" Json.Decode.int)
       |>
          (Json.Decode.Pipeline.required

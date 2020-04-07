@@ -7,15 +7,10 @@ import Json.Decode
 import Json.Encode
 
 -- Battle Characters -----------------------------------------------------------
-import BattleCharacters.Comm.AddArmor
-import BattleCharacters.Comm.AddGlyph
-import BattleCharacters.Comm.AddGlyphBoard
-import BattleCharacters.Comm.AddPortrait
-import BattleCharacters.Comm.AddSkill
-import BattleCharacters.Comm.AddWeapon
+import BattleCharacters.Comm.AddDataSetItem
 
 -- Battle Map ------------------------------------------------------------------
-import BattleMap.Comm.AddTile
+import BattleMap.Comm.AddDataSetItem
 import BattleMap.Comm.SetMap
 
 -- Local Module ----------------------------------------------------------------
@@ -38,15 +33,7 @@ import Struct.Model
 internal_decoder : String -> (Json.Decode.Decoder Struct.ServerReply.Type)
 internal_decoder reply_type =
    case reply_type of
-      "add_tile" -> (BattleMap.Comm.AddTile.decode)
       "set_map" -> (BattleMap.Comm.SetMap.decode)
-
-      "add_armor" -> (BattleCharacters.Comm.AddArmor.decode)
-      "add_glyph" -> (BattleCharacters.Comm.AddGlyph.decode)
-      "add_glyph_board" -> (BattleCharacters.Comm.AddGlyphBoard.decode)
-      "add_portrait" -> (BattleCharacters.Comm.AddPortrait.decode)
-      "add_skill" -> (BattleCharacters.Comm.AddSkill.decode)
-      "add_weapon" -> (BattleCharacters.Comm.AddWeapon.decode)
 
       "add_char" -> (Comm.AddChar.decode)
       "add_player" -> (Comm.AddPlayer.decode)
@@ -57,13 +44,27 @@ internal_decoder reply_type =
       "okay" -> (Json.Decode.succeed Struct.ServerReply.Okay)
 
       other ->
-         (Json.Decode.fail
-            (
-               "Unknown server command \""
-               ++ other
-               ++ "\""
-            )
+         if
+         (String.startsWith
+            (BattleCharacters.Comm.AddDataSetItem.prefix)
+            reply_type
          )
+         then (BattleCharacters.Comm.AddDataSetItem.get_decoder_for reply_type)
+         else
+            if
+            (String.startsWith
+               (BattleMap.Comm.AddDataSetItem.prefix)
+               reply_type
+            )
+            then (BattleMap.Comm.AddDataSetItem.get_decoder_for reply_type)
+            else
+               (Json.Decode.fail
+                  (
+                     "Unknown server command \""
+                     ++ other
+                     ++ "\""
+                  )
+               )
 
 decode : (Json.Decode.Decoder Struct.ServerReply.Type)
 decode =

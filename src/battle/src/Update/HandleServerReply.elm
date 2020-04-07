@@ -168,7 +168,7 @@ set_map map current_state =
                (Struct.Battle.set_map
                   (BattleMap.Struct.Map.solve_tiles
                      model.map_data_set
-                     (Struct.Battle.get_map model.battle)
+                     map
                   )
                   model.battle
                )

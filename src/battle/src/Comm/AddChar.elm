@@ -21,4 +21,13 @@ internal_decoder ref = (Struct.ServerReply.AddCharacter ref)
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 decode : (Json.Decode.Decoder Struct.ServerReply.Type)
-decode = (Json.Decode.map (internal_decoder) (Struct.Character.decoder))
+decode =
+   (Json.Decode.andThen
+      (\ix ->
+         (Json.Decode.map
+            (internal_decoder)
+            (Json.Decode.field "cha" (Struct.Character.decoder ix))
+         )
+      )
+      (Json.Decode.field "ix" (Json.Decode.int))
+   )
