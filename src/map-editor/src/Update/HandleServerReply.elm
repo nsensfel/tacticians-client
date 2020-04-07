@@ -90,7 +90,7 @@ set_map map current_state =
    let (model, cmds) = current_state in
       (
          {model |
-            map = (BattleMap.Struct.Map.solve_tiles model.map_dataset model.map)
+            map = (BattleMap.Struct.Map.solve_tiles model.map_dataset map)
          },
          cmds
       )
