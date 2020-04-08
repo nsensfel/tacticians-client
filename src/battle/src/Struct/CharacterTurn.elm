@@ -2,13 +2,14 @@ module Struct.CharacterTurn exposing
    (
       Type,
       State(..),
-      set_target,
-      can_select_target,
-      set_has_switched_weapons,
-      has_switched_weapons,
+      toggle_target_index,
+      toggle_location,
+      switch_weapons,
+      undo_action,
       get_path,
-      get_state,
-      maybe_get_target,
+      get_action,
+      get_target_indices,
+      get_locations,
       lock_path,
       unlock_path,
       show_attack_range_navigator,
@@ -24,6 +25,8 @@ module Struct.CharacterTurn exposing
 -- Elm -------------------------------------------------------------------------
 import Json.Encode
 
+import Set
+
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
 
@@ -38,21 +41,22 @@ import Struct.Navigator
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-type State =
-   Default
-   | SelectedCharacter
-   | MovedCharacter
-   | ChoseTarget
-   | SwitchedWeapons
+type Action =
+   None
+   | Attacking
+   | SwitchingWeapons
+   | UsingSkill
 
 type alias Type =
    {
-      state : State,
       active_character : (Maybe Struct.Character.Type),
+
       path : (List BattleMap.Struct.Direction.Type),
-      target : (Maybe Int),
       navigator : (Maybe Struct.Navigator.Type),
-      has_switched_weapons : Bool
+
+      action : Action,
+      targets : (Set.Set Int),
+      locations : (Set.Set BattleMap.Struct.Location.Ref)
    }
 
 --------------------------------------------------------------------------------
@@ -65,19 +69,44 @@ type alias Type =
 new : Type
 new =
    {
-      state = Default,
       active_character = Nothing,
+
       path = [],
-      target = Nothing,
       navigator = Nothing,
-      has_switched_weapons = False
+
+      action = None,
+      targets = (Set.empty),
+      locations = (Set.empty)
    }
 
 maybe_get_active_character : Type -> (Maybe Struct.Character.Type)
 maybe_get_active_character ct = ct.active_character
 
-can_select_target : Type -> Bool
-can_select_target ct = (ct.state == MovedCharacter)
+switch_weapons : Type -> Type
+switch_weapons : 
+toggle_target_index : Int -> Type -> Type
+toggle_target_index ix ct =
+   let
+      uct =
+         case ct.action of
+            None -> (lock_path ct)
+            _ -> ct
+   in
+      if (Set.member ix uct.targets)
+      then {uct | targets = (Set.remove ix uct.targets)}
+      else {uct | targets = (Set.insert ix uct.targets)}
+
+toggle_location : BattleMap.Struct.Location.Ref -> Type -> Type
+toggle_location loc ct =
+   let
+      uct =
+         case ct.action of
+            None -> (lock_path ct)
+            _ -> ct
+   in
+      if (Set.member loc uct.locations)
+      then {uct | locations = (Set.remove loc uct.locations)}
+      else {uct | locations = (Set.insert loc uct.locations)}
 
 set_active_character : (
       Struct.Character.Type ->
@@ -86,12 +115,14 @@ set_active_character : (
    )
 set_active_character char ct =
    {ct |
-      state = SelectedCharacter,
       active_character = (Just char),
+
       path = [],
-      target = Nothing,
       navigator = Nothing,
-      has_switched_weapons = False
+
+      action = None,
+      targets = (Set.empty),
+      locations = (Set.empty)
    }
 
 set_active_character_no_reset : (
@@ -104,8 +135,8 @@ set_active_character_no_reset char ct =
       active_character = (Just char)
    }
 
-get_state : Type -> State
-get_state ct = ct.state
+get_action : Type -> Action
+get_action ct = ct.action
 
 get_path : Type -> (List BattleMap.Struct.Direction.Type)
 get_path ct = ct.path
@@ -115,10 +146,12 @@ lock_path ct =
    case ct.navigator of
       (Just old_nav) ->
          {ct |
-            state = MovedCharacter,
             path = (Struct.Navigator.get_path old_nav),
-            target = Nothing,
-            navigator = (Just (Struct.Navigator.lock_path old_nav))
+            navigator = (Just (Struct.Navigator.lock_path old_nav)),
+
+            action = Attacking,
+            targets = (Set.empty),
+            locations = (Set.empty)
          }
 
       _ ->
@@ -129,9 +162,11 @@ unlock_path ct =
    case ct.navigator of
       (Just old_nav) ->
          {ct |
-            state = MovedCharacter,
-            target = Nothing,
-            navigator = (Just (Struct.Navigator.unlock_path old_nav))
+            navigator = (Just (Struct.Navigator.unlock_path old_nav)),
+
+            action = None,
+            targets = (Set.empty),
+            locations = (Set.empty)
          }
 
       _ ->
@@ -144,9 +179,7 @@ show_attack_range_navigator range_min range_max ct =
 
       (Just old_nav) ->
             {ct |
-               state = MovedCharacter,
                path = (Struct.Navigator.get_path old_nav),
-               target = Nothing,
                navigator =
                   (Just
                      (Struct.Navigator.lock_path_with_new_attack_ranges
@@ -154,7 +187,11 @@ show_attack_range_navigator range_min range_max ct =
                         range_max
                         old_nav
                      )
-                  )
+                  ),
+
+               action = None,
+               targets = (Set.empty),
+               locations = (Set.empty)
             }
 
 maybe_get_navigator : Type -> (Maybe Struct.Navigator.Type)
@@ -163,51 +200,61 @@ maybe_get_navigator ct = ct.navigator
 set_navigator : Struct.Navigator.Type -> Type -> Type
 set_navigator navigator ct =
    {ct |
-      state = SelectedCharacter,
       path = [],
-      target = Nothing,
-      navigator = (Just navigator)
+      navigator = (Just navigator),
+
+      action = None,
+      targets = (Set.empty),
+      locations = (Set.empty)
    }
 
-set_has_switched_weapons : Bool -> Type -> Type
-set_has_switched_weapons v ct =
-   {ct |
-      has_switched_weapons = v,
-      state =
-         (
-            if (v)
-            then SwitchedWeapons
-            else MovedCharacter
-         )
-   }
+get_target_indices : Type -> (Set.Set Int)
+get_target_indices ct = ct.targets
 
-has_switched_weapons : Type -> Bool
-has_switched_weapons ct = ct.has_switched_weapons
-
-set_target : (Maybe Int) -> Type -> Type
-set_target target ct =
-   case target of
-      Nothing ->
-         {ct |
-            state = MovedCharacter,
-            target = target
-         }
-
-      _ ->
-         {ct |
-            state = ChoseTarget,
-            target = target
-         }
-
-maybe_get_target : Type -> (Maybe Int)
-maybe_get_target ct = ct.target
+get_locations : Type -> (Set.Set BattleMap.Struct.Location.Ref)
+get_locations ct = ct.locations
 
 encode : Type -> (Json.Encode.Value)
 encode ct =
+   case ct.active_character of
+      None ->
+         (Json.Encode.object
+            [
+               ("cix", 0),
+               ("act", [])
+            ]
+         )
+
+      (Just actor) ->
+         (Json.Encode.object
+            [
+               ("cix", (Struct.Character.get_index actor)),
+               (
+                  "act",
+                  (
+                     (
+                        if (List.isEmpty (get_path ct))
+                        then [(encode_path ct)]
+                        else []
+                     )
+                     ++
+                     (
+                        if (ct.action == None)
+                        then []
+                        else [(encode_action ct)]
+                     )
+                  )
+               )
+            ]
+         )
+
+encode_path : Type -> (Json.Encode.Value)
+encode_path ct =
    (Json.Encode.object
       [
+         ("cat", "mov"),
          (
-            "mov",
+            "pat",
             (Json.Encode.list
                (
                   (Json.Encode.string)
@@ -216,18 +263,45 @@ encode ct =
                )
                (List.reverse (get_path ct))
             )
-         ),
-         ("wps", (Json.Encode.bool ct.has_switched_weapons)),
-         (
-            "tar",
-            (Json.Encode.int
-               (
-                  case ct.target of
-                  Nothing -> -1
-                  (Just ix) -> ix
-               )
-            )
          )
       ]
    )
 
+encode_action : Type -> (Json.Encode.Value)
+encode_action ct =
+   case ct.action of
+      None -> (Json.Encode.null)
+      Attacking ->
+         case (List.head (Set.toList ct.targets)) of
+            Nothing -> (Json.Encode.null)
+            (Just target) ->
+               (Json.Encode.object
+                  [
+                     ("cat", "atk"),
+                     ("tar", (Json.Encode.int target))
+                  ]
+               )
+
+      SwitchingWeapons ->
+         (Json.Encode.object [("cat", "swp")])
+
+      UsingSkill ->
+         (Json.Encode.object
+            [
+               ("cat", "skl"),
+               (
+                  "tar",
+                  (Json.Encode.list
+                     (Json.Encode.int)
+                     (Set.toList ct.targets)
+                  )
+               ),
+               (
+                  "loc",
+                  (Json.Encode.list
+                     (BattleMap.Struct.Location.encode)
+                     (Set.toList ct.locations)
+                  )
+               )
+            ]
+         )

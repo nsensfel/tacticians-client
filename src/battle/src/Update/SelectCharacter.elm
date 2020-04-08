@@ -133,8 +133,7 @@ can_target_character : (
    )
 can_target_character model target =
    (
-      (Struct.CharacterTurn.can_select_target model.char_turn)
-      && (Struct.Character.is_alive target)
+      (Struct.Character.is_alive target)
       &&
       (
          case
