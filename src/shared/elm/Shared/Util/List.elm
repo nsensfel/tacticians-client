@@ -1,4 +1,4 @@
-module Util.List exposing (..)
+module Shared.Util.List exposing (..)
 
 import Set
 
@@ -6,12 +6,9 @@ import List
 
 pop : List a -> (Maybe (a, List a))
 pop l =
-   case
-      ((List.head l), (List.tail l))
-   of
-      (Nothing, _) -> Nothing
-      (_ , Nothing) -> Nothing
-      ((Just head), (Just tail)) -> (Just (head, tail))
+   case l of
+      (head :: tail) -> (Just (head, tail))
+      [] -> Nothing
 
 get_first : (a -> Bool) -> (List a) -> (Maybe a)
 get_first fun list =

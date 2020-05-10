@@ -1,4 +1,4 @@
-module Update.SwitchWeapon exposing (apply_to)
+module Update.CharacterTurn.SwitchWeapon exposing (apply_to)
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Weapon

@@ -1,4 +1,4 @@
-module Util.Array exposing
+module Shared.Util.Array exposing
    (
       update,
       update_unsafe,

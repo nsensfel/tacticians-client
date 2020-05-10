@@ -1,4 +1,4 @@
-port module Action.Ports exposing (..)
+port module Shared.Action.Ports exposing (..)
 
 port store_new_session : (String, String) -> (Cmd msg)
 port reset_session : () -> (Cmd msg)

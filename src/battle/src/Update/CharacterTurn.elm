@@ -1,9 +1,6 @@
-module Update.AbortTurn exposing (apply_to)
+module Update.CharacterTurn exposing (apply_to)
 
--- Local Module ----------------------------------------------------------------
-import Struct.CharacterTurn
-import Struct.Event
-import Struct.Model
+-- Elm -------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -12,11 +9,10 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
-apply_to model =
-   (
-      {model |
-         char_turn = (Struct.CharacterTurn.new)
-      },
-      Cmd.none
+apply_to : (
+      Struct.Model.Type ->
+      Int ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
+apply_to model target_char_id =
+

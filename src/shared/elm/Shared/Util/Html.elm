@@ -1,4 +1,4 @@
-module Util.Html exposing (nothing)
+module Shared.Util.Html exposing (nothing)
 
 import Html
 

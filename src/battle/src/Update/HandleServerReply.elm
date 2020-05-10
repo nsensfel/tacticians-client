@@ -20,6 +20,8 @@ import Struct.Flags
 
 import Util.Http
 
+import Update.Sequence
+
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.DataSetItem
 import BattleCharacters.Struct.Equipment
@@ -54,186 +56,136 @@ import Update.Puppeteer
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 disconnected : (
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+      Struct.Model.Type ->
+      (Cmd Struct.Event.Type)
    )
-disconnected current_state =
-   let (model, cmds) = current_state in
-      (
-         model,
-         [
-            (Action.Ports.go_to
+disconnected model =
+   (
+      model,
+      (Action.Ports.go_to
+         (
+            Constants.IO.base_url
+            ++ "/login/?action=disconnect&goto="
+            ++
+            (Url.percentEncode
                (
-                  Constants.IO.base_url
-                  ++ "/login/?action=disconnect&goto="
-                  ++
-                  (Url.percentEncode
-                     (
-                        "/battle/?"
-                        ++ (Struct.Flags.get_parameters_as_url model.flags)
-                     )
-                  )
+                  "/battle/?"
+                  ++ (Struct.Flags.get_parameters_as_url model.flags)
                )
             )
-         ]
+         )
       )
+   )
 
 add_characters_data_set_item : (
       BattleCharacters.Struct.DataSetItem.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+      Struct.Model.Type ->
+      (Cmd Struct.Event.Type)
    )
-add_characters_data_set_item item current_state =
-   let (model, cmds) = current_state in
-      (
-         {model |
-            characters_data_set =
-               (BattleCharacters.Struct.DataSetItem.add_to
-                  item
-                  model.characters_data_set
-               )
-         },
-         cmds
-      )
+add_characters_data_set_item item model =
+   (
+      {model |
+         characters_data_set =
+            (BattleCharacters.Struct.DataSetItem.add_to
+               item
+               model.characters_data_set
+            )
+      },
+      Cmd.none
+   )
 
 add_map_data_set_item : (
       BattleMap.Struct.DataSetItem.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+      Struct.Model.Type ->
+      (Cmd Struct.Event.Type)
    )
-add_map_data_set_item item current_state =
-   let (model, cmds) = current_state in
-      (
-         {model |
-            map_data_set =
-               (BattleMap.Struct.DataSetItem.add_to item model.map_data_set)
-         },
-         cmds
-      )
+add_map_data_set_item item model =
+   (
+      {model |
+         map_data_set =
+            (BattleMap.Struct.DataSetItem.add_to item model.map_data_set)
+      },
+      Cmd.none
+   )
 
 add_player : (
       Struct.Player.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+      Struct.Model.Type ->
+      (Cmd Struct.Event.Type)
    )
-add_player pl current_state =
-   let (model, cmds) = current_state in
-      (
-         {model |
-            battle = (Struct.Battle.add_player model.flags pl model.battle)
-         },
-         cmds
-      )
+add_player pl model =
+   (
+      {model |
+         battle = (Struct.Battle.add_player model.flags pl model.battle)
+      },
+      Cmd.none
+   )
 
 add_character : (
       Struct.Character.Unresolved ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+      Struct.Model.Type ->
+      (Cmd Struct.Event.Type)
    )
-add_character unresolved_char current_state =
-   let (model, cmds) = current_state in
-      (
-         {model |
-            battle =
-               (Struct.Battle.add_character
-                  (Struct.Character.resolve
-                     (\loc ->
-                        (BattleMap.Struct.Map.get_omnimods_at
-                           loc
-                           model.map_data_set
-                           (Struct.Battle.get_map model.battle)
-                        )
+add_character unresolved_char model =
+   (
+      {model |
+         battle =
+            (Struct.Battle.add_character
+               (Struct.Character.resolve
+                  (\loc ->
+                     (BattleMap.Struct.Map.get_omnimods_at
+                        loc
+                        model.map_data_set
+                        (Struct.Battle.get_map model.battle)
                      )
-                     (BattleCharacters.Struct.Equipment.resolve
-                        model.characters_data_set
-                     )
-                     unresolved_char
                   )
-                  model.battle
+                  (BattleCharacters.Struct.Equipment.resolve
+                     model.characters_data_set
+                  )
+                  unresolved_char
                )
-         },
-         cmds
-      )
+               model.battle
+            )
+      },
+      Cmd.none
+   )
 
 set_map : (
       BattleMap.Struct.Map.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+      Struct.Model.Type ->
+      (Cmd Struct.Event.Type)
    )
-set_map map current_state =
-   let (model, cmds) = current_state in
-      (
-         {model |
-            battle =
-               (Struct.Battle.set_map
-                  (BattleMap.Struct.Map.solve_tiles
-                     model.map_data_set
-                     map
-                  )
-                  model.battle
+set_map map model =
+   (
+      {model |
+         battle =
+            (Struct.Battle.set_map
+               (BattleMap.Struct.Map.solve_tiles
+                  model.map_data_set
+                  map
                )
-         },
-         cmds
-      )
+               model.battle
+            )
+      },
+      Cmd.none
+   )
 
 add_to_timeline : (
       (List Struct.TurnResult.Type) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+      Struct.Model.Type ->
+      (Cmd Struct.Event.Type)
    )
-add_to_timeline turn_results current_state =
-   let
-      (model, cmds) = current_state
-      (next_model, new_cmd) =
-         (Update.Puppeteer.apply_to
-            (
-               {model |
-                  puppeteer =
-                     (List.foldl
-                        (\turn_result puppeteer ->
-                           (Struct.Puppeteer.append_forward
-                              (Struct.PuppeteerAction.from_turn_result
-                                 turn_result
-                              )
-                              puppeteer
-                           )
-                        )
-                        model.puppeteer
-                        turn_results
-                     ),
-                  battle =
-                     (Struct.Battle.set_timeline
-                        (Array.append
-                           (Array.fromList turn_results)
-                           (Struct.Battle.get_timeline model.battle)
-                        )
-                        model.battle
-                     )
-               }
-            )
-         )
-   in
-      (
-         next_model,
-         if (new_cmd == Cmd.none)
-         then cmds
-         else (new_cmd :: cmds)
-      )
-
-set_timeline : (
-      (List Struct.TurnResult.Type) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
-   )
-set_timeline turn_results current_state =
-   let (model, cmds) = current_state in
+add_to_timeline turn_results model =
+   (Update.Puppeteer.apply_to
       (
          {model |
             puppeteer =
-               (List.foldr
+               (List.foldl
                   (\turn_result puppeteer ->
-                     (Struct.Puppeteer.append_backward
-                        (Struct.PuppeteerAction.from_turn_result turn_result)
+                     (Struct.Puppeteer.append_forward
+                        (Struct.PuppeteerAction.from_turn_result
+                           turn_result
+                        )
                         puppeteer
                      )
                   )
@@ -242,44 +194,71 @@ set_timeline turn_results current_state =
                ),
             battle =
                (Struct.Battle.set_timeline
-                  (Array.fromList turn_results)
+                  (Array.append
+                     (Array.fromList turn_results)
+                     (Struct.Battle.get_timeline model.battle)
+                  )
                   model.battle
                )
-         },
-         cmds
+         }
       )
-
-apply_command : (
-      Struct.ServerReply.Type ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type))) ->
-      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-apply_command command current_state =
-   case command of
-      Struct.ServerReply.Disconnected -> (disconnected current_state)
+
+set_timeline : (
+      (List Struct.TurnResult.Type) ->
+      Struct.Model.Type ->
+      (Cmd Struct.Event.Type)
+   )
+set_timeline turn_results model =
+   (
+      {model |
+         puppeteer =
+            (List.foldr
+               (\turn_result puppeteer ->
+                  (Struct.Puppeteer.append_backward
+                     (Struct.PuppeteerAction.from_turn_result turn_result)
+                     puppeteer
+                  )
+               )
+               model.puppeteer
+               turn_results
+            ),
+         battle =
+            (Struct.Battle.set_timeline
+               (Array.fromList turn_results)
+               model.battle
+            )
+      },
+      Cmd.none
+   )
+
+server_command_to_update : (
+      Struct.ServerReply.Type ->
+      (Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type)))
+   )
+server_command_to_update server_command =
+   case server_command of
+      Struct.ServerReply.Disconnected -> (disconnected)
 
       (Struct.ServerReply.AddCharactersDataSetItem item) ->
-         (add_characters_data_set_item item current_state)
+         (add_characters_data_set_item item)
 
       (Struct.ServerReply.AddMapDataSetItem item) ->
-         (add_map_data_set_item item current_state)
+         (add_map_data_set_item item)
 
       (Struct.ServerReply.AddPlayer pl) ->
-         (add_player pl current_state)
+         (add_player pl)
 
       (Struct.ServerReply.AddCharacter char) ->
-         (add_character char current_state)
+         (add_character char)
 
-      (Struct.ServerReply.SetMap map) ->
-         (set_map map current_state)
+      (Struct.ServerReply.SetMap map) -> (set_map map)
 
-      (Struct.ServerReply.TurnResults results) ->
-         (add_to_timeline results current_state)
+      (Struct.ServerReply.TurnResults results) -> (add_to_timeline results)
 
-      (Struct.ServerReply.SetTimeline timeline) ->
-         (set_timeline timeline current_state)
+      (Struct.ServerReply.SetTimeline timeline) -> (set_timeline timeline)
 
-      Struct.ServerReply.Okay -> current_state
+      Struct.ServerReply.Okay -> (do_nothing)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -302,17 +281,8 @@ apply_to model query_result =
             Cmd.none
          )
 
-      (Result.Ok commands) ->
-         let
-            (new_model, elm_commands) =
-               (List.foldl (apply_command) (model, [Cmd.none]) commands)
-         in
-            (
-               new_model,
-               (
-                  case elm_commands of
-                     [] -> Cmd.none
-                     [cmd] -> cmd
-                     _ -> (Cmd.batch elm_commands)
-               )
-            )
+      (Result.Ok server_command) ->
+         (Update.Sequence.sequence
+            (List.map (server_command_to_update) commands)
+            model
+         )

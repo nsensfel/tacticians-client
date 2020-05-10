@@ -60,6 +60,9 @@ precision_decoder : (Json.Decode.Decoder Precision)
 precision_decoder =
    (Json.Decode.map (precision_from_string) (Json.Decode.string))
 
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
 decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.map5
@@ -70,7 +73,3 @@ decoder =
       (Json.Decode.field "par" (Json.Decode.bool))
       (Json.Decode.field "dmg" (Json.Decode.int))
    )
-
---------------------------------------------------------------------------------
--- EXPORTED --------------------------------------------------------------------
---------------------------------------------------------------------------------

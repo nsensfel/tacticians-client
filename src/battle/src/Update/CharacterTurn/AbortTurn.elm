@@ -1,9 +1,9 @@
-module Update.ChangeScale exposing (apply_to)
+module Update.CharacterTurn.AbortTurn exposing (apply_to)
 
 -- Local Module ----------------------------------------------------------------
+import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
-import Struct.UI
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -12,12 +12,11 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : (
-      Struct.Model.Type ->
-      Float ->
-      (Struct.Model.Type, (Cmd Struct.Event.Type))
+apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
+apply_to model =
+   (
+      {model |
+         char_turn = (Struct.CharacterTurn.new)
+      },
+      Cmd.none
    )
-apply_to model mod =
-   if (mod == 0.0)
-   then ({model | ui = (Struct.UI.reset_zoom_level model.ui)}, Cmd.none)
-   else ({model | ui = (Struct.UI.mod_zoom_level mod model.ui)}, Cmd.none)

@@ -1,4 +1,4 @@
-module Update.EndTurn exposing (apply_to)
+module Update.CharacterTurn.EndTurn exposing (apply_to)
 
 -- Local Module ----------------------------------------------------------------
 import Comm.CharacterTurn

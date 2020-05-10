@@ -1,4 +1,4 @@
-module Update.UndoAction exposing (apply_to)
+module Update.CharacterTurn.UndoAction exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
 import Array

@@ -1,11 +1,14 @@
 module Struct.Path exposing
    (
       Type,
+
       new,
+
       get_current_location,
       get_remaining_points,
       get_summary,
-      maybe_follow_direction
+
+      maybe_add_step
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -37,11 +40,11 @@ type alias Type =
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 has_been_to : (
-      Type ->
       BattleMap.Struct.Location.Type ->
+      Type ->
       Bool
    )
-has_been_to path location =
+has_been_to location path =
    (
       (path.current_location == location)
       ||
@@ -51,17 +54,15 @@ has_been_to path location =
       )
    )
 
-maybe_mov_to : (
-      Type ->
+maybe_move_to : (
       BattleMap.Struct.Direction.Type ->
       BattleMap.Struct.Location.Type ->
       Int ->
+      Type ->
       (Maybe Type)
    )
-maybe_mov_to path dir next_loc cost =
-   let
-      remaining_points = (path.remaining_points - cost)
-   in
+maybe_move_to dir next_loc cost path =
+   let remaining_points = (path.remaining_points - cost) in
       if (remaining_points >= 0)
       then
          (Just
@@ -124,12 +125,11 @@ maybe_backtrack_to path dir location =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
 new : BattleMap.Struct.Location.Type -> Int -> Type
 new start points =
    {
       current_location = start,
-      visited_locations = Set.empty,
+      visited_locations = (Set.empty),
       previous_directions = [],
       previous_points = [],
       remaining_points = points
@@ -144,37 +144,12 @@ get_remaining_points path = path.remaining_points
 get_summary : Type -> (List BattleMap.Struct.Direction.Type)
 get_summary path = path.previous_directions
 
-maybe_follow_direction : (
-      (BattleMap.Struct.Location.Type -> (Int, Int)) ->
-      (Maybe Type) ->
-      BattleMap.Struct.Direction.Type ->
-      (Maybe Type)
-   )
-maybe_follow_direction tile_data_fun maybe_path dir =
-   case maybe_path of
-      (Just path) ->
-         let
-            next_location =
-               (BattleMap.Struct.Location.neighbor
-                  dir
-                  path.current_location
-               )
-            (next_location_cost, next_location_battles) =
-               (tile_data_fun next_location)
-         in
-            if (next_location_cost <= Constants.Movement.max_points)
-            then
-               if (has_been_to path next_location)
-               then
-                  (maybe_backtrack_to path dir next_location)
-               else
-                  (maybe_mov_to
-                     path
-                     dir
-                     next_location
-                     next_location_cost
-                  )
-            else
-               Nothing
-
-      Nothing -> Nothing
+maybe_add_step : BattleMap.Struct.Direction.Type -> Int -> Type -> (Maybe Type)
+maybe_add_step direction cost path =
+   let
+      next_location =
+         (BattleMap.Struct.Location.neighbor direction path.current_location)
+   in
+      if (has_been_to next_location path)
+      then (maybe_backtrack_to direction next_location path)
+      else (maybe_move_to direction next_location cost path)

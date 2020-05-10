@@ -1,4 +1,4 @@
-module Update.RequestDirection exposing (apply_to)
+module Update.CharacterTurn.RequestDirection exposing (apply_to)
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Direction

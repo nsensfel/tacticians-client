@@ -1,4 +1,4 @@
-module Update.AttackWithoutMoving exposing (apply_to)
+module Update.CharacterTurn.AttackWithoutMoving exposing (apply_to)
 
 -- Local Module ----------------------------------------------------------------
 import Struct.CharacterTurn

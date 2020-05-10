@@ -1,4 +1,4 @@
-module Comm.GoTo exposing (decode)
+module Shared.Comm.GoTo exposing (decode)
 
 -- Elm -------------------------------------------------------------------------
 import Json.Decode

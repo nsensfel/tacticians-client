@@ -3,23 +3,29 @@ module Struct.UI exposing
       Type,
       Tab(..),
       Action(..),
+
       default,
+
       -- Zoom
       get_zoom_level,
       reset_zoom_level,
       mod_zoom_level,
+
       -- Tab
       maybe_get_displayed_tab,
       set_displayed_tab,
       reset_displayed_tab,
-      to_string,
+      tab_to_string,
       get_all_tabs,
+
       -- Navigator
       maybe_get_displayed_nav,
       set_displayed_nav,
       reset_displayed_nav,
+
       -- Manual Controls
       has_manual_controls_enabled,
+
       -- Previous Action
       get_previous_action,
       set_previous_action
@@ -92,8 +98,8 @@ set_displayed_tab tab ui = {ui | displayed_tab = (Just tab)}
 reset_displayed_tab : Type -> Type
 reset_displayed_tab ui = {ui | displayed_tab = Nothing}
 
-to_string : Tab -> String
-to_string tab =
+tab_to_string : Tab -> String
+tab_to_string tab =
    case tab of
       StatusTab -> "Status"
       CharactersTab -> "Characters"
@@ -121,10 +127,8 @@ has_manual_controls_enabled ui = ui.show_manual_controls
 toggle_manual_controls : Type -> Type
 toggle_manual_controls ui =
    if (ui.show_manual_controls)
-   then
-      {ui | show_manual_controls = False}
-   else
-      {ui | show_manual_controls = True}
+   then {ui | show_manual_controls = False}
+   else {ui | show_manual_controls = True}
 
 set_enable_manual_controls : Bool -> Type -> Type
 set_enable_manual_controls val ui = {ui | show_manual_controls = val}

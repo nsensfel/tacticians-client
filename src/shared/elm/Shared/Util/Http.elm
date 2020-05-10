@@ -1,4 +1,4 @@
-module Util.Http exposing (error_to_string)
+module Shared.Util.Http exposing (error_to_string)
 
 import Http
 

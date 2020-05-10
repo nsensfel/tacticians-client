@@ -1,4 +1,4 @@
-module Struct.Flags exposing
+module Shared.Struct.Flags exposing
    (
       Type,
       maybe_get_parameter,

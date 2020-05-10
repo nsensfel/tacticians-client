@@ -31,35 +31,6 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-get_character_navigator : (
-      Struct.Battle.Type ->
-      Struct.Character.Type ->
-      Struct.Navigator.Type
-   )
-get_character_navigator battle char =
-   let
-      base_char = (Struct.Character.get_base_character char)
-      weapon = (BattleCharacters.Struct.Character.get_active_weapon base_char)
-   in
-      (Struct.Navigator.new
-         (Struct.Character.get_location char)
-         (Battle.Struct.Attributes.get_movement_points
-            (BattleCharacters.Struct.Character.get_attributes base_char)
-         )
-         (BattleCharacters.Struct.Weapon.get_defense_range weapon)
-         (BattleCharacters.Struct.Weapon.get_attack_range weapon)
-         (BattleMap.Struct.Map.get_tile_data_function
-            (Struct.Battle.get_map battle)
-            (List.map
-               (Struct.Character.get_location)
-               (Array.toList
-                  (Struct.Battle.get_characters battle)
-               )
-            )
-            (Struct.Character.get_location char)
-         )
-      )
-
 attack_character : (
       Struct.Model.Type ->
       Int ->
@@ -126,165 +97,36 @@ ctrl_or_focus_character model target_char_id target_char =
             )
       }
 
-can_target_character : (
-      Struct.Model.Type ->
-      Struct.Character.Type ->
-      Bool
-   )
-can_target_character model target =
-   (
-      (Struct.Character.is_alive target)
-      &&
-      (
-         case
-            (Struct.CharacterTurn.maybe_get_navigator
-               model.char_turn
-            )
-         of
-            (Just nav) ->
-               case
-                  (Struct.Navigator.maybe_get_path_to
-                     (BattleMap.Struct.Location.get_ref
-                        (Struct.Character.get_location target)
-                     )
-                     nav
-                  )
-               of
-                  (Just _) -> True
-                  _ -> False
-
-            _ ->
-               False
-      )
-   )
 
 second_click_on : (
-      Struct.Model.Type ->
       Int ->
+      Struct.Model.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-second_click_on model target_char_id =
-   case (Struct.Battle.get_character target_char_id model.battle) of
-      (Just target_char) ->
-         case
-            (
-               (Struct.CharacterTurn.maybe_get_active_character
-                  model.char_turn
-               ),
-               (Struct.CharacterTurn.maybe_get_target model.char_turn)
-            )
-         of
-            ((Just _), (Just char_turn_target_id)) ->
-               if (char_turn_target_id == target_char_id)
-               then
-                  (
-                     model,
-                     Cmd.none
-                  )
-               else
-                  (
-                     (ctrl_or_focus_character model target_char_id target_char),
-                     (Task.attempt
-                        (Struct.Event.attempted)
-                        (Action.Scroll.to
-                           (Struct.Character.get_location target_char)
-                           model.ui
-                        )
-                     )
-                  )
-
-            ((Just _), Nothing) ->
-               if (can_target_character model target_char)
-               then
-                  (
-                     (attack_character
-                        model
-                        target_char_id
-                        target_char
-                     ),
-                     Cmd.none
-                  )
-               else
-                  (
-                     (ctrl_or_focus_character model target_char_id target_char),
-                     (Task.attempt
-                        (Struct.Event.attempted)
-                        (Action.Scroll.to
-                           (Struct.Character.get_location target_char)
-                           model.ui
-                        )
-                     )
-                  )
-
-            (_, _) ->
-               (
-                  (ctrl_or_focus_character model target_char_id target_char),
-                  (Task.attempt
-                     (Struct.Event.attempted)
-                     (Action.Scroll.to
-                        (Struct.Character.get_location target_char)
-                        model.ui
-                     )
-                  )
-               )
-
-      Nothing ->
-         (
-            (Struct.Model.invalidate
-               (Struct.Error.new
-                  Struct.Error.Programming
-                  "SelectCharacter: Unknown char selected."
-               )
-               model
-            ),
-            Cmd.none
-         )
+second_click_on target_char_id model =
+   if (Struct.CharacterTurn.has_active_character model.char_turn)
+   then (Update.CharacterTurn.ToggleTarget.apply_to_ref target_char_id model)
+   else (Update.CharacterTurn.apply_to target_char_id model)
 
 first_click_on : (
-      Struct.Model.Type ->
       Int ->
+      Struct.Model.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-first_click_on model target_char_id =
-   if
-   (
-      (Struct.CharacterTurn.maybe_get_target model.char_turn)
-      ==
-      (Just target_char_id)
+first_click_on target_char_id model =
+   (Update.Sequence.sequence
+      [
+         (Update.Character.DisplayInfo.apply_to target_char_id),
+         (Update.Character.DisplayNavigator.apply_to_ref target_char_id)
+      ]
+      {model |
+         ui =
+            (Struct.UI.set_previous_action
+               (Just (Struct.UI.SelectedCharacter target_ref))
+               model.ui
+            )
+      }
    )
-   then
-      (model, Cmd.none)
-   else
-      case (Struct.Battle.get_character target_char_id model.battle) of
-         (Just target_char) ->
-            (
-               {model |
-                  ui =
-                     (Struct.UI.set_previous_action
-                        (Just (Struct.UI.SelectedCharacter target_char_id))
-                        (Struct.UI.set_displayed_tab
-                           Struct.UI.StatusTab
-                           (Struct.UI.set_displayed_nav
-                              (get_character_navigator model.battle target_char)
-                              model.ui
-                           )
-                        )
-                     )
-               },
-               Cmd.none
-            )
-
-         Nothing ->
-            (
-               (Struct.Model.invalidate
-                  (Struct.Error.new
-                     Struct.Error.Programming
-                     "SelectCharacter: Unknown char selected."
-                  )
-                  model
-               ),
-               Cmd.none
-            )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -301,5 +143,5 @@ apply_to model target_char_id =
       ==
       (Just (Struct.UI.SelectedCharacter target_char_id))
    )
-   then (second_click_on model target_char_id)
-   else (first_click_on model target_char_id)
+   then (second_click_on target_char_id model)
+   else (first_click_on target_char_id model)

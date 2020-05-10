@@ -1,4 +1,4 @@
-module Update.SelectTab exposing (apply_to)
+module Update.UI.SelectTab exposing (apply_to)
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Model

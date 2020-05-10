@@ -1,4 +1,4 @@
-module Update.GoToMainMenu exposing (apply_to)
+module Update.UI.GoToMainMenu exposing (apply_to)
 
 -- Shared ----------------------------------------------------------------------
 import Action.Ports
