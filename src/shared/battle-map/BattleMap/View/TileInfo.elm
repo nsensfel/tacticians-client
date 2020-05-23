@@ -6,9 +6,6 @@ import Dict
 import Html
 import Html.Attributes
 
--- Shared ----------------------------------------------------------------------
-import Util.Html
-
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
 

@@ -12,9 +12,6 @@ import Html
 import Html.Attributes
 import Html.Events
 
--- Shared ----------------------------------------------------------------------
-import Util.Html
-
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.DamageType
 import Battle.Struct.Omnimods

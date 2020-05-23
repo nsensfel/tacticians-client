@@ -1,4 +1,4 @@
-module Update.Character.DisplayInfo exposing (apply_to)
+module Update.Character.DisplayCharacterInfo exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
 

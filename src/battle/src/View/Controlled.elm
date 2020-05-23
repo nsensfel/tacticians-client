@@ -6,7 +6,7 @@ import Html.Attributes
 import Html.Events
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Local Module ----------------------------------------------------------------
 import Struct.CharacterTurn
@@ -26,16 +26,31 @@ has_a_path char_turn =
       Nothing -> False
 
 
-attack_button : Struct.CharacterTurn.Type -> (Html.Html Struct.Event.Type)
-attack_button char_turn =
+skill_button : Struct.CharacterTurn.Type -> (Html.Html Struct.Event.Type)
+skill_button char_turn =
    (Html.button
-      [ (Html.Events.onClick Struct.Event.AttackWithoutMovingRequest) ]
+      [ (Html.Events.onClick Struct.Event.AttackRequest) ]
       [
          (Html.text
             (
                if (has_a_path char_turn)
-               then ("Go & Select Target")
-               else ("Select Target")
+               then ("Go & Select Skill Target(s)")
+               else ("Select Skill Target(s)")
+            )
+         )
+      ]
+   )
+
+attack_button : Struct.CharacterTurn.Type -> (Html.Html Struct.Event.Type)
+attack_button char_turn =
+   (Html.button
+      [ (Html.Events.onClick Struct.Event.AttackRequest) ]
+      [
+         (Html.text
+            (
+               if (has_a_path char_turn)
+               then ("Go & Select Attack Target")
+               else ("Select Attack Target")
             )
          )
       ]
@@ -55,14 +70,14 @@ undo_button =
       [ (Html.text "Undo") ]
    )
 
-end_turn_button : String -> (Html.Html Struct.Event.Type)
-end_turn_button suffix =
+end_turn_button : (Html.Html Struct.Event.Type)
+end_turn_button =
    (Html.button
       [
          (Html.Events.onClick Struct.Event.TurnEnded),
          (Html.Attributes.class "end-turn-button")
       ]
-      [ (Html.text ("End Turn" ++ suffix)) ]
+      [ (Html.text ("Confirm Turn")) ]
    )
 
 inventory_button : Bool -> (Html.Html Struct.Event.Type)
@@ -85,39 +100,20 @@ get_available_actions : (
       (List (Html.Html Struct.Event.Type))
    )
 get_available_actions char_turn =
-   case (Struct.CharacterTurn.get_state char_turn) of
-      Struct.CharacterTurn.SelectedCharacter ->
+   if ((Struct.CharacterTurn.get_action char_turn) == Struct.CharacterTurn.None)
+   then
          [
             (attack_button char_turn),
+            (skill_button char_turn),
             (inventory_button (has_a_path char_turn)),
-            (end_turn_button " Doing Nothing"),
+            (end_turn_button),
             (abort_button)
          ]
-
-      Struct.CharacterTurn.MovedCharacter ->
+   else
          [
-            (inventory_button False),
-            (end_turn_button " by Moving"),
+            (end_turn_button),
             (undo_button),
             (abort_button)
-         ]
-
-      Struct.CharacterTurn.ChoseTarget ->
-         [
-            (end_turn_button " by Attacking"),
-            (undo_button),
-            (abort_button)
-         ]
-
-      Struct.CharacterTurn.SwitchedWeapons ->
-         [
-            (end_turn_button " by Switching Weapons"),
-            (undo_button),
-            (abort_button)
-         ]
-
-      _ ->
-         [
          ]
 
 --------------------------------------------------------------------------------
@@ -140,14 +136,12 @@ get_html char_turn player_ix =
                (
                   if
                   (
-                     (Struct.CharacterTurn.get_state char_turn)
+                     (Struct.CharacterTurn.get_action char_turn)
                      ==
-                     Struct.CharacterTurn.SelectedCharacter
+                     Struct.CharacterTurn.None
                   )
-                  then
-                     (View.Controlled.ManualControls.get_html)
-                  else
-                     (Util.Html.nothing)
+                  then (View.Controlled.ManualControls.get_html)
+                  else (Shared.Util.Html.nothing)
                ),
                (Html.div
                   [(Html.Attributes.class "controlled-actions")]
@@ -156,4 +150,4 @@ get_html char_turn player_ix =
             ]
          )
 
-      Nothing -> (Util.Html.nothing)
+      Nothing -> (Shared.Util.Html.nothing)

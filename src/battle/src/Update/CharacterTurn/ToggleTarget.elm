@@ -1,9 +1,16 @@
-module Update.CharacterTurn.ToggleTarget exposing (apply_to_ref)
+module Update.CharacterTurn.ToggleTarget exposing (apply_to, apply_to_ref)
+
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.Struct.Location
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Battle
+import Struct.Character
 import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
+import Struct.Navigator
+import Struct.UI
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -40,17 +47,36 @@ can_target_character model target =
       )
    )
 
-attack_character : (
+toggle_attack_character : (
       Struct.Model.Type ->
       Int ->
-      Struct.Character.Type ->
       Struct.Model.Type
    )
-attack_character model target_char_id target_char =
+toggle_attack_character model target_char_id =
    {model |
       char_turn =
-         (Struct.CharacterTurn.set_target
-            (Just target_char_id)
+         (Struct.CharacterTurn.toggle_target_index
+            target_char_id
+            model.char_turn
+         ),
+      ui =
+         (Struct.UI.reset_displayed_nav
+            (Struct.UI.reset_displayed_tab
+               (Struct.UI.set_previous_action Nothing model.ui)
+            )
+         )
+   }
+
+undo_attack_character : (
+      Struct.Model.Type ->
+      Int ->
+      Struct.Model.Type
+   )
+undo_attack_character model target_char_id =
+   {model |
+      char_turn =
+         (Struct.CharacterTurn.remove_target_index
+            target_char_id
             model.char_turn
          ),
       ui =
@@ -64,11 +90,28 @@ attack_character model target_char_id target_char =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
-apply_to model =
+apply_to : (
+      Struct.Character.Type ->
+      Struct.Model.Type ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
+apply_to target model =
    (
-      {model |
-         char_turn = (Struct.CharacterTurn.new)
-      },
+      (
+         let target_ix = (Struct.Character.get_index target) in
+            if (can_target_character model target)
+            then (toggle_attack_character model target_ix)
+            else (undo_attack_character model target_ix)
+      ),
       Cmd.none
    )
+
+apply_to_ref : (
+      Int ->
+      Struct.Model.Type ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
+apply_to_ref target_ix model =
+   case (Struct.Battle.get_character target_ix model.battle) of
+      Nothing -> (model, Cmd.none)
+      (Just char) -> (apply_to char model)

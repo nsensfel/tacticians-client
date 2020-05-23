@@ -9,6 +9,7 @@ module BattleMap.Struct.Map exposing
       remove_marker,
       add_marker,
       get_tile_data_function,
+      get_tile_cost_function,
       get_omnimods_at,
       get_tiles,
       get_width,
@@ -28,7 +29,7 @@ import Dict
 import Json.Decode
 
 -- Shared ----------------------------------------------------------------------
-import Util.Array
+import Shared.Util.Array
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
@@ -98,7 +99,7 @@ remove_marker marker_name map =
             content =
                (Set.foldl
                   (\loc array ->
-                     (Util.Array.update_unsafe
+                     (Shared.Util.Array.update_unsafe
                         (location_to_index
                            (BattleMap.Struct.Location.from_ref loc)
                            map
@@ -121,7 +122,7 @@ add_marker marker_name marker map =
       content =
          (Set.foldl
             (\loc array ->
-               (Util.Array.update_unsafe
+               (Shared.Util.Array.update_unsafe
                   (location_to_index
                      (BattleMap.Struct.Location.from_ref loc)
                      map
@@ -263,3 +264,23 @@ get_tile_data_function bmap occupied_tiles start_loc loc =
          Nothing -> (Constants.Movement.cost_when_out_of_bounds, 0)
    else
       (Constants.Movement.cost_when_out_of_bounds, 0)
+
+get_tile_cost_function : (
+      Type ->
+      (List BattleMap.Struct.Location.Type) ->
+      BattleMap.Struct.Location.Type ->
+      BattleMap.Struct.Location.Type ->
+      Int
+   )
+get_tile_cost_function bmap occupied_tiles start_loc loc =
+   if (has_location loc bmap)
+   then
+      case (Array.get (location_to_index loc bmap) bmap.content) of
+         (Just tile) ->
+            if ((loc /= start_loc) && (List.member loc occupied_tiles))
+            then Constants.Movement.cost_when_occupied_tile
+            else (BattleMap.Struct.TileInstance.get_cost tile)
+
+         Nothing -> (Constants.Movement.cost_when_out_of_bounds)
+   else
+      (Constants.Movement.cost_when_out_of_bounds)

@@ -1,7 +1,7 @@
 module Update.SelectCharacterOrTile exposing (apply_to)
 
 -- Shared ----------------------------------------------------------------------
-import Util.Array
+import Shared.Util.Array
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Location
@@ -23,13 +23,13 @@ import Update.SelectTile
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to : (
-      Struct.Model.Type ->
       BattleMap.Struct.Location.Ref ->
+      Struct.Model.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model loc_ref =
+apply_to loc_ref model =
    case
-      (Util.Array.filter_first
+      (Shared.Util.Array.filter_first
          (\c ->
             (
                (
@@ -45,10 +45,10 @@ apply_to model loc_ref =
    of
       (Just char) ->
          (Update.SelectCharacter.apply_to
-            model
             (Struct.Character.get_index char)
+            model
          )
 
       Nothing ->
-         (Update.SelectTile.apply_to model loc_ref)
+         (Update.SelectTile.apply_to loc_ref model)
 

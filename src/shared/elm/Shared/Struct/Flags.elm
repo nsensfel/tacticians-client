@@ -12,7 +12,7 @@ module Shared.Struct.Flags exposing
 import List
 
 -- Shared ----------------------------------------------------------------------
-import Util.List
+import Shared.Util.List
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -39,7 +39,7 @@ parameter_as_url parameter =
 maybe_get_parameter : String -> Type -> (Maybe String)
 maybe_get_parameter parameter flags =
    case
-      (Util.List.get_first
+      (Shared.Util.List.get_first
          (\e -> ((List.head e) == (Just parameter)))
          flags.url_parameters
       )

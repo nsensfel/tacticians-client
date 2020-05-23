@@ -45,7 +45,7 @@ type alias Type =
             BattleMap.Struct.Location.Ref
             Struct.RangeIndicator.Type
          ),
-      tile_data_fun : (BattleMap.Struct.Location.Type -> (Int, Int))
+      cost_and_danger_fun : (BattleMap.Struct.Location.Type -> (Int, Int))
    }
 
 type alias Summary =
@@ -71,7 +71,7 @@ new : (
       (BattleMap.Struct.Location.Type -> (Int, Int)) ->
       Type
    )
-new start_loc mov_dist def_dist atk_dist tile_data_fun =
+new start_loc mov_dist def_dist atk_dist cost_and_danger_fun =
    {
       starting_location = start_loc,
       movement_dist = mov_dist,
@@ -85,9 +85,9 @@ new start_loc mov_dist def_dist atk_dist tile_data_fun =
             mov_dist
             def_dist
             atk_dist
-            (tile_data_fun)
+            (cost_and_danger_fun)
          ),
-      tile_data_fun = tile_data_fun
+      cost_and_danger_fun = cost_and_danger_fun
    }
 
 get_current_location : Type -> BattleMap.Struct.Location.Type
@@ -157,7 +157,7 @@ lock_path navigator =
             0
             navigator.defense_dist
             navigator.attack_dist
-            (navigator.tile_data_fun)
+            (navigator.cost_and_danger_fun)
          ),
       locked_path = True
    }
@@ -171,7 +171,7 @@ unlock_path navigator =
             navigator.movement_dist
             navigator.defense_dist
             navigator.attack_dist
-            (navigator.tile_data_fun)
+            (navigator.cost_and_danger_fun)
          ),
       locked_path = True
    }
@@ -185,7 +185,7 @@ lock_path_with_new_attack_ranges range_min range_max navigator =
             0
             range_min
             range_max
-            (navigator.tile_data_fun)
+            (navigator.cost_and_danger_fun)
          ),
       locked_path = True
    }
@@ -201,14 +201,13 @@ maybe_add_step dir navigator =
       Nothing
    else
       case
-         (Struct.Path.maybe_follow_direction
-            (navigator.tile_data_fun)
-            (Just navigator.path)
+         (Struct.Path.maybe_add_step
             dir
+            (navigator.cost_and_danger_fun)
+            navigator.path
          )
       of
-         (Just path) ->
-            (Just {navigator | path = path})
+         (Just path) -> (Just {navigator | path = path})
          Nothing -> Nothing
 
 maybe_get_path_to : (

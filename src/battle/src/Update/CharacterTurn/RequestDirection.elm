@@ -34,7 +34,7 @@ make_it_so model char navigator dir =
             char_turn =
                (Struct.CharacterTurn.set_navigator
                   new_navigator
-                  (Struct.CharacterTurn.set_active_character_no_reset
+                  (Struct.CharacterTurn.set_active_character
                      (Struct.Character.set_base_character
                         (BattleCharacters.Struct.Character.set_extra_omnimods
                            (BattleMap.Struct.Map.get_omnimods_at
@@ -71,11 +71,11 @@ make_it_so model char navigator dir =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to : (
-      Struct.Model.Type ->
       BattleMap.Struct.Direction.Type ->
+      Struct.Model.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model dir =
+apply_to dir model =
    case
       (
          (Struct.CharacterTurn.maybe_get_navigator model.char_turn),

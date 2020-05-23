@@ -9,7 +9,7 @@ import Html.Attributes
 import Html.Events
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor

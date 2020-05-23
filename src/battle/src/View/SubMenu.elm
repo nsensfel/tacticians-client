@@ -8,11 +8,10 @@ import Html.Attributes
 import Html.Lazy
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Battle
-import Struct.CharacterTurn
 import Struct.Event
 import Struct.Model
 import Struct.UI
@@ -63,25 +62,4 @@ get_html model =
          )
 
       Nothing ->
-         case (Struct.CharacterTurn.maybe_get_target model.char_turn) of
-            (Just char_ref) ->
-               case (Struct.Battle.get_character char_ref model.battle) of
-                  (Just char) ->
-                     (Html.div
-                        [(Html.Attributes.class "sub-menu")]
-                        [
-                           (Html.text "Targeting:"),
-                           (Html.Lazy.lazy3
-                              (View.Controlled.CharacterCard.get_summary_html)
-                              model.char_turn
-                              model.battle.own_player_ix
-                              char
-                           )
-                        ]
-                     )
-
-                  Nothing ->
-                     (Util.Html.nothing)
-
-            Nothing ->
-               (Util.Html.nothing)
+         (Shared.Util.Html.nothing)

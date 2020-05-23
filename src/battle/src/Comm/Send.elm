@@ -1,4 +1,4 @@
-module Comm.Send exposing (maybe_send)
+module Comm.Send exposing (maybe_send, send)
 
 -- Elm -------------------------------------------------------------------------
 import Http
@@ -98,3 +98,22 @@ maybe_send model recipient maybe_encode_fun =
          )
 
       Nothing -> Nothing
+
+send : (
+      Struct.Model.Type ->
+      String ->
+      (Struct.Model.Type -> Json.Encode.Value) ->
+      (Cmd Struct.Event.Type)
+   )
+send model recipient encode_fun =
+   (Http.post
+      {
+         url = recipient,
+         body = (Http.jsonBody (encode_fun model)),
+         expect =
+            (Http.expectJson
+               Struct.Event.ServerReplied
+               (Json.Decode.list (decode))
+            )
+      }
+   )

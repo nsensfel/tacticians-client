@@ -1,7 +1,7 @@
 module Struct.CharacterTurn exposing
    (
       Type,
-      Action(..)
+      Action(..),
 
       -- Active Character
       maybe_get_active_character,
@@ -21,6 +21,7 @@ module Struct.CharacterTurn exposing
       toggle_target_index,
       get_target_indices,
       set_target_indices,
+      clear_target_indices,
 
       -- Locations
       add_location,
@@ -28,7 +29,7 @@ module Struct.CharacterTurn exposing
       toggle_location,
       get_locations,
       set_locations,
-      toggle_location,
+      clear_locations,
 
       -- Navigator
       maybe_get_navigator,
@@ -70,7 +71,6 @@ type Action =
    | Attacking
    | SwitchingWeapons
    | UsingSkill
-   | AwaitingConfirmation
 
 type alias Type =
    {
@@ -91,7 +91,7 @@ encode_path : Type -> (Json.Encode.Value)
 encode_path ct =
    (Json.Encode.object
       [
-         ("cat", "mov"),
+         ("cat", (Json.Encode.string "mov")),
          (
             "pat",
             (Json.Encode.list
@@ -110,24 +110,25 @@ encode_action : Type -> (Json.Encode.Value)
 encode_action ct =
    case ct.action of
       None -> (Json.Encode.null)
+
       Attacking ->
          case (List.head (Set.toList ct.targets)) of
             Nothing -> (Json.Encode.null)
             (Just target) ->
                (Json.Encode.object
                   [
-                     ("cat", "atk"),
+                     ("cat", (Json.Encode.string "atk")),
                      ("tar", (Json.Encode.int target))
                   ]
                )
 
       SwitchingWeapons ->
-         (Json.Encode.object [("cat", "swp")])
+         (Json.Encode.object [("cat", (Json.Encode.string "swp"))])
 
       UsingSkill ->
          (Json.Encode.object
             [
-               ("cat", "skl"),
+               ("cat", (Json.Encode.string "skl")),
                (
                   "tar",
                   (Json.Encode.list
@@ -138,7 +139,11 @@ encode_action ct =
                (
                   "loc",
                   (Json.Encode.list
-                     (BattleMap.Struct.Location.encode)
+                     (
+                        (BattleMap.Struct.Location.from_ref)
+                        >>
+                        (BattleMap.Struct.Location.encode)
+                     )
                      (Set.toList ct.locations)
                   )
                )
@@ -185,7 +190,7 @@ set_action : Action -> Type -> Type
 set_action act ct = {ct | action = act}
 
 get_action : Type -> Action
-get_action act ct = ct.action
+get_action ct = ct.action
 
 clear_action : Type -> Type
 clear_action ct = {ct | action = None}
@@ -209,6 +214,9 @@ get_target_indices ct = ct.targets
 set_target_indices : (Set.Set Int) -> Type -> Type
 set_target_indices targets ct = {ct | targets = targets}
 
+clear_target_indices : Type -> Type
+clear_target_indices ct = {ct | targets = (Set.empty)}
+
 ---- Locations -----------------------------------------------------------------
 add_location : BattleMap.Struct.Location.Ref -> Type -> Type
 add_location ix ct = {ct | locations = (Set.insert ix ct.locations)}
@@ -228,11 +236,14 @@ get_locations ct = ct.locations
 set_locations : (Set.Set BattleMap.Struct.Location.Ref) -> Type -> Type
 set_locations locations ct = {ct | locations = locations}
 
+clear_locations : Type -> Type
+clear_locations ct = {ct | locations = (Set.empty)}
+
 ---- Navigator -----------------------------------------------------------------
 maybe_get_navigator : Type -> (Maybe Struct.Navigator.Type)
 maybe_get_navigator ct = ct.navigator
 
-set_navigator : Type -> (Maybe Struct.Navigator.Type)
+set_navigator : Struct.Navigator.Type -> Type -> Type
 set_navigator navigator ct = {ct | navigator = (Just navigator)}
 
 clear_navigator : Type -> Type
@@ -243,7 +254,13 @@ get_path : Type -> (List BattleMap.Struct.Direction.Type)
 get_path ct = ct.path
 
 store_path : Type -> Type
-store_path ct = {ct | path = (Struct.Navigator.get_path old_nav)}
+store_path ct =
+   {ct |
+      path =
+         case ct.navigator of
+            (Just navigator) -> (Struct.Navigator.get_path navigator)
+            Nothing -> []
+   }
 
 override_path : (List BattleMap.Struct.Direction.Type) -> Type -> Type
 override_path path ct = {ct | path = path}
@@ -255,31 +272,34 @@ clear_path ct = {ct | path = []}
 encode : Type -> (Json.Encode.Value)
 encode ct =
    case ct.active_character of
-      None ->
+      Nothing ->
          (Json.Encode.object
             [
-               ("cix", 0),
-               ("act", [])
+               ("cix", (Json.Encode.int 0)),
+               ("act", (Json.Encode.list (\a -> a) []))
             ]
          )
 
       (Just actor) ->
          (Json.Encode.object
             [
-               ("cix", (Struct.Character.get_index actor)),
+               ("cix", (Json.Encode.int (Struct.Character.get_index actor))),
                (
                   "act",
-                  (
+                  (Json.Encode.list
+                     (\a -> a)
                      (
-                        if (List.isEmpty (get_path ct))
-                        then [(encode_path ct)]
-                        else []
-                     )
-                     ++
-                     (
-                        if (ct.action == None)
-                        then []
-                        else [(encode_action ct)]
+                        (
+                           if (List.isEmpty (get_path ct))
+                           then [(encode_path ct)]
+                           else []
+                        )
+                        ++
+                        (
+                           if (ct.action == None)
+                           then []
+                           else [(encode_action ct)]
+                        )
                      )
                   )
                )

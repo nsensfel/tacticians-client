@@ -43,7 +43,9 @@ import Battle.Struct.Omnimods
 import Array
 
 -- Shared ----------------------------------------------------------------------
-import Struct.Flags
+import Shared.Util.Array
+
+import Shared.Struct.Flags
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Location
@@ -56,7 +58,6 @@ import Struct.Character
 import Struct.TurnResult
 import Struct.Player
 
-import Util.Array
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -152,7 +153,7 @@ get_character ix battle = (Array.get ix battle.characters)
 
 set_character : Int -> Struct.Character.Type -> Type -> Type
 set_character ix char battle =
-   {battle | characters = (Array.set ix char battle.characters) }
+   {battle | characters = (Array.set ix char battle.characters)}
 
 update_character : (
       Int ->
@@ -161,7 +162,9 @@ update_character : (
       Type
    )
 update_character ix fun battle =
-   {battle | characters = (Util.Array.update ix (fun) battle.characters) }
+   {battle |
+      characters = (Shared.Util.Array.update ix (fun) battle.characters)
+   }
 
 get_characters : Type -> (Array.Array Struct.Character.Type)
 get_characters battle = battle.characters
@@ -196,12 +199,15 @@ refresh_character map_dataset ix battle =
 -----------------
 ---- Players ----
 -----------------
-add_player : Struct.Flags.Type -> Struct.Player.Type -> Type -> Type
+add_player : Shared.Struct.Flags.Type -> Struct.Player.Type -> Type -> Type
 add_player flags pl battle =
    {battle |
       players = (Array.push pl battle.players),
       own_player_ix =
-         if ((Struct.Player.get_id pl) == (Struct.Flags.get_user_id flags))
+         if
+         (
+            (Struct.Player.get_id pl) == (Shared.Struct.Flags.get_user_id flags)
+         )
          then (Array.length battle.players)
          else battle.own_player_ix
    }
@@ -211,7 +217,7 @@ get_player ix battle = (Array.get ix battle.players)
 
 set_player : Int -> Struct.Player.Type -> Type -> Type
 set_player ix pl battle =
-   {battle | players = (Array.set ix pl battle.players) }
+   {battle | players = (Array.set ix pl battle.players)}
 
 update_player : (
       Int ->
@@ -220,7 +226,7 @@ update_player : (
       Type
    )
 update_player ix fun battle =
-   {battle | players = (Util.Array.update ix (fun) battle.players) }
+   {battle | players = (Shared.Util.Array.update ix (fun) battle.players)}
 
 get_players : Type -> (Array.Array Struct.Player.Type)
 get_players battle = battle.players

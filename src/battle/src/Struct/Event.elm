@@ -19,7 +19,7 @@ import Struct.UI
 type Type =
    AbortTurnRequest
    | AnimationEnded
-   | AttackWithoutMovingRequest
+   | AttackRequest
    | CharacterInfoRequested Int
    | CharacterOrTileSelected BattleMap.Struct.Location.Ref
    | CharacterSelected Int

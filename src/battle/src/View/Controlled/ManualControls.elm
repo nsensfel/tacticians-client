@@ -36,7 +36,7 @@ go_button =
    (Html.button
       [
          (Html.Attributes.class "manual-controls-go"),
-         (Html.Events.onClick Struct.Event.AttackWithoutMovingRequest)
+         (Html.Events.onClick Struct.Event.AttackRequest)
       ]
       [
          (Html.text "Go")

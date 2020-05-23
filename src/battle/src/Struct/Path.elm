@@ -15,7 +15,7 @@ module Struct.Path exposing
 import Set
 
 -- Shared ----------------------------------------------------------------------
-import Util.List
+import Shared.Util.List
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Direction
@@ -83,16 +83,16 @@ maybe_move_to dir next_loc cost path =
          Nothing
 
 maybe_backtrack_to : (
-      Type ->
       BattleMap.Struct.Direction.Type ->
       BattleMap.Struct.Location.Type ->
+      Type ->
       (Maybe Type)
    )
-maybe_backtrack_to path dir location =
+maybe_backtrack_to dir location path =
    case
       (
-         (Util.List.pop path.previous_directions),
-         (Util.List.pop path.previous_points)
+         (Shared.Util.List.pop path.previous_directions),
+         (Shared.Util.List.pop path.previous_points)
       )
    of
       (
@@ -144,12 +144,24 @@ get_remaining_points path = path.remaining_points
 get_summary : Type -> (List BattleMap.Struct.Direction.Type)
 get_summary path = path.previous_directions
 
-maybe_add_step : BattleMap.Struct.Direction.Type -> Int -> Type -> (Maybe Type)
-maybe_add_step direction cost path =
+maybe_add_step : (
+      BattleMap.Struct.Direction.Type ->
+      (BattleMap.Struct.Location.Type -> (Int, Int)) ->
+      Type ->
+      (Maybe Type)
+   )
+maybe_add_step direction tile_cost_and_danger_fun path =
    let
       next_location =
          (BattleMap.Struct.Location.neighbor direction path.current_location)
    in
       if (has_been_to next_location path)
       then (maybe_backtrack_to direction next_location path)
-      else (maybe_move_to direction next_location cost path)
+      else
+         let (cost, dangers) = (tile_cost_and_danger_fun next_location) in
+            (maybe_move_to
+               direction
+               next_location
+               cost
+               path
+            )

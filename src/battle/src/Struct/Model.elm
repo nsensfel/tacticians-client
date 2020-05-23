@@ -7,7 +7,7 @@ module Struct.Model exposing
    )
 
 -- Shared ----------------------------------------------------------------------
-import Struct.Flags
+import Shared.Struct.Flags
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.DataSet
@@ -29,7 +29,7 @@ import Struct.UI
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      flags : Struct.Flags.Type,
+      flags : Shared.Struct.Flags.Type,
       puppeteer : Struct.Puppeteer.Type,
       ui : Struct.UI.Type,
       char_turn : Struct.CharacterTurn.Type,
@@ -49,7 +49,7 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Struct.Flags.Type -> Type
+new : Shared.Struct.Flags.Type -> Type
 new flags =
    let
       model =
@@ -66,7 +66,7 @@ new flags =
             battle = (Struct.Battle.new)
          }
    in
-      case (Struct.Flags.maybe_get_parameter "id" flags) of
+      case (Shared.Struct.Flags.maybe_get_parameter "id" flags) of
          Nothing ->
             (invalidate
                (Struct.Error.new

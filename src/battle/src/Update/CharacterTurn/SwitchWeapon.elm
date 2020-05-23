@@ -11,60 +11,11 @@ import Struct.Error
 import Struct.Event
 import Struct.Model
 
+import Util.Navigator
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-make_it_so : Struct.Model.Type -> Struct.Model.Type
-make_it_so model =
-   case
-      (
-         (Struct.CharacterTurn.maybe_get_active_character model.char_turn),
-         (Struct.CharacterTurn.maybe_get_navigator model.char_turn)
-      )
-   of
-      ((Just char), (Just nav)) ->
-         let
-            new_base_character =
-               (BattleCharacters.Struct.Character.switch_weapons
-                  (Struct.Character.get_base_character char)
-               )
-            active_weapon =
-               (BattleCharacters.Struct.Character.get_active_weapon
-                  new_base_character
-               )
-         in
-            {model |
-               char_turn =
-                  (Struct.CharacterTurn.show_attack_range_navigator
-                     (BattleCharacters.Struct.Weapon.get_defense_range
-                        active_weapon
-                     )
-                     (BattleCharacters.Struct.Weapon.get_attack_range
-                        active_weapon
-                     )
-                     (Struct.CharacterTurn.set_has_switched_weapons
-                        True
-                        (Struct.CharacterTurn.set_active_character_no_reset
-                           (Struct.Character.set_base_character
-                              new_base_character
-                              char
-                           )
-                           model.char_turn
-                        )
-                     )
-                  )
-            }
-
-      (_, _) ->
-         (Struct.Model.invalidate
-            (Struct.Error.new
-               Struct.Error.Programming
-               """
-               CharacterTurn structure in the 'SelectedCharacter' or
-               'MovedCharacter' state without any character being selected.
-               """)
-            model
-         )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -74,24 +25,41 @@ apply_to : (
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 apply_to model =
-   case (Struct.CharacterTurn.get_state model.char_turn) of
-      Struct.CharacterTurn.SelectedCharacter ->
-         ((make_it_so model), Cmd.none)
-
-      Struct.CharacterTurn.MovedCharacter ->
-         ((make_it_so model), Cmd.none)
-
-      _ ->
-         (
-            (Struct.Model.invalidate
-               (Struct.Error.new
-                  Struct.Error.Programming
-                  (
-                     "Attempt to switch weapons as a secondary action or"
-                     ++ " without character being selected."
-                  )
+   case (Struct.CharacterTurn.maybe_get_active_character model.char_turn) of
+      (Just char) ->
+         let
+            new_base_character =
+               (BattleCharacters.Struct.Character.switch_weapons
+                  (Struct.Character.get_base_character char)
                )
-               model
-            ),
-            Cmd.none
-         )
+            active_weapon =
+               (BattleCharacters.Struct.Character.get_active_weapon
+                  new_base_character
+               )
+            new_character =
+               (Struct.Character.set_base_character
+                  new_base_character
+                  char
+               )
+         in
+            (
+               {model |
+                  char_turn =
+                     (Struct.CharacterTurn.set_action
+                        Struct.CharacterTurn.SwitchingWeapons
+                        (Struct.CharacterTurn.set_navigator
+                           (Util.Navigator.get_character_attack_navigator
+                              model.battle
+                              new_character
+                           )
+                           (Struct.CharacterTurn.set_active_character
+                              new_character
+                              (Struct.CharacterTurn.store_path model.char_turn)
+                           )
+                        )
+                     )
+               },
+               Cmd.none
+            )
+
+      Nothing -> (model, Cmd.none)

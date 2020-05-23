@@ -25,7 +25,7 @@ import Array
 import Json.Decode
 
 -- Shared ----------------------------------------------------------------------
-import Util.Array
+import Shared.Util.Array
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods

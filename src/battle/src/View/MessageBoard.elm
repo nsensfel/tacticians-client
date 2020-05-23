@@ -4,7 +4,7 @@ module View.MessageBoard exposing (get_html)
 import Html
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
@@ -40,5 +40,5 @@ display model message =
 get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    case (Struct.MessageBoard.maybe_get_current_message model.message_board) of
-      Nothing -> (Util.Html.nothing)
+      Nothing -> (Shared.Util.Html.nothing)
       (Just message) -> (display model message)

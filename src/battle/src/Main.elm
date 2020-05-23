@@ -4,7 +4,7 @@ module Main exposing (main)
 import Browser
 
 -- Shared ----------------------------------------------------------------------
-import Struct.Flags
+import Shared.Struct.Flags
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Model
@@ -15,7 +15,7 @@ import ElmModule.Subscriptions
 import ElmModule.View
 import ElmModule.Update
 
-main : (Program Struct.Flags.Type Struct.Model.Type Struct.Event.Type)
+main : (Program Shared.Struct.Flags.Type Struct.Model.Type Struct.Event.Type)
 main =
    (Browser.element
       {

@@ -1,4 +1,4 @@
-module Update.LookForCharacter exposing (apply_to)
+module Update.Character.LookForCharacter exposing (apply_to)
 
 -- Elm -------------------------------------------------------------------------
 import Array

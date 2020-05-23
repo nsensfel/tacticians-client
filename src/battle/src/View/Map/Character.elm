@@ -6,7 +6,7 @@ import Html.Attributes
 import Html.Events
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Portrait
@@ -80,7 +80,7 @@ get_head_html char =
 get_banner_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_banner_html char =
    -- TODO: Banner from some status indicator
-   (Util.Html.nothing)
+   (Shared.Util.Html.nothing)
 
 get_actual_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_actual_html char =
@@ -123,4 +123,4 @@ get_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_html char =
    if (Struct.Character.is_alive char)
    then (get_actual_html char)
-   else (Util.Html.nothing)
+   else (Shared.Util.Html.nothing)

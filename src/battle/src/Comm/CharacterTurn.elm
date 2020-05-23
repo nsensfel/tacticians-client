@@ -4,7 +4,7 @@ module Comm.CharacterTurn exposing (try)
 import Json.Encode
 
 -- Shared ----------------------------------------------------------------------
-import Struct.Flags
+import Shared.Struct.Flags
 
 -- Local Module ----------------------------------------------------------------
 import Constants.IO
@@ -34,13 +34,13 @@ maybe_encode model =
                   (
                      "stk",
                      (Json.Encode.string
-                        (Struct.Flags.get_session_token model.flags)
+                        (Shared.Struct.Flags.get_session_token model.flags)
                      )
                   ),
                   (
                      "pid",
                      (Json.Encode.string
-                        (Struct.Flags.get_user_id model.flags)
+                        (Shared.Struct.Flags.get_user_id model.flags)
                      )
                   ),
                   (

@@ -14,13 +14,13 @@ import Time
 import Url
 
 -- Shared ----------------------------------------------------------------------
-import Action.Ports
+import Shared.Action.Ports
 
-import Struct.Flags
+import Shared.Struct.Flags
 
-import Util.Http
+import Shared.Util.Http
 
-import Update.Sequence
+import Shared.Update.Sequence
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.DataSetItem
@@ -55,14 +55,20 @@ import Update.Puppeteer
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
+do_nothing : (
+      Struct.Model.Type ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
+do_nothing model = (model, Cmd.none)
+
 disconnected : (
       Struct.Model.Type ->
-      (Cmd Struct.Event.Type)
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 disconnected model =
    (
       model,
-      (Action.Ports.go_to
+      (Shared.Action.Ports.go_to
          (
             Constants.IO.base_url
             ++ "/login/?action=disconnect&goto="
@@ -70,7 +76,7 @@ disconnected model =
             (Url.percentEncode
                (
                   "/battle/?"
-                  ++ (Struct.Flags.get_parameters_as_url model.flags)
+                  ++ (Shared.Struct.Flags.get_parameters_as_url model.flags)
                )
             )
          )
@@ -80,7 +86,7 @@ disconnected model =
 add_characters_data_set_item : (
       BattleCharacters.Struct.DataSetItem.Type ->
       Struct.Model.Type ->
-      (Cmd Struct.Event.Type)
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 add_characters_data_set_item item model =
    (
@@ -97,7 +103,7 @@ add_characters_data_set_item item model =
 add_map_data_set_item : (
       BattleMap.Struct.DataSetItem.Type ->
       Struct.Model.Type ->
-      (Cmd Struct.Event.Type)
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 add_map_data_set_item item model =
    (
@@ -111,7 +117,7 @@ add_map_data_set_item item model =
 add_player : (
       Struct.Player.Type ->
       Struct.Model.Type ->
-      (Cmd Struct.Event.Type)
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 add_player pl model =
    (
@@ -124,7 +130,7 @@ add_player pl model =
 add_character : (
       Struct.Character.Unresolved ->
       Struct.Model.Type ->
-      (Cmd Struct.Event.Type)
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 add_character unresolved_char model =
    (
@@ -153,7 +159,7 @@ add_character unresolved_char model =
 set_map : (
       BattleMap.Struct.Map.Type ->
       Struct.Model.Type ->
-      (Cmd Struct.Event.Type)
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 set_map map model =
    (
@@ -173,7 +179,7 @@ set_map map model =
 add_to_timeline : (
       (List Struct.TurnResult.Type) ->
       Struct.Model.Type ->
-      (Cmd Struct.Event.Type)
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 add_to_timeline turn_results model =
    (Update.Puppeteer.apply_to
@@ -207,7 +213,7 @@ add_to_timeline turn_results model =
 set_timeline : (
       (List Struct.TurnResult.Type) ->
       Struct.Model.Type ->
-      (Cmd Struct.Event.Type)
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 set_timeline turn_results model =
    (
@@ -274,15 +280,15 @@ apply_to model query_result =
          (
             (Struct.Model.invalidate
                (Struct.Error.new Struct.Error.Networking
-                  (Util.Http.error_to_string error)
+                  (Shared.Util.Http.error_to_string error)
                )
                model
             ),
             Cmd.none
          )
 
-      (Result.Ok server_command) ->
-         (Update.Sequence.sequence
-            (List.map (server_command_to_update) commands)
+      (Result.Ok server_commands) ->
+         (Shared.Update.Sequence.sequence
+            (List.map (server_command_to_update) server_commands)
             model
          )

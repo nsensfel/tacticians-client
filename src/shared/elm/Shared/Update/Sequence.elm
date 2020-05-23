@@ -4,6 +4,7 @@ module Shared.Update.Sequence exposing (sequence)
 import List
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Event
 import Struct.Model
 
 --------------------------------------------------------------------------------
@@ -16,9 +17,7 @@ sequence_step : (
    )
 sequence_step action (model, cmd_list) =
    let (next_model, new_cmd) = (action model) in
-      case new_cmd of
-         Cmd.none -> (next_model, cmd_list)
-         _ -> (next_model, (cmd_list ++ new_cmds))
+      (next_model, (new_cmd :: cmd_list))
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -27,6 +26,7 @@ sequence : (
       (List
          (Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type)))
       )
+      -> Struct.Model.Type
       -> (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 sequence actions model =

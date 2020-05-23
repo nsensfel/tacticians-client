@@ -49,7 +49,17 @@ go_to_current_tile model loc_ref =
       -- And we just clicked on that tile.
       (
          {model |
-            char_turn = (Struct.CharacterTurn.lock_path model.char_turn)
+            char_turn =
+               case
+                  (Struct.CharacterTurn.maybe_get_navigator model.char_turn)
+               of
+                  (Just nav) ->
+                     (Struct.CharacterTurn.set_navigator
+                        (Struct.Navigator.lock_path nav)
+                        (Struct.CharacterTurn.store_path model.char_turn)
+                     )
+
+                  Nothing -> model.char_turn
          },
          Cmd.none
       )
@@ -166,11 +176,11 @@ go_to_tile model char navigator loc_ref =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to : (
-      Struct.Model.Type ->
       BattleMap.Struct.Location.Ref ->
+      Struct.Model.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model loc_ref =
+apply_to loc_ref model =
    case
       (
          (Struct.CharacterTurn.maybe_get_navigator model.char_turn),

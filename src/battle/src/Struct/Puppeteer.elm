@@ -16,7 +16,7 @@ module Struct.Puppeteer exposing
 import List
 
 -- Shared ----------------------------------------------------------------------
-import Util.List
+import Shared.Util.List
 
 -- Local Module ----------------------------------------------------------------
 import Struct.TurnResult
@@ -61,7 +61,7 @@ append_backward actions puppeteer =
 
 forward : Type -> Type
 forward puppeteer =
-   case (Util.List.pop puppeteer.forward_actions) of
+   case (Shared.Util.List.pop puppeteer.forward_actions) of
       Nothing -> puppeteer
       (Just (action, forward_actions)) ->
          {puppeteer |
@@ -72,7 +72,7 @@ forward puppeteer =
 
 backward : Type -> Type
 backward puppeteer =
-   case (Util.List.pop puppeteer.backward_actions) of
+   case (Shared.Util.List.pop puppeteer.backward_actions) of
       Nothing -> puppeteer
       (Just (action, backward_actions)) ->
          {puppeteer |

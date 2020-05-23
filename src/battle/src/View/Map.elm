@@ -10,7 +10,7 @@ import Html.Lazy
 import List
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Map
@@ -96,7 +96,7 @@ maybe_print_navigator interactive maybe_nav =
             )
 
          Nothing ->
-            (Util.Html.nothing)
+            (Shared.Util.Html.nothing)
 
 get_characters_html : (
       Struct.Battle.Type ->
