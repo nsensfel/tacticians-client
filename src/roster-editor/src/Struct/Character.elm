@@ -32,7 +32,7 @@ import Json.Decode.Pipeline
 import Json.Encode
 
 -- Shared ----------------------------------------------------------------------
-import Util.List
+import Shared.Util.List
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Attributes
@@ -99,7 +99,7 @@ compute_glyph_family_id_collections equipment =
          ),
          (Set.remove
             no_glyph_family_id
-            (Util.List.duplicates
+            (Shared.Util.List.duplicates
                family_ids_list
             )
          )

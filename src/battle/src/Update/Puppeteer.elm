@@ -166,10 +166,7 @@ apply_effects_backward effects model =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : (
-      Struct.Model.Type ->
-      (Struct.Model.Type, (Cmd Struct.Event.Type))
-   )
+apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 apply_to model =
    case (Struct.Puppeteer.maybe_get_current_action model.puppeteer) of
       Nothing -> (model, (Cmd.none))

@@ -52,8 +52,8 @@ get_moved_character_html_contents =
       )
    ]
 
-get_chose_target_html_contents : (List (Html.Html Struct.Event.Type))
-get_chose_target_html_contents =
+get_attacking_html_contents : (List (Html.Html Struct.Event.Type))
+get_attacking_html_contents =
    [
       (get_header_html "End the Turn by an Attack"),
       (Html.text
@@ -66,8 +66,8 @@ button to start this turn over."""
       )
    ]
 
-get_switched_weapons_html_contents : (List (Html.Html Struct.Event.Type))
-get_switched_weapons_html_contents =
+get_switching_weapons_html_contents : (List (Html.Html Struct.Event.Type))
+get_switching_weapons_html_contents =
    [
       (get_header_html "End the Turn by Switching Weapons"),
       (Html.text
@@ -102,18 +102,12 @@ get_html_contents : (
       (List (Html.Html Struct.Event.Type))
    )
 get_html_contents model =
-   case (Struct.CharacterTurn.get_state model.char_turn) of
-      Struct.CharacterTurn.SelectedCharacter ->
-         (get_selected_character_html_contents)
+   case (Struct.CharacterTurn.get_action model.char_turn) of
+      Struct.CharacterTurn.Attacking ->
+         (get_attacking_html_contents)
 
-      Struct.CharacterTurn.MovedCharacter ->
-         (get_moved_character_html_contents)
-
-      Struct.CharacterTurn.ChoseTarget ->
-         (get_chose_target_html_contents)
-
-      Struct.CharacterTurn.SwitchedWeapons ->
-         (get_switched_weapons_html_contents)
+      Struct.CharacterTurn.SwitchingWeapons ->
+         (get_switching_weapons_html_contents)
 
       _ ->
          (get_default_html_contents)

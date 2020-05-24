@@ -8,7 +8,7 @@ import Html.Attributes
 import Html.Events
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
@@ -66,7 +66,7 @@ get_go_button_html model =
          ]
       )
    else
-      (Util.Html.nothing)
+      (Shared.Util.Html.nothing)
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

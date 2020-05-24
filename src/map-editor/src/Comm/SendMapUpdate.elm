@@ -6,7 +6,7 @@ import Array
 import Json.Encode
 
 -- Shared ----------------------------------------------------------------------
-import Struct.Flags
+import Shared.Struct.Flags
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Map
@@ -34,12 +34,12 @@ encode_map model =
          [
             ("stk",
                (Json.Encode.string
-                  (Struct.Flags.get_session_token model.flags)
+                  (Shared.Struct.Flags.get_session_token model.flags)
                )
             ),
             ("pid",
                (Json.Encode.string
-                  (Struct.Flags.get_user_id model.flags)
+                  (Shared.Struct.Flags.get_user_id model.flags)
                )
             ),
             ("mid", (Json.Encode.string model.map_id)),

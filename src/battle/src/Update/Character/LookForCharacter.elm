@@ -35,11 +35,11 @@ scroll_to_char model char_ix =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to : (
-      Struct.Model.Type ->
       Int ->
+      Struct.Model.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model target_ix =
+apply_to target_ix model =
    (
       {model |
          ui =

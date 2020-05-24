@@ -4,7 +4,7 @@ module Update.ToggleBattleIndex exposing (apply_to)
 import Array
 
 -- Shared ----------------------------------------------------------------------
-import Util.Array
+import Shared.Util.Array
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Character
@@ -44,7 +44,7 @@ give_battle_index : (
       Struct.Model.Type
    )
 give_battle_index model char index =
-   case (Util.Array.indexed_search (\e -> (e == -1)) model.battle_order) of
+   case (Shared.Util.Array.indexed_search (\e -> (e == -1)) model.battle_order) of
       Nothing -> model
       (Just (battle_index, _)) ->
          {model |

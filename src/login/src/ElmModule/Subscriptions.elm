@@ -2,9 +2,10 @@ module ElmModule.Subscriptions exposing (..)
 
 -- Elm -------------------------------------------------------------------------
 
--- Main Menu -------------------------------------------------------------------
-import Action.Ports
+-- Shared ----------------------------------------------------------------------
+import Shared.Action.Ports
 
+-- Main Menu -------------------------------------------------------------------
 import Struct.Model
 import Struct.Event
 
@@ -16,4 +17,4 @@ import Struct.Event
 --------------------------------------------------------------------------------
 subscriptions : Struct.Model.Type -> (Sub Struct.Event.Type)
 subscriptions model =
-   (Action.Ports.connected (always Struct.Event.Connected))
+   (Shared.Action.Ports.connected (always Struct.Event.Connected))

@@ -14,7 +14,7 @@ import Html.Attributes
 import Html.Events
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
@@ -161,7 +161,7 @@ get_weapon_field_header is_active_wp weapon =
                      (Html.text "(Equipped)")
                   ]
                )
-            else (Util.Html.nothing)
+            else (Shared.Util.Html.nothing)
          ),
          (Html.div
             [
@@ -238,7 +238,7 @@ get_weapon_details current_tab is_active_wp has_issue weapon =
                (Battle.View.Omnimods.get_signed_html
                   (BattleCharacters.Struct.Weapon.get_omnimods weapon)
                )
-            else (Util.Html.nothing)
+            else (Shared.Util.Html.nothing)
          )
       ]
    )
@@ -272,7 +272,7 @@ get_armor_details current_tab armor =
                (Battle.View.Omnimods.get_signed_html
                   (BattleCharacters.Struct.Armor.get_omnimods armor)
                )
-            else (Util.Html.nothing)
+            else (Shared.Util.Html.nothing)
          )
       ]
    )

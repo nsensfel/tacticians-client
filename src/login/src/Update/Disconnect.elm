@@ -1,9 +1,10 @@
 module Update.Disconnect exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 
--- Login -----------------------------------------------------------------------
-import Action.Ports
+-- Shared ----------------------------------------------------------------------
+import Shared.Action.Ports
 
+-- Local Module ----------------------------------------------------------------
 import Struct.Model
 import Struct.Event
 
@@ -18,5 +19,5 @@ apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 apply_to model =
    (
       model,
-      (Action.Ports.reset_session ())
+      (Shared.Action.Ports.reset_session ())
    )

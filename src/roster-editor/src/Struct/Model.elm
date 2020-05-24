@@ -19,9 +19,9 @@ import List
 import Dict
 
 -- Shared ----------------------------------------------------------------------
-import Struct.Flags
+import Shared.Struct.Flags
 
-import Util.Array
+import Shared.Util.Array
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.DataSet
@@ -39,7 +39,7 @@ import Struct.UI
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      flags : Struct.Flags.Type,
+      flags : Shared.Struct.Flags.Type,
       error : (Maybe Struct.Error.Type),
       ui : Struct.UI.Type,
       help_request : Struct.HelpRequest.Type,
@@ -86,7 +86,7 @@ has_loaded_data model =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Struct.Flags.Type -> Type
+new : Shared.Struct.Flags.Type -> Type
 new flags =
    {
       flags = flags,
@@ -98,7 +98,7 @@ new flags =
       battle_order =
          (Array.repeat
             (
-               case (Struct.Flags.maybe_get_parameter "s" flags) of
+               case (Shared.Struct.Flags.maybe_get_parameter "s" flags) of
                   Nothing -> 0
                   (Just "s") -> 8
                   (Just "m") -> 16
@@ -167,7 +167,7 @@ update_character_fun : (
    )
 update_character_fun ix fun model =
    {model |
-      characters = (Util.Array.update ix (fun) model.characters)
+      characters = (Shared.Util.Array.update ix (fun) model.characters)
    }
 
 invalidate : Struct.Error.Type -> Type -> Type

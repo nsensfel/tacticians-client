@@ -13,11 +13,11 @@ import Struct.UI
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to : (
-      Struct.Model.Type ->
       Struct.UI.Tab ->
+      Struct.Model.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model tab =
+apply_to tab model =
    if ((Struct.UI.maybe_get_displayed_tab model.ui) == (Just tab))
    then
       (

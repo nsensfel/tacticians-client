@@ -13,7 +13,7 @@ import Html.Attributes
 import Html.Events
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
@@ -97,7 +97,7 @@ true_get_html : (
    )
 true_get_html maybe_char glyph_modifier dataset =
    case maybe_char of
-      Nothing -> (Util.Html.nothing)
+      Nothing -> (Shared.Util.Html.nothing)
       (Just char) ->
          (Html.div
             [

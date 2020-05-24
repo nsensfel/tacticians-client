@@ -5,7 +5,7 @@ import Html
 import Html.Attributes
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
@@ -52,4 +52,4 @@ get_html model =
          )
 
       Nothing ->
-         (Util.Html.nothing)
+         (Shared.Util.Html.nothing)

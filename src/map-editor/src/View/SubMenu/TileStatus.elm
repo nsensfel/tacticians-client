@@ -7,7 +7,7 @@ import Html
 import Html.Attributes
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Battle ----------------------------------------------------------------------
 import Battle.View.Omnimods

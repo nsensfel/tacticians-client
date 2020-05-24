@@ -4,11 +4,11 @@ module Update.HandleServerReply exposing (apply_to)
 import Http
 
 -- Shared ----------------------------------------------------------------------
-import Action.Ports
+import Shared.Action.Ports
 
-import Util.Http
+import Shared.Util.Http
 
--- Login -----------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Error
 import Struct.Event
 import Struct.Model
@@ -35,7 +35,7 @@ set_session pid stk current_state =
             session_token = stk
          },
          (
-            (Action.Ports.store_new_session (pid, stk))
+            (Shared.Action.Ports.store_new_session (pid, stk))
             :: cmds
          )
       )
@@ -67,7 +67,7 @@ apply_to model query_result =
             (Struct.Model.invalidate
                (Struct.Error.new
                   Struct.Error.Networking
-                  (Util.Http.error_to_string error)
+                  (Shared.Util.Http.error_to_string error)
                )
                model
             ),

@@ -6,7 +6,7 @@ import Dict
 import Set
 
 -- Shared ----------------------------------------------------------------------
-import Util.List
+import Shared.Util.List
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Location
@@ -80,7 +80,7 @@ nigh_pattern_to_border model full_neighborhood nigh_pattern =
       case (Dict.get pattern model.tile_patterns) of
          Nothing ->
             case
-               (Util.List.get_first
+               (Shared.Util.List.get_first
                   (\e ->
                      (Struct.TilePattern.patterns_match
                         pattern

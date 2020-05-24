@@ -3,13 +3,15 @@ module Update.HandleConnected exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 import Url
 
--- Login -----------------------------------------------------------------------
-import Action.Ports
+-- Shared ----------------------------------------------------------------------
+import Shared.Action.Ports
 
+import Shared.Struct.Flags
+
+-- Local Module ----------------------------------------------------------------
 import Constants.IO
 
 import Struct.Event
-import Struct.Flags
 import Struct.Model
 
 --------------------------------------------------------------------------------
@@ -23,10 +25,12 @@ apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 apply_to model =
    (
       model,
-      (Action.Ports.go_to
+      (Shared.Action.Ports.go_to
          (Constants.IO.base_url ++
             (
-               case (Struct.Flags.maybe_get_parameter "goto" model.flags) of
+               case
+                  (Shared.Struct.Flags.maybe_get_parameter "goto" model.flags)
+               of
                   Nothing -> "/main-menu/"
                   (Just string) ->
                      case (Url.percentDecode string) of

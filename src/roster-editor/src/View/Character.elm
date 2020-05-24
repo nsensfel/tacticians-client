@@ -10,7 +10,7 @@ import Html.Attributes
 import Html.Events
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Battle Characters -----------------------------------------------------------
 import BattleCharacters.Struct.Armor
@@ -65,7 +65,7 @@ get_battle_index_html char =
    let battle_ix = (Struct.Character.get_battle_index char) in
       if (battle_ix == -1)
       then
-         (Util.Html.nothing)
+         (Shared.Util.Html.nothing)
       else
          (Html.div
             [

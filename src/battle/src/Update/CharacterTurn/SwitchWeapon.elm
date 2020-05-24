@@ -20,10 +20,7 @@ import Util.Navigator
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to : (
-      Struct.Model.Type ->
-      (Struct.Model.Type, (Cmd Struct.Event.Type))
-   )
+apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 apply_to model =
    case (Struct.CharacterTurn.maybe_get_active_character model.char_turn) of
       (Just char) ->

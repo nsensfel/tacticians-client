@@ -1,7 +1,7 @@
 module ElmModule.Init exposing (init)
 
 -- Shared ----------------------------------------------------------------------
-import Struct.Flags
+import Shared.Struct.Flags
 
 -- Local Module ----------------------------------------------------------------
 import Comm.LoadTilePatterns
@@ -18,7 +18,7 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-init : Struct.Flags.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
+init : Shared.Struct.Flags.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 init flags =
    let model = (Struct.Model.new flags) in
       (

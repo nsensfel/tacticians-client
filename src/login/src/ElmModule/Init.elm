@@ -2,9 +2,11 @@ module ElmModule.Init exposing (init)
 
 -- Elm -------------------------------------------------------------------------
 
--- Map -------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------------
+import Shared.Struct.Flags
+
+-- Local Module ----------------------------------------------------------
 import Struct.Event
-import Struct.Flags
 import Struct.Model
 
 import Update.Disconnect
@@ -17,12 +19,12 @@ import Update.HandleConnected
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-init : Struct.Flags.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
+init : Shared.Struct.Flags.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 init flags =
    let
       new_model = (Struct.Model.new flags)
    in
-      case (Struct.Flags.maybe_get_parameter "action" flags) of
+      case (Shared.Struct.Flags.maybe_get_parameter "action" flags) of
          (Just "disconnect") -> (Update.Disconnect.apply_to new_model)
          _ ->
             if (flags.user_id == "")

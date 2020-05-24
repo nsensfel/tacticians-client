@@ -10,7 +10,7 @@ module Struct.Model exposing
 -- Elm -------------------------------------------------------------------------
 
 -- Shared ----------------------------------------------------------------------
-import Struct.Flags
+import Shared.Struct.Flags
 
 -- Main Menu -------------------------------------------------------------------
 import Struct.Error
@@ -22,7 +22,7 @@ import Struct.UI
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      flags: Struct.Flags.Type,
+      flags: Shared.Struct.Flags.Type,
       error: (Maybe Struct.Error.Type),
       player_id: String,
       session_token: String,
@@ -37,7 +37,7 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Struct.Flags.Type -> Type
+new : Shared.Struct.Flags.Type -> Type
 new flags =
    {
       flags = flags,

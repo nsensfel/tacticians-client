@@ -5,11 +5,11 @@ import Http
 import Url
 
 -- Shared ----------------------------------------------------------------------
-import Action.Ports
+import Shared.Action.Ports
 
-import Struct.Flags
+import Shared.Struct.Flags
 
-import Util.Http
+import Shared.Util.Http
 
 -- Main Menu -------------------------------------------------------------------
 import Constants.IO
@@ -36,7 +36,7 @@ disconnected current_state =
       (
          model,
          [
-            (Action.Ports.go_to
+            (Shared.Action.Ports.go_to
                (
                   Constants.IO.base_url
                   ++ "/login/?action=disconnect&goto="
@@ -44,7 +44,8 @@ disconnected current_state =
                   (Url.percentEncode
                      (
                         "/main-menu/?"
-                        ++ (Struct.Flags.get_parameters_as_url model.flags)
+                        ++
+                        (Shared.Struct.Flags.get_parameters_as_url model.flags)
                      )
                   )
                )
@@ -86,7 +87,7 @@ apply_to model query_result =
          (
             (Struct.Model.invalidate
                (Struct.Error.new Struct.Error.Networking
-                  (Util.Http.error_to_string error)
+                  (Shared.Util.Http.error_to_string error)
                )
                model
             ),

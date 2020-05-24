@@ -12,7 +12,7 @@ module Struct.Model exposing
 import Dict
 
 -- Shared ----------------------------------------------------------------------
-import Struct.Flags
+import Shared.Struct.Flags
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
@@ -35,7 +35,7 @@ import Struct.UI
 --------------------------------------------------------------------------------
 type alias Type =
    {
-      flags : Struct.Flags.Type,
+      flags : Shared.Struct.Flags.Type,
       toolbox : Struct.Toolbox.Type,
       help_request : Struct.HelpRequest.Type,
       map : BattleMap.Struct.Map.Type,
@@ -59,10 +59,10 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Struct.Flags.Type -> Type
+new : Shared.Struct.Flags.Type -> Type
 new flags =
    let
-      maybe_map_id = (Struct.Flags.maybe_get_parameter "id" flags)
+      maybe_map_id = (Shared.Struct.Flags.maybe_get_parameter "id" flags)
       model =
          {
             flags = flags,

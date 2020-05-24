@@ -9,7 +9,7 @@ import Html.Attributes
 import Html.Events
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Battle ----------------------------------------------------------------------
 import Battle.View.Omnimods
@@ -148,7 +148,7 @@ true_get_html is_selecting_secondary dataset =
 get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    case model.edited_char of
-      Nothing -> (Util.Html.nothing)
+      Nothing -> (Shared.Util.Html.nothing)
       (Just char) ->
          let
             is_selecting_secondary =

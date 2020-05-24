@@ -10,9 +10,9 @@ module Struct.Model exposing
 -- Elm -------------------------------------------------------------------------
 
 -- Shared ----------------------------------------------------------------------
-import Struct.Flags
+import Shared.Struct.Flags
 
--- Login -----------------------------------------------------------------------
+-- Local Module ----------------------------------------------------------------
 import Struct.Error
 import Struct.HelpRequest
 import Struct.UI
@@ -24,7 +24,7 @@ type alias Type =
    {
       help_request: Struct.HelpRequest.Type,
       error: (Maybe Struct.Error.Type),
-      flags: Struct.Flags.Type,
+      flags: Shared.Struct.Flags.Type,
       username: String,
       password1: String,
       password2: String,
@@ -42,10 +42,10 @@ type alias Type =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-new : Struct.Flags.Type -> Type
+new : Shared.Struct.Flags.Type -> Type
 new flags =
    let
-      maybe_mode = (Struct.Flags.maybe_get_parameter "mode" flags)
+      maybe_mode = (Shared.Struct.Flags.maybe_get_parameter "mode" flags)
       model =
          {
             help_request = Struct.HelpRequest.None,

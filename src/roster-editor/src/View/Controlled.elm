@@ -6,7 +6,7 @@ import Html.Attributes
 import Html.Lazy
 
 -- Local Module ----------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
@@ -25,7 +25,7 @@ import View.CharacterCard
 get_html : Struct.Model.Type -> (Html.Html Struct.Event.Type)
 get_html model =
    case model.edited_char of
-      Nothing -> (Util.Html.nothing)
+      Nothing -> (Shared.Util.Html.nothing)
       (Just char) ->
          (Html.div
             [(Html.Attributes.class "controlled")]

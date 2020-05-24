@@ -4,13 +4,14 @@ module ElmModule.View exposing (view)
 import Html
 import Html.Attributes
 
--- Map -------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------
+import Shared.Util.Html
+
+-- Local Module ----------------------------------------------------------
 import Struct.Error
 import Struct.Event
 import Struct.Model
 import Struct.UI
-
-import Util.Html
 
 import View.AccountRecovery
 import View.Header
@@ -51,7 +52,7 @@ view model =
                ),
                (
                   case model.error of
-                     Nothing -> (Util.Html.nothing)
+                     Nothing -> (Shared.Util.Html.nothing)
                      (Just err) ->
                         (Html.div
                            [

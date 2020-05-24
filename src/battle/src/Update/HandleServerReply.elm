@@ -270,11 +270,11 @@ server_command_to_update server_command =
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to : (
-      Struct.Model.Type ->
       (Result Http.Error (List Struct.ServerReply.Type)) ->
+      Struct.Model.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model query_result =
+apply_to query_result model =
    case query_result of
       (Result.Err error) ->
          (

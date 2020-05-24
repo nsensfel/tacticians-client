@@ -1,7 +1,7 @@
 module Update.GoToMainMenu exposing (apply_to)
 
 -- Shared ----------------------------------------------------------------------
-import Action.Ports
+import Shared.Action.Ports
 
 -- Battle ----------------------------------------------------------------------
 import Constants.IO
@@ -20,5 +20,5 @@ apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 apply_to model =
    (
       model,
-      (Action.Ports.go_to (Constants.IO.base_url ++"/main-menu/"))
+      (Shared.Action.Ports.go_to (Constants.IO.base_url ++"/main-menu/"))
    )

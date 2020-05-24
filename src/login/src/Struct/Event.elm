@@ -3,9 +3,6 @@ module Struct.Event exposing (Type(..), attempted)
 -- Elm -------------------------------------------------------------------------
 import Http
 
--- Shared ----------------------------------------------------------------------
-import Util.Http
-
 -- Login -----------------------------------------------------------------------
 import Struct.Error
 import Struct.ServerReply

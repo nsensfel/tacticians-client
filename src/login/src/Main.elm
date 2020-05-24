@@ -3,17 +3,19 @@ module Main exposing (main)
 -- Elm ------------------------------------------------------------------------
 import Browser
 
--- Map -------------------------------------------------------------------
+-- Shared ----------------------------------------------------------------
+import Shared.Struct.Flags
+
+-- Local Module ----------------------------------------------------------
 import Struct.Model
 import Struct.Event
-import Struct.Flags
 
 import ElmModule.Init
 import ElmModule.Subscriptions
 import ElmModule.View
 import ElmModule.Update
 
-main : (Program Struct.Flags.Type Struct.Model.Type Struct.Event.Type)
+main : (Program Shared.Struct.Flags.Type Struct.Model.Type Struct.Event.Type)
 main =
    (Browser.element
       {

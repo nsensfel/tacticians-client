@@ -21,7 +21,7 @@ module Struct.Toolbox exposing
    )
 
 -- Shared ----------------------------------------------------------------------
-import Util.List
+import Shared.Util.List
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Location
@@ -112,7 +112,7 @@ get_filled_tiles_internals : (
       (List BattleMap.Struct.Location.Type)
    )
 get_filled_tiles_internals match_fun candidates result =
-   case (Util.List.pop candidates) of
+   case (Shared.Util.List.pop candidates) of
       Nothing -> result
       (Just (loc, remaining_candidates)) ->
          if (match_fun loc)
@@ -190,7 +190,11 @@ get_square_tiles corner map new_loc =
          then (List.range corner.y new_loc.y)
          else (List.range new_loc.y corner.y)
    in
-      (Util.List.product_map (BattleMap.Struct.Location.new) x_range y_range)
+      (Shared.Util.List.product_map
+         (BattleMap.Struct.Location.new)
+         x_range
+         y_range
+      )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

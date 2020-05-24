@@ -6,7 +6,7 @@ import Array
 import Json.Encode
 
 -- Shared ----------------------------------------------------------------------
-import Struct.Flags
+import Shared.Struct.Flags
 
 -- Local Module ----------------------------------------------------------------
 import Comm.Send
@@ -30,12 +30,12 @@ maybe_encode model =
          [
             ("stk",
                (Json.Encode.string
-                  (Struct.Flags.get_session_token model.flags)
+                  (Shared.Struct.Flags.get_session_token model.flags)
                )
             ),
             ("pid",
                (Json.Encode.string
-                  (Struct.Flags.get_user_id model.flags)
+                  (Shared.Struct.Flags.get_user_id model.flags)
                )
             ),
             (
@@ -44,7 +44,7 @@ maybe_encode model =
                   (
                      case
                         (String.toInt
-                           (Struct.Flags.force_get_parameter "six" model.flags)
+                           (Shared.Struct.Flags.force_get_parameter "six" model.flags)
                         )
                      of
                         (Just ix) -> ix
@@ -55,25 +55,25 @@ maybe_encode model =
             (
                "cat",
                (Json.Encode.string
-                  (Struct.Flags.force_get_parameter "cat" model.flags)
+                  (Shared.Struct.Flags.force_get_parameter "cat" model.flags)
                )
             ),
             (
                "mod",
                (Json.Encode.string
-                  (Struct.Flags.force_get_parameter "mod" model.flags)
+                  (Shared.Struct.Flags.force_get_parameter "mod" model.flags)
                )
             ),
             (
                "s",
                (Json.Encode.string
-                  (Struct.Flags.force_get_parameter "s" model.flags)
+                  (Shared.Struct.Flags.force_get_parameter "s" model.flags)
                )
             ),
             (
                "map_id",
                (Json.Encode.string
-                  (Struct.Flags.force_get_parameter "map_id" model.flags)
+                  (Shared.Struct.Flags.force_get_parameter "map_id" model.flags)
                )
             ),
             (

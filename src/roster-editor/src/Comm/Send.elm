@@ -6,11 +6,13 @@ import Http
 import Json.Decode
 import Json.Encode
 
+--- Shared ---------------------------------------------------------------------
+import Shared.Comm.GoTo
+
 --- Battle Characters ----------------------------------------------------------
 import BattleCharacters.Comm.AddDataSetItem
 
 --- Local Module ---------------------------------------------------------------
-import Comm.GoTo
 import Comm.AddChar
 import Comm.SetInventory
 
@@ -33,7 +35,7 @@ internal_decoder reply_type =
       "add_char" -> (Comm.AddChar.decode)
 
       "disconnected" -> (Json.Decode.succeed Struct.ServerReply.Disconnected)
-      "goto" -> (Comm.GoTo.decode)
+      "goto" -> (Shared.Comm.GoTo.decode)
       "okay" -> (Json.Decode.succeed Struct.ServerReply.Okay)
 
       other ->

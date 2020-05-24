@@ -5,7 +5,7 @@ import Html
 import Html.Attributes
 
 -- Shared ----------------------------------------------------------------------
-import Util.Html
+import Shared.Util.Html
 
 -- Main Menu -------------------------------------------------------------------
 import Struct.Error
@@ -33,7 +33,7 @@ view model =
          (View.CurrentTab.get_html model),
          (
             case model.error of
-               Nothing -> (Util.Html.nothing)
+               Nothing -> (Shared.Util.Html.nothing)
                (Just err) ->
                   (Html.div
                      []

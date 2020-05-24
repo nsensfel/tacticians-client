@@ -14,11 +14,11 @@ import Struct.Model
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to : (
-      Struct.Model.Type ->
       Struct.HelpRequest.Type ->
+      Struct.Model.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to model help_request =
+apply_to help_request model =
    (
       {model |
          message_board =
