@@ -99,7 +99,7 @@ remove_marker marker_name map =
             content =
                (Set.foldl
                   (\loc array ->
-                     (Shared.Util.Array.update_unsafe
+                     (Shared.Util.Array.update
                         (location_to_index
                            (BattleMap.Struct.Location.from_ref loc)
                            map
@@ -122,7 +122,7 @@ add_marker marker_name marker map =
       content =
          (Set.foldl
             (\loc array ->
-               (Shared.Util.Array.update_unsafe
+               (Shared.Util.Array.update
                   (location_to_index
                      (BattleMap.Struct.Location.from_ref loc)
                      map

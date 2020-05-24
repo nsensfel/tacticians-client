@@ -1,7 +1,7 @@
 module Shared.Util.Array exposing
    (
       update,
-      update_unsafe,
+      update_or_insert,
       filter_first,
       indexed_search
    )
@@ -9,24 +9,24 @@ module Shared.Util.Array exposing
 import List
 import Array
 
-update : (
+update_or_insert : (
       Int ->
       ((Maybe t) -> (Maybe t)) ->
       (Array.Array t) ->
       (Array.Array t)
    )
-update index fun array =
+update_or_insert index fun array =
    case (fun (Array.get index array)) of
       Nothing -> array
       (Just e) -> (Array.set index e array)
 
-update_unsafe : (
+update : (
       Int ->
       (t -> t) ->
       (Array.Array t) ->
       (Array.Array t)
    )
-update_unsafe index fun array =
+update index fun array =
    case (Array.get index array) of
       Nothing -> array
       (Just e) -> (Array.set index (fun e) array)

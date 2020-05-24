@@ -161,7 +161,7 @@ save_character model =
 
 update_character_fun : (
       Int ->
-      ((Maybe Struct.Character.Type) -> (Maybe Struct.Character.Type)) ->
+      (Struct.Character.Type -> Struct.Character.Type) ->
       Type ->
       Type
    )

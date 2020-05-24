@@ -15,19 +15,14 @@ import Struct.UI
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-make_it_so : (Maybe Struct.Character.Type) -> (Maybe Struct.Character.Type)
-make_it_so maybe_character =
-   case maybe_character of
-      Nothing -> Nothing
-      (Just character) ->
-         (Just
-            (Struct.Character.set_base_character
-               (BattleCharacters.Struct.Character.dirty_switch_weapons
-                  (Struct.Character.get_base_character character)
-               )
-               character
-            )
-         )
+make_it_so : Struct.Character.Type -> Struct.Character.Type
+make_it_so character =
+   (Struct.Character.set_base_character
+      (BattleCharacters.Struct.Character.dirty_switch_weapons
+         (Struct.Character.get_base_character character)
+      )
+      character
+   )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------

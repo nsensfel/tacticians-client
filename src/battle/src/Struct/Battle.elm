@@ -157,7 +157,7 @@ set_character ix char battle =
 
 update_character : (
       Int ->
-      ((Maybe Struct.Character.Type) -> (Maybe Struct.Character.Type)) ->
+      (Struct.Character.Type -> Struct.Character.Type) ->
       Type ->
       Type
    )
@@ -221,7 +221,7 @@ set_player ix pl battle =
 
 update_player : (
       Int ->
-      ((Maybe Struct.Player.Type) -> (Maybe Struct.Player.Type)) ->
+      (Struct.Player.Type -> Struct.Player.Type) ->
       Type ->
       Type
    )

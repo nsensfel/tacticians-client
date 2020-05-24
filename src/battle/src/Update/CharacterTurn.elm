@@ -3,6 +3,9 @@ module Update.CharacterTurn exposing (apply_to)
 -- Elm -------------------------------------------------------------------------
 
 -- Local Module ----------------------------------------------------------------
+import Constants.DisplayEffects
+
+import Struct.Battle
 import Struct.CharacterTurn
 import Struct.Character
 import Struct.Event
@@ -44,6 +47,14 @@ apply_to target_char model =
                      target_char
                      (Struct.CharacterTurn.new)
                   )
+               ),
+            battle =
+               (Struct.Battle.update_character
+                  (Struct.Character.get_index target_char)
+                  (Struct.Character.add_extra_display_effect
+                     Constants.DisplayEffects.active_character
+                  )
+                  model.battle
                ),
             ui =
                (Struct.UI.reset_displayed_nav

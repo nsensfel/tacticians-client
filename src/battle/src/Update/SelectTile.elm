@@ -18,6 +18,8 @@ import Struct.Model
 import Struct.Navigator
 import Struct.UI
 
+import Update.CharacterTurn.AbortTurn
+
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -146,12 +148,7 @@ go_to_another_tile model char navigator loc_ref =
                )
 
       Nothing -> -- Clicked outside of the range indicator
-         (
-            {model |
-               char_turn = (Struct.CharacterTurn.new)
-            },
-            Cmd.none
-         )
+         (Update.CharacterTurn.AbortTurn.apply_to model)
 
 go_to_tile : (
       Struct.Model.Type ->

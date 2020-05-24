@@ -14,14 +14,6 @@ import Struct.Navigator
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-maybe_disable_char : (
-      (Maybe Struct.Character.Type) ->
-      (Maybe Struct.Character.Type)
-   )
-maybe_disable_char maybe_char =
-   case maybe_char of
-      (Just char) -> (Just (Struct.Character.set_enabled False char))
-      Nothing -> Nothing
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -42,7 +34,7 @@ apply_to model =
                battle =
                   (Struct.Battle.update_character
                      (Struct.Character.get_index char)
-                     (maybe_disable_char)
+                     (Struct.Character.set_enabled False)
                      model.battle
                   ),
                char_turn = (Struct.CharacterTurn.new)
