@@ -30,7 +30,7 @@ sequence : (
       -> (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
 sequence actions model =
-   let (final_model, cmds) = (List.foldr (sequence_step) (model, []) actions) in
+   let (final_model, cmds) = (List.foldl (sequence_step) (model, []) actions) in
       case cmds of
          [] -> (final_model, Cmd.none)
          [cmd] -> (final_model, cmd)
