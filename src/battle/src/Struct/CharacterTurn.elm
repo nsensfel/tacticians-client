@@ -52,6 +52,9 @@ import Json.Encode
 
 import Set
 
+-- Shared ----------------------------------------------------------------------
+import Shared.Util.Set
+
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
 
@@ -204,9 +207,7 @@ remove_target_index ix ct = {ct | targets = (Set.remove ix ct.targets)}
 
 toggle_target_index : Int -> Type -> Type
 toggle_target_index ix ct =
-   if (Set.member ix ct.targets)
-   then (remove_target_index ix ct)
-   else (add_target_index ix ct)
+   {ct | targets = (Shared.Util.Set.toggle ix ct.targets)}
 
 get_target_indices : Type -> (Set.Set Int)
 get_target_indices ct = ct.targets
@@ -226,9 +227,7 @@ remove_location ix ct = {ct | locations = (Set.remove ix ct.locations)}
 
 toggle_location : BattleMap.Struct.Location.Ref -> Type -> Type
 toggle_location ix ct =
-   if (Set.member ix ct.locations)
-   then (remove_location ix ct)
-   else (add_location ix ct)
+   {ct | locations = (Shared.Util.Set.toggle ix ct.locations)}
 
 get_locations : Type -> (Set.Set BattleMap.Struct.Location.Ref)
 get_locations ct = ct.locations

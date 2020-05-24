@@ -4,6 +4,8 @@ module Update.CharacterTurn.ToggleTarget exposing (apply_to, apply_to_ref)
 import BattleMap.Struct.Location
 
 -- Local Module ----------------------------------------------------------------
+import Constants.DisplayEffects
+
 import Struct.Battle
 import Struct.Character
 import Struct.CharacterTurn
@@ -59,6 +61,14 @@ toggle_attack_character model target_char_id =
             target_char_id
             model.char_turn
          ),
+      battle =
+         (Struct.Battle.update_character
+            target_char_id
+            (Struct.Character.toggle_extra_display_effect
+               Constants.DisplayEffects.target_character
+            )
+            model.battle
+         ),
       ui =
          (Struct.UI.reset_displayed_nav
             (Struct.UI.reset_displayed_tab
@@ -78,6 +88,14 @@ undo_attack_character model target_char_id =
          (Struct.CharacterTurn.remove_target_index
             target_char_id
             model.char_turn
+         ),
+      battle =
+         (Struct.Battle.update_character
+            target_char_id
+            (Struct.Character.remove_extra_display_effect
+               Constants.DisplayEffects.target_character
+            )
+            model.battle
          ),
       ui =
          (Struct.UI.reset_displayed_nav

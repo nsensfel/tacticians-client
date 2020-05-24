@@ -24,6 +24,11 @@ module BattleMap.Struct.TileInstance exposing
       error,
       solve,
       set_location_from_index,
+      add_extra_display_effect,
+      remove_extra_display_effect,
+      get_extra_display_effects,
+      get_extra_display_effects_list,
+      reset_extra_display_effects,
       decoder,
       encode
    )
@@ -37,6 +42,9 @@ import Json.Encode
 
 import Json.Decode
 import Json.Decode.Pipeline
+
+-- Shared ----------------------------------------------------------------------
+import Shared.Util.Set
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.DataSet
@@ -58,6 +66,7 @@ type alias Type =
       class_id : BattleMap.Struct.Tile.Ref,
       variant_id : BattleMap.Struct.Tile.VariantID,
       tags : (Set.Set String),
+      extra_display_effects : (Set.Set String),
       borders : (List Border)
    }
 
@@ -100,6 +109,7 @@ default tile =
       crossing_cost = (BattleMap.Struct.Tile.get_cost tile),
       family = (BattleMap.Struct.Tile.get_family tile),
       tags = (Set.empty),
+      extra_display_effects = (Set.empty),
       borders = []
    }
 
@@ -112,6 +122,7 @@ error x y =
       family = "0",
       crossing_cost = Constants.Movement.cost_when_out_of_bounds,
       tags = (Set.empty),
+      extra_display_effects = (Set.empty),
       borders = []
    }
 
@@ -186,6 +197,7 @@ decoder =
                   |> (Json.Decode.Pipeline.hardcoded tile_id)
                   |> (Json.Decode.Pipeline.hardcoded variant_id)
                   |> (Json.Decode.Pipeline.hardcoded (Set.empty)) -- tags
+                  |> (Json.Decode.Pipeline.hardcoded (Set.empty)) -- display_effects
                   |>
                      (Json.Decode.Pipeline.hardcoded
                         (list_to_borders borders [])
@@ -260,3 +272,33 @@ remove_tag tag tile_inst =
    {tile_inst |
       tags = (Set.remove tag tile_inst.tags)
    }
+
+add_extra_display_effect : String -> Type -> Type
+add_extra_display_effect effect_name tile =
+   {tile |
+      extra_display_effects =
+         (Set.insert effect_name tile.extra_display_effects)
+   }
+
+toggle_extra_display_effect : String -> Type -> Type
+toggle_extra_display_effect effect_name tile =
+   {tile |
+      extra_display_effects =
+         (Shared.Util.Set.toggle effect_name tile.extra_display_effects)
+   }
+
+remove_extra_display_effect : String -> Type -> Type
+remove_extra_display_effect effect_name tile =
+   {tile |
+      extra_display_effects =
+         (Set.remove effect_name tile.extra_display_effects)
+   }
+
+get_extra_display_effects : Type -> (Set.Set String)
+get_extra_display_effects tile = tile.extra_display_effects
+
+get_extra_display_effects_list : Type -> (List String)
+get_extra_display_effects_list tile = (Set.toList tile.extra_display_effects)
+
+reset_extra_display_effects : Type -> Type
+reset_extra_display_effects tile = {tile | extra_display_effects = (Set.empty)}

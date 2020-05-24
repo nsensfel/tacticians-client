@@ -22,6 +22,7 @@ module Struct.Character exposing
       get_melee_attack_range,
       refresh_omnimods,
       add_extra_display_effect,
+      toggle_extra_display_effect,
       remove_extra_display_effect,
       get_extra_display_effects,
       get_extra_display_effects_list,
@@ -35,6 +36,9 @@ import Set
 
 import Json.Decode
 import Json.Decode.Pipeline
+
+-- Shared ----------------------------------------------------------------------
+import Shared.Util.Set
 
 -- Battle ----------------------------------------------------------------------
 import Battle.Struct.Omnimods
@@ -241,6 +245,13 @@ add_extra_display_effect effect_name char =
    {char |
       extra_display_effects =
          (Set.insert effect_name char.extra_display_effects)
+   }
+
+toggle_extra_display_effect : String -> Type -> Type
+toggle_extra_display_effect effect_name tile =
+   {tile |
+      extra_display_effects =
+         (Shared.Util.Set.toggle effect_name tile.extra_display_effects)
    }
 
 remove_extra_display_effect : String -> Type -> Type

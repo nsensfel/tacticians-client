@@ -8,3 +8,6 @@ enabled_character = "enabled"
 
 target_character : String
 target_character = "target"
+
+target_tile : String
+target_tile = "target"

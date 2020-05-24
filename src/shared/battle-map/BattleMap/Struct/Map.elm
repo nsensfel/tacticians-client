@@ -15,6 +15,7 @@ module BattleMap.Struct.Map exposing
       get_width,
       new,
       set_tile_to,
+      update_tile_at,
       solve_tiles,
       maybe_get_tile_at
    )
@@ -136,10 +137,34 @@ add_marker marker_name marker map =
          )
    }
 
-set_tile_to : BattleMap.Struct.Location.Type -> BattleMap.Struct.TileInstance.Type -> Type -> Type
+set_tile_to : (
+      BattleMap.Struct.Location.Type ->
+      BattleMap.Struct.TileInstance.Type ->
+      Type ->
+      Type
+   )
 set_tile_to loc tile_inst map =
    {map |
       content = (Array.set (location_to_index loc map) tile_inst map.content)
+   }
+
+update_tile_at : (
+      BattleMap.Struct.Location.Type ->
+      (
+         BattleMap.Struct.TileInstance.Type ->
+         BattleMap.Struct.TileInstance.Type
+      ) ->
+      Type ->
+      Type
+   )
+update_tile_at loc fun map =
+   {map |
+      content =
+         (Shared.Util.Array.update
+            (location_to_index loc map)
+            (fun)
+            map.content
+         )
    }
 
 empty : Type

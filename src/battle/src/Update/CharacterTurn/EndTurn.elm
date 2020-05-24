@@ -3,6 +3,8 @@ module Update.CharacterTurn.EndTurn exposing (apply_to)
 -- Local Module ----------------------------------------------------------------
 import Comm.CharacterTurn
 
+import Constants.DisplayEffects
+
 import Struct.Battle
 import Struct.Character
 import Struct.CharacterTurn
@@ -10,6 +12,8 @@ import Struct.Error
 import Struct.Event
 import Struct.Model
 import Struct.Navigator
+
+import Update.CharacterTurn.AbortTurn
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -30,14 +34,21 @@ apply_to model =
       (_, Nothing) -> (model, Cmd.none)
       ((Just char), (Just cmd)) ->
          (
-            {model |
-               battle =
-                  (Struct.Battle.update_character
-                     (Struct.Character.get_index char)
-                     (Struct.Character.set_enabled False)
-                     model.battle
-                  ),
-               char_turn = (Struct.CharacterTurn.new)
-            },
+            (Update.CharacterTurn.AbortTurn.no_command_apply_to
+               {model |
+                  battle =
+                     (Struct.Battle.update_character
+                        (Struct.Character.get_index char)
+                        (
+                           (Struct.Character.remove_extra_display_effect
+                              Constants.DisplayEffects.enabled_character
+                           )
+                           >>
+                           (Struct.Character.set_enabled False)
+                        )
+                        model.battle
+                     )
+               }
+            ),
             cmd
          )
