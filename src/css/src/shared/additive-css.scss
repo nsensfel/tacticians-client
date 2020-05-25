@@ -1,0 +1,185 @@
+@use "sass:list";
+@use "sass:map";
+
+$collections: ();
+$properties: ();
+$var-prefix: additive;
+
+@function variable-name ($collection, $property, $instance)
+{
+   @return --#{$var-prefix}-#{$collection}-#{$property}-#{$instance};
+}
+
+@mixin new-collection ($collection)
+{
+   @if (map-has-key($collections, $collection))
+   {
+      @warn "Additive collection #{$collection} is declared multiple times."
+   }
+   @else
+   {
+      $new_collection:
+         (
+            "instances": 0,
+            "has_been_used": false,
+            "properties": ()
+         );
+
+      $collections:
+         map-merge($collections, ($collection: $new_collection))
+         !global;
+   }
+}
+
+@mixin new-property ($property, $neutral-value)
+{
+   @if (map-has-key($properties, $property))
+   {
+      @if (not (map-get($properties, $property) == $neutral-value))
+      {
+         @warn "Additive property #{$property} has multiple default values.";
+      }
+   }
+   @else
+   {
+      $properties:
+         map-merge($properties, ($property: $neutral-value))
+         !global;
+   }
+}
+
+@mixin add-property-to-collection ($collection, $property)
+{
+   @if (not map-has-key($properties, $property))
+   {
+      @warn "Adding property to a collection prior to defining default value.";
+   }
+   @if (not map-has-key($collections, $collection))
+   {
+      @error "Adding property to undefined collection.";
+   }
+   $collection-state: map-get($collections, $collection);
+   $collection-state:
+      map-merge(
+         $collection-state,
+         (
+            "properties":
+               append(
+                  map-get($collection-state, "properties"),
+                  $property
+               )
+         )
+      );
+   $collections:
+      map-merge($collections, ($collection: $collection-state))
+      !global;
+}
+
+@mixin set-property ($collection, $property, $value)
+{
+   @if (not map-has-key($properties, $property))
+   {
+      @error "Using undefined property #{$property}.";
+   }
+   @if (not map-has-key($collections, $collection))
+   {
+      @error "Using undefined collection #{$collection}.";
+   }
+
+   $collection-state: map-get($collections, $collection);
+
+   @if (map-get($collection-state, "has_been_used"))
+   {
+      @error "Adding to a property after it already has been used.";
+   }
+
+   $instances: map-get($collection-state, "instances");
+   $collection-state:
+      map-merge(
+         $collection-state,
+         (
+            "instances":($instances + 1)
+         )
+      );
+   $collections:
+      map-merge($collections, ($collection: $collection-state))
+      !global;
+
+   #{variable-name($collection, $property, $instances)}: $value;
+}
+
+@mixin use-property ($collection, $property, $separator)
+{
+   @if (not map-has-key($properties, $property))
+   {
+      @error "Using undefined property #{$property}.";
+   }
+   @if (not map-has-key($collections, $collection))
+   {
+      @error "Using undefined collection #{$collection}.";
+   }
+   $collection-state: map-get($collections, $collection);
+   $instances: map-get($collection-state, "instances");
+   $collection-state:
+      map-merge(
+         $collection-state,
+         (
+            "has_been_used": true
+         )
+      );
+   $collections:
+      map-merge($collections, ($collection: $collection-state))
+      !global;
+
+   @if (index(map-get($collection-state, "properties"), $property) == null)
+   {
+      @warn "Attempting to get value for unused additive property."
+   }
+   @else
+   {
+      $value: ();
+      @for $i from 0 to $instances
+      {
+         $value:
+            append(
+               $value,
+               var(#{variable_name($collection, $property, $i)}),
+               $separator
+            );
+      }
+
+      #{$property}: #{$value};
+   }
+}
+
+@mixin define-all-neutral-values ()
+{
+   :root
+   {
+      @each $collection, $env in $collections
+      {
+         $collections:
+            map-merge(
+               $collections,
+               (
+                  $collection:
+                  map-merge(
+                     $env,
+                     (
+                        "has_been_used": true
+                     )
+                  )
+               )
+            )
+            !global;
+         @each $property in map-get($env, "properties")
+         {
+            $default-value: map-get($properties, $property);
+            @for $i from 0 to map-get($env, "instances")
+            {
+               #{variable_name($collection, $property, $i)}: $default-value;
+            }
+         }
+      }
+   }
+}
