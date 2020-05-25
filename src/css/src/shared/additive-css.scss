@@ -31,7 +31,7 @@ $var-prefix: additive;
    }
 }
 
-@mixin new-property ($property, $neutral-value)
+@mixin new-property ($property, $neutral-value: none)
 {
    @if (map-has-key($properties, $property))
    {
@@ -108,7 +108,7 @@ $var-prefix: additive;
    #{variable-name($collection, $property, $instances)}: $value;
 }
 
-@mixin use-property ($collection, $property, $separator)
+@mixin use-property ($collection, $property, $separator: comma)
 {
    @if (not map-has-key($properties, $property))
    {
@@ -152,7 +152,7 @@ $var-prefix: additive;
    }
 }
 
-@mixin use-collection ($collection, $default-separator:comma, $separators: ())
+@mixin use-collection ($collection, $default-separator: comma, $separators: ())
 {
    @if (not map-has-key($collections, $collection))
    {
