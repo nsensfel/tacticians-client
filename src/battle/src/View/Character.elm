@@ -11,6 +11,8 @@ import BattleCharacters.Struct.Character
 import BattleCharacters.View.Portrait
 
 -- Local Module ----------------------------------------------------------------
+import Constants.DisplayEffects
+
 import Struct.Character
 import Struct.Event
 
@@ -33,7 +35,7 @@ get_portrait_html char =
             (
                \effect_name ->
                (Html.Attributes.class
-                  ("character-portrait-effect-" ++ effect_name)
+                  (Constants.DisplayEffects.css_class_prefix ++ effect_name)
                )
             )
             (Struct.Character.get_extra_display_effects_list char)

@@ -52,7 +52,7 @@ apply_to target_char model =
                (Struct.Battle.update_character
                   (Struct.Character.get_index target_char)
                   (Struct.Character.add_extra_display_effect
-                     Constants.DisplayEffects.active_character
+                     Constants.DisplayEffects.active
                   )
                   model.battle
                ),

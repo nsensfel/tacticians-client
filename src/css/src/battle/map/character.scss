@@ -15,7 +15,7 @@
    height: inherit;
 }
 
-.character-icon-effect-enabled,
+.character-icon.display-effect-enabled,
 .character-icon-enabled
 {
    animation-name: pulsating;
@@ -28,21 +28,24 @@
 .character-icon-head { z-index: 1; }
 .character-icon-body { z-index: 0; }
 
+.character-icon.display-effect-ally,
 .character-ally
 {
 }
 
+.character-icon.display-effect-enemy,
 .character-enemy
 {
    transform: scale(-1, 1);
 }
 
+.character-icon.display-effect-ally.character-icon-effect-disabled,
 .character-ally.character-icon-disabled
 {
    filter: contrast(35%);
 }
 
-.character-icon-effect-target,
+.character-icon.display-effect-target,
 .character-targeted
 {
    background-color: rgba(255,0,0,0.7);
@@ -51,7 +54,7 @@
    animation-iteration-count: infinite;
 }
 
-.character-icon-effect-active,
+.character-icon.display-effect-active,
 .character-selected
 {
    animation-name: strongly-pulsating;
@@ -59,3 +62,11 @@
    animation-iteration-count: infinite;
 }
 
+.display-effect-team-0 .character-icon-body{background-image: url(/asset/svg/icon/body_team_0.svg);}
+.display-effect-team-1 .character-icon-body{background-image: url(/asset/svg/icon/body_team_1.svg);}
+.display-effect-team-2 .character-icon-body{background-image: url(/asset/svg/icon/body_team_2.svg);}
+.display-effect-team-3 .character-icon-body{background-image: url(/asset/svg/icon/body_team_3.svg);}
+.display-effect-team-4 .character-icon-body{background-image: url(/asset/svg/icon/body_team_4.svg);}
+.display-effect-team-5 .character-icon-body{background-image: url(/asset/svg/icon/body_team_5.svg);}
+.display-effect-team-6 .character-icon-body{background-image: url(/asset/svg/icon/body_team_6.svg);}
+.display-effect-team-7 .character-icon-body{background-image: url(/asset/svg/icon/body_team_7.svg);}

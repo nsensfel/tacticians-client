@@ -53,6 +53,9 @@ import BattleCharacters.Struct.Weapon
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Location
 
+-- Local Module ----------------------------------------------------------------
+import Constants.DisplayEffects
+
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -275,19 +278,22 @@ reset_extra_display_effects viewer_ix char =
             [
                (
                   if (viewer_ix == char.player_ix)
-                  then "ally"
-                  else "enemy"
+                  then Constants.DisplayEffects.ally
+                  else Constants.DisplayEffects.enemy
                ),
-               ("team-" ++ (String.fromInt char.player_ix)),
+               (
+                  Constants.DisplayEffects.in_team
+                  ++ (String.fromInt char.player_ix)
+               ),
                (
                   if (char.enabled)
-                  then "enabled"
-                  else "disabled"
+                  then Constants.DisplayEffects.enabled
+                  else Constants.DisplayEffects.null
                ),
                (
                   if (is_alive char)
-                  then "alive"
-                  else "dead"
+                  then Constants.DisplayEffects.null
+                  else Constants.DisplayEffects.dead
                )
             ]
          )

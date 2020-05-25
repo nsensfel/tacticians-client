@@ -32,7 +32,7 @@ remove_active_character_effects char_turn battle =
          (Struct.Battle.update_character
             (Struct.Character.get_index char)
             (Struct.Character.remove_extra_display_effect
-               Constants.DisplayEffects.active_character
+               Constants.DisplayEffects.active
             )
             battle
          )
@@ -49,7 +49,7 @@ remove_target_effects char_turn battle =
             (Struct.Battle.update_character
                target_index
                (Struct.Character.remove_extra_display_effect
-                  Constants.DisplayEffects.target_character
+                  Constants.DisplayEffects.target
                )
                current_battle
             )
@@ -72,7 +72,7 @@ remove_location_effects char_turn battle =
                (BattleMap.Struct.Map.update_tile_at
                   (BattleMap.Struct.Location.from_ref location_ref)
                   (BattleMap.Struct.TileInstance.remove_extra_display_effect
-                     Constants.DisplayEffects.target_tile
+                     Constants.DisplayEffects.target
                   )
                   current_map
                )

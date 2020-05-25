@@ -41,7 +41,7 @@ apply_to model =
                         (Struct.Character.get_index char)
                         (
                            (Struct.Character.remove_extra_display_effect
-                              Constants.DisplayEffects.enabled_character
+                              Constants.DisplayEffects.enabled
                            )
                            >>
                            (Struct.Character.set_enabled False)

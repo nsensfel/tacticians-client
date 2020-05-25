@@ -1,13 +1,28 @@
 module Constants.DisplayEffects exposing (..)
 
-active_character : String
-active_character = "active"
+null : String
+null = ""
 
-enabled_character : String
-enabled_character = "enabled"
+active : String
+active = "active"
 
-target_character : String
-target_character = "target"
+dead : String
+dead = "dead"
 
-target_tile : String
-target_tile = "target"
+enabled : String
+enabled = "enabled"
+
+target : String
+target = "target"
+
+ally : String
+ally = "ally"
+
+enemy : String
+enemy = "ally"
+
+in_team : String
+in_team = "team-"
+
+css_class_prefix : String
+css_class_prefix = "display-effect-"

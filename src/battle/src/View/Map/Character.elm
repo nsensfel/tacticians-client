@@ -14,6 +14,7 @@ import BattleCharacters.Struct.Character
 import BattleCharacters.Struct.Equipment
 
 -- Local Module ----------------------------------------------------------------
+import Constants.DisplayEffects
 import Constants.UI
 
 import Struct.Character
@@ -101,7 +102,10 @@ get_actual_html char =
                (
                   \effect_name ->
                      (Html.Attributes.class
-                        ("character-icon-effect-" ++ effect_name)
+                        (
+                           Constants.DisplayEffects.css_class_prefix
+                           ++ effect_name
+                        )
                      )
                )
                (Struct.Character.get_extra_display_effects_list char)

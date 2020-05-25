@@ -38,14 +38,42 @@
    background-size: 200% 100%;
 }
 
-.character-portrait-team-0 { background-color: rgba(57, 106, 177, 0.3); }
-.character-portrait-team-1 { background-color: rgba(204, 37, 41, 0.3); }
-.character-portrait-team-2 { background-color: rgba(62, 150, 81, 0.3); }
-.character-portrait-team-3 { background-color: rgba(218, 124, 48, 0.3); }
-.character-portrait-team-4 { background-color: rgba(83, 81, 84, 0.3); }
-.character-portrait-team-5 { background-color: rgba(107, 76, 154, 0.3); }
-.character-portrait-team-6 { background-color: rgba(127, 167, 169, 0.3); }
-.character-portrait-team-7 { background-color: rgba(231, 167, 169, 0.3); }
+/*
+ * no space between the class names because the effect is directly applied to
+ * the div with the "character-portrait" class.
+ */
+.character-portrait.display-effect-team-0
+{
+   background-color: rgba(57, 106, 177, 0.3);
+}
+.character-portrait.display-effect-team-1
+{
+   background-color: rgba(204, 37, 41, 0.3);
+}
+.character-portrait.display-effect-team-2
+{
+   background-color: rgba(62, 150, 81, 0.3);
+}
+.character-portrait.display-effect-team-3
+{
+   background-color: rgba(218, 124, 48, 0.3);
+}
+.character-portrait.display-effect-team-4
+{
+   background-color: rgba(83, 81, 84, 0.3);
+}
+.character-portrait.display-effect-team-5
+{
+   background-color: rgba(107, 76, 154, 0.3);
+}
+.character-portrait.display-effect-team-6
+{
+   background-color: rgba(127, 167, 169, 0.3);
+}
+.character-portrait.display-effect-team-7
+{
+   background-color: rgba(231, 167, 169, 0.3);
+}
 
 .character-card-statuses
 {

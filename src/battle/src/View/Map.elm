@@ -18,6 +18,7 @@ import BattleMap.Struct.Map
 import BattleMap.View.Tile
 
 -- Local Module ----------------------------------------------------------------
+import Constants.DisplayEffects
 import Constants.UI
 
 import Struct.Battle

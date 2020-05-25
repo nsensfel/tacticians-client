@@ -65,7 +65,7 @@ toggle_attack_character model target_char_id =
          (Struct.Battle.update_character
             target_char_id
             (Struct.Character.toggle_extra_display_effect
-               Constants.DisplayEffects.target_character
+               Constants.DisplayEffects.target
             )
             model.battle
          ),
@@ -93,7 +93,7 @@ undo_attack_character model target_char_id =
          (Struct.Battle.update_character
             target_char_id
             (Struct.Character.remove_extra_display_effect
-               Constants.DisplayEffects.target_character
+               Constants.DisplayEffects.target
             )
             model.battle
          ),
