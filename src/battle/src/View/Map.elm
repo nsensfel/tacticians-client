@@ -153,7 +153,7 @@ get_html model =
          (Html.Lazy.lazy2
             (maybe_print_navigator)
             False
-            model.ui.displayed_nav
+            model.ui.displayed_navigator
          )
       ]
    )

@@ -86,7 +86,7 @@ clear model =
    {model |
       message_board = (Struct.MessageBoard.clear model.message_board),
       ui =
-         (Struct.UI.reset_displayed_nav
+         (Struct.UI.reset_displayed_navigator
             (Struct.UI.set_previous_action Nothing model.ui)
          ),
       char_turn = (Struct.CharacterTurn.new)

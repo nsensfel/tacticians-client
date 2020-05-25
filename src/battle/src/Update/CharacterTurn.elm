@@ -29,7 +29,7 @@ apply_to : (
 apply_to target_char model =
    let
       nav =
-         (case (Struct.UI.maybe_get_displayed_nav model.ui) of
+         (case (Struct.UI.maybe_get_displayed_navigator model.ui) of
             (Just dnav) -> dnav
             Nothing ->
                (Util.Navigator.get_character_navigator
@@ -57,7 +57,7 @@ apply_to target_char model =
                   model.battle
                ),
             ui =
-               (Struct.UI.reset_displayed_nav
+               (Struct.UI.reset_displayed_navigator
                   (Struct.UI.reset_displayed_tab
                      (Struct.UI.set_previous_action Nothing model.ui)
                   )

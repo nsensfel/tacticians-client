@@ -70,7 +70,7 @@ go_to_current_tile model loc_ref =
       (
          {model |
             ui =
-               (Struct.UI.reset_displayed_nav
+               (Struct.UI.reset_displayed_navigator
                   (Struct.UI.set_displayed_tab
                      Struct.UI.StatusTab
                      (Struct.UI.set_previous_action
@@ -180,18 +180,19 @@ apply_to : (
 apply_to loc_ref model =
    case
       (
+         (Struct.UI.maybe_get_displayed_navigator model.ui),
          (Struct.CharacterTurn.maybe_get_navigator model.char_turn),
          (Struct.CharacterTurn.maybe_get_active_character model.char_turn)
       )
    of
-      ((Just navigator), (Just char)) ->
+      (Nothing, (Just navigator), (Just char)) ->
          (go_to_tile model char navigator loc_ref)
 
       _ ->
          (
             {model |
                ui =
-                  (Struct.UI.reset_displayed_nav
+                  (Struct.UI.reset_displayed_navigator
                      (Struct.UI.set_displayed_tab
                         Struct.UI.StatusTab
                         (Struct.UI.set_previous_action

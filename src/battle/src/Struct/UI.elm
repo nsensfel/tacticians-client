@@ -19,9 +19,9 @@ module Struct.UI exposing
       get_all_tabs,
 
       -- Navigator
-      maybe_get_displayed_nav,
-      set_displayed_nav,
-      reset_displayed_nav,
+      maybe_get_displayed_navigator,
+      set_displayed_navigator,
+      reset_displayed_navigator,
 
       -- Manual Controls
       has_manual_controls_enabled,
@@ -58,7 +58,7 @@ type alias Type =
       show_manual_controls : Bool,
       displayed_tab : (Maybe Tab),
       previous_action : (Maybe Action),
-      displayed_nav : (Maybe Struct.Navigator.Type)
+      displayed_navigator : (Maybe Struct.Navigator.Type)
    }
 
 --------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ default =
       show_manual_controls = True,
       displayed_tab = Nothing,
       previous_action = Nothing,
-      displayed_nav = Nothing
+      displayed_navigator = Nothing
    }
 
 -- Zoom ------------------------------------------------------------------------
@@ -111,14 +111,14 @@ get_all_tabs =
    [StatusTab, CharactersTab, SettingsTab, TimelineTab]
 
 -- Navigator -------------------------------------------------------------------
-maybe_get_displayed_nav : Type -> (Maybe Struct.Navigator.Type)
-maybe_get_displayed_nav ui = ui.displayed_nav
+maybe_get_displayed_navigator : Type -> (Maybe Struct.Navigator.Type)
+maybe_get_displayed_navigator ui = ui.displayed_navigator
 
-set_displayed_nav : Struct.Navigator.Type -> Type -> Type
-set_displayed_nav nav ui = {ui | displayed_nav = (Just nav)}
+set_displayed_navigator : Struct.Navigator.Type -> Type -> Type
+set_displayed_navigator nav ui = {ui | displayed_navigator = (Just nav)}
 
-reset_displayed_nav : Type -> Type
-reset_displayed_nav ui = {ui | displayed_nav = Nothing}
+reset_displayed_navigator : Type -> Type
+reset_displayed_navigator ui = {ui | displayed_navigator = Nothing}
 
 -- ManualControls --------------------------------------------------------------
 has_manual_controls_enabled : Type -> Bool

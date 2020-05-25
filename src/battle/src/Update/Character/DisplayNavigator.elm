@@ -14,6 +14,9 @@ import Struct.Battle
 import Struct.Character
 import Struct.Event
 import Struct.Model
+import Struct.UI
+
+import Util.Navigator
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -29,7 +32,13 @@ apply_to_character : (
    )
 apply_to_character char model =
    (
-      model,
+      {model |
+         ui =
+            (Struct.UI.set_displayed_navigator
+               (Util.Navigator.get_character_navigator model.battle char)
+               model.ui
+            )
+      },
       (Task.attempt
          (Struct.Event.attempted)
          (Action.Scroll.to
