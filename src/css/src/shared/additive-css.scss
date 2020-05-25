@@ -152,6 +152,49 @@ $var-prefix: additive;
    }
 }
 
+@mixin use-collection ($collection, $default-separator:comma, $separators: ())
+{
+   @if (not map-has-key($collections, $collection))
+   {
+      @error "Using undefined collection #{$collection}.";
+   }
+   $collection-state: map-get($collections, $collection);
+   $collections:
+      map-merge(
+         $collections,
+         (
+            $collection:
+            map-merge(
+               $collection-state,
+               (
+                  "has_been_used": true
+               )
+            )
+         )
+      )
+      !global;
+   @each $property in map-get($collection-state, "properties")
+   {
+      @if (map-has-key($separators, $property))
+      {
+         @include use-property(
+            $collection,
+            $property,
+            map-get($separators, $property)
+         );
+      }
+      @else
+      {
+         @include use-property(
+            $collection,
+            $property,
+            $default-separator
+         );
+      }
+
+   }
+}
+
 @mixin define-all-neutral-values ()
 {
    :root
@@ -183,3 +226,37 @@ $var-prefix: additive;
       }
    }
 }
+
+/* Each "collection" is used to count the number of variables to create */
+@include new-collection("char-effect");
+@include new-collection("tile-effect");
+
+/* This simply defines the default value for the property, a value that must not have any effect. */
+@include new-property("transform", none);
+
+/* We add the attribute to the collection, so that the default values are properly initialized later on, according to the number of variables the collection needs. */
+@include add-property-to-collection("char-effect", "transform");
+@include add-property-to-collection("tile-effect", "transform");
+
+/* And now we define the effects: */
+.char-icon.scale-up
+{
+   @include set-property("char-effect", "transform", scale(1.5));
+}
+.char-icon.rotate
+{
+   @include set-property("char-effect", "transform", rotate(1.5turn));
+}
+.char-icon.translate
+{
+   @include set-property("char-effect", "transform", translatex(1.5em));
+}
+
+/* Then we define the actual class that applies the effects, indicating we want a comma to separate the values: */
+.char-icon.use-effects
+{
+   @include use-collection("char-effect");
+}
+
+/* We also need to define the default values, in case some of the effects are not being used: */
+@include define-all-neutral-values();
