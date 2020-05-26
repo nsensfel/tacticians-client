@@ -11,8 +11,8 @@ module Struct.Navigator exposing
       get_summary,
       clear_path,
       lock_path,
-      unlock_path,
       lock_path_with_new_attack_ranges,
+      unlock_path,
       maybe_add_step,
       maybe_get_path_to
    )

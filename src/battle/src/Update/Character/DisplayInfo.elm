@@ -24,11 +24,8 @@ apply_to_ref target_ref model =
       {model |
          ui =
             (Struct.UI.set_displayed_tab
-               Struct.UI.StatusTab
-               (Struct.UI.set_previous_action
-                  (Just (Struct.UI.SelectedCharacter target_ref))
-                  model.ui
-               )
+               (Struct.UI.CharacterStatusTab target_ref)
+               model.ui
             )
       },
       Cmd.none

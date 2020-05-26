@@ -37,7 +37,7 @@ get_bar_div percent extra_bar_attr =
          [
             (Html.Attributes.style
                "width"
-               ((String.fromFloat percent) ++ "%")
+               ((String.fromFloat (min 100.0 percent)) ++ "%")
             ),
             (Html.Attributes.class
                "gauge-bar"
@@ -65,7 +65,14 @@ get_html : (
 get_html text percent extra_div_attr extra_bar_attr extra_txt_attr =
    (Html.div
       (
-         [(Html.Attributes.class "gauge")]
+         [
+            (Html.Attributes.class "gauge"),
+            (
+               if (percent > 100.0)
+               then (Html.Attributes.class "gauge-overflow")
+               else (Html.Attributes.class "")
+            )
+         ]
          ++ extra_div_attr
       )
       [

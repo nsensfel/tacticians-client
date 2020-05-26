@@ -41,7 +41,8 @@ import Struct.Navigator
 -- TYPES -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
 type Tab =
-   StatusTab
+   TileStatusTab BattleMap.Struct.Location.Ref
+   | CharacterStatusTab Int
    | CharactersTab
    | SettingsTab
    | TimelineTab
@@ -101,14 +102,15 @@ reset_displayed_tab ui = {ui | displayed_tab = Nothing}
 tab_to_string : Tab -> String
 tab_to_string tab =
    case tab of
-      StatusTab -> "Status"
+      (TileStatusTab _) -> "Status"
+      (CharacterStatusTab _) -> "Status"
       CharactersTab -> "Characters"
       SettingsTab -> "Settings"
       TimelineTab -> "Timeline"
 
 get_all_tabs : (List Tab)
 get_all_tabs =
-   [StatusTab, CharactersTab, SettingsTab, TimelineTab]
+   [CharactersTab, SettingsTab, TimelineTab]
 
 -- Navigator -------------------------------------------------------------------
 maybe_get_displayed_navigator : Type -> (Maybe Struct.Navigator.Type)

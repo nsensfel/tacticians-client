@@ -28,7 +28,9 @@ get_portrait_html char =
    (BattleCharacters.View.Portrait.get_html
       (
          (Html.Events.onClick
-            (Struct.Event.LookingForCharacter (Struct.Character.get_index char))
+            (Struct.Event.CharacterCardSelected
+               (Struct.Character.get_index char)
+            )
          )
          ::
          (List.map

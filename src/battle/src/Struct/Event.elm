@@ -20,13 +20,12 @@ type Type =
    AbortTurnRequest
    | AnimationEnded
    | AttackRequest
-   | CharacterInfoRequested Int
    | CharacterOrTileSelected BattleMap.Struct.Location.Ref
    | CharacterSelected Int
+   | CharacterCardSelected Int
    | DirectionRequested BattleMap.Struct.Direction.Type
    | Failed Struct.Error.Type
    | GoToMainMenu
-   | LookingForCharacter Int
    | None
    | RequestedHelp Struct.HelpRequest.Type
    | ScaleChangeRequested Float

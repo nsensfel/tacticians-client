@@ -2,6 +2,7 @@ module Struct.TurnResult exposing
    (
       Type(..),
       Attack,
+      Target,
       Movement,
       WeaponSwitch,
       PlayerVictory,
@@ -15,7 +16,9 @@ module Struct.TurnResult exposing
       get_movement_path,
       get_attack_actor_index,
       get_attack_target_index,
-      get_attack_sequence,
+      get_attack_data,
+      get_target_actor_index,
+      get_target_target_index,
       decoder
    )
 
@@ -52,11 +55,17 @@ type alias Movement =
       destination : BattleMap.Struct.Location.Type
    }
 
+type alias Target =
+   {
+      actor_index : Int,
+      target_index : Int
+   }
+
 type alias Attack =
    {
       attacker_index : Int,
       defender_index : Int,
-      sequence : (List Struct.Attack.Type),
+      data : Struct.Attack.Type,
       attacker_luck : Int,
       defender_luck : Int
    }
@@ -83,6 +92,7 @@ type alias PlayerTurnStart =
 
 type Type =
    Moved Movement
+   | Targeted Target
    | Attacked Attack
    | SwitchedWeapon WeaponSwitch
    | PlayerWon PlayerVictory
@@ -101,15 +111,29 @@ movement_decoder =
       (Json.Decode.field "nlc" (BattleMap.Struct.Location.decoder))
    )
 
-attack_decoder : (Json.Decode.Decoder Attack)
-attack_decoder =
-   (Json.Decode.map5
-      Attack
+target_decoder : (Json.Decode.Decoder Target)
+target_decoder =
+   (Json.Decode.map2
+      Target
       (Json.Decode.field "aix" Json.Decode.int)
       (Json.Decode.field "dix" Json.Decode.int)
-      (Json.Decode.field "seq" (Json.Decode.list (Struct.Attack.decoder)))
-      (Json.Decode.field "alk" Json.Decode.int)
-      (Json.Decode.field "dlk" Json.Decode.int)
+   )
+
+attack_decoder : (Json.Decode.Decoder Attack)
+attack_decoder =
+   (Json.Decode.andThen
+      (
+         \attack ->
+            (Json.Decode.map5
+               Attack
+               (Json.Decode.field "aix" Json.Decode.int)
+               (Json.Decode.field "dix" Json.Decode.int)
+               (Json.Decode.succeed attack)
+               (Json.Decode.field "alk" Json.Decode.int)
+               (Json.Decode.field "dlk" Json.Decode.int)
+            )
+      )
+      (Struct.Attack.decoder)
    )
 
 weapon_switch_decoder : (Json.Decode.Decoder WeaponSwitch)
@@ -159,6 +183,12 @@ internal_decoder kind =
          (Json.Decode.map
             (\x -> (Attacked x))
             (attack_decoder)
+         )
+
+      "tar" ->
+         (Json.Decode.map
+            (\x -> (Targeted x))
+            (target_decoder)
          )
 
       "pwo" ->
@@ -219,5 +249,11 @@ get_attack_actor_index attack = attack.attacker_index
 get_attack_target_index : Attack -> Int
 get_attack_target_index attack = attack.defender_index
 
-get_attack_sequence : Attack -> (List Struct.Attack.Type)
-get_attack_sequence attack = attack.sequence
+get_attack_data : Attack -> Struct.Attack.Type
+get_attack_data attack = attack.data
+
+get_target_actor_index : Target -> Int
+get_target_actor_index target = target.actor_index
+
+get_target_target_index : Target -> Int
+get_target_target_index target = target.target_index

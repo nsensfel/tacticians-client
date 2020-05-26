@@ -19,7 +19,7 @@ ally : String
 ally = "ally"
 
 enemy : String
-enemy = "ally"
+enemy = "enemy"
 
 in_team : String
 in_team = "team-"

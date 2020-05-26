@@ -271,37 +271,23 @@ clear_path ct = {ct | path = []}
 encode : Type -> (Json.Encode.Value)
 encode ct =
    case ct.active_character of
-      Nothing ->
-         (Json.Encode.object
-            [
-               ("cix", (Json.Encode.int 0)),
-               ("act", (Json.Encode.list (\a -> a) []))
-            ]
-         )
+      Nothing -> (Json.Encode.list (\a -> a) [])
 
       (Just actor) ->
-         (Json.Encode.object
-            [
-               ("cix", (Json.Encode.int (Struct.Character.get_index actor))),
+         (Json.Encode.list
+            (\a -> a)
+            (
                (
-                  "act",
-                  (Json.Encode.list
-                     (\a -> a)
-                     (
-                        (
-                           if (List.isEmpty (get_path ct))
-                           then [(encode_path ct)]
-                           else []
-                        )
-                        ++
-                        (
-                           if (ct.action == None)
-                           then []
-                           else [(encode_action ct)]
-                        )
-                     )
-                  )
+                  if (List.isEmpty (get_path ct))
+                  then []
+                  else [(encode_path ct)]
                )
-            ]
+               ++
+               (
+                  if (ct.action == None)
+                  then []
+                  else [(encode_action ct)]
+               )
+            )
          )
 

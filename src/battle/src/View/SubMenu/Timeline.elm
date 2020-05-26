@@ -7,6 +7,9 @@ import Html
 import Html.Attributes
 import Html.Lazy
 
+-- Shared ----------------------------------------------------------------------
+import Shared.Util.Html
+
 -- Local Module ----------------------------------------------------------------
 import Struct.Battle
 import Struct.Character
@@ -32,6 +35,7 @@ get_turn_result_html : (
    )
 get_turn_result_html characters player_ix turn_result =
    case turn_result of
+      (Struct.TurnResult.Targeted target) -> (Shared.Util.Html.nothing)
       (Struct.TurnResult.Moved movement) ->
          (View.SubMenu.Timeline.Movement.get_html
             characters

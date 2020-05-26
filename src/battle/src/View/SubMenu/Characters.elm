@@ -33,7 +33,9 @@ get_character_element_html player_ix char =
                (Html.Attributes.class "")
          ),
          (Html.Events.onClick
-            (Struct.Event.LookingForCharacter (Struct.Character.get_index char))
+            (Struct.Event.CharacterCardSelected
+               (Struct.Character.get_index char)
+            )
          ),
          (
             if (Struct.Character.is_enabled char)

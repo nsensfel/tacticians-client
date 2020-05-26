@@ -1,5 +1,10 @@
 module ElmModule.Update exposing (update)
 
+-- Elm -------------------------------------------------------------------------
+
+-- Shared ----------------------------------------------------------------------
+import Shared.Update.Sequence
+
 -- Local Module ----------------------------------------------------------------
 import Struct.Event
 import Struct.Model
@@ -11,8 +16,8 @@ import Update.SelectCharacterOrTile
 import Update.SelectTile
 import Update.SetRequestedHelp
 
-import Update.Character.DisplayCharacterInfo
-import Update.Character.LookForCharacter
+import Update.Character.ScrollTo
+import Update.Character.DisplayNavigator
 
 import Update.CharacterTurn.AbortTurn
 import Update.CharacterTurn.Attack
@@ -65,11 +70,14 @@ update event model =
       (Struct.Event.CharacterSelected char_id) ->
          (Update.SelectCharacter.apply_to char_id model)
 
-      (Struct.Event.CharacterInfoRequested char_id) ->
-         (Update.Character.DisplayCharacterInfo.apply_to char_id model)
-
-      (Struct.Event.LookingForCharacter char_id) ->
-         (Update.Character.LookForCharacter.apply_to char_id model)
+      (Struct.Event.CharacterCardSelected char_id) ->
+         (Shared.Update.Sequence.sequence
+            [
+               (Update.Character.ScrollTo.apply_to_ref char_id),
+               (Update.Character.DisplayNavigator.apply_to_ref char_id)
+            ]
+            model
+         )
 
       Struct.Event.TurnEnded ->
          (Update.CharacterTurn.EndTurn.apply_to model)

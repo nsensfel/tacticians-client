@@ -2,6 +2,7 @@ module Update.CharacterTurn.RequestDirection exposing (apply_to)
 
 -- Battle Map ------------------------------------------------------------------
 import BattleMap.Struct.Direction
+import BattleMap.Struct.Location
 import BattleMap.Struct.Map
 
 -- Battle Characters -----------------------------------------------------------
@@ -30,33 +31,37 @@ make_it_so : (
 make_it_so model char navigator dir =
    case (Struct.Navigator.maybe_add_step dir navigator) of
       (Just new_navigator) ->
-         {model |
-            char_turn =
-               (Struct.CharacterTurn.set_navigator
-                  new_navigator
-                  (Struct.CharacterTurn.set_active_character
-                     (Struct.Character.set_base_character
-                        (BattleCharacters.Struct.Character.set_extra_omnimods
+         let
+            new_location = (Struct.Navigator.get_current_location new_navigator)
+         in
+            {model |
+               char_turn =
+                  (Struct.CharacterTurn.set_navigator
+                     new_navigator
+                     (Struct.CharacterTurn.set_active_character
+                        (Struct.Character.set_location
+                           new_location
                            (BattleMap.Struct.Map.get_omnimods_at
-                              (Struct.Navigator.get_current_location
-                                 new_navigator
-                              )
+                              new_location
                               model.map_data_set
                               (Struct.Battle.get_map model.battle)
                            )
-                           (Struct.Character.get_base_character char)
+                           char
                         )
-                        char
+                        model.char_turn
                      )
-                     model.char_turn
+                  ),
+               ui =
+                  (Struct.UI.set_displayed_tab
+                     (Struct.UI.TileStatusTab
+                        (BattleMap.Struct.Location.get_ref new_location)
+                     )
+                     (Struct.UI.set_previous_action
+                        (Just Struct.UI.UsedManualControls)
+                        model.ui
+                     )
                   )
-               ),
-            ui =
-               (Struct.UI.set_previous_action
-                  (Just Struct.UI.UsedManualControls)
-                  model.ui
-               )
-         }
+            }
 
       Nothing ->
          (Struct.Model.invalidate

@@ -151,18 +151,16 @@ get_html characters player_ix attack =
                (Html.Attributes.class "timeline-element"),
                (Html.Attributes.class "timeline-attack")
             ]
-            (
-               [
-                  (View.Character.get_portrait_html atkchar),
-                  (View.Character.get_portrait_html defchar),
-                  (get_title_html atkchar defchar)
-               ]
-               ++
-               (List.map
-                  (get_attack_html atkchar defchar)
-                  attack.sequence
+            [
+               (View.Character.get_portrait_html atkchar),
+               (View.Character.get_portrait_html defchar),
+               (get_title_html atkchar defchar),
+               (get_attack_html
+                  atkchar
+                  defchar
+                  (Struct.TurnResult.get_attack_data attack)
                )
-            )
+            ]
          )
 
       _ ->

@@ -1,4 +1,4 @@
-module Update.Character.ScrollTo exposing (apply_to_ref, apply_to_character)
+module Update.Character.ScrollTo exposing (apply_to_ref, apply_to)
 
 -- Elm -------------------------------------------------------------------------
 import Task
@@ -18,12 +18,12 @@ import Struct.Model
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
-apply_to_character : (
+apply_to : (
       Struct.Character.Type ->
       Struct.Model.Type ->
       (Struct.Model.Type, (Cmd Struct.Event.Type))
    )
-apply_to_character char model =
+apply_to char model =
    (
       model,
       (Task.attempt
@@ -35,8 +35,12 @@ apply_to_character char model =
       )
    )
 
-apply_to_ref : Int -> Struct.Model.Type -> (Cmd Struct.Event.Type)
+apply_to_ref : (
+      Int ->
+      Struct.Model.Type ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
 apply_to_ref char_ix model =
    case (Struct.Battle.get_character char_ix model.battle) of
-      (Just char) -> (apply_to_character char model)
+      (Just char) -> (apply_to char model)
       Nothing -> (model, Cmd.none)

@@ -10,6 +10,9 @@ import Html.Lazy
 -- Shared ----------------------------------------------------------------------
 import Shared.Util.Html
 
+-- Battle Map ------------------------------------------------------------------
+import BattleMap.View.TileInfo
+
 -- Local Module ----------------------------------------------------------------
 import Struct.Battle
 import Struct.Event
@@ -18,9 +21,9 @@ import Struct.UI
 
 import View.Controlled.CharacterCard
 
+import View.SubMenu.CharacterStatus
 import View.SubMenu.Characters
 import View.SubMenu.Settings
-import View.SubMenu.Status
 import View.SubMenu.Timeline
 
 --------------------------------------------------------------------------------
@@ -33,8 +36,24 @@ get_inner_html : (
    )
 get_inner_html model tab =
    case tab of
-      Struct.UI.StatusTab ->
-         (View.SubMenu.Status.get_html model)
+      (Struct.UI.TileStatusTab tile_loc) ->
+         (Html.Lazy.lazy3
+            (BattleMap.View.TileInfo.get_html)
+            model.map_data_set
+            tile_loc
+            model.battle.map
+         )
+
+      (Struct.UI.CharacterStatusTab char_ref) ->
+         case (Struct.Battle.get_character char_ref model.battle) of
+            (Just char) ->
+               (Html.Lazy.lazy2
+                  (View.SubMenu.CharacterStatus.get_html)
+                  model.battle.own_player_ix
+                  char
+               )
+
+            _ -> (Html.text "Error: Unknown character selected.")
 
       Struct.UI.CharactersTab ->
          (Html.Lazy.lazy2

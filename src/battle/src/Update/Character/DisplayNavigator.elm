@@ -8,8 +8,6 @@ module Update.Character.DisplayNavigator exposing
 import Task
 
 -- Local Module ----------------------------------------------------------------
-import Action.Scroll
-
 import Struct.Battle
 import Struct.Character
 import Struct.Event
@@ -39,13 +37,7 @@ apply_to_character char model =
                model.ui
             )
       },
-      (Task.attempt
-         (Struct.Event.attempted)
-         (Action.Scroll.to
-            (Struct.Character.get_location char)
-            model.ui
-         )
-      )
+      Cmd.none
    )
 
 apply_to_ref : (

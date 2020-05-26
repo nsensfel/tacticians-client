@@ -1,4 +1,4 @@
-module View.SubMenu.Status.CharacterInfo exposing (get_html)
+module View.SubMenu.CharacterStatus exposing (get_html)
 
 -- Elm -------------------------------------------------------------------------
 import Html

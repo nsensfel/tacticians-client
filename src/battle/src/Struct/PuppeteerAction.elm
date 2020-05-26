@@ -54,18 +54,14 @@ from_attacked attack =
                   (RefreshCharacter (False, defender_ix))
                ]
             ),
-            (PerformFor (2.0, [(Focus attacker_ix)])),
-            (PerformFor (2.0, [(Focus defender_ix)]))
-         ]
-         ++
-         (List.map
-            (\hit->
-               (PerformFor (5.0, [(Hit hit)]))
-            )
-            (Struct.TurnResult.get_attack_sequence attack)
-         )
-         ++
-         [
+            (PerformFor
+               (
+                  5.0,
+                  [
+                     (Hit (Struct.TurnResult.get_attack_data attack))
+                  ]
+               )
+            ),
             (Perform
                [
                   (RefreshCharacter (True, attacker_ix)),
@@ -74,6 +70,23 @@ from_attacked attack =
             )
          ]
       )
+
+from_targeted : Struct.TurnResult.Target -> (List Type)
+from_targeted target =
+   [
+      (PerformFor
+         (
+            2.0,
+            [(Focus (Struct.TurnResult.get_target_actor_index target))]
+         )
+      ),
+      (PerformFor
+         (
+            2.0,
+            [(Focus (Struct.TurnResult.get_target_target_index target))]
+         )
+      )
+   ]
 
 from_moved : Struct.TurnResult.Movement -> (List Type)
 from_moved movement =
@@ -175,6 +188,7 @@ from_turn_result : Struct.TurnResult.Type -> (List Type)
 from_turn_result turn_result =
    case turn_result of
       (Struct.TurnResult.Moved movement) -> (from_moved movement)
+      (Struct.TurnResult.Targeted target) -> (from_targeted target)
       (Struct.TurnResult.Attacked attack) -> (from_attacked attack)
       (Struct.TurnResult.SwitchedWeapon weapon_switch) ->
          (from_switched_weapon weapon_switch)
