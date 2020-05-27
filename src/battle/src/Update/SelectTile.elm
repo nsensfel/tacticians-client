@@ -18,7 +18,7 @@ import Struct.Model
 import Struct.Navigator
 import Struct.UI
 
-import Update.CharacterTurn.AbortTurn
+import Update.CharacterTurn.UndoAction
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -148,7 +148,26 @@ go_to_another_tile model char navigator loc_ref =
                )
 
       Nothing -> -- Clicked outside of the range indicator
-         (Update.CharacterTurn.AbortTurn.apply_to model)
+         if
+         (
+            (Struct.UI.maybe_get_displayed_tab model.ui)
+            == (Just (Struct.UI.TileStatusTab loc_ref))
+         )
+         then (Update.CharacterTurn.UndoAction.apply_to model)
+         else
+            (
+               {model |
+                  ui =
+                     (Struct.UI.set_displayed_tab
+                        (Struct.UI.TileStatusTab loc_ref)
+                        (Struct.UI.set_previous_action
+                           (Just (Struct.UI.SelectedLocation loc_ref))
+                           model.ui
+                        )
+                     )
+               },
+               Cmd.none
+            )
 
 go_to_tile : (
       Struct.Model.Type ->

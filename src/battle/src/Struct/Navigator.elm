@@ -10,6 +10,7 @@ module Struct.Navigator exposing
       get_path,
       get_summary,
       clear_path,
+      path_is_locked,
       lock_path,
       lock_path_with_new_attack_ranges,
       unlock_path,
@@ -147,6 +148,9 @@ clear_path navigator =
                navigator.movement_dist
             )
       }
+
+path_is_locked : Type -> Bool
+path_is_locked navigator = navigator.locked_path
 
 lock_path : Type -> Type
 lock_path navigator =
