@@ -5,7 +5,7 @@
    display: grid;
    grid-template:
       '.    top .'
-      'left  go  right'
+      'left  .  right'
       '.   bottom .';
    margin: auto;
 }
@@ -23,15 +23,6 @@
 .manual-controls > div:hover
 {
    opacity: 1;
-}
-
-.manual-controls-go
-{
-   margin: auto;
-   width: 28px;
-   height: 28px;
-   border-radius: 100em;
-   grid-area: go;
 }
 
 .manual-controls-up

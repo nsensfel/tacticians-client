@@ -1,0 +1,115 @@
+.action-button
+{
+   width: 42px;
+   height: 42px;
+   background-size: 97%;
+   background-position: center;
+}
+
+.action-button.disabled
+{
+   opacity: 0.1;
+   pointer-events:none;
+}
+
+.action-button + .action-button
+{
+   margin: 0;
+}
+
+.action-button.abort-button
+{
+   background-image: url(/asset/svg/damage_type/abort.svg);
+}
+
+.action-button.skipping
+{
+   --bg-first-act: url(/asset/svg/damage_type/skip.svg);
+   --bg-second-act: var(--bg-first-act);
+   background-image: var(--bg-first-act);
+}
+
+.action-button.path-button
+{
+   --bg-first-act: url(/asset/svg/damage_type/move.svg);
+   background-image: var(--bg-first-act);
+}
+
+.action-button.attacking
+{
+   --bg-second-act: url(/asset/svg/damage_type/attack.svg);
+   background-image: var(--bg-second-act);
+}
+
+.action-button.using-skill
+{
+   --bg-second-act: url(/asset/svg/damage_type/skill.svg);
+   background-image: var(--bg-second-act);
+}
+
+.action-button.switching-weapons
+{
+   --bg-second-act: url(/asset/svg/damage_type/swapwp.svg);
+   background-image: var(--bg-second-act);
+}
+
+.action-button.end-turn-button
+{
+   grid-column: span 3;
+   width: calc(100% - 2px);
+   --bg-end-turn: url(/asset/svg/damage_type/endturn.svg);
+}
+
+.action-button.end-turn-button.disabled
+{
+   animation: none;
+}
+
+.action-button.end-turn-button.no-path-was-queued
+{
+   background-image: var(--bg-second-act), var(--bg-end-turn);
+   background-size: 42px, 42px;
+   background-repeat: no-repeat, no-repeat;
+   background-position: left center, right center;
+}
+
+.action-button.end-turn-button.path-was-queued
+{
+   background-size: 42px, 42px, 42px;
+   background-repeat: no-repeat, no-repeat, no-repeat;
+   background-position: left center, center, right center;
+   background-image:
+      url(/asset/svg/damage_type/move.svg),
+      var(--bg-second-act),
+      var(--bg-end-turn);
+}
+
+.action-button.end-turn-button.no-path-was-queued,
+.action-button.end-turn-button.path-was-queued.no-action
+{
+   background-size: 42px, 42px;
+   background-repeat: no-repeat, no-repeat;
+   background-position: left center, right center;
+   background-image:
+      var(--bg-first-act),
+      var(--bg-end-turn);
+}
+
+.action-button.undo
+{
+   border-bottom-width: 1px;
+   filter: brightness(0.8);
+
+}
+.action-button.end-turn-button.no-path-was-queued
+{
+   background-image: var(--bg-second-act), var(--bg-end-turn);
+}
+
+.action-button.end-turn-button.path-was-queued.no-action
+{
+   background-image:
+      url(/asset/svg/damage_type/move.svg),
+      var(--bg-end-turn);
+}
+

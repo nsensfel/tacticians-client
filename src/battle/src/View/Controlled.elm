@@ -19,102 +19,214 @@ import View.Controlled.ManualControls
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-has_a_path : Struct.CharacterTurn.Type -> Bool
-has_a_path char_turn =
-   case (Struct.CharacterTurn.maybe_get_navigator char_turn) of
-      (Just nav) -> ((Struct.Navigator.get_path nav) /= [])
-      Nothing -> False
+action_to_class : (
+      Struct.CharacterTurn.Action ->
+      (Html.Attribute Struct.Event.Type)
+   )
+action_to_class action =
+   (Html.Attributes.class
+      (
+         case action of
+            Struct.CharacterTurn.None -> "no-action"
+            Struct.CharacterTurn.Skipping -> "skipping"
+            Struct.CharacterTurn.Attacking -> "attacking"
+            Struct.CharacterTurn.SwitchingWeapons -> "switching-weapons"
+            Struct.CharacterTurn.UsingSkill -> "using-skill"
+      )
+   )
 
-
-skill_button : Struct.CharacterTurn.Type -> (Html.Html Struct.Event.Type)
-skill_button char_turn =
+action_or_undo_button : (
+      Struct.CharacterTurn.Action ->
+      Struct.CharacterTurn.Action ->
+      Struct.Event.Type ->
+      (Html.Html Struct.Event.Type)
+   )
+action_or_undo_button current_action relevant_action event =
    (Html.button
-      [ (Html.Events.onClick Struct.Event.AttackRequest) ]
+      (
+         if (current_action == Struct.CharacterTurn.None)
+         then
+            [
+               (Html.Attributes.class "action-button"),
+               (action_to_class relevant_action),
+               (Html.Attributes.class "action"),
+               (Html.Events.onClick event)
+            ]
+         else if (current_action == relevant_action)
+         then
+            [
+               (Html.Attributes.class "action-button"),
+               (action_to_class relevant_action),
+               (Html.Events.onClick Struct.Event.UndoActionRequest),
+               (Html.Attributes.class "undo")
+            ]
+         else
+            [
+               (Html.Attributes.class "action-button"),
+               (action_to_class relevant_action),
+               (Html.Attributes.class "disabled")
+            ]
+      )
       [
-         (Html.text
-            (
-               if (has_a_path char_turn)
-               then ("Go & Select Skill Target(s)")
-               else ("Select Skill Target(s)")
-            )
-         )
       ]
    )
 
+inventory_button : Struct.CharacterTurn.Type -> (Html.Html Struct.Event.Type)
+inventory_button char_turn =
+   (action_or_undo_button
+      (Struct.CharacterTurn.get_action char_turn)
+      Struct.CharacterTurn.SwitchingWeapons
+      Struct.Event.WeaponSwitchRequest
+   )
+
+
 attack_button : Struct.CharacterTurn.Type -> (Html.Html Struct.Event.Type)
 attack_button char_turn =
-   (Html.button
-      [ (Html.Events.onClick Struct.Event.AttackRequest) ]
-      [
-         (Html.text
-            (
-               if (has_a_path char_turn)
-               then ("Go & Select Attack Target")
-               else ("Select Attack Target")
-            )
-         )
-      ]
+   (action_or_undo_button
+      (Struct.CharacterTurn.get_action char_turn)
+      Struct.CharacterTurn.Attacking
+      Struct.Event.AttackRequest
+   )
+
+skip_button : Struct.CharacterTurn.Type -> (Html.Html Struct.Event.Type)
+skip_button char_turn =
+   (action_or_undo_button
+      (Struct.CharacterTurn.get_action char_turn)
+      Struct.CharacterTurn.Skipping
+      Struct.Event.SkipRequest
+   )
+
+skill_button : Struct.CharacterTurn.Type -> (Html.Html Struct.Event.Type)
+skill_button char_turn =
+   (action_or_undo_button
+      (Struct.CharacterTurn.get_action char_turn)
+      Struct.CharacterTurn.UsingSkill
+      Struct.Event.SkillRequest
    )
 
 abort_button : (Html.Html Struct.Event.Type)
 abort_button =
    (Html.button
-      [ (Html.Events.onClick Struct.Event.AbortTurnRequest) ]
-      [ (Html.text "Abort") ]
-   )
-
-undo_button : (Html.Html Struct.Event.Type)
-undo_button =
-   (Html.button
-      [ (Html.Events.onClick Struct.Event.UndoActionRequest) ]
-      [ (Html.text "Undo") ]
-   )
-
-end_turn_button : (Html.Html Struct.Event.Type)
-end_turn_button =
-   (Html.button
       [
-         (Html.Events.onClick Struct.Event.TurnEnded),
-         (Html.Attributes.class "end-turn-button")
+         (Html.Attributes.class "action-button"),
+         (Html.Events.onClick Struct.Event.AbortTurnRequest),
+         (Html.Attributes.class "abort-button")
       ]
-      [ (Html.text ("Confirm Turn")) ]
+      [
+      ]
    )
 
-inventory_button : Bool -> (Html.Html Struct.Event.Type)
-inventory_button go_prefix =
+
+path_button : Struct.CharacterTurn.Type -> (Html.Html Struct.Event.Type)
+path_button char_turn =
    (Html.button
-      [ (Html.Events.onClick Struct.Event.WeaponSwitchRequest) ]
-      [
-         (Html.text
+      (
+         if
+         (
             (
-               if (go_prefix)
-               then ("Go & Switch Weapon")
-               else ("Switch Weapon")
+               (Struct.CharacterTurn.get_action char_turn)
+               == Struct.CharacterTurn.None
+            )
+            &&
+            (
+               case (Struct.CharacterTurn.maybe_get_navigator char_turn) of
+                  Nothing -> False
+                  (Just nav) -> ((Struct.Navigator.get_path nav) /= [])
             )
          )
+         then
+            if ((Struct.CharacterTurn.get_path char_turn) == [])
+            then
+               [
+                  (Html.Attributes.class "action-button"),
+                  (Html.Attributes.class "path-button"),
+                  (Html.Events.onClick Struct.Event.MoveRequest)
+               ]
+            else
+               [
+                  (Html.Attributes.class "action-button"),
+                  (Html.Attributes.class "path-button"),
+                  (Html.Events.onClick Struct.Event.UndoActionRequest),
+                  (Html.Attributes.class "undo")
+               ]
+         else
+            [
+               (Html.Attributes.class "action-button"),
+               (Html.Attributes.class "path-button"),
+               (Html.Attributes.class "disabled"),
+               (Html.Attributes.class
+                  (
+                     if ((Struct.CharacterTurn.get_path char_turn) == [])
+                     then ""
+                     else "undo"
+                  )
+               )
+            ]
+      )
+      [
       ]
    )
+
+end_turn_button : Struct.CharacterTurn.Type -> (Html.Html Struct.Event.Type)
+end_turn_button char_turn =
+   let
+      registered_path = (Struct.CharacterTurn.get_path char_turn)
+      action =  (Struct.CharacterTurn.get_action char_turn)
+      temporary_path =
+         case (Struct.CharacterTurn.maybe_get_navigator char_turn) of
+            Nothing -> []
+            (Just nav) -> (Struct.Navigator.get_path nav)
+   in
+      (Html.button
+         [
+            (
+               if
+               (
+                  (temporary_path /= registered_path)
+                  ||
+                  (
+                     (Struct.CharacterTurn.is_aiming_at_something char_turn)
+                     && (action /= Struct.CharacterTurn.Attacking)
+                     && (action /= Struct.CharacterTurn.UsingSkill)
+                  )
+                  ||
+                  (
+                     (registered_path == [])
+                     && (action == Struct.CharacterTurn.None)
+                  )
+               )
+               then (Html.Attributes.class "disabled")
+               else (Html.Events.onClick Struct.Event.TurnEnded)
+            ),
+            (Html.Attributes.class "action-button"),
+            (Html.Attributes.class "end-turn-button"),
+            (Html.Attributes.class
+               (
+                  if (registered_path == [])
+                  then "no-path-was-queued"
+                  else "path-was-queued"
+               )
+            ),
+            (action_to_class (Struct.CharacterTurn.get_action char_turn))
+         ]
+         [
+         ]
+      )
 
 get_available_actions : (
       Struct.CharacterTurn.Type ->
       (List (Html.Html Struct.Event.Type))
    )
 get_available_actions char_turn =
-   if ((Struct.CharacterTurn.get_action char_turn) == Struct.CharacterTurn.None)
-   then
-         [
-            (attack_button char_turn),
-            (skill_button char_turn),
-            (inventory_button (has_a_path char_turn)),
-            (end_turn_button),
-            (abort_button)
-         ]
-   else
-         [
-            (end_turn_button),
-            (undo_button),
-            (abort_button)
-         ]
+   [
+      (abort_button),
+      (skip_button char_turn),
+      (path_button char_turn),
+      (attack_button char_turn),
+      (skill_button char_turn),
+      (inventory_button char_turn),
+      (end_turn_button char_turn)
+   ]
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
@@ -133,19 +245,26 @@ get_html char_turn player_ix =
                   player_ix
                   char
                ),
-               (
-                  if
-                  (
-                     (Struct.CharacterTurn.get_action char_turn)
-                     ==
-                     Struct.CharacterTurn.None
-                  )
-                  then (View.Controlled.ManualControls.get_html)
-                  else (Shared.Util.Html.nothing)
-               ),
                (Html.div
-                  [(Html.Attributes.class "controlled-actions")]
-                  (get_available_actions char_turn)
+                  [
+                     (Html.Attributes.class "controlled-controls")
+                  ]
+                  [
+                     (Html.div
+                        [(Html.Attributes.class "controlled-actions")]
+                        (get_available_actions char_turn)
+                     ),
+                     (
+                        if
+                        (
+                           (Struct.CharacterTurn.get_action char_turn)
+                           ==
+                           Struct.CharacterTurn.None
+                        )
+                        then (View.Controlled.ManualControls.get_html)
+                        else (Shared.Util.Html.nothing)
+                     )
+                  ]
                )
             ]
          )

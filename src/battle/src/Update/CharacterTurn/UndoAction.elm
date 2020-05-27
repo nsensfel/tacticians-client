@@ -21,8 +21,9 @@ import Struct.Event
 import Struct.Model
 import Struct.Navigator
 
-import Util.Navigator
+import Update.CharacterTurn.ResetPath
 
+import Util.Navigator
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -57,27 +58,46 @@ handle_undo_attacking char_turn =
       )
    )
 
+handle_undo_skipping : Struct.CharacterTurn.Type -> Struct.CharacterTurn.Type
+handle_undo_skipping char_turn =
+   case (Struct.CharacterTurn.maybe_get_navigator char_turn) of
+      Nothing -> char_turn
+      (Just nav) ->
+         (Struct.CharacterTurn.clear_action
+            (Struct.CharacterTurn.set_navigator
+               (Struct.Navigator.unlock_path nav)
+               char_turn
+            )
+         )
+
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
 apply_to model =
-   (
-      {model |
-         char_turn =
-         (
-            case (Struct.CharacterTurn.get_action model.char_turn) of
-               Struct.CharacterTurn.Attacking ->
-                  (handle_undo_attacking model.char_turn)
+   let action = (Struct.CharacterTurn.get_action model.char_turn) in
+   if (action == Struct.CharacterTurn.None)
+   then (Update.CharacterTurn.ResetPath.apply_to model)
+   else
+      (
+         {model |
+            char_turn =
+            (
+               case action of
+                  Struct.CharacterTurn.Attacking ->
+                     (handle_undo_attacking model.char_turn)
 
-               Struct.CharacterTurn.UsingSkill ->
-                  (handle_undo_attacking model.char_turn)
+                  Struct.CharacterTurn.UsingSkill ->
+                     (handle_undo_attacking model.char_turn)
 
-               Struct.CharacterTurn.SwitchingWeapons ->
-                  (handle_undo_switching_weapons model.char_turn)
+                  Struct.CharacterTurn.SwitchingWeapons ->
+                     (handle_undo_switching_weapons model.char_turn)
 
-               _ -> model.char_turn
-         )
-      },
-      Cmd.none
-   )
+                  Struct.CharacterTurn.Skipping ->
+                     (handle_undo_skipping model.char_turn)
+
+                  Struct.CharacterTurn.None -> model.char_turn
+            )
+         },
+         Cmd.none
+      )

@@ -43,6 +43,7 @@ module Struct.CharacterTurn exposing
       clear_path,
 
       -- Other
+      is_aiming_at_something,
       encode,
       new
    )
@@ -71,6 +72,7 @@ import Struct.Navigator
 --------------------------------------------------------------------------------
 type Action =
    None
+   | Skipping
    | Attacking
    | SwitchingWeapons
    | UsingSkill
@@ -113,6 +115,7 @@ encode_action : Type -> (Json.Encode.Value)
 encode_action ct =
    case ct.action of
       None -> (Json.Encode.null)
+      Skipping -> (Json.Encode.null)
 
       Attacking ->
          case (List.head (Set.toList ct.targets)) of
@@ -266,6 +269,11 @@ override_path path ct = {ct | path = path}
 
 clear_path : Type -> Type
 clear_path ct = {ct | path = []}
+
+---- Other ---------------------------------------------------------------------
+is_aiming_at_something : Type -> Bool
+is_aiming_at_something ct =
+   (not ((Set.isEmpty ct.targets) && (Set.isEmpty ct.locations)))
 
 ---- Encode/Decode -------------------------------------------------------------
 encode : Type -> (Json.Encode.Value)

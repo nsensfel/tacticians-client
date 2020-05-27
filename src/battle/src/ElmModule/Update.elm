@@ -22,7 +22,10 @@ import Update.Character.DisplayNavigator
 import Update.CharacterTurn.AbortTurn
 import Update.CharacterTurn.Attack
 import Update.CharacterTurn.EndTurn
+import Update.CharacterTurn.Move
 import Update.CharacterTurn.RequestDirection
+import Update.CharacterTurn.Skill
+import Update.CharacterTurn.Skip
 import Update.CharacterTurn.SwitchWeapon
 import Update.CharacterTurn.UndoAction
 
@@ -54,6 +57,15 @@ update event model =
 
       Struct.Event.AttackRequest ->
          (Update.CharacterTurn.Attack.apply_to model)
+
+      Struct.Event.SkillRequest ->
+         (Update.CharacterTurn.Skill.apply_to model)
+
+      Struct.Event.SkipRequest ->
+         (Update.CharacterTurn.Skip.apply_to model)
+
+      Struct.Event.MoveRequest ->
+         (Update.CharacterTurn.Move.apply_to model)
 
       Struct.Event.AnimationEnded ->
          (Update.Puppeteer.apply_to model)

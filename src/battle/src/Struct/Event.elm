@@ -20,6 +20,9 @@ type Type =
    AbortTurnRequest
    | AnimationEnded
    | AttackRequest
+   | SkillRequest
+   | SkipRequest
+   | MoveRequest
    | CharacterOrTileSelected BattleMap.Struct.Location.Ref
    | CharacterSelected Int
    | CharacterCardSelected Int

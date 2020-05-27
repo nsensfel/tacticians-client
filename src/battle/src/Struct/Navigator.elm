@@ -173,7 +173,7 @@ unlock_path navigator =
             navigator.attack_dist
             (navigator.cost_and_danger_fun)
          ),
-      locked_path = True
+      locked_path = False
    }
 
 lock_path_with_new_attack_ranges : Int -> Int -> Type -> Type
