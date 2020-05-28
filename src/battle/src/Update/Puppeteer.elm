@@ -163,18 +163,19 @@ apply_effects_backward effects model =
       effects
    )
 
---------------------------------------------------------------------------------
--- EXPORTED --------------------------------------------------------------------
---------------------------------------------------------------------------------
-apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
-apply_to model =
+apply_to_rec : (
+      Struct.Model.Type ->
+      (List (Cmd Struct.Event.Type)) ->
+      (Struct.Model.Type, (Cmd Struct.Event.Type))
+   )
+apply_to_rec model cmds =
    case (Struct.Puppeteer.maybe_get_current_action model.puppeteer) of
-      Nothing -> (model, (Cmd.none))
+      Nothing -> (model, (Cmd.batch cmds))
       (Just action) ->
          case action of
             (Struct.PuppeteerAction.Perform effects) ->
                let
-                  (new_model, cmds) =
+                  (new_model, new_cmds) =
                      (
                         if
                            (Struct.Puppeteer.get_is_playing_forward
@@ -184,16 +185,11 @@ apply_to model =
                         else (apply_effects_backward effects model)
                      )
                in
-                  (
-                     new_model,
-                     if (List.isEmpty cmds)
-                     then (Cmd.none)
-                     else (Cmd.batch cmds)
-                  )
+                  (apply_to_rec new_model (new_cmds ++ cmds))
 
             (Struct.PuppeteerAction.PerformFor (time, effects)) ->
                let
-                  (new_model, cmds) =
+                  (new_model, new_cmds) =
                      (
                         if
                            (Struct.Puppeteer.get_is_playing_forward
@@ -205,22 +201,20 @@ apply_to model =
                in
                   (
                      new_model,
-                     if (List.isEmpty cmds)
-                     then
-                        (Delay.after
-                           time
-                           Delay.Second
-                           Struct.Event.AnimationEnded
-                        )
-                     else
-                        (Cmd.batch
-                           (
-                              (Delay.after
-                                 time
-                                 Delay.Second
-                                 Struct.Event.AnimationEnded
-                              )
-                              :: cmds
+                     (Cmd.batch
+                        (
+                           (Delay.after
+                              time
+                              Delay.Second
+                              Struct.Event.AnimationEnded
                            )
+                           :: (new_cmds ++ cmds)
                         )
+                     )
                   )
+
+--------------------------------------------------------------------------------
+-- EXPORTED --------------------------------------------------------------------
+--------------------------------------------------------------------------------
+apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
+apply_to model = (apply_to_rec model [])

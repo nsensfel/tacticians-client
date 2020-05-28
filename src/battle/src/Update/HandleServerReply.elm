@@ -186,7 +186,7 @@ add_to_timeline turn_results model =
       (
          {model |
             puppeteer =
-               (List.foldl
+               (List.foldr
                   (\turn_result puppeteer ->
                      (Struct.Puppeteer.append_forward
                         (Struct.PuppeteerAction.from_turn_result
@@ -195,7 +195,7 @@ add_to_timeline turn_results model =
                         puppeteer
                      )
                   )
-                  model.puppeteer
+                  (Struct.Puppeteer.set_is_playing_forward True model.puppeteer)
                   turn_results
                ),
             battle =
