@@ -9,6 +9,10 @@ module Struct.Puppeteer exposing
       step,
       get_is_playing_forward,
       set_is_playing_forward,
+      get_is_paused,
+      set_is_paused,
+      get_is_ignoring_time,
+      set_is_ignoring_time,
       maybe_get_current_action
    )
 
@@ -29,7 +33,9 @@ type alias Type =
    {
       forward_actions : (List Struct.PuppeteerAction.Type),
       backward_actions : (List Struct.PuppeteerAction.Type),
-      is_playing_forward : Bool
+      is_ignoring_time : Bool,
+      is_playing_forward : Bool,
+      is_paused : Bool
    }
 
 --------------------------------------------------------------------------------
@@ -44,7 +50,9 @@ new =
    {
       forward_actions = [],
       backward_actions = [],
-      is_playing_forward = True
+      is_ignoring_time = False,
+      is_playing_forward = True,
+      is_paused = False
    }
 
 append_forward : (List Struct.PuppeteerAction.Type) -> Type -> Type
@@ -92,6 +100,18 @@ get_is_playing_forward puppeteer = puppeteer.is_playing_forward
 
 set_is_playing_forward : Bool -> Type -> Type
 set_is_playing_forward val puppeteer = {puppeteer | is_playing_forward = val}
+
+get_is_paused : Type -> Bool
+get_is_paused puppeteer = puppeteer.is_paused
+
+set_is_paused : Bool -> Type -> Type
+set_is_paused val puppeteer = {puppeteer | is_paused = val}
+
+get_is_ignoring_time : Type -> Bool
+get_is_ignoring_time puppeteer = puppeteer.is_ignoring_time
+
+set_is_ignoring_time : Bool -> Type -> Type
+set_is_ignoring_time val puppeteer = {puppeteer | is_ignoring_time = val}
 
 maybe_get_current_action : Type -> (Maybe (Struct.PuppeteerAction.Type))
 maybe_get_current_action puppeteer =

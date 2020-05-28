@@ -16,6 +16,12 @@ button + button
    margin-left: 0.5em;
 }
 
+button.active
+{
+   border-bottom-width: 1px;
+   filter: brightness(0.8);
+}
+
 button:hover
 {
    background-color: $BROWN-4;

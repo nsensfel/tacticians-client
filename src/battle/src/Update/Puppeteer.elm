@@ -199,22 +199,28 @@ apply_to_rec model cmds =
                         else (apply_effects_backward effects model)
                      )
                in
-                  (
-                     new_model,
-                     (Cmd.batch
-                        (
-                           (Delay.after
-                              time
-                              Delay.Second
-                              Struct.Event.AnimationEnded
+                  if (Struct.Puppeteer.get_is_ignoring_time model.puppeteer)
+                  then (apply_to_rec new_model (new_cmds ++ cmds))
+                  else
+                     (
+                        new_model,
+                        (Cmd.batch
+                           (
+                              (Delay.after
+                                 time
+                                 Delay.Second
+                                 Struct.Event.AnimationEnded
+                              )
+                              :: (new_cmds ++ cmds)
                            )
-                           :: (new_cmds ++ cmds)
                         )
                      )
-                  )
 
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 apply_to : Struct.Model.Type -> (Struct.Model.Type, (Cmd Struct.Event.Type))
-apply_to model = (apply_to_rec model [])
+apply_to model =
+   if (Struct.Puppeteer.get_is_paused model.puppeteer)
+   then (model, Cmd.none)
+   else (apply_to_rec model [])

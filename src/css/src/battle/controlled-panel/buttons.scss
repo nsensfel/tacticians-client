@@ -95,12 +95,6 @@
       var(--bg-end-turn);
 }
 
-.action-button.undo
-{
-   border-bottom-width: 1px;
-   filter: brightness(0.8);
-
-}
 .action-button.end-turn-button.no-path-was-queued
 {
    background-image: var(--bg-second-act), var(--bg-end-turn);

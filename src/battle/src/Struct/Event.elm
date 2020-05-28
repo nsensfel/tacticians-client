@@ -23,6 +23,9 @@ type Type =
    | SkillRequest
    | SkipRequest
    | MoveRequest
+   | PuppeteerPlay Bool
+   | PuppeteerSkipTo Bool
+   | PuppeteerTogglePause
    | CharacterOrTileSelected BattleMap.Struct.Location.Ref
    | CharacterSelected Int
    | CharacterCardSelected Int

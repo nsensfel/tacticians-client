@@ -58,7 +58,7 @@ action_or_undo_button current_action relevant_action event =
                (Html.Attributes.class "action-button"),
                (action_to_class relevant_action),
                (Html.Events.onClick Struct.Event.UndoActionRequest),
-               (Html.Attributes.class "undo")
+               (Html.Attributes.class "active")
             ]
          else
             [
@@ -147,7 +147,7 @@ path_button char_turn =
                   (Html.Attributes.class "action-button"),
                   (Html.Attributes.class "path-button"),
                   (Html.Events.onClick Struct.Event.UndoActionRequest),
-                  (Html.Attributes.class "undo")
+                  (Html.Attributes.class "active")
                ]
          else
             [
@@ -158,7 +158,7 @@ path_button char_turn =
                   (
                      if ((Struct.CharacterTurn.get_path char_turn) == [])
                      then ""
-                     else "undo"
+                     else "active"
                   )
                )
             ]

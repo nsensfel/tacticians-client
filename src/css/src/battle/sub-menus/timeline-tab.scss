@@ -29,3 +29,40 @@
    margin-left: 1em;
 }
 
+.tabmenu-timeline-controls button
+{
+   width: 32px;
+   height: 32px;
+   background-size: 100%;
+   background-position: center;
+}
+
+.tabmenu-timeline-tab
+{
+   text-align: center;
+}
+
+.tabmenu-timeline-controls button.pause
+{
+   background-image: url(/asset/svg/damage_type/pause.svg);
+}
+
+.tabmenu-timeline-controls button.play_forward
+{
+   background-image: url(/asset/svg/damage_type/forwardplay.svg);
+}
+
+.tabmenu-timeline-controls button.play_backward
+{
+   background-image: url(/asset/svg/damage_type/backwardplay.svg);
+}
+
+.tabmenu-timeline-controls button.skip_backward
+{
+   background-image: url(/asset/svg/damage_type/backwardend.svg);
+}
+
+.tabmenu-timeline-controls button.skip_forward
+{
+   background-image: url(/asset/svg/damage_type/forwardend.svg);
+}

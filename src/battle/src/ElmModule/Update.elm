@@ -16,6 +16,10 @@ import Update.SelectCharacterOrTile
 import Update.SelectTile
 import Update.SetRequestedHelp
 
+import Update.Puppeteer.Play
+import Update.Puppeteer.TogglePause
+import Update.Puppeteer.SkipTo
+
 import Update.Character.ScrollTo
 import Update.Character.DisplayNavigator
 
@@ -69,6 +73,15 @@ update event model =
 
       Struct.Event.AnimationEnded ->
          (Update.Puppeteer.apply_to model)
+
+      (Struct.Event.PuppeteerPlay forward) ->
+         (Update.Puppeteer.Play.apply_to forward model)
+
+      (Struct.Event.PuppeteerSkipTo forward) ->
+         (Update.Puppeteer.SkipTo.apply_to forward model)
+
+      Struct.Event.PuppeteerTogglePause ->
+         (Update.Puppeteer.TogglePause.apply_to model)
 
       (Struct.Event.DirectionRequested d) ->
          (Update.CharacterTurn.RequestDirection.apply_to d model)
