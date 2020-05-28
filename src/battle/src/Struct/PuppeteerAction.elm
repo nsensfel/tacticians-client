@@ -14,6 +14,8 @@ import BattleMap.Struct.DataSet
 import BattleMap.Struct.Direction
 
 -- Local Module ----------------------------------------------------------------
+import Constants.DisplayEffects
+
 import Struct.Attack
 import Struct.Battle
 import Struct.TurnResult
@@ -29,6 +31,7 @@ type Effect =
    | Move (Int, BattleMap.Struct.Direction.Type)
    | RefreshCharacter (Bool, Int)
    | RefreshCharactersOf (Bool, Int)
+   | ToggleCharacterEffect (Int, String)
    | StartTurn Int
    | SwapWeapons Int
    | Target (Int, Int)
@@ -51,7 +54,19 @@ from_attacked attack =
             (Perform
                [
                   (RefreshCharacter (False, attacker_ix)),
-                  (RefreshCharacter (False, defender_ix))
+                  (RefreshCharacter (False, defender_ix)),
+                  (ToggleCharacterEffect
+                     (
+                        attacker_ix,
+                        Constants.DisplayEffects.attacking
+                     )
+                  ),
+                  (ToggleCharacterEffect
+                     (
+                        defender_ix,
+                        Constants.DisplayEffects.target
+                     )
+                  )
                ]
             ),
             (PerformFor
@@ -65,7 +80,19 @@ from_attacked attack =
             (Perform
                [
                   (RefreshCharacter (True, attacker_ix)),
-                  (RefreshCharacter (True, defender_ix))
+                  (RefreshCharacter (True, defender_ix)),
+                  (ToggleCharacterEffect
+                     (
+                        attacker_ix,
+                        Constants.DisplayEffects.attacking
+                     )
+                  ),
+                  (ToggleCharacterEffect
+                     (
+                        defender_ix,
+                        Constants.DisplayEffects.target
+                     )
+                  )
                ]
             )
          ]
@@ -73,18 +100,53 @@ from_attacked attack =
 
 from_targeted : Struct.TurnResult.Target -> (List Type)
 from_targeted target =
+   let
+      actor_index = (Struct.TurnResult.get_target_actor_index target)
+      target_index = (Struct.TurnResult.get_target_target_index target)
+   in
    [
       (PerformFor
          (
             2.0,
-            [(Focus (Struct.TurnResult.get_target_actor_index target))]
+            [
+               (Focus actor_index),
+               (ToggleCharacterEffect
+                  (
+                     actor_index,
+                     Constants.DisplayEffects.focused
+                  )
+               )
+            ]
          )
       ),
       (PerformFor
          (
             2.0,
-            [(Focus (Struct.TurnResult.get_target_target_index target))]
+            [
+               (Focus target_index),
+               (ToggleCharacterEffect
+                  (
+                     actor_index,
+                     Constants.DisplayEffects.focused)
+                  ),
+               (ToggleCharacterEffect
+                  (
+                     target_index,
+                     Constants.DisplayEffects.focused
+                  )
+               )
+            ]
          )
+      ),
+      (Perform
+         [
+            (ToggleCharacterEffect
+               (
+                  target_index,
+                  Constants.DisplayEffects.focused
+               )
+            )
+         ]
       )
    ]
 
@@ -93,16 +155,42 @@ from_moved movement =
    let actor_ix = (Struct.TurnResult.get_movement_actor_index movement) in
       (
          [
-            (PerformFor (1.0, [(Focus actor_ix)])),
-            (Perform [(RefreshCharacter (False, actor_ix))])
+            (PerformFor
+               (
+                  1.0,
+                  [
+                     (Focus actor_ix),
+                     (ToggleCharacterEffect
+                        (
+                           actor_ix,
+                           Constants.DisplayEffects.focused
+                        )
+                     )
+                  ]
+               )
+            ),
+            (Perform
+               [
+                  (RefreshCharacter (False, actor_ix)),
+                  (ToggleCharacterEffect
+                     (
+                        actor_ix,
+                        Constants.DisplayEffects.focused
+                     )
+                  )
+               ]
+            )
          ]
          ++
          (List.map
             (\dir ->
                (PerformFor
                   (
-                     0.5,
-                     [(Move (actor_ix, dir))]
+                     0.4,
+                     [
+                        (Focus actor_ix),
+                        (Move (actor_ix, dir))
+                     ]
                   )
                )
             )
@@ -118,16 +206,51 @@ from_switched_weapon weapon_switch =
       actor_ix = (Struct.TurnResult.get_weapon_switch_actor_index weapon_switch)
    in
       [
-         (PerformFor (1.0, [(Focus actor_ix)])),
+         (PerformFor
+            (
+               1.0,
+               [
+                  (Focus actor_ix),
+                  (ToggleCharacterEffect
+                     (
+                        actor_ix,
+                        Constants.DisplayEffects.focused
+                     )
+                  )
+               ]
+            )
+         ),
          (PerformFor
             (
                2.0,
                [
+                  (ToggleCharacterEffect
+                     (
+                        actor_ix,
+                        Constants.DisplayEffects.focused
+                     )
+                  ),
+                  (ToggleCharacterEffect
+                     (
+                        actor_ix,
+                        Constants.DisplayEffects.switching_weapons
+                     )
+                  ),
                   (RefreshCharacter (False, actor_ix)),
                   (SwapWeapons actor_ix),
                   (RefreshCharacter (True, actor_ix))
                ]
             )
+         ),
+         (Perform
+            [
+               (ToggleCharacterEffect
+                  (
+                     actor_ix,
+                     Constants.DisplayEffects.switching_weapons
+                  )
+               )
+            ]
          )
       ]
 

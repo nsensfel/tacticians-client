@@ -19,6 +19,7 @@ import Update.Puppeteer.RefreshCharactersOf
 import Update.Puppeteer.StartTurn
 import Update.Puppeteer.SwapWeapons
 import Update.Puppeteer.Target
+import Update.Puppeteer.ToggleCharacterEffect
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
@@ -38,6 +39,13 @@ forward effect model =
 
       (Struct.PuppeteerAction.Focus character_ix) ->
          (Update.Puppeteer.Focus.forward character_ix model)
+
+      (Struct.PuppeteerAction.ToggleCharacterEffect (character_ix, deffect)) ->
+         (Update.Puppeteer.ToggleCharacterEffect.forward
+            character_ix
+            deffect
+            model
+         )
 
       (Struct.PuppeteerAction.Hit attack) ->
          (Update.Puppeteer.Hit.forward attack model)
@@ -87,6 +95,13 @@ backward effect model =
       (Struct.PuppeteerAction.Hit attack) ->
          (Update.Puppeteer.Hit.backward attack model)
 
+      (Struct.PuppeteerAction.ToggleCharacterEffect (character_ix, deffect)) ->
+         (Update.Puppeteer.ToggleCharacterEffect.backward
+            character_ix
+            deffect
+            model
+         )
+
       (Struct.PuppeteerAction.Move (character_ix, direction)) ->
          (Update.Puppeteer.Move.backward character_ix direction model)
 
@@ -119,24 +134,28 @@ apply_effects_forward : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 apply_effects_forward effects model =
-   (List.foldl
-      (\effect (current_model, current_cmds) ->
-         let
-            (updated_model, new_commands) = (forward effect current_model)
-         in
-            (
-               {updated_model|
-                  puppeteer =
-                     (Struct.Puppeteer.forward
-                        updated_model.puppeteer
-                     )
-               },
-               (new_commands ++ current_cmds)
+   let
+      (last_model, cmd_list) =
+         (List.foldl
+            (\effect (current_model, current_cmds) ->
+               let
+                  (updated_model, new_commands) = (forward effect current_model)
+               in
+                  (
+                     updated_model,
+                     (new_commands ++ current_cmds)
+                  )
             )
+            (model, [])
+            effects
+         )
+   in
+      (
+         {last_model |
+            puppeteer = (Struct.Puppeteer.forward last_model.puppeteer)
+         },
+         cmd_list
       )
-      (model, [])
-      effects
-   )
 
 apply_effects_backward : (
       (List Struct.PuppeteerAction.Effect) ->
@@ -144,24 +163,29 @@ apply_effects_backward : (
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
 apply_effects_backward effects model =
-   (List.foldr
-      (\effect (current_model, current_cmds) ->
-         let
-            (updated_model, new_commands) = (backward effect current_model)
-         in
-            (
-               {updated_model|
-                  puppeteer =
-                     (Struct.Puppeteer.backward
-                        updated_model.puppeteer
-                     )
-               },
-               (current_cmds ++ new_commands)
+   let
+      (last_model, cmd_list) =
+         (List.foldr
+            (\effect (current_model, current_cmds) ->
+               let
+                  (updated_model, new_commands) =
+                     (backward effect current_model)
+               in
+                  (
+                     updated_model,
+                     (current_cmds ++ new_commands)
+                  )
             )
+            (model, [])
+            effects
+         )
+   in
+      (
+         {last_model |
+            puppeteer = (Struct.Puppeteer.backward last_model.puppeteer)
+         },
+         cmd_list
       )
-      (model, [])
-      effects
-   )
 
 apply_to_rec : (
       Struct.Model.Type ->

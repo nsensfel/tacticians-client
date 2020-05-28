@@ -1,0 +1,69 @@
+.character-icon.display-effect-ally
+{
+}
+
+.character-icon.display-effect-enemy
+{
+   transform: scale(-1, 1);
+}
+
+.character-icon.display-effect-ally.character-icon-effect-disabled,
+{
+   filter: contrast(35%);
+}
+
+.character-icon.display-effect-target
+{
+   background-color: rgba(255,0,0,0.7);
+   animation-name: red-alarm-bg;
+   animation-duration: 5s;
+   animation-iteration-count: infinite;
+}
+
+.character-icon.display-effect-active,
+.character-icon.display-effect-focused
+{
+   animation-name: strongly-pulsating;
+   animation-duration: 1.5s;
+   animation-iteration-count: infinite;
+}
+
+.display-effect-team-0 .character-icon-body{background-image: url(/asset/svg/icon/body_team_0.svg);}
+.display-effect-team-1 .character-icon-body{background-image: url(/asset/svg/icon/body_team_1.svg);}
+.display-effect-team-2 .character-icon-body{background-image: url(/asset/svg/icon/body_team_2.svg);}
+.display-effect-team-3 .character-icon-body{background-image: url(/asset/svg/icon/body_team_3.svg);}
+.display-effect-team-4 .character-icon-body{background-image: url(/asset/svg/icon/body_team_4.svg);}
+.display-effect-team-5 .character-icon-body{background-image: url(/asset/svg/icon/body_team_5.svg);}
+.display-effect-team-6 .character-icon-body{background-image: url(/asset/svg/icon/body_team_6.svg);}
+.display-effect-team-7 .character-icon-body{background-image: url(/asset/svg/icon/body_team_7.svg);}
+
+.character-icon.display-effect-enabled
+{
+   animation-name: pulsating;
+   animation-duration: 1.5s;
+   animation-iteration-count: infinite;
+   transform-origin: center;
+}
+
+.character-icon.display-effect-switching-weapons > .character-icon-above-effect,
+.character-icon.display-effect-attacking > .character-icon-above-effect
+{
+   animation-name: strongly-pulsating-full-opacity;
+   animation-duration: 2s;
+   animation-iteration-count: infinite;
+}
+
+.character-icon.display-effect-switching-weapons > .character-icon-above-effect
+{
+   background-image: url(/asset/svg/damage_type/swapwp.svg);
+}
+
+.character-icon.display-effect-attacking > .character-icon-above-effect
+{
+   background-image: url(/asset/svg/damage_type/attack.svg);
+}
+
+.character-icon.display-effect-using-skill > .character-icon-above-effect
+{
+   background-image: url(/asset/svg/damage_type/skill.svg);
+}

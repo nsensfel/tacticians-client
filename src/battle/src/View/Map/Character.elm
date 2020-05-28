@@ -78,10 +78,15 @@ get_head_html char =
       ]
    )
 
-get_banner_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
-get_banner_html char =
-   -- TODO: Banner from some status indicator
-   (Shared.Util.Html.nothing)
+get_above_effect_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
+get_above_effect_html char =
+      (Html.div
+         [
+            (Html.Attributes.class "character-icon-above-effect")
+         ]
+         [
+         ]
+      )
 
 get_actual_html : Struct.Character.Type -> (Html.Html Struct.Event.Type)
 get_actual_html char =
@@ -116,7 +121,7 @@ get_actual_html char =
          [
             (get_body_html char),
             (get_head_html char),
-            (get_banner_html char)
+            (get_above_effect_html char)
          ]
       )
 

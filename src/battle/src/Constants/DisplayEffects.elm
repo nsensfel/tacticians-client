@@ -15,6 +15,18 @@ enabled = "enabled"
 target : String
 target = "target"
 
+focused : String
+focused = "focused"
+
+switching_weapons : String
+switching_weapons = "switching-weapons"
+
+attacking : String
+attacking = "attacking"
+
+using_skill : String
+using_skill = "using-skill"
+
 ally : String
 ally = "ally"
 

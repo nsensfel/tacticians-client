@@ -1,49 +1,50 @@
-module Update.Puppeteer.Focus exposing (forward, backward)
-
--- Elm -------------------------------------------------------------------------
-import Task
+module Update.Puppeteer.ToggleCharacterEffect exposing (forward, backward)
 
 -- Local Module ----------------------------------------------------------------
-import Action.Scroll
-
-import Struct.Battle
 import Struct.Character
+import Struct.Battle
 import Struct.Event
 import Struct.Model
-import Struct.UI
 
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
+perform : (
+      Int ->
+      String ->
+      Struct.Model.Type ->
+      (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
+   )
+perform char_ix effect model =
+   (
+      {model |
+         battle =
+            (Struct.Battle.update_character
+               char_ix
+               (Struct.Character.toggle_extra_display_effect effect)
+               model.battle
+            )
+      },
+      []
+   )
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 forward : (
       Int ->
+      String ->
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-forward actor_ix model =
-   case (Struct.Battle.get_character actor_ix model.battle) of
-      Nothing -> (model, [])
-      (Just character) ->
-         (
-            model,
-            [
-               (Task.attempt
-                  (Struct.Event.attempted)
-                  (Action.Scroll.to
-                     (Struct.Character.get_location character)
-                     model.ui
-                  )
-               )
-            ]
-         )
+forward char_ix effect model =
+   (perform char_ix effect model)
+
 
 backward : (
       Int ->
+      String ->
       Struct.Model.Type ->
       (Struct.Model.Type, (List (Cmd Struct.Event.Type)))
    )
-backward actor_ix model = (forward actor_ix model)
+backward char_ix effect model =
+   (perform char_ix effect model)
