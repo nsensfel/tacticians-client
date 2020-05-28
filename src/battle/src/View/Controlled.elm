@@ -180,23 +180,32 @@ end_turn_button char_turn =
       (Html.button
          [
             (
-               if
-               (
-                  (temporary_path /= registered_path)
-                  ||
-                  (
+               let
+                  is_aiming_at_something =
                      (Struct.CharacterTurn.is_aiming_at_something char_turn)
-                     && (action /= Struct.CharacterTurn.Attacking)
-                     && (action /= Struct.CharacterTurn.UsingSkill)
-                  )
-                  ||
+               in
+                  if
                   (
-                     (registered_path == [])
-                     && (action == Struct.CharacterTurn.None)
+                     (temporary_path /= registered_path)
+                     ||
+                     (
+                        is_aiming_at_something
+                        && (action /= Struct.CharacterTurn.Attacking)
+                        && (action /= Struct.CharacterTurn.UsingSkill)
+                     )
+                     ||
+                     (
+                        (not is_aiming_at_something)
+                        && (action == Struct.CharacterTurn.Attacking)
+                     )
+                     ||
+                     (
+                        (registered_path == [])
+                        && (action == Struct.CharacterTurn.None)
+                     )
                   )
-               )
-               then (Html.Attributes.class "disabled")
-               else (Html.Events.onClick Struct.Event.TurnEnded)
+                  then (Html.Attributes.class "disabled")
+                  else (Html.Events.onClick Struct.Event.TurnEnded)
             ),
             (Html.Attributes.class "action-button"),
             (Html.Attributes.class "end-turn-button"),
