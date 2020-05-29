@@ -15,6 +15,7 @@ import Struct.Battle
 import Struct.Character
 import Struct.Event
 import Struct.Model
+import Struct.TurnResult
 
 import View.Controlled.CharacterCard
 
@@ -168,7 +169,12 @@ get_attacker_card attack char =
                   (get_attack_animation_class attack char)
             )
          ),
-         (Html.Attributes.class "animated-portrait")
+         (Html.Attributes.class "animated-portrait"),
+         (
+            if (attack.order == Struct.Attack.Counter)
+            then (Html.Attributes.class "initial-target")
+            else (Html.Attributes.class "initial-attacker")
+         )
       ]
       [
          (View.Controlled.CharacterCard.get_minimal_html
@@ -201,7 +207,12 @@ get_defender_card attack char =
                   (get_defense_animation_class attack char)
             )
          ),
-         (Html.Attributes.class "animated-portrait")
+         (Html.Attributes.class "animated-portrait"),
+         (
+            if (attack.order == Struct.Attack.Counter)
+            then (Html.Attributes.class "initial-attacker")
+            else (Html.Attributes.class "initial-target")
+         )
       ]
       [
          (View.Controlled.CharacterCard.get_minimal_html -1 char)
@@ -229,11 +240,19 @@ get_placeholder_html characters attacker_ix defender_ix attack =
                (Html.Attributes.class "message-attack")
             ]
             (
-               [
-                  (get_attacker_card attack atkchar),
-                  (get_attack_html atkchar defchar attack),
-                  (get_defender_card attack defchar)
-               ]
+               if (attack.order == Struct.Attack.Counter)
+               then
+                  [
+                     (get_defender_card attack defchar),
+                     (get_attack_html atkchar defchar attack),
+                     (get_attacker_card attack atkchar)
+                  ]
+               else
+                  [
+                     (get_attacker_card attack atkchar),
+                     (get_attack_html atkchar defchar attack),
+                     (get_defender_card attack defchar)
+                  ]
             )
          )
 
@@ -250,13 +269,13 @@ get_placeholder_html characters attacker_ix defender_ix attack =
 --------------------------------------------------------------------------------
 get_html : (
       Struct.Model.Type ->
-      Struct.Attack.Type ->
+      Struct.TurnResult.Attack ->
       (Html.Html Struct.Event.Type)
    )
 get_html model attack =
    (get_placeholder_html
       (Struct.Battle.get_characters model.battle)
-      0 -- TODO: get attacker IX
-      0 -- TODO: get defender IX
-      attack
+      (Struct.TurnResult.get_attack_actor_index attack)
+      (Struct.TurnResult.get_attack_target_index attack)
+      (Struct.TurnResult.get_attack_data attack)
    )

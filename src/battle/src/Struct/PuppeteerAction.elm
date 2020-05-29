@@ -17,6 +17,7 @@ import BattleMap.Struct.Direction
 import Constants.DisplayEffects
 
 import Struct.Attack
+import Struct.MessageBoard
 import Struct.Battle
 import Struct.TurnResult
 
@@ -27,7 +28,8 @@ type Effect =
    AnnounceLoss Int
    | AnnounceVictory Int
    | Focus Int
-   | Hit Struct.Attack.Type
+   | DisplayMessage Struct.MessageBoard.Message
+   | ClearMessage Struct.MessageBoard.Message
    | Move (Int, BattleMap.Struct.Direction.Type)
    | RefreshCharacter (Bool, Int)
    | RefreshCharactersOf (Bool, Int)
@@ -63,19 +65,20 @@ from_attacked attack =
                         Constants.DisplayEffects.attack_target
                      )
                   ),
-                  (DisplayCharacterNavigator attacker_ix)
+                  (DisplayCharacterNavigator attacker_ix),
+                  (DisplayMessage (Struct.MessageBoard.AttackReport attack))
                ]
             ),
             (PerformFor
                (
                   5.0,
                   [
-                     (Hit (Struct.TurnResult.get_attack_data attack))
                   ]
                )
             ),
             (Perform
                [
+                  (ClearMessage (Struct.MessageBoard.AttackReport attack)),
                   (RefreshCharacter (True, attacker_ix)),
                   (RefreshCharacter (True, defender_ix)),
                   (ToggleCharacterEffect

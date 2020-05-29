@@ -12,8 +12,8 @@ import Struct.PuppeteerAction
 import Update.Puppeteer.AnnounceLoss
 import Update.Puppeteer.AnnounceVictory
 import Update.Puppeteer.DisplayCharacterNavigator
+import Update.Puppeteer.DisplayMessage
 import Update.Puppeteer.Focus
-import Update.Puppeteer.Hit
 import Update.Puppeteer.Move
 import Update.Puppeteer.RefreshCharacter
 import Update.Puppeteer.RefreshCharactersOf
@@ -48,8 +48,11 @@ forward effect model =
             model
          )
 
-      (Struct.PuppeteerAction.Hit attack) ->
-         (Update.Puppeteer.Hit.forward attack model)
+      (Struct.PuppeteerAction.DisplayMessage message) ->
+         (Update.Puppeteer.DisplayMessage.forward message model)
+
+      (Struct.PuppeteerAction.ClearMessage message) ->
+         (Update.Puppeteer.DisplayMessage.backward message model)
 
       (Struct.PuppeteerAction.Move (character_ix, direction)) ->
          (Update.Puppeteer.Move.forward character_ix direction model)
@@ -105,8 +108,11 @@ backward effect model =
       (Struct.PuppeteerAction.Focus character_ix) ->
          (Update.Puppeteer.Focus.backward character_ix model)
 
-      (Struct.PuppeteerAction.Hit attack) ->
-         (Update.Puppeteer.Hit.backward attack model)
+      (Struct.PuppeteerAction.DisplayMessage message) ->
+         (Update.Puppeteer.DisplayMessage.backward message model)
+
+      (Struct.PuppeteerAction.ClearMessage message) ->
+         (Update.Puppeteer.DisplayMessage.forward message model)
 
       (Struct.PuppeteerAction.ToggleCharacterEffect (character_ix, deffect)) ->
          (Update.Puppeteer.ToggleCharacterEffect.backward

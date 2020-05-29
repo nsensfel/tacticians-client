@@ -5,6 +5,7 @@ module Struct.MessageBoard exposing
       display,
       maybe_get_current_message,
       clear_current_message,
+      clear_main_message,
       new,
       clear
    )
@@ -12,9 +13,9 @@ module Struct.MessageBoard exposing
 -- Elm -------------------------------------------------------------------------
 
 -- Local Module ----------------------------------------------------------------
-import Struct.Attack
 import Struct.Error
 import Struct.HelpRequest
+import Struct.TurnResult
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -22,7 +23,7 @@ import Struct.HelpRequest
 type Message =
    Help Struct.HelpRequest.Type
    | Error Struct.Error.Type
-   | AttackReport Struct.Attack.Type
+   | AttackReport Struct.TurnResult.Attack
 
 type alias Type =
    {
@@ -60,6 +61,9 @@ clear_current_message board =
          {board |
             secondary_messages = remaining_secondary_messages
          }
+
+clear_main_message : Type -> Type
+clear_main_message board = {board | main_message = Nothing}
 
 new : Type
 new =
