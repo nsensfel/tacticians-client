@@ -94,16 +94,16 @@ get_attack_html attacker defender attack =
 
                      (Struct.Attack.Counter, _) ->
                         (
-                           defender_name
+                           attacker_name
                            ++ " striked back, and "
                            ++ (get_effect_text attack)
                         )
 
                      (_, True) ->
                         (
-                           attacker_name
+                           defender_name
                            ++ " attempted a hit, but "
-                           ++ defender_name
+                           ++ attacker_name
                            ++ " parried, and "
                            ++ (get_effect_text attack)
                         )
@@ -153,29 +153,27 @@ get_attacker_card : (
    )
 get_attacker_card attack char =
    (Html.div
-      [
-         (Html.Attributes.class
-            (case (attack.order, attack.parried) of
-               (Struct.Attack.Counter, True) ->
-                  (get_attack_animation_class attack char)
-
-               (Struct.Attack.Counter, _) ->
-                  (get_defense_animation_class attack char)
-
-               (_, True) ->
-                  (get_defense_animation_class attack char)
-
-               (_, _) ->
-                  (get_attack_animation_class attack char)
-            )
-         ),
-         (Html.Attributes.class "animated-portrait"),
+      (
+         (Html.Attributes.class "animated-portrait")
+         ::
          (
-            if (attack.order == Struct.Attack.Counter)
-            then (Html.Attributes.class "initial-target")
-            else (Html.Attributes.class "initial-attacker")
+            if ((attack.order == Struct.Attack.Counter) == attack.parried)
+            then
+               [
+                  (Html.Attributes.class
+                     (get_attack_animation_class attack char)
+                  ),
+                  (Html.Attributes.class "initial-attacker")
+               ]
+            else
+               [
+                  (Html.Attributes.class
+                     (get_defense_animation_class attack char)
+                  ),
+                  (Html.Attributes.class "initial-target")
+               ]
          )
-      ]
+      )
       [
          (View.Controlled.CharacterCard.get_minimal_html
             (Struct.Character.get_player_index char)
@@ -191,29 +189,27 @@ get_defender_card : (
    )
 get_defender_card attack char =
    (Html.div
-      [
-         (Html.Attributes.class
-            (case (attack.order, attack.parried) of
-               (Struct.Attack.Counter, True) ->
-                  (get_defense_animation_class attack char)
-
-               (Struct.Attack.Counter, _) ->
-                  (get_attack_animation_class attack char)
-
-               (_, True) ->
-                  (get_attack_animation_class attack char)
-
-               (_, _) ->
-                  (get_defense_animation_class attack char)
-            )
-         ),
-         (Html.Attributes.class "animated-portrait"),
+      (
+         (Html.Attributes.class "animated-portrait")
+         ::
          (
-            if (attack.order == Struct.Attack.Counter)
-            then (Html.Attributes.class "initial-attacker")
-            else (Html.Attributes.class "initial-target")
+            if ((attack.order == Struct.Attack.Counter) == attack.parried)
+            then
+               [
+                  (Html.Attributes.class
+                     (get_defense_animation_class attack char)
+                  ),
+                  (Html.Attributes.class "initial-target")
+               ]
+            else
+               [
+                  (Html.Attributes.class
+                     (get_attack_animation_class attack char)
+                  ),
+                  (Html.Attributes.class "initial-attacker")
+               ]
          )
-      ]
+      )
       [
          (View.Controlled.CharacterCard.get_minimal_html -1 char)
       ]
@@ -240,18 +236,18 @@ get_placeholder_html characters attacker_ix defender_ix attack =
                (Html.Attributes.class "message-attack")
             ]
             (
-               if (attack.order == Struct.Attack.Counter)
+               if ((attack.order == Struct.Attack.Counter) == attack.parried)
                then
-                  [
-                     (get_defender_card attack defchar),
-                     (get_attack_html atkchar defchar attack),
-                     (get_attacker_card attack atkchar)
-                  ]
-               else
                   [
                      (get_attacker_card attack atkchar),
                      (get_attack_html atkchar defchar attack),
                      (get_defender_card attack defchar)
+                  ]
+               else
+                  [
+                     (get_defender_card attack defchar),
+                     (get_attack_html atkchar defchar attack),
+                     (get_attacker_card attack atkchar)
                   ]
             )
          )

@@ -30,6 +30,7 @@ type Effect =
    | Focus Int
    | DisplayMessage Struct.MessageBoard.Message
    | ClearMessage Struct.MessageBoard.Message
+   | Hit Struct.TurnResult.Attack
    | Move (Int, BattleMap.Struct.Direction.Type)
    | RefreshCharacter (Bool, Int)
    | RefreshCharactersOf (Bool, Int)
@@ -71,7 +72,15 @@ from_attacked attack =
             ),
             (PerformFor
                (
-                  5.0,
+                  1.5,
+                  [
+                  ]
+               )
+            ),
+            (Perform [ (Hit attack) ]),
+            (PerformFor
+               (
+                  1.5,
                   [
                   ]
                )

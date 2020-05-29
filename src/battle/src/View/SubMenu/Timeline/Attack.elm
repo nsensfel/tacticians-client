@@ -108,16 +108,16 @@ get_attack_html attacker defender attack =
 
                   (Struct.Attack.Counter, _) ->
                      (
-                        defender_name
+                        attacker_name
                         ++ " striked back, and "
                         ++ (get_effect_text attack)
                      )
 
                   (_, True) ->
                      (
-                        attacker_name
+                        defender_name
                         ++ " attempted a hit, but "
-                        ++ defender_name
+                        ++ attacker_name
                         ++ " parried, and "
                         ++ (get_effect_text attack)
                      )

@@ -14,6 +14,7 @@ import Update.Puppeteer.AnnounceVictory
 import Update.Puppeteer.DisplayCharacterNavigator
 import Update.Puppeteer.DisplayMessage
 import Update.Puppeteer.Focus
+import Update.Puppeteer.Hit
 import Update.Puppeteer.Move
 import Update.Puppeteer.RefreshCharacter
 import Update.Puppeteer.RefreshCharactersOf
@@ -47,6 +48,9 @@ forward effect model =
             deffect
             model
          )
+
+      (Struct.PuppeteerAction.Hit attack) ->
+         (Update.Puppeteer.Hit.forward attack model)
 
       (Struct.PuppeteerAction.DisplayMessage message) ->
          (Update.Puppeteer.DisplayMessage.forward message model)
@@ -120,6 +124,9 @@ backward effect model =
             deffect
             model
          )
+
+      (Struct.PuppeteerAction.Hit attack) ->
+         (Update.Puppeteer.Hit.backward attack model)
 
       (Struct.PuppeteerAction.DisplayCharacterNavigator character_ix) ->
          (Update.Puppeteer.DisplayCharacterNavigator.backward
