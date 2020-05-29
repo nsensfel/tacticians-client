@@ -11,6 +11,7 @@ import Struct.PuppeteerAction
 
 import Update.Puppeteer.AnnounceLoss
 import Update.Puppeteer.AnnounceVictory
+import Update.Puppeteer.DisplayCharacterNavigator
 import Update.Puppeteer.Focus
 import Update.Puppeteer.Hit
 import Update.Puppeteer.Move
@@ -67,6 +68,18 @@ forward effect model =
             model
          )
 
+      (Struct.PuppeteerAction.DisplayCharacterNavigator character_ix) ->
+         (Update.Puppeteer.DisplayCharacterNavigator.forward
+            character_ix
+            model
+         )
+
+      (Struct.PuppeteerAction.ClearCharacterNavigator character_ix) ->
+         (Update.Puppeteer.DisplayCharacterNavigator.backward
+            character_ix
+            model
+         )
+
       (Struct.PuppeteerAction.StartTurn player_ix) ->
          (Update.Puppeteer.StartTurn.forward player_ix model)
 
@@ -99,6 +112,18 @@ backward effect model =
          (Update.Puppeteer.ToggleCharacterEffect.backward
             character_ix
             deffect
+            model
+         )
+
+      (Struct.PuppeteerAction.DisplayCharacterNavigator character_ix) ->
+         (Update.Puppeteer.DisplayCharacterNavigator.backward
+            character_ix
+            model
+         )
+
+      (Struct.PuppeteerAction.ClearCharacterNavigator character_ix) ->
+         (Update.Puppeteer.DisplayCharacterNavigator.forward
+            character_ix
             model
          )
 
@@ -223,7 +248,7 @@ apply_to_rec model cmds =
                         else (apply_effects_backward effects model)
                      )
                in
-                  if (Struct.Puppeteer.get_is_ignoring_time model.puppeteer)
+                  if (Struct.Puppeteer.get_is_ignoring_time new_model.puppeteer)
                   then (apply_to_rec new_model (new_cmds ++ cmds))
                   else
                      (

@@ -3,7 +3,8 @@ module Struct.Attack exposing
       Type,
       Order(..),
       Precision(..),
-      decoder
+      decoder,
+      get_order
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -63,6 +64,9 @@ precision_decoder =
 --------------------------------------------------------------------------------
 -- EXPORTED --------------------------------------------------------------------
 --------------------------------------------------------------------------------
+get_order : Type -> Order
+get_order at = at.order
+
 decoder : (Json.Decode.Decoder Type)
 decoder =
    (Json.Decode.map5

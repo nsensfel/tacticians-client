@@ -222,7 +222,9 @@ set_timeline turn_results model =
             (List.foldr
                (\turn_result puppeteer ->
                   (Struct.Puppeteer.append_backward
-                     (Struct.PuppeteerAction.from_turn_result turn_result)
+                     (List.reverse
+                        (Struct.PuppeteerAction.from_turn_result turn_result)
+                     )
                      puppeteer
                   )
                )

@@ -26,7 +26,7 @@ module Struct.Character exposing
       remove_extra_display_effect,
       get_extra_display_effects,
       get_extra_display_effects_list,
-      reset_extra_display_effects,
+      clear_extra_display_effects,
       decoder,
       resolve
    )
@@ -270,8 +270,8 @@ get_extra_display_effects char = char.extra_display_effects
 get_extra_display_effects_list : Type -> (List String)
 get_extra_display_effects_list char = (Set.toList char.extra_display_effects)
 
-reset_extra_display_effects : Int -> Type -> Type
-reset_extra_display_effects viewer_ix char =
+clear_extra_display_effects : Int -> Type -> Type
+clear_extra_display_effects viewer_ix char =
    {char |
       extra_display_effects =
          (Set.fromList

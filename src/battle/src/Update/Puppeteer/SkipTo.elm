@@ -54,7 +54,8 @@ apply_to skip_forward model =
          (restore_puppeteer
             (Struct.Puppeteer.get_is_paused model.puppeteer)
             (Struct.Puppeteer.get_is_playing_forward model.puppeteer)
-         )
+         ),
+         (Update.Puppeteer.apply_to)
       ]
       {model |
          puppeteer =

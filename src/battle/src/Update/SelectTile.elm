@@ -70,7 +70,7 @@ go_to_current_tile model loc_ref =
       (
          {model |
             ui =
-               (Struct.UI.reset_displayed_navigator
+               (Struct.UI.clear_displayed_navigator
                   (Struct.UI.set_displayed_tab
                      (Struct.UI.TileStatusTab loc_ref)
                      (Struct.UI.set_previous_action
@@ -211,7 +211,7 @@ apply_to loc_ref model =
          (
             {model |
                ui =
-                  (Struct.UI.reset_displayed_navigator
+                  (Struct.UI.clear_displayed_navigator
                      (Struct.UI.set_displayed_tab
                         (Struct.UI.TileStatusTab loc_ref)
                         (Struct.UI.set_previous_action

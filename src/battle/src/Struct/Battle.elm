@@ -136,7 +136,7 @@ add_character : Struct.Character.Type -> Type -> Type
 add_character s0char battle =
    let
       s1char =
-         (Struct.Character.reset_extra_display_effects
+         (Struct.Character.clear_extra_display_effects
             battle.own_player_ix
             s0char
          )

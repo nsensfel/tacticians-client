@@ -70,8 +70,8 @@ toggle_attack_character model target_char_id =
             model.battle
          ),
       ui =
-         (Struct.UI.reset_displayed_navigator
-            (Struct.UI.reset_displayed_tab
+         (Struct.UI.clear_displayed_navigator
+            (Struct.UI.clear_displayed_tab
                (Struct.UI.set_previous_action Nothing model.ui)
             )
          )
@@ -98,8 +98,8 @@ undo_attack_character model target_char_id =
             model.battle
          ),
       ui =
-         (Struct.UI.reset_displayed_navigator
-            (Struct.UI.reset_displayed_tab
+         (Struct.UI.clear_displayed_navigator
+            (Struct.UI.clear_displayed_tab
                (Struct.UI.set_previous_action Nothing model.ui)
             )
          )

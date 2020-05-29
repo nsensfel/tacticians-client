@@ -8,20 +8,20 @@ module Struct.UI exposing
 
       -- Zoom
       get_zoom_level,
-      reset_zoom_level,
+      clear_zoom_level,
       mod_zoom_level,
 
       -- Tab
       maybe_get_displayed_tab,
       set_displayed_tab,
-      reset_displayed_tab,
+      clear_displayed_tab,
       tab_to_string,
       get_all_tabs,
 
       -- Navigator
       maybe_get_displayed_navigator,
       set_displayed_navigator,
-      reset_displayed_navigator,
+      clear_displayed_navigator,
 
       -- Manual Controls
       has_manual_controls_enabled,
@@ -83,8 +83,8 @@ default =
 get_zoom_level : Type -> Float
 get_zoom_level ui = ui.zoom_level
 
-reset_zoom_level : Type -> Type
-reset_zoom_level ui = {ui | zoom_level = 1.0}
+clear_zoom_level : Type -> Type
+clear_zoom_level ui = {ui | zoom_level = 1.0}
 
 mod_zoom_level : Float -> Type -> Type
 mod_zoom_level mod ui = {ui | zoom_level = (mod * ui.zoom_level)}
@@ -96,8 +96,8 @@ maybe_get_displayed_tab ui = ui.displayed_tab
 set_displayed_tab : Tab -> Type -> Type
 set_displayed_tab tab ui = {ui | displayed_tab = (Just tab)}
 
-reset_displayed_tab : Type -> Type
-reset_displayed_tab ui = {ui | displayed_tab = Nothing}
+clear_displayed_tab : Type -> Type
+clear_displayed_tab ui = {ui | displayed_tab = Nothing}
 
 tab_to_string : Tab -> String
 tab_to_string tab =
@@ -119,8 +119,8 @@ maybe_get_displayed_navigator ui = ui.displayed_navigator
 set_displayed_navigator : Struct.Navigator.Type -> Type -> Type
 set_displayed_navigator nav ui = {ui | displayed_navigator = (Just nav)}
 
-reset_displayed_navigator : Type -> Type
-reset_displayed_navigator ui = {ui | displayed_navigator = Nothing}
+clear_displayed_navigator : Type -> Type
+clear_displayed_navigator ui = {ui | displayed_navigator = Nothing}
 
 -- ManualControls --------------------------------------------------------------
 has_manual_controls_enabled : Type -> Bool

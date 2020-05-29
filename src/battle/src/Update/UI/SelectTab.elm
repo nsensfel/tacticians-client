@@ -21,7 +21,7 @@ apply_to tab model =
    if ((Struct.UI.maybe_get_displayed_tab model.ui) == (Just tab))
    then
       (
-         {model | ui = (Struct.UI.reset_displayed_tab model.ui)},
+         {model | ui = (Struct.UI.clear_displayed_tab model.ui)},
          Cmd.none
       )
    else
