@@ -3,6 +3,12 @@
 @import 'shared/sanitize';
 @import 'shared/shadows';
 
+*
+{
+   color: black;
+   @include text-shadow(1px, black, 0.1);
+}
+
 html, body, .fullscreen-module
 {
    min-width: $MIN_PAGE_WIDTH;

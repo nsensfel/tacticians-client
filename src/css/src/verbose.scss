@@ -3,12 +3,6 @@
 
 @import 'shared/general-header';
 
-*
-{
-   color: $GOLD-0;
-   @include text-shadow(1px, $BROWN-0, 0.5);
-}
-
 body
 {
    display: flex;
@@ -54,8 +48,6 @@ article > p
    margin: 0 3em 0.5em 3em;
    line-height: 1.3em;
    font-size: 1.2em;
-   color: $BROWN-0;
-   text-shadow: none;
 }
 
 article > header

@@ -2,12 +2,6 @@
 @import 'shared/shadows';
 @import 'shared/general-header';
 
-*
-{
-   color: $GOLD-0;
-   @include text-shadow(1px, $BROWN-0, 0.5);
-}
-
 body,
 .fullscreen-module
 {
@@ -37,8 +31,6 @@ main > nav a
    position: relative;
    margin-bottom: -1px;
 
-   color: $BROWN-1;
-   text-shadow: none;
    box-shadow: none;
 
    transition: background-color 0.3s ease-out;
@@ -107,8 +99,6 @@ article
 
 article p
 {
-   color: $BROWN-0;
-   text-shadow: none;
    margin: 0.5em 4em 0.5em 4em;
 }
 
@@ -182,9 +172,6 @@ article input
    border-right-width: 1px;
    border-radius: 15px 0 0 15px;
    padding: 0.5em;
-
-   color: $BROWN-0;
-   text-shadow: none;
 
    flex: 1;
 }

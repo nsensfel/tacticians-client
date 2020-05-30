@@ -1,12 +1,6 @@
 @import 'shared/colors';
 @import 'shared/shadows';
 
-*
-{
-   color: $GOLD-0;
-   @include text-shadow(1px, $BROWN-0, 0.5);
-}
-
 body,
 .fullscreen-module
 {

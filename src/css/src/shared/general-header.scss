@@ -22,7 +22,6 @@ body > header nav,
 body > header nav a,
 .fullscreen-module > header nav a
 {
-   color: $GOLD-0;
    font-size: 1.5em;
    font-variant: small-caps;
    font-weight: bold;
@@ -30,8 +29,7 @@ body > header nav a,
    margin: 0.1em;
    padding: 0.2em 0.5em 0.2em 0.5em;
    border-radius: 5px;
-   background-color: rgba(0,0,0,0);
-   transition: background-color ease-out 0.5s;
+   transition: text-shadow ease-out 0.5s, color ease-out 0.5s;
 }
 
 .main-server-logo
@@ -52,5 +50,6 @@ body > header nav a,
 body > header nav a:hover,
 .fullscreen-module > header nav a:hover,
 {
-   background-color: rgba(0,0,0,0.5);
+   color: $GOLD-0;
+   @include text-shadow(1px, $BROWN-0, 0.5);
 }
