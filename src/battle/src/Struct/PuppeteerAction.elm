@@ -30,7 +30,7 @@ type Effect =
    | Focus Int
    | DisplayMessage Struct.MessageBoard.Message
    | ClearMessage Struct.MessageBoard.Message
-   | Hit Struct.TurnResult.Attack
+   | Hit Struct.Attack.Type
    | Move (Int, BattleMap.Struct.Direction.Type)
    | RefreshCharacter (Bool, Int)
    | RefreshCharactersOf (Bool, Int)
@@ -48,56 +48,53 @@ type Type =
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
-from_attacked : Struct.TurnResult.Attack -> (List Type)
+from_attacked : Struct.Attack.Type -> (List Type)
 from_attacked attack =
    let
-      attacker_ix = (Struct.TurnResult.get_attack_actor_index attack)
-      defender_ix = (Struct.TurnResult.get_attack_target_index attack)
+      attacker_ix = (Struct.Attack.get_actor_index attack)
+      defender_ix = (Struct.Attack.get_target_index attack)
    in
       (
          [
-            (Perform
-               [
-                  (RefreshCharacter (False, attacker_ix)),
-                  (RefreshCharacter (False, defender_ix)),
-                  (ToggleCharacterEffect
-                     (
-                        defender_ix,
-                        Constants.DisplayEffects.attack_target
-                     )
-                  ),
-                  (DisplayCharacterNavigator attacker_ix),
-                  (DisplayMessage (Struct.MessageBoard.AttackReport attack))
-               ]
+            (PerformFor
+               (
+                  1.5,
+                  [
+                     (RefreshCharacter (False, attacker_ix)),
+                     (RefreshCharacter (False, defender_ix)),
+                     (ToggleCharacterEffect
+                        (
+                           defender_ix,
+                           Constants.DisplayEffects.attack_target
+                        )
+                     ),
+                     (DisplayCharacterNavigator attacker_ix),
+                     (DisplayMessage (Struct.MessageBoard.AttackReport attack))
+                  ]
+               )
+            ),
+            (PerformFor
+               (
+                  5.0,
+                  [ (Hit attack) ]
+               )
             ),
             (PerformFor
                (
                   1.5,
                   [
+                     (ClearMessage (Struct.MessageBoard.AttackReport attack)),
+                     (RefreshCharacter (True, attacker_ix)),
+                     (RefreshCharacter (True, defender_ix)),
+                     (ToggleCharacterEffect
+                        (
+                           defender_ix,
+                           Constants.DisplayEffects.attack_target
+                        )
+                     ),
+                     (ClearCharacterNavigator attacker_ix)
                   ]
                )
-            ),
-            (Perform [ (Hit attack) ]),
-            (PerformFor
-               (
-                  1.5,
-                  [
-                  ]
-               )
-            ),
-            (Perform
-               [
-                  (ClearMessage (Struct.MessageBoard.AttackReport attack)),
-                  (RefreshCharacter (True, attacker_ix)),
-                  (RefreshCharacter (True, defender_ix)),
-                  (ToggleCharacterEffect
-                     (
-                        defender_ix,
-                        Constants.DisplayEffects.attack_target
-                     )
-                  ),
-                  (ClearCharacterNavigator attacker_ix)
-               ]
             )
          ]
       )

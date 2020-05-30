@@ -1,7 +1,6 @@
 module Struct.TurnResult exposing
    (
       Type(..),
-      Attack,
       Target,
       Movement,
       WeaponSwitch,
@@ -14,9 +13,6 @@ module Struct.TurnResult exposing
       get_weapon_switch_actor_index,
       get_movement_actor_index,
       get_movement_path,
-      get_attack_actor_index,
-      get_attack_target_index,
-      get_attack_data,
       get_target_actor_index,
       get_target_target_index,
       decoder
@@ -61,15 +57,6 @@ type alias Target =
       target_index : Int
    }
 
-type alias Attack =
-   {
-      attacker_index : Int,
-      defender_index : Int,
-      data : Struct.Attack.Type,
-      attacker_luck : Int,
-      defender_luck : Int
-   }
-
 type alias WeaponSwitch =
    {
       character_index : Int
@@ -93,7 +80,7 @@ type alias PlayerTurnStart =
 type Type =
    Moved Movement
    | Targeted Target
-   | Attacked Attack
+   | Attacked Struct.Attack.Type
    | SwitchedWeapon WeaponSwitch
    | PlayerWon PlayerVictory
    | PlayerLost PlayerDefeat
@@ -117,23 +104,6 @@ target_decoder =
       Target
       (Json.Decode.field "aix" Json.Decode.int)
       (Json.Decode.field "dix" Json.Decode.int)
-   )
-
-attack_decoder : (Json.Decode.Decoder Attack)
-attack_decoder =
-   (Json.Decode.andThen
-      (
-         \attack ->
-            (Json.Decode.map5
-               Attack
-               (Json.Decode.field "aix" Json.Decode.int)
-               (Json.Decode.field "dix" Json.Decode.int)
-               (Json.Decode.succeed attack)
-               (Json.Decode.field "alk" Json.Decode.int)
-               (Json.Decode.field "dlk" Json.Decode.int)
-            )
-      )
-      (Struct.Attack.decoder)
    )
 
 weapon_switch_decoder : (Json.Decode.Decoder WeaponSwitch)
@@ -182,7 +152,7 @@ internal_decoder kind =
       "atk" ->
          (Json.Decode.map
             (\x -> (Attacked x))
-            (attack_decoder)
+            (Struct.Attack.decoder)
          )
 
       "tar" ->
@@ -242,15 +212,6 @@ get_movement_actor_index movement = movement.character_index
 
 get_movement_path : Movement -> (List BattleMap.Struct.Direction.Type)
 get_movement_path movement = movement.path
-
-get_attack_actor_index : Attack -> Int
-get_attack_actor_index attack = attack.attacker_index
-
-get_attack_target_index : Attack -> Int
-get_attack_target_index attack = attack.defender_index
-
-get_attack_data : Attack -> Struct.Attack.Type
-get_attack_data attack = attack.data
 
 get_target_actor_index : Target -> Int
 get_target_actor_index target = target.actor_index

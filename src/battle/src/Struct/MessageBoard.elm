@@ -13,9 +13,9 @@ module Struct.MessageBoard exposing
 -- Elm -------------------------------------------------------------------------
 
 -- Local Module ----------------------------------------------------------------
+import Struct.Attack
 import Struct.Error
 import Struct.HelpRequest
-import Struct.TurnResult
 
 --------------------------------------------------------------------------------
 -- TYPES -----------------------------------------------------------------------
@@ -23,7 +23,7 @@ import Struct.TurnResult
 type Message =
    Help Struct.HelpRequest.Type
    | Error Struct.Error.Type
-   | AttackReport Struct.TurnResult.Attack
+   | AttackReport Struct.Attack.Type
 
 type alias Type =
    {

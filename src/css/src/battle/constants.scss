@@ -1,7 +1,9 @@
-@import '../shared/battle-view/constants';
-
 $CONTROLLED-MENU-WIDTH: 18em;
 $SUB-MENU-WIDTH: 18em;
+
+$LEFT-MENU-WIDTH: $CONTROLLED-MENU-WIDTH;
+
+@import '../shared/battle-view/constants';
 
 $NEXT-TO-CONTROLLED-MENU: $CONTROLLED-MENU-WIDTH + $MENU-EXTRA;
 $NEXT-TO-SUB-MENU: $SUB-MENU-WIDTH + $MENU-EXTRA;

@@ -12,7 +12,6 @@ import BattleCharacters.Struct.Character
 -- Local Module ----------------------------------------------------------------
 import Struct.Attack
 import Struct.Event
-import Struct.TurnResult
 import Struct.Character
 
 import View.Character
@@ -49,24 +48,25 @@ get_title_html attacker defender =
 
 get_effect_text : Struct.Attack.Type -> String
 get_effect_text attack =
+   let precision = (Struct.Attack.get_precision attack) in
    (
       (
-         case attack.precision of
+         case precision of
             Struct.Attack.Hit -> " hit for "
             Struct.Attack.Graze -> " grazed for "
             Struct.Attack.Miss -> " missed."
       )
       ++
       (
-         if (attack.precision == Struct.Attack.Miss)
+         if (precision == Struct.Attack.Miss)
          then
             ""
          else
             (
-               ((String.fromInt attack.damage) ++ " damage")
+               ((String.fromInt (Struct.Attack.get_damage attack)) ++ " damage")
                ++
                (
-                  if (attack.critical)
+                  if (Struct.Attack.get_is_a_critical attack)
                   then " (Critical Hit)."
                   else "."
                )
@@ -96,7 +96,12 @@ get_attack_html attacker defender attack =
       [
          (Html.text
             (
-               case (attack.order, attack.parried) of
+               case
+                  (
+                     (Struct.Attack.get_order attack),
+                     (Struct.Attack.get_is_a_parry attack)
+                  )
+               of
                   (Struct.Attack.Counter, True) ->
                      (
                         defender_name
@@ -135,14 +140,14 @@ get_attack_html attacker defender attack =
 get_html : (
       (Array.Array Struct.Character.Type) ->
       Int ->
-      Struct.TurnResult.Attack ->
+      Struct.Attack.Type ->
       (Html.Html Struct.Event.Type)
    )
 get_html characters player_ix attack =
    case
       (
-         (Array.get attack.attacker_index characters),
-         (Array.get attack.defender_index characters)
+         (Array.get (Struct.Attack.get_actor_index attack) characters),
+         (Array.get (Struct.Attack.get_target_index attack) characters)
       )
    of
       ((Just atkchar), (Just defchar)) ->
@@ -158,7 +163,7 @@ get_html characters player_ix attack =
                (get_attack_html
                   atkchar
                   defchar
-                  (Struct.TurnResult.get_attack_data attack)
+                  attack
                )
             ]
          )
