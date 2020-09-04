@@ -16,6 +16,7 @@ module Struct.UI exposing
       set_displayed_tab,
       clear_displayed_tab,
       tab_to_string,
+      tab_to_class_name,
       get_all_tabs,
 
       -- Navigator
@@ -107,6 +108,15 @@ tab_to_string tab =
       CharactersTab -> "Characters"
       SettingsTab -> "Settings"
       TimelineTab -> "Timeline"
+
+tab_to_class_name : Tab -> String
+tab_to_class_name tab =
+   case tab of
+      (TileStatusTab _) -> "status"
+      (CharacterStatusTab _) -> "status"
+      CharactersTab -> "characters"
+      SettingsTab -> "parameters"
+      TimelineTab -> "timeline"
 
 get_all_tabs : (List Tab)
 get_all_tabs =

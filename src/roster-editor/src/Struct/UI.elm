@@ -7,6 +7,7 @@ module Struct.UI exposing
       get_displayed_tab,
       set_displayed_tab,
       reset_displayed_tab,
+      tab_to_class_name,
       -- Which glyph slot is being edited?
       set_glyph_slot,
       get_glyph_slot
@@ -54,6 +55,17 @@ set_displayed_tab tab ui = {ui | displayed_tab = tab}
 
 reset_displayed_tab : Type -> Type
 reset_displayed_tab ui = {ui | displayed_tab = CharacterSelectionTab}
+
+tab_to_class_name : Tab -> String
+tab_to_class_name tab =
+   case tab of
+   CharacterSelectionTab -> "characters"
+   PortraitSelectionTab -> "portraits"
+   WeaponSelectionTab -> "weapons"
+   ArmorSelectionTab -> "armors"
+   GlyphSelectionTab -> "glyphes"
+   GlyphBoardSelectionTab -> "glyphboards"
+   GlyphManagementTab -> "glyphmanagement"
 
 get_glyph_slot : Type -> (Int, Int)
 get_glyph_slot ui = ui.glyph_slot

@@ -15,15 +15,23 @@ import Struct.UI
 get_menu_button_html : Struct.UI.Tab -> (Html.Html Struct.Event.Type)
 get_menu_button_html tab =
    (Html.button
-      [ (Html.Events.onClick (Struct.Event.TabSelected tab)) ]
-      [ (Html.text (Struct.UI.tab_to_string tab)) ]
+      [
+         (Html.Events.onClick (Struct.Event.TabSelected tab)),
+         (Html.Attributes.class (Struct.UI.tab_to_class_name tab))
+      ]
+      [
+      ]
    )
 
 get_main_menu_button_html : (Html.Html Struct.Event.Type)
 get_main_menu_button_html =
    (Html.button
-      [ (Html.Events.onClick Struct.Event.GoToMainMenu) ]
-      [ (Html.text "Main Menu") ]
+      [
+         (Html.Events.onClick Struct.Event.GoToMainMenu),
+         (Html.Attributes.class "main-menu")
+      ]
+      [
+      ]
    )
 
 --------------------------------------------------------------------------------

@@ -21,7 +21,10 @@ import Struct.UI
 get_main_menu_button_html : (Html.Html Struct.Event.Type)
 get_main_menu_button_html =
    (Html.button
-      [ (Html.Events.onClick Struct.Event.GoToMainMenu) ]
+      [
+         (Html.Events.onClick Struct.Event.GoToMainMenu),
+         (Html.Attributes.class "main-menu")
+      ]
       [ (Html.text "Main Menu") ]
    )
 
