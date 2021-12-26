@@ -66,6 +66,17 @@ type Instruction =
    | SetRandom (Computation, Computation, Computation)
    | Set (Computation, Computation)
 
+type InstructionEffect =
+   Continue
+   | End
+   | PromptCommand (Value, Value, Value)
+   | PromptInteger (Value, Value, Value)
+   | PromptString (Value, Value, Value)
+   | PromptChoice
+   | Display Value
+   | DisplayError Value
+   | ExtraEffect (String, (List.List Value))
+
 type alias State =
    {
       memory : (Dict.Dict String Value)

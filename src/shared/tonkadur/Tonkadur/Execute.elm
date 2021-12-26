@@ -15,45 +15,16 @@ import Tonkadur.Compute
 --------------------------------------------------------------------------------
 -- LOCAL -----------------------------------------------------------------------
 --------------------------------------------------------------------------------
----- UPDATE MEMORY -------------------------------------------------------------
-apply_at_address : (
-      (List.List String) ->
-      (
-         String ->
-         (Dict.Dict String Value) ->
-         (Dict.Dict String Value)
-      )
-      (Dict.Dict String Value) ->
-      (Dict.Dict String Value)
-   )
-apply_at_address address fun memory =
-   case address of
-      [] -> memory
-      (last_element :: []) -> (fun last_element memory)
-      (next_element :: next_address) ->
-         (Dict.update
-            next_element
-            (\maybe_value ->
-               case maybe_value of
-                  (Just value) ->
-                     (Just
-                        (apply_at_address
-                           next_address
-                           fun
-                           (Tonkadur.Types.value_to_dict value)
-                        )
-                     )
-
-                  Nothing -> Nothing
-            )
-         )
+increment_program_counter : Tonkadur.Types.State -> Tonkadur.Types.State
+increment_program_counter state =
+   {state | program_counter = program_counter + 1}
 
 ---- INSTRUCTIONS --------------------------------------------------------------
 add_event_option : (
       String ->
       (List.List Tonkadur.Types.Computation) ->
       Tonkadur.Types.State ->
-      Tonkadur.Types.State ->
+      Tonkadur.Types.State
    )
 add_event_option name parameters state =
    (Tonkadur.Types.append_option
@@ -118,7 +89,7 @@ initialize : (
 initialize type_name address state =
    {state |
       memory =
-         (apply_at_address
+         (Tonkadur.Types.apply_at_address
             (Tonkadur.Types.value_to_list
                (Tonkadur.Compute.compute state address)
             )
@@ -142,8 +113,15 @@ prompt_command : (
       Tonkadur.Types.State
    )
 prompt_command address min max label state =
-   -- TODO: how to prompt for input?
-   state
+   {state |
+      memorized_target = (Tonkadur.Compute.compute state address),
+      last_instruction_effect =
+         (PromptCommand
+            (Tonkadur.Compute.compute state min)
+            (Tonkadur.Compute.compute state max)
+            (Tonkadur.Compute.compute state label)
+         )
+   }
 
 prompt_integer : (
       Tonkadur.Types.Computation ->
@@ -154,8 +132,15 @@ prompt_integer : (
       Tonkadur.Types.State
    )
 prompt_integer address min max label state =
-   -- TODO: how to prompt for input?
-   state
+   {state |
+      memorized_target = (Tonkadur.Compute.compute state address),
+      last_instruction_effect =
+         (PromptInteger
+            (Tonkadur.Compute.compute state min)
+            (Tonkadur.Compute.compute state max)
+            (Tonkadur.Compute.compute state label)
+         )
+   }
 
 prompt_string : (
       Tonkadur.Types.Computation ->
@@ -166,8 +151,15 @@ prompt_string : (
       Tonkadur.Types.State
    )
 prompt_integer address min max label state =
-   -- TODO: how to prompt for input?
-   state
+   {state |
+      memorized_target = (Tonkadur.Compute.compute state address),
+      last_instruction_effect =
+         (PromptString
+            (Tonkadur.Compute.compute state min)
+            (Tonkadur.Compute.compute state max)
+            (Tonkadur.Compute.compute state label)
+         )
+   }
 
 remove : (
       Tonkadur.Types.Computation ->
@@ -177,7 +169,7 @@ remove : (
 remove address state =
    {state |
       memory =
-         (apply_at_address
+         (Tonkadur.Types.apply_at_address
             (Tonkadur.Types.value_to_list
                (Tonkadur.Compute.compute state address)
             )
@@ -188,8 +180,7 @@ remove address state =
 
 resolve_choice : Tonkadur.Types.State -> Tonkadur.Types.State
 resolve_choice state =
-   -- TODO: how to prompt for input?
-   state
+   {state | last_instruction_effect = PromptChoice}
 
 set_pc : (
       Tonkadur.Types.Computation ->
@@ -226,7 +217,7 @@ set_random address min max state =
    in
    {state |
       memory =
-         (apply_at_address
+         (Tonkadur.Types.apply_at_address
             (Tonkadur.Types.value_to_list
                (Tonkadur.Compute.compute state address)
             )
@@ -246,7 +237,7 @@ set : (
 set address value state =
    {state |
       memory =
-         (apply_at_address
+         (Tonkadur.Types.apply_at_address
             (Tonkadur.Types.value_to_list
                (Tonkadur.Compute.compute state address)
             )
@@ -270,34 +261,55 @@ execute : (
       Tonkadur.Types.State ->
    )
 execute instruction state =
+   let new_state = {state | last_instruction_effect = Continue} in
    case instruction of
       (AddEventOption name parameters) ->
-         (add_event_option name parameters state)
+         (increment_program_counter
+            (add_event_option name parameters new_state)
+         )
 
       (AddTextOption label) ->
-         (add_text_option name parameters state)
+         (increment_program_counter
+            (add_text_option name parameters new_state)
+         )
 
       (Assert condition label) ->
-         (assert condition label state)
+         (increment_program_counter
+            (assert condition label new_state)
+         )
 
-      (Display label) -> (display label state)
-      End -> (end state)
+      (Display label) ->
+         (increment_program_counter (display label new_state))
+
+      End -> (end new_state)
       (ExtraInstruction name parameters) ->
-         (extra_instruction name parameters state)
+         (extra_instruction name parameters new_state)
 
-      (Initialize type_name address) -> (initialize type_name address state)
+      (Initialize type_name address) ->
+         (increment_program_counter
+            (initialize type_name address new_state)
+         )
       (PromptCommand address min max label) ->
-         (prompt_command address min max label state)
+         (increment_program_counter
+            (prompt_command address min max label new_state)
+         )
 
       (PromptInteger address min max label) ->
-         (prompt_integer address min max label state)
+         (increment_program_counter
+            (prompt_integer address min max label new_state)
+         )
 
       (PromptString address min max label) ->
-         (prompt_string address min max label state)
+         (increment_program_counter
+            (prompt_string address min max label new_state)
+         )
 
-      (Remove address) -> (remove address state)
-      ResolveChoice -> (resolve_choice state)
-      (SetPC value) -> (set_pc value state)
-      (SetRandom address min max) -> (set_random address min max state)
-      (Set address value) -> (set address value state)
+      (Remove address) -> (increment_program_counter (remove address new_state))
+      ResolveChoice -> (increment_program_counter (resolve_choice new_state))
+      (SetPC value) -> (set_pc value new_state)
+      (SetRandom address min max) ->
+         (increment_program_counter (set_random address min max new_state))
+
+      (Set address value) ->
+         (increment_program_counter (set address value new_state))
 
