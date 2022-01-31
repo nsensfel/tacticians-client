@@ -38,10 +38,16 @@ forward : (
    )
 forward attack model =
    (
-      (apply_damage_to_character
-         (Struct.Attack.get_damage attack)
-         (Struct.Attack.get_target_index attack)
-         model
+      (
+         if (Struct.Attack.hits attack)
+         then
+            (apply_damage_to_character
+               (Struct.Attack.get_damage attack)
+               (Struct.Attack.get_target_index attack)
+               model
+            )
+         else
+            model
       ),
       []
    )

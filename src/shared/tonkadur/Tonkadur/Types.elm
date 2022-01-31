@@ -87,7 +87,9 @@ type alias State =
       allocated_data : Int,
       last_choice_index : Int,
       available_options : (List.List Option),
-      memorized_target : Value
+      memorized_target : Value,
+
+      last_instruction_effect : InstructionEffect
    }
 
 --------------------------------------------------------------------------------
@@ -223,3 +225,35 @@ get_default state type_name =
          case (Dict.get other state.user_types) of
             (Just default) -> default
             Nothing -> (StringValue ("Unknown type '" + other + "'"))
+
+apply_at_address : (
+      (List.List String) ->
+      (
+         String ->
+         (Dict.Dict String Value) ->
+         (Dict.Dict String Value)
+      )
+      (Dict.Dict String Value) ->
+      (Dict.Dict String Value)
+   )
+apply_at_address address fun memory =
+   case address of
+      [] -> memory
+      (last_element :: []) -> (fun last_element memory)
+      (next_element :: next_address) ->
+         (Dict.update
+            next_element
+            (\maybe_value ->
+               case maybe_value of
+                  (Just value) ->
+                     (Just
+                        (apply_at_address
+                           next_address
+                           fun
+                           (Tonkadur.Types.value_to_dict value)
+                        )
+                     )
+
+                  Nothing -> Nothing
+            )
+         )

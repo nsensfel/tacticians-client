@@ -1,8 +1,8 @@
 module Tonkadur.PlayerInput exposing (..)
 
 -- Elm -------------------------------------------------------------------------
-import List
 import Dict
+import List
 
 -- Tonkadur --------------------------------------------------------------------
 import Tonkadur.Types

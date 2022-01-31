@@ -126,9 +126,12 @@ get_attack_animation_class : (
       String
    )
 get_attack_animation_class attack char =
-   if (Struct.Attack.get_is_a_critical attack)
-   then "animated-portrait-attack-critical"
-   else "animated-portrait-attacks"
+   if (Struct.Attack.get_is_a_parry attack)
+   then "animated-portrait-parries"
+   else
+      if (Struct.Attack.get_is_a_critical attack)
+      then "animated-portrait-attack-critical"
+      else "animated-portrait-attacks"
 
 get_defense_animation_class : (
       Struct.Attack.Type ->
@@ -138,14 +141,13 @@ get_defense_animation_class : (
 get_defense_animation_class attack char =
    if ((Struct.Attack.get_damage attack) == 0)
    then
-      if ((Struct.Attack.get_precision attack) == Struct.Attack.Miss)
-      then "animated-portrait-dodges"
-      else "animated-portrait-undamaged"
+      "animated-portrait-undamaged"
    else if ((Struct.Character.get_current_health char) > 0)
    then
-      if ((Struct.Attack.get_precision attack) == Struct.Attack.Graze)
-      then "animated-portrait-grazed-damage"
-      else "animated-portrait-damaged"
+      case (Struct.Attack.get_precision attack) of
+         Struct.Attack.Hit -> "animated-portrait-damaged"
+         Struct.Attack.Graze -> "animated-portrait-grazed-damage"
+         Struct.Attack.Miss -> "animated-portrait-dodges"
    else
       if ((Struct.Attack.get_precision attack) == Struct.Attack.Graze)
       then "animated-portrait-grazed-death"

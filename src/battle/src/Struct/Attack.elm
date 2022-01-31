@@ -12,7 +12,8 @@ module Struct.Attack exposing
       get_new_target_luck,
       get_order,
       get_precision,
-      get_target_index
+      get_target_index,
+      hits
    )
 
 -- Elm -------------------------------------------------------------------------
@@ -118,3 +119,6 @@ decoder =
       |> (Json.Decode.Pipeline.required "alk" Json.Decode.int)
       |> (Json.Decode.Pipeline.required "dlk" Json.Decode.int)
    )
+
+hits : Type -> Bool
+hits at = not (at.precision == Miss)
